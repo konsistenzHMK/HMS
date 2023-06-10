@@ -25,6 +25,7 @@ import SearchScreen from './screens/SearchScreen'
 import SignupOTPScreen from './screens/SignupOTPScreen'
 import SignupStartScreen from './screens/SignupStartScreen'
 import TestuserdataScreen from './screens/TestuserdataScreen'
+import { BakarRoom } from './bakar-room/BakarRoom.js'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -196,11 +197,18 @@ export default function RootAppNavigator() {
             title: 'Onboarding',
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="BakarrUIScreen"
           component={BakarrUIScreen}
           options={{
             title: 'Bakarr-UI',
+          }}
+        /> */}
+        <Stack.Screen
+          name="BakarRoom"
+          component={BakarRoom}
+          options={{
+            title: 'Bakarr-Room',
           }}
         />
         <Stack.Screen

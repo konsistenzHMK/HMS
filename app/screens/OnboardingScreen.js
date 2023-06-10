@@ -147,7 +147,7 @@ const OnboardingScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'We\'ll ask you a couple of questions to personalise the app for you. It will take 30 secs of your time.'}
+              {"We'll ask you a couple of questions to personalise the app for you. It will take 30 secs of your time."}
             </Text>
           </View>
           {/* Instructions2 */}
@@ -191,7 +191,7 @@ const OnboardingScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'what\'s your full name?'}
+              {"what's your full name?"}
             </Text>
           </View>
           {/* Input View */}
@@ -291,7 +291,7 @@ const OnboardingScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'what\'s your age?'}
+              {"what's your age?"}
             </Text>
           </View>
           {/* Input View */}
@@ -543,11 +543,11 @@ const OnboardingScreen = (props) => {
                     key: 'user_onboarded',
                     value: true,
                   })
-                  const expo_token = await getPushTokenUtil({})
-                  await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
-                    expoToken: expo_token,
-                    userId: Constants['LOGGED_IN_USER'],
-                  })
+                  // const expo_token = await getPushTokenUtil({})
+                  // await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
+                  //   expoToken: expo_token,
+                  //   userId: Constants['LOGGED_IN_USER'],
+                  // })
                   navigation.navigate('Tabs', { screen: 'HomeScreen' })
                 } catch (err) {
                   console.error(err)

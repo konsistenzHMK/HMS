@@ -6,7 +6,6 @@ import Images from '../config/Images'
 import convertNullToTBD from '../global-functions/convertNullToTBD'
 import getCorrectDateFormat from '../global-functions/getCorrectDateFormat'
 import getCorrectTimeFormat from '../global-functions/getCorrectTimeFormat'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import {
   Button,
@@ -36,7 +35,6 @@ import {
 const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
   const setGlobalVariableValue = GlobalVariables.useSetValue()
 
   const navigateOnInvalidAuth = () => {
@@ -95,6 +93,14 @@ const HomeScreen = (props) => {
             console.log('Skipped ON_SCREEN_FOCUS:4 SET_GLOBAL_VARIABLE: condition not met')
           }
         })()
+        setGlobalVariableValue({
+          key: 'user_first_name',
+          value: apiResponseResult && apiResponseResult[0]?.first_name,
+        })
+        setGlobalVariableValue({
+          key: 'user_last_name',
+          value: apiResponseResult && apiResponseResult[0]?.last_name,
+        })
       } catch (err) {
         console.error(err)
         error = err.message ?? err
@@ -108,6 +114,18 @@ const HomeScreen = (props) => {
   const [loading, setLoading] = React.useState(true)
   const [showBakarrPopup, setShowBakarrPopup] = React.useState(false)
   const [textInputValue, setTextInputValue] = React.useState('')
+
+  const handleStartBakerRoomPress = () => {
+    try {
+      setShowBakarrPopup(false)
+      const roomCode = Constants['HMS_ROOM_CODE']
+      const username = `${Constants['user_first_name']} ${Constants['user_last_name']}`
+      console.log('Username ', username)
+      navigation.navigate('BakarRoom', { roomCode, username })
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <ScreenContainer
@@ -1213,14 +1231,7 @@ const HomeScreen = (props) => {
               </View>
               {/* Join Bakarr room */}
               <Button
-                onPress={() => {
-                  try {
-                    setShowBakarrPopup(false)
-                    navigation.navigate('BakarrUIScreen')
-                  } catch (err) {
-                    console.error(err)
-                  }
-                }}
+                onPress={handleStartBakerRoomPress}
                 style={StyleSheet.applyWidth(GlobalStyles.ButtonStyles(theme)['Button'], dimensions.width)}
                 title={'START 🎙'}
               />

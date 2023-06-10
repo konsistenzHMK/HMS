@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    node: true,
   },
   extends: ['eslint:recommended', 'plugin:react/recommended'],
   parserOptions: {
@@ -10,14 +11,14 @@ module.exports = {
   },
   plugins: ['react', 'react-hooks', 'prettier'],
   rules: {
-    indent: ['error', 2],
-    'linebreak-style': ['error', 'unix'],
+    indent: ['error', 2, { SwitchCase: 1 }],
     quotes: ['error', 'single', { avoidEscape: true }],
     semi: ['error', 'never'],
-    'no-undef': 'off',
-    'no-unused-vars': 'off',
+    'no-undef': 'error',
+    'no-unused-vars': 'warn',
     'react/prop-types': 'off',
     'no-multiple-empty-lines': ['error', { max: 1 }],
+    'linebreak-style': ['error', 'unix'],
   },
   settings: {
     react: {

@@ -1,17 +1,15 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
-  SafeAreaView,
   FlatList,
-  StatusBar,
   Text,
   View,
   TouchableHighlight,
   ActivityIndicator,
   Alert,
-  Button,
   Image,
   Modal,
   TextInput,
+  Platform,
 } from 'react-native'
 import { PERMISSIONS, request, requestMultiple, RESULTS } from 'react-native-permissions'
 import {
@@ -26,12 +24,6 @@ import {
 import { Dimensions } from 'react-native'
 
 /**
- * Take Room Code from Dashbaord for this sample app.
- * For more info, Check out {@link https://www.100ms.live/docs/react-native/v2/get-started/token#get-room-code-from-100ms-dashboard | Room Code}
- */
-const ROOM_CODE = 'ode-qmte-ifp' // PASTE ROOM CODE FROM DASHBOARD HERE
-
-/**
  * using `ROOM_CODE` is recommended over `AUTH_TOKEN` approach
  *
  * Take Auth Token from Dashbaord for this sample app.
@@ -39,59 +31,7 @@ const ROOM_CODE = 'ode-qmte-ifp' // PASTE ROOM CODE FROM DASHBOARD HERE
  */
 const AUTH_TOKEN = '' // PASTE AUTH TOKEN FROM DASHBOARD HERE
 
-const USERNAME = 'Test User '
-
-//#region Screens
-export const BakarRoom = () => {
-  const [joinRoom, setJoinRoom] = useState(false)
-
-  const navigate = useCallback((screen) => setJoinRoom(screen === 'RoomScreen'), [])
-
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#EFF7FF' }}>
-      <StatusBar barStyle={'dark-content'} />
-
-      {joinRoom ? <RoomScreen navigate={navigate} /> : <HomeScreen navigate={navigate} />}
-    </SafeAreaView>
-  )
-}
-
-const HomeScreen = ({ navigate }) => {
-  // Function to handle "Join Room" button press
-  const handleJoinPress = async () => {
-    // Checking Device Permissions
-    const permissionsGranted = await checkPermissions([
-      PERMISSIONS.ANDROID.CAMERA,
-      PERMISSIONS.ANDROID.RECORD_AUDIO,
-      PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
-    ])
-
-    if (permissionsGranted) {
-      navigate('RoomScreen')
-    } else {
-      console.log('Permission Not Granted!')
-    }
-  }
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <TouchableHighlight
-        onPress={handleJoinPress}
-        underlayColor="#143466"
-        style={{
-          paddingHorizontal: 20,
-          paddingVertical: 12,
-          backgroundColor: '#2471ED',
-          borderRadius: 8,
-        }}
-      >
-        <Text style={{ fontSize: 20, color: '#ffffff' }}>Join Room</Text>
-      </TouchableHighlight>
-    </View>
-  )
-}
-
-const RoomScreen = ({ navigate }) => {
+export const BakarRoom = (props) => {
   /**
    * `usePeerTrackNodes` hook takes care of setting up {@link HMSSDK | HMSSDK} instance, joining room and adding all required event listeners.
    * It gives us:
@@ -99,6 +39,16 @@ const RoomScreen = ({ navigate }) => {
    *  2. loading - We can show loader while Room Room join is under process.
    *  3. leaveRoom - This is a function that can be called on a button press to leave room and go back to Welcome screen.
    */
+
+  const { route, navigation } = props
+  const { roomCode, username } = route.params
+
+  const onConnectionError = (error) => {
+    navigation.goBack()
+    Alert.alert('Connection error')
+    console.log(error)
+  }
+
   const {
     peerTrackNodes,
     loading,
@@ -110,7 +60,7 @@ const RoomScreen = ({ navigate }) => {
     chatData,
     setChatData,
     ID,
-  } = usePeerTrackNodes({ navigate })
+  } = usePeerTrackNodes({ roomCode, username, onConnectionError })
 
   const HmsView = hmsInstanceRef.current?.HmsView
 
@@ -199,12 +149,6 @@ const RoomScreen = ({ navigate }) => {
     )
   }
 
-  const handleRoomEnd = () => {
-    leaveRoom()
-
-    navigate('HomeScreen')
-  }
-
   const handleChat = () => {
     setViewChat(true)
     console.log(viewChat)
@@ -213,6 +157,10 @@ const RoomScreen = ({ navigate }) => {
   const endChat = () => {
     setViewChat(false)
     console.log(viewChat)
+  }
+
+  const handleRoomEnd = () => {
+    navigation.goBack()
   }
 
   //////////
@@ -224,10 +172,14 @@ const RoomScreen = ({ navigate }) => {
   }
 
   async function toggleAudio() {
-    const localPeer = await hmsInstanceRef.current.getLocalPeer()
-    const audioMuted = localPeer.audioTrack?.isMute()
-    localPeer.localAudioTrack().setMute(!audioMuted)
-    ChangeMuteStatus(!audioMuted)
+    try {
+      const localPeer = await hmsInstanceRef.current.getLocalPeer()
+      const audioMuted = localPeer.audioTrack?.isMute()
+      localPeer.localAudioTrack().setMute(!audioMuted)
+      ChangeMuteStatus(!audioMuted)
+    } catch (e) {
+      console.log('Bakar Room -> toggleAudio error', e)
+    }
   }
 
   async function handleBrodcast() {
@@ -237,7 +189,7 @@ const RoomScreen = ({ navigate }) => {
       const ob = {
         message: text,
         sender: {
-          name: USERNAME,
+          name: username,
           peerID: ID,
         },
       }
@@ -563,7 +515,7 @@ const RoomScreen = ({ navigate }) => {
  * Sets up HMSSDK instance, Adds required Event Listeners
  * Checkout Quick Start guide to know things covered {@link https://www.100ms.live/docs/react-native/v2/guides/quickstart | Quick Start Guide}
  */
-const usePeerTrackNodes = ({ navigate }) => {
+const usePeerTrackNodes = ({ onConnectionError, username, roomCode }) => {
   const hmsInstanceRef = useRef(null) // We will save `hmsInstance` in this ref
   const [loading, setLoading] = useState(true)
   const [muteStatus, ChangeMuteStatus] = useState(false)
@@ -739,7 +691,7 @@ const usePeerTrackNodes = ({ navigate }) => {
 
         // if `AUTH_TOKEN` is not valid, generate auth token from `ROOM_CODE`
         if (!token) {
-          token = await hmsInstance.getAuthTokenByRoomCode(ROOM_CODE)
+          token = await hmsInstance.getAuthTokenByRoomCode(roomCode)
         }
 
         /**
@@ -766,11 +718,9 @@ const usePeerTrackNodes = ({ navigate }) => {
         /**
          * Joining Room. For more info, Check out {@link https://www.100ms.live/docs/react-native/v2/features/join#join-a-room | Join a Room}
          */
-        hmsInstance.join(new HMSConfig({ authToken: token, username: USERNAME }))
+        hmsInstance.join(new HMSConfig({ authToken: token, username: username }))
       } catch (error) {
-        navigate('HomeScreen')
-        console.error(error)
-        Alert.alert('Error', 'Check your console to see error logs!')
+        onConnectionError(error)
       }
     }
 
@@ -780,7 +730,7 @@ const usePeerTrackNodes = ({ navigate }) => {
     return () => {
       handleRoomLeave()
     }
-  }, [navigate])
+  }, [])
   return {
     loading,
     leaveRoom: handleRoomLeave,

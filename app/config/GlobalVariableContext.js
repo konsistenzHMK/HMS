@@ -1,5 +1,4 @@
 import React from 'react'
-import * as SplashScreen from 'expo-splash-screen'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const DeviceVariables = {
@@ -15,6 +14,9 @@ const AppVariables = {
   ERROR_MESSAGE: '',
   user_can_post: false,
   user_profile_pic_url: '',
+  HMS_ROOM_CODE: 'ode-qmte-ifp',
+  user_first_name: '',
+  user_last_name: '',
 }
 const GlobalVariableContext = React.createContext()
 const GlobalVariableUpdater = React.createContext()
@@ -68,22 +70,22 @@ class State {
 
   static reducer(state, { type, payload }) {
     switch (type) {
-    case 'RESET':
-      return { values: State.defaultValues, __loaded: true }
-    case 'LOAD_FROM_ASYNC_STORAGE':
-      return { values: { ...state.values, ...payload }, __loaded: true }
-    case 'UPDATE':
-      return state.__loaded
-        ? {
-          ...state,
-          values: {
-            ...state.values,
-            [payload.key]: payload.value,
-          },
-        }
-        : state
-    default:
-      return state
+      case 'RESET':
+        return { values: State.defaultValues, __loaded: true }
+      case 'LOAD_FROM_ASYNC_STORAGE':
+        return { values: { ...state.values, ...payload }, __loaded: true }
+      case 'UPDATE':
+        return state.__loaded
+          ? {
+              ...state,
+              values: {
+                ...state.values,
+                [payload.key]: payload.value,
+              },
+            }
+          : state
+      default:
+        return state
     }
   }
 
@@ -95,14 +97,6 @@ class State {
 
 export function GlobalVariableProvider({ children }) {
   const [state, dispatch] = React.useReducer(State.reducer, State.initialState)
-
-  React.useEffect(() => {
-    async function prepare() {
-      await SplashScreen.preventAutoHideAsync()
-    }
-
-    prepare()
-  }, [])
 
   // This effect runs on mount to overwrite the default value of any
   // key that has a local value.
@@ -134,12 +128,6 @@ export function GlobalVariableProvider({ children }) {
     }
   }, [state])
 
-  const onLayoutRootView = React.useCallback(async () => {
-    if (state.__loaded) {
-      await SplashScreen.hideAsync()
-    }
-  }, [state.__loaded])
-
   // We won't want an app to read a default state when there might be one
   // incoming from storage.
   if (!state.__loaded) {
@@ -147,7 +135,7 @@ export function GlobalVariableProvider({ children }) {
   }
 
   return (
-    <GlobalVariableUpdater.Provider value={dispatch} onLayout={onLayoutRootView}>
+    <GlobalVariableUpdater.Provider value={dispatch}>
       <GlobalVariableContext.Provider value={state.values}>{children}</GlobalVariableContext.Provider>
     </GlobalVariableUpdater.Provider>
   )

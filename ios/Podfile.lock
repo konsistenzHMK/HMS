@@ -4,6 +4,9 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXApplication (5.1.1):
     - ExpoModulesCore
+  - EXAV (13.0.3):
+    - ExpoModulesCore
+    - ReactCommon/turbomodule/core
   - EXCamera (13.1.0):
     - ExpoModulesCore
   - EXConstants (14.2.1):
@@ -482,6 +485,7 @@ DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXApplication (from `../node_modules/expo-application/ios`)
+  - EXAV (from `../node_modules/expo-av/ios`)
   - EXCamera (from `../node_modules/expo-camera/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXDocumentPicker (from `../node_modules/expo-document-picker/ios`)
@@ -590,6 +594,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
     :path: "../node_modules/expo-application/ios"
+  EXAV:
+    :path: "../node_modules/expo-av/ios"
   EXCamera:
     :path: "../node_modules/expo-camera/ios"
   EXConstants:
@@ -702,6 +708,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXApplication: d8f53a7eee90a870a75656280e8d4b85726ea903
+  EXAV: 8e4e12377926c071843498d19adfa27802695385
   EXCamera: eaf52a96480d4ae1505a9b5e139c244581b5f8ca
   EXConstants: f348da07e21b23d2b085e270d7b74f282df1a7d9
   EXDocumentPicker: a2e52acbb3204af80b6e3ffd3deb2cb25d052593
@@ -740,7 +747,7 @@ SPEC CHECKSUMS:
   RCTTypeSafety: bee9dd161c175896c680d47ef1d9eaacf2b587f4
   React: d850475db9ba8006a8b875d79e1e0d6ac8a0f8b6
   React-callinvoker: 6a0c75475ddc17c9ed54e4ff0478074a18fd7ab5
-  React-Codegen: 9fbe67d8dcd6e18623615f26e99380a4b01135fe
+  React-Codegen: 786571642e87add634e7f4d299c85314ec6cc158
   React-Core: 1adfab153f59e4f56e09b97a153089f466d7b8aa
   React-CoreModules: 958d236715415d4ccdd5fa35c516cf0356637393
   React-cxxreact: 2e7a6283807ce8755c3d501735acd400bec3b5cd

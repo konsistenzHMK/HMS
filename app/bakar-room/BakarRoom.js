@@ -5,7 +5,6 @@ import {
   View,
   TouchableHighlight,
   ActivityIndicator,
-  Alert,
   Image,
   Modal,
   TextInput,

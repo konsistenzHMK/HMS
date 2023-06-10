@@ -1,7 +1,6 @@
-import * as StyleSheet from './utils/StyleSheet';
+import * as StyleSheet from './utils/StyleSheet'
 
-export const ActivityIndicatorStyles = (theme) =>
-  StyleSheet.create({ 'Activity Indicator': { height: 36, width: 36 } });
+export const ActivityIndicatorStyles = (theme) => StyleSheet.create({ 'Activity Indicator': { height: 36, width: 36 } })
 
 export const ViewStyles = (theme) =>
   StyleSheet.create({
@@ -32,6 +31,7 @@ export const ViewStyles = (theme) =>
     'PF-Feed 2': { flex: 1 },
     'PF-Feed 3': { flex: 1 },
     'PF-Feed 4': { flex: 1 },
+    'PF-Feed 5': { flex: 1 },
     'PF-GoBack': {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -61,7 +61,7 @@ export const ViewStyles = (theme) =>
       padding: 2,
       paddingTop: 2,
     },
-  });
+  })
 
 export const ButtonStyles = (theme) =>
   StyleSheet.create({
@@ -71,11 +71,11 @@ export const ButtonStyles = (theme) =>
       fontWeight: '700',
       textAlign: 'center',
     },
-  });
+  })
 
-export const CheckboxRowStyles = (theme) => StyleSheet.create({ 'Checkbox Row': { minHeight: 50 } });
+export const CheckboxRowStyles = (theme) => StyleSheet.create({ 'Checkbox Row': { minHeight: 50 } })
 
-export const DeckSwiperStyles = (theme) => StyleSheet.create({ 'Deck Swiper': { position: 'absolute' } });
+export const DeckSwiperStyles = (theme) => StyleSheet.create({ 'Deck Swiper': { position: 'absolute' } })
 
 export const DeckSwiperCardStyles = (theme) =>
   StyleSheet.create({
@@ -85,37 +85,49 @@ export const DeckSwiperCardStyles = (theme) =>
       justifyContent: 'center',
       padding: 20,
     },
-  });
+  })
 
-export const DividerStyles = (theme) => StyleSheet.create({ Divider: { height: 1 } });
+export const DividerStyles = (theme) => StyleSheet.create({ Divider: { height: 1 } })
 
-export const FetchStyles = (theme) => StyleSheet.create({ Fetch: { minHeight: 40 } });
+export const FetchStyles = (theme) => StyleSheet.create({ Fetch: { minHeight: 40 } })
 
-export const ImageStyles = (theme) => StyleSheet.create({});
+export const ImageStyles = (theme) => StyleSheet.create({})
 
-export const ImageBackgroundStyles = (theme) => StyleSheet.create({});
+export const ImageBackgroundStyles = (theme) => StyleSheet.create({})
 
 export const ScrollViewStyles = (theme) =>
   StyleSheet.create({
     ImgScroll: { flexDirection: 'row', marginTop: 16, width: '100%' },
-  });
+  })
 
-export const FlatListStyles = (theme) => StyleSheet.create({ List: { flex: 1 } });
+export const FlatListStyles = (theme) => StyleSheet.create({ List: { flex: 1 } })
 
-export const KeyboardAwareScrollViewStyles = (theme) => StyleSheet.create({ 'Match-Comments': { flexShrink: 2 } });
+export const KeyboardAwareScrollViewStyles = (theme) => StyleSheet.create({ 'Match-Comments': { flexShrink: 2 } })
 
-export const SurfaceStyles = (theme) => StyleSheet.create({});
+export const SurfaceStyles = (theme) => StyleSheet.create({})
 
-export const SwiperStyles = (theme) => StyleSheet.create({ Swiper: { height: 300, width: '100%' } });
+export const SwiperStyles = (theme) => StyleSheet.create({ Swiper: { height: 300, width: '100%' } })
 
-export const TabViewItemStyles = (theme) => StyleSheet.create({ 'Tab View Item': { flex: 1 } });
+export const TabViewItemStyles = (theme) => StyleSheet.create({ 'Tab View Item': { flex: 1 } })
 
-export const TableStyles = (theme) => StyleSheet.create({ Table: { flex: 1 } });
+export const TableStyles = (theme) => StyleSheet.create({ Table: { flex: 1 } })
 
-export const TextStyles = (theme) => StyleSheet.create({});
+export const TextStyles = (theme) => StyleSheet.create({})
 
 export const TextInputStyles = (theme) =>
   StyleSheet.create({
+    'Text Area': {
+      borderBottomWidth: 1,
+      borderColor: theme.colors.divider,
+      borderLeftWidth: 1,
+      borderRadius: 8,
+      borderRightWidth: 1,
+      borderTopWidth: 1,
+      paddingBottom: 8,
+      paddingLeft: 8,
+      paddingRight: 8,
+      paddingTop: 8,
+    },
     'Text Input': {
       borderBottomWidth: 1,
       borderColor: theme.colors.divider,
@@ -125,6 +137,6 @@ export const TextInputStyles = (theme) =>
       paddingRight: 8,
       paddingTop: 8,
     },
-  });
+  })
 
-export const TouchableStyles = (theme) => StyleSheet.create({ imgAvatar: { marginLeft: 12 } });
+export const TouchableStyles = (theme) => StyleSheet.create({ imgAvatar: { marginLeft: 12 } })

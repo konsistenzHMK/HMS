@@ -9,6 +9,7 @@ import DraftbitTheme from './themes/DraftbitTheme.js'
 import cacheAssetsAsync from './config/cacheAssetsAsync'
 import { GlobalVariableProvider } from './config/GlobalVariableContext'
 import { useFonts } from 'expo-font'
+import { SnackbarProvider } from './components'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -46,7 +47,9 @@ const App = () => {
       <GlobalVariableProvider>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={DraftbitTheme}>
-            <AppNavigator />
+            <SnackbarProvider>
+              <AppNavigator />
+            </SnackbarProvider>
           </ThemeProvider>
         </QueryClientProvider>
       </GlobalVariableProvider>

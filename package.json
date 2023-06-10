@@ -15,7 +15,7 @@
   "dependencies": {
     "@100mslive/hms-video-store": "^0.10.6",
     "@100mslive/react-native-hms": "^1.6.2",
-    "@draftbit/ui": "47.4.0",
+    "@draftbit/ui": "47.5.0",
     "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/bottom-tabs": "^6.5.7",

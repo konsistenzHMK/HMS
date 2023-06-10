@@ -22,6 +22,7 @@ import {
 } from '@100mslive/react-native-hms'
 
 import { Dimensions } from 'react-native'
+import { useSnackbar } from '../components'
 
 /**
  * using `ROOM_CODE` is recommended over `AUTH_TOKEN` approach
@@ -39,13 +40,13 @@ export const BakarRoom = (props) => {
    *  2. loading - We can show loader while Room Room join is under process.
    *  3. leaveRoom - This is a function that can be called on a button press to leave room and go back to Welcome screen.
    */
-
+  const snackbar = useSnackbar()
   const { route, navigation } = props
   const { roomCode, username } = route.params
 
   const onConnectionError = (error) => {
     navigation.goBack()
-    Alert.alert('Connection error')
+    snackbar.show({ title: 'Connection error' })
     console.log(error)
   }
 

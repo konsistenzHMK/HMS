@@ -3,10 +3,11 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
+import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
-import { Button, ScreenContainer, withTheme } from '@draftbit/ui'
+import { Button, ScreenContainer, TextInput, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
-import { Image, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { Image, Text, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const SignupOTPScreen = (props) => {
@@ -104,7 +105,7 @@ const SignupOTPScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'In case you don\'t find it, check your spam folder'}
+            {"In case you don't find it, check your spam folder"}
           </Text>
           {/* OTP row */}
           <View

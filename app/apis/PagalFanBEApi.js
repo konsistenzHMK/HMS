@@ -2587,6 +2587,70 @@ export const FetchFetchSingleUserGET = ({ children, onData = () => {}, refetchIn
   return children({ loading, data, error, refetchFetchSingleUser: refetch })
 }
 
+export const fetchMatchMomentsGETStatusAndText = (Constants, { matchId }) =>
+  fetch(
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_moments?match_id=eq.${
+      matchId ?? ''
+    }&order=created_at.desc&select=*`,
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: Constants['AUTHORIZATION_HEADER'],
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+    },
+  ).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const fetchMatchMomentsGET = (Constants, { matchId }) =>
+  fetchMatchMomentsGETStatusAndText(Constants, { matchId }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useFetchMatchMomentsGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  return useQuery(['moments', args], () => fetchMatchMomentsGET(Constants, args), {
+    refetchInterval,
+  })
+}
+
+export const FetchFetchMatchMomentsGET = ({ children, onData = () => {}, refetchInterval, matchId }) => {
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
+
+  const { loading, data, error, refetch } = useFetchMatchMomentsGET({ matchId }, { refetchInterval })
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch()
+    }
+  }, [isFocused, prevIsFocused])
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
+    }
+  }, [error])
+  React.useEffect(() => {
+    if (data) {
+      onData(data)
+    }
+  }, [data])
+
+  return children({ loading, data, error, refetchFetchMatchMoments: refetch })
+}
+
 export const loginPOSTStatusAndText = (Constants, { loginEmail, loginPassword }) =>
   fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/auth/v1/token?grant_type=password', {
     body: JSON.stringify({ email: loginEmail, password: loginPassword }),

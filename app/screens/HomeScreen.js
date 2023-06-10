@@ -110,17 +110,13 @@ const HomeScreen = (props) => {
     handler()
   }, [isFocused])
 
-  const [TestVar, setTestVar] = React.useState({})
-  const [loading, setLoading] = React.useState(true)
   const [showBakarrPopup, setShowBakarrPopup] = React.useState(false)
-  const [textInputValue, setTextInputValue] = React.useState('')
 
   const handleStartBakerRoomPress = () => {
     try {
       setShowBakarrPopup(false)
       const roomCode = Constants['HMS_ROOM_CODE']
       const username = `${Constants['user_first_name']} ${Constants['user_last_name']}`
-      console.log('Username ', username)
       navigation.navigate('BakarRoom', { roomCode, username })
     } catch (err) {
       console.error(err)
@@ -472,7 +468,7 @@ const HomeScreen = (props) => {
           </View>
 
           <PagalFanBEApi.FetchFetchAllUpcomingMatchesGET>
-            {({ loading, error, data, refetchFetchAllUpcomingMatches }) => {
+            {({ loading, error, data }) => {
               const fetchData = data
               if (!fetchData || loading) {
                 return <ActivityIndicator />
@@ -817,7 +813,7 @@ const HomeScreen = (props) => {
           </View>
 
           <PagalFanBEApi.FetchFetchAllFanClubsGET>
-            {({ loading, error, data, refetchFetchAllFanClubs }) => {
+            {({ loading, error, data }) => {
               const fetchData = data
               if (!fetchData || loading) {
                 return <ActivityIndicator />
@@ -949,7 +945,7 @@ const HomeScreen = (props) => {
             showsHorizontalScrollIndicator={false}
           >
             <PagalFanBEApi.FetchFetchAllPostsGET>
-              {({ loading, error, data, refetchFetchAllPosts }) => {
+              {({ loading, error, data }) => {
                 const fetchData = data
                 if (!fetchData || loading) {
                   return <ActivityIndicator />

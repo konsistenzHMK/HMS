@@ -1,10 +1,9 @@
 <a name="readme-top"></a>
 
-<!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/PFSports/pagalfan">
-    <img src="https://github.com/PFSports/pagalfan/assets/32536287/c51c9dcf-e6eb-4e06-b13c-9f3ee6f414e7" alt="Logo" width=80 height=80 style="border-radius: 50%">
+    <img src="https://github.com/PFSports/pagalfan/assets/32536287/e9b32cf2-6c21-4f4c-9f49-cbc389c261fb" alt="Logo" width=80 height=80 style="border-radius: 50%">
   </a>
 </div>
 

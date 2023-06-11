@@ -22,6 +22,7 @@ import {
 
 import { Dimensions } from 'react-native'
 import { useSnackbar } from '../components'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 /**
  * using `ROOM_CODE` is recommended over `AUTH_TOKEN` approach
@@ -66,6 +67,8 @@ export const BakarRoom = (props) => {
 
   const [viewChat, setViewChat] = useState(false)
   const [text, onChangeText] = React.useState('')
+
+  const insets = useSafeAreaInsets()
 
   const _keyExtractor = (item) => item.id
 
@@ -270,24 +273,22 @@ export const BakarRoom = (props) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, backgroundColor: 'white' }}>
       {loading ? (
         // Showing loader while Join is under process
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator size={'large'} color="#2471ED" />
         </View>
       ) : (
-        <View style={{ flex: 1, position: 'relative' }}>
+        <View style={{ flex: 1 }}>
           {/* Header */}
           <View
             style={{
-              display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexDirection: 'row',
               paddingTop: '2%',
               paddingBottom: '2%',
-              backgroundColor: 'white',
             }}
           >
             <Text

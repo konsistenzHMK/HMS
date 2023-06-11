@@ -1,9 +1,32 @@
+# JS
 node_modules
-.DS_Store
-ios/Pods
-ios/build
 
+# Android
 android/.gradle
 android/.idea
 android/build
 android/app/build
+
+# Xcode
+.DS_Store
+ios/Pods
+ios/build
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.moved-aside
+DerivedData
+.idea/
+*.xccheckout
+*.moved-aside
+xcuserdata/
+*.hmap
+*.ipa
+*.xcworkspace
+*.xcuserstate 
+!default.xcworkspace

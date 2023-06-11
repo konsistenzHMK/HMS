@@ -30,11 +30,14 @@ import {
   useWindowDimensions,
 } from 'react-native'
 import { Fetch } from 'react-request'
+import { useSnackbar } from '../components'
 
 const MyFanClubsScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
+
+  const snackbar = useSnackbar()
 
   const removeFollowed = (list) => {
     if (list.length) {
@@ -517,6 +520,7 @@ const MyFanClubsScreen = (props) => {
                                       fanclubId: flashListData?.id,
                                       userId: Constants['LOGGED_IN_USER'],
                                     })
+                                    snackbar.show({ title: 'Fanclub followed successfully' })
                                   } catch (err) {
                                     console.error(err)
                                   }

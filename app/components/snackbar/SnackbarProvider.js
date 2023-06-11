@@ -2,30 +2,39 @@ import React, { useRef, useState } from 'react'
 import { StyleSheet, Text, Animated } from 'react-native'
 import { SnackbarContext } from './SnackbarContext'
 
+const DURATION = 300
+
 const SnackbarProvider = ({ children }) => {
   const [snackbarVisible, setSnackbarVisible] = useState(false)
   const [snackbarTitle, setSnackbarTitle] = useState('')
   const [snackbarVariant, setSnackbarVariant] = useState()
   const opacity = useRef(new Animated.Value(0)).current
 
+  const timer = useRef(null)
+
   const show = (params) => {
-    const { title, autoHide = true, variant = 'neutral' } = params
+    const { title, autoHide = true, variant = 'neutral', delay = 2000 } = params
     setSnackbarTitle(title)
     setSnackbarVariant(variant)
     setSnackbarVisible(true)
     startShowAnimation()
 
     if (autoHide) {
-      setTimeout(() => {
+      timer.current = setTimeout(() => {
         startHideAnimation()
-      }, 4000)
+      }, delay)
     }
   }
 
   const startShowAnimation = () => {
+    if (timer.current) {
+      clearTimeout(timer.current)
+      timer.current = null
+    }
+
     Animated.timing(opacity, {
       toValue: 0.8,
-      duration: 500,
+      duration: DURATION,
       useNativeDriver: true,
     }).start()
   }
@@ -33,7 +42,7 @@ const SnackbarProvider = ({ children }) => {
   const startHideAnimation = () => {
     Animated.timing(opacity, {
       toValue: 0,
-      duration: 500,
+      duration: DURATION,
       useNativeDriver: true,
     }).start(() => {
       setSnackbarVisible(false)

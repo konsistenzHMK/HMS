@@ -3,14 +3,11 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import {
-  Checkbox,
   Circle,
   CircleImage,
   Icon,
-  LinearGradient,
   Pressable,
   ScreenContainer,
   Surface,
@@ -25,16 +22,16 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  Modal,
   ScrollView,
   Text,
   View,
   useWindowDimensions,
 } from 'react-native'
+import { useSnackbar } from '../components'
 const OthersProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
+  const snackbar = useSnackbar()
 
   const { theme } = props
   const { navigation } = props
@@ -301,12 +298,14 @@ const OthersProfileScreen = (props) => {
                                 followee_id: props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343',
                                 follower_id: Constants['LOGGED_IN_USER'],
                               })
+                              snackbar.show({ title: 'User followed successfully' })
                             }
                             if (!newfollowstatus) {
                               await pagalFanBEDeleteFollowDELETE.mutateAsync({
                                 followedId: props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343',
                                 followerId: Constants['LOGGED_IN_USER'],
                               })
+                              snackbar.show({ title: 'User unfollowed successfully' })
                             }
                           } catch (err) {
                             console.error(err)

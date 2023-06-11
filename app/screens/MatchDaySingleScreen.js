@@ -38,11 +38,14 @@ import {
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Fetch } from 'react-request'
+import { useSnackbar } from '../components'
 
 const MatchDaySingleScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
+
+  const snackbar = useSnackbar()
 
   const MatchText = () => {
     const winner = jsonfeed?.data?.toss?.winner
@@ -2676,6 +2679,7 @@ const MatchDaySingleScreen = (props) => {
                         onPress={() => {
                           const handler = async () => {
                             try {
+                              snackbar.show({ title: 'Uploading comment …' })
                               await pagalFanBEAddNewMatchCommentPOST.mutateAsync({
                                 comment_text: textInputValue,
                                 match_id: props.route?.params?.match_id ?? 77,

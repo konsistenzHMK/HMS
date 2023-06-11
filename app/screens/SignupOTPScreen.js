@@ -9,12 +9,15 @@ import { Button, ScreenContainer, TextInput, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
 import { Image, Text, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useSnackbar } from '../components/index.js'
 
 const SignupOTPScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
   const setGlobalVariableValue = GlobalVariables.useSetValue()
+
+  const snackbar = useSnackbar()
 
   const { theme } = props
   const { navigation } = props
@@ -148,6 +151,7 @@ const SignupOTPScreen = (props) => {
           <Button
             onPress={() => {
               const handler = async () => {
+                snackbar.show({ title: 'Checking OTP …' })
                 console.log('Continue Button ON_PRESS Start')
                 let error = null
                 try {
@@ -170,6 +174,7 @@ const SignupOTPScreen = (props) => {
                   console.log('Complete ON_PRESS:2 SET_GLOBAL_VARIABLE')
                   console.log('Start ON_PRESS:3 TERMINATION_CHECK')
                   if (message) {
+                    snackbar.show({ title: message, variant: 'negative' })
                     return
                   }
                   console.log('Complete ON_PRESS:3 TERMINATION_CHECK')
@@ -205,6 +210,7 @@ const SignupOTPScreen = (props) => {
                   if (Constants['user_onboarded'] === false) {
                     navigation.navigate('OnboardingScreen')
                     console.log('Complete ON_PRESS:8 NAVIGATE_SCREEN')
+                    return
                   } else {
                     console.log('Skipped ON_PRESS:8 NAVIGATE_SCREEN: condition not met')
                   }
@@ -212,6 +218,7 @@ const SignupOTPScreen = (props) => {
                   if (Constants['user_onboarded'] === true) {
                     navigation.navigate('Tabs', { screen: 'HomeScreen' })
                     console.log('Complete ON_PRESS:9 NAVIGATE_SCREEN')
+                    return
                   } else {
                     console.log('Skipped ON_PRESS:9 NAVIGATE_SCREEN: condition not met')
                   }
@@ -219,6 +226,7 @@ const SignupOTPScreen = (props) => {
                   console.error(err)
                   error = err.message ?? err
                 }
+                snackbar.show({ title: 'Error please try again' })
                 console.log('Continue Button ON_PRESS Complete', error ? { error } : 'no error')
               }
               handler()

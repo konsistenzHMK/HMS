@@ -8,11 +8,14 @@ import { Button, Checkbox, Icon, ScreenContainer, withTheme } from '@draftbit/ui
 import { useIsFocused } from '@react-navigation/native'
 import { Image, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useSnackbar } from '../components'
 
 const SignupStartScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
+
+  const snackbar = useSnackbar()
 
   const { theme } = props
   const { navigation } = props
@@ -201,6 +204,7 @@ const SignupStartScreen = (props) => {
             onPress={() => {
               const handler = async () => {
                 try {
+                  snackbar.show({ title: 'Sending OTP …' })
                   const result = await PagalFanBEApi.signupWithMailOTPPOST(Constants, { emailId: signupEmail })
                   navigation.navigate('SignupOTPScreen', {
                     user_email: signupEmail,

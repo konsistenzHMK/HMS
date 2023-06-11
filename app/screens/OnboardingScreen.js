@@ -8,6 +8,7 @@ import getPushTokenUtil from '../utils/getPushToken'
 import { Button, Icon, ScreenContainer, Swiper, SwiperItem, Switch, withTheme } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
 import { ActivityIndicator, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { useSnackbar } from '../components'
 
 const OnboardingScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -45,6 +46,8 @@ const OnboardingScreen = (props) => {
   const [switchValue, setSwitchValue] = React.useState(false)
   const [test, setTest] = React.useState(false)
   const [textInputValue, setTextInputValue] = React.useState('')
+
+  const snackbar = useSnackbar()
 
   return (
     <ScreenContainer
@@ -531,6 +534,7 @@ const OnboardingScreen = (props) => {
             onPress={() => {
               const handler = async () => {
                 try {
+                  snackbar.show({ title: 'Saving user details …' })
                   await pagalFanBECreateUserProfilePOST.mutateAsync({
                     age: age,
                     firstName: firstName,
@@ -550,6 +554,7 @@ const OnboardingScreen = (props) => {
                   // })
                   navigation.navigate('Tabs', { screen: 'HomeScreen' })
                 } catch (err) {
+                  snackbar.show({ title: 'Error saving user details …', variant: 'negative' })
                   console.error(err)
                 }
               }

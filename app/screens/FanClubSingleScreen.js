@@ -16,11 +16,13 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native'
+import { useSnackbar } from '../components'
 
 const FanClubSingleScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
+  const snackbar = useSnackbar()
 
   const filterFeed = (Variables, list) => {
     if (list.length) {
@@ -245,12 +247,14 @@ const FanClubSingleScreen = (props) => {
                                 fanclubId: props.route?.params?.id ?? 1,
                                 userId: Constants['LOGGED_IN_USER'],
                               })
+                              snackbar.show({ title: 'Fanclub followed successfully' })
                             }
                             if (!newfollowstatus) {
                               await pagalFanBEDeleteFanClubFollowsDELETE.mutateAsync({
                                 fanclubId: props.route?.params?.id ?? 1,
                                 userId: Constants['LOGGED_IN_USER'],
                               })
+                              snackbar.show({ title: 'Fanclub unfollowed successfully' })
                             }
                           } catch (err) {
                             console.error(err)

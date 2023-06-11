@@ -160,7 +160,10 @@ export const BakarRoom = (props) => {
   }
 
   const handleRoomEnd = () => {
-    navigation.goBack()
+    snackbar.show({ title: 'Exiting room' })
+    setTimeout(() => {
+      navigation.goBack()
+    }, 500)
   }
 
   //////////
@@ -177,6 +180,10 @@ export const BakarRoom = (props) => {
       const audioMuted = localPeer.audioTrack?.isMute()
       localPeer.localAudioTrack().setMute(!audioMuted)
       ChangeMuteStatus(!audioMuted)
+
+      if (!audioMuted) {
+        snackbar.show({ title: 'Microphone muted' })
+      }
     } catch (e) {
       console.log('Bakar Room -> toggleAudio error', e)
     }
@@ -185,6 +192,7 @@ export const BakarRoom = (props) => {
   async function handleBrodcast() {
     if (text == '') return
     try {
+      snackbar.show({ title: 'Posting comment' })
       const result = await hmsInstanceRef.current.sendBroadcastMessage(text)
       const ob = {
         message: text,
@@ -461,7 +469,7 @@ export const BakarRoom = (props) => {
                       }}
                       marginLeft="10%"
                       width="80%"
-                      color="Black"
+                      color="white"
                       onChangeText={onChangeText}
                       value={text}
                     ></TextInput>

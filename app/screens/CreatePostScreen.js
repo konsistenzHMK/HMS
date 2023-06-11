@@ -19,11 +19,13 @@ import {
   withTheme,
 } from '@draftbit/ui'
 import { FlatList, Image, Modal, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { useSnackbar } from '../components'
 
 const CreatePostScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
+  const snackbar = useSnackbar()
 
   const submitSetTimer = async () => {
     setSubmitted(true)
@@ -352,6 +354,7 @@ const CreatePostScreen = (props) => {
           onPress={() => {
             const handler = async () => {
               try {
+                snackbar.show({ title: 'Uploading post …' })
                 const remoteUrl = await uploadImage('post-bucket', pickedImage)
                 setPickedImage(remoteUrl)
                 const newpostresponse = await pagalFanBEAddNewPostPOST.mutateAsync({
@@ -361,6 +364,7 @@ const CreatePostScreen = (props) => {
                 })
                 await submitSetTimer()
               } catch (err) {
+                snackbar.show({ title: 'Error uploading post', variant: 'negative' })
                 console.error(err)
               }
             }

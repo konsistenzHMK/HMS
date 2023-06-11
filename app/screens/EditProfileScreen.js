@@ -3,18 +3,18 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import uploadImage from '../global-functions/uploadImage'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import openImagePickerUtil from '../utils/openImagePicker'
 import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
 import { Image, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useSnackbar } from '../components'
 
 const EditProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
+  const snackbar = useSnackbar()
 
   const { theme } = props
   const { navigation } = props
@@ -368,6 +368,7 @@ const EditProfileScreen = (props) => {
           onPress={() => {
             const handler = async () => {
               try {
+                snackbar.show({ title: 'Updating user details …”' })
                 const remoteUrl = await uploadImage('user-bucket', userPic)
 
                 const valueQdKRlmdM = remoteUrl

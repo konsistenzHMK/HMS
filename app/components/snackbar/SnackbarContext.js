@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 
 export const SnackbarContext = React.createContext({
-  show: () => {},
+  show: ({ title, autoHide, variant, delay }) => {},
 })
 
 export const useSnackbar = () => {

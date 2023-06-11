@@ -2,16 +2,16 @@ import React from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
 import { Image, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { useSnackbar } from '../components'
 
 const EditPostScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
+  const snackbar = useSnackbar()
 
   const concatStrings = (text1, text2) => {
     return text1 + ' ' + text2
@@ -232,12 +232,14 @@ const EditPostScreen = (props) => {
           onPress={() => {
             const handler = async () => {
               try {
+                snackbar.show({ title: 'Updating post …' })
                 const newCaption = concatStrings(originalCaption, textAreaValue)
                 await pagalFanBEUpdatePostPATCH.mutateAsync({
                   postId: props.route?.params?.post_id ?? 1,
                   updatedCaption: newCaption,
                 })
               } catch (err) {
+                snackbar.show({ title: 'Error updating post', variant: 'negative' })
                 console.error(err)
               }
             }

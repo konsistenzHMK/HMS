@@ -1,4 +1,3 @@
-
 <a name="readme-top"></a>
 
 <!-- PROJECT LOGO -->
@@ -34,13 +33,12 @@
 <br />
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 About Pagal Fan....
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -50,9 +48,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
@@ -64,7 +61,6 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
-
 1. Clone the repo
    ```sh
    git clone https://github.com/PFSports/pagalfan.git
@@ -74,41 +70,50 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    npm install
    ```
+
 3. Run `iOS app`
 
    ```sh
     npm run ios
    ```
+
 4. Run `android app`
 
    ```sh
     npm run android
    ```
 
+5. Create `android apk`
+
+   ```sh
+    npm run build:android
+   ```
+
+   find apk in dir `android/app/build/outputs/apk/release/app-release.apk`
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 Coming soon......
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [ ] Add Baker room
 - [ ] Add social share
 - [ ] Multi-language Support
-    - [ ] Hindi
+  - [ ] Hindi
 
 See the [open issues](https://github.com/PFSports/pagalfan/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
@@ -122,25 +127,25 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Coming soon......
 
 <!-- CONTACT -->
+
 ## Contact
+
 Coming soon......
 
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
 Coming soon......
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -148,5 +153,3 @@ Coming soon......
 [ReactNative]: https://reactnative.dev/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-
-

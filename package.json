@@ -6,6 +6,7 @@
     "android": "react-native run-android && adb reverse tcp:8081 tcp:8081",
     "ios": "react-native run-ios --simulator='iPhone 14'",
     "start": "react-native start --reset-cache",
+    "build:android": "cd android && ./gradlew clean && ./gradlew app:assembleRelease",
     "test": "jest",
     "postinstall": "react-native setup-ios-permissions && pod-install",
     "lint": "eslint ./app/**/*.js",

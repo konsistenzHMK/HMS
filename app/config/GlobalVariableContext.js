@@ -14,7 +14,7 @@ const AppVariables = {
   ERROR_MESSAGE: '',
   user_can_post: false,
   user_profile_pic_url: '',
-  HMS_ROOM_CODE: 'ode-qmte-ifp',
+  HMS_ROOM_CODE: 'lvg-epvd-kpz',
   user_first_name: '',
   user_last_name: '',
 }

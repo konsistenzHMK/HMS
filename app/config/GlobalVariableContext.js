@@ -1,9 +1,9 @@
+/* eslint-disable indent */
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const DeviceVariables = {
-  AUTHORIZATION_HEADER:
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjg2NzU3ODYwLCJzdWIiOiIyMDZiNjkxOS1mM2JmLTQ3NTgtOGEwNC05YzcyNTE2ZTQzN2QiLCJlbWFpbCI6InNnLW1sM0B5b3BtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnt9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im90cCIsInRpbWVzdGFtcCI6MTY4NjE1MzA2MH1dLCJzZXNzaW9uX2lkIjoiOTlhY2FlZjEtYWNiNi00OTZhLThkYjktNThiMGNlYzA4YTNkIn0.E7JgkXNtaZy-EBJesyhPuB0ocO0ImU8Z2Z6KEgFk-kI',
+  AUTHORIZATION_HEADER: '',
   LOGGED_IN_USER: '',
   Language: 'English',
   user_onboarded: false,

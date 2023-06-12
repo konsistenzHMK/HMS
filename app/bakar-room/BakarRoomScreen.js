@@ -9,7 +9,9 @@ import {
   Modal,
   TextInput,
   Platform,
+  useWindowDimensions,
 } from 'react-native'
+import * as StyleSheet from '../utils/StyleSheet'
 import { PERMISSIONS, request, requestMultiple, RESULTS } from 'react-native-permissions'
 import {
   HMSSDK,
@@ -19,10 +21,11 @@ import {
   HMSTrackUpdate,
   HMSPeerUpdate,
 } from '@100mslive/react-native-hms'
+import * as GlobalStyles from '../GlobalStyles.js'
 
-import { Dimensions } from 'react-native'
-import { useSnackbar } from '../components'
+import { useSnackbar } from '../components/index.js'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Icon, IconButton, ScreenContainer, withTheme } from '@draftbit/ui'
 
 /**
  * using `ROOM_CODE` is recommended over `AUTH_TOKEN` approach
@@ -32,7 +35,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
  */
 const AUTH_TOKEN = '' // PASTE AUTH TOKEN FROM DASHBOARD HERE
 
-export const BakarRoom = (props) => {
+const BakarRoomScreen = (props) => {
   /**
    * `usePeerTrackNodes` hook takes care of setting up {@link HMSSDK | HMSSDK} instance, joining room and adding all required event listeners.
    * It gives us:
@@ -40,9 +43,11 @@ export const BakarRoom = (props) => {
    *  2. loading - We can show loader while Room Room join is under process.
    *  3. leaveRoom - This is a function that can be called on a button press to leave room and go back to Welcome screen.
    */
+  const dimensions = useWindowDimensions()
   const snackbar = useSnackbar()
   const { route, navigation } = props
   const { roomCode, username } = route.params
+  const { theme } = props
 
   const onConnectionError = (error) => {
     navigation.goBack()
@@ -72,81 +77,89 @@ export const BakarRoom = (props) => {
 
   const _keyExtractor = (item) => item.id
 
-  const windowWidth = Dimensions.get('window').width
-  const windowHeight = Dimensions.get('window').height
-
   const _renderItem = ({ item }) => {
     // console.log(item.peer.peerID);
     const color = item.peer.peerID == ID ? '#f2a45d' : '#87CEEB'
     const name = item.peer.peerID == ID ? 'You(' + item.peer.name + ')' : item.peer.name
+    const micIcon = item.track.isMute() ? 'Feather/mic-off' : 'Feather/mic'
     return (
       <View
-        style={{
-          width: windowWidth / 2 - 8,
-          height: 300,
-          margin: 4,
-          borderRadius: 20,
-          overflow: 'hidden',
-          backgroundColor: 'white',
-          borderColor: '#87CEEB',
-          borderWidth: 1,
-          borderRightWidth: 2.5,
-          borderLeftWidth: 2.5,
-        }}
+        style={StyleSheet.applyWidth(
+          {
+            height: 160,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 10,
+            width: '50%',
+          },
+          dimensions.width,
+        )}
       >
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 16,
-              fontWeight: 'bold',
-              paddingBottom: 10,
-              color: '#000000',
-            }}
-          >
-            {name}
-          </Text>
-          <View
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: color,
-            }}
-          >
+        <View
+          style={StyleSheet.applyWidth(
+            {
+              borderColor: theme.colors['Secondary'],
+              borderLeftWidth: 1,
+              borderRadius: 12,
+              borderRightWidth: 1,
+              justifyContent: 'space-around',
+              width: '100%',
+              height: '100%',
+            },
+            dimensions.width,
+          )}
+        >
+          {/* Item-header */}
+          <View style={StyleSheet.applyWidth({ alignItems: 'center' }, dimensions.width)}>
             <Text
-              style={{
-                color: 'white',
-                textAlign: 'center',
-                fontSize: 28,
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-              }}
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: theme.colors['PF-Grey'],
+                  fontFamily: 'Rubik_400Regular',
+                }),
+                dimensions.width,
+              )}
             >
-              {item.peer.name
-                .split(' ')
-                .map((item) => item[0])
-                .join('')}
+              {name}
             </Text>
           </View>
-          <Text
-            style={{
-              height: '20%',
-              textAlign: 'center',
-              fontSize: 16,
-              fontWeight: 'bold',
-              paddingBottom: 10,
-              color: '#000000',
-            }}
-          >
-            {item.track.isMute() == true ? (
-              <Image source={require('./assets/mute.png')} style={{ width: 20, height: 25 }} />
-            ) : (
-              <Image source={require('./assets/unmute.png')} style={{ width: 20, height: 25 }} />
-            )}
-          </Text>
+          {/* Item-initials */}
+          <View style={StyleSheet.applyWidth({ alignItems: 'center', marginBottom: 4 }, dimensions.width)}>
+            <View
+              style={StyleSheet.applyWidth(
+                {
+                  alignItems: 'center',
+                  backgroundColor: color,
+                  borderRadius: 50,
+                  borderWidth: 1,
+                  height: 60,
+                  justifyContent: 'center',
+                  width: 60,
+                },
+                dimensions.width,
+              )}
+            >
+              <Text
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                    color: theme.colors['Community_White'],
+                    fontFamily: 'Rubik_600SemiBold',
+                    fontSize: 18,
+                  }),
+                  dimensions.width,
+                )}
+              >
+                {item.peer.name
+                  .split(' ')
+                  .map((item) => item[0])
+                  .join('')}
+              </Text>
+            </View>
+          </View>
+          {/* Item-mic */}
+          <View style={StyleSheet.applyWidth({ alignItems: 'center', marginBottom: 4 }, dimensions.width)}>
+            <Icon name={micIcon} size={18} color={theme.colors['Secondary']} />
+          </View>
         </View>
       </View>
     )
@@ -272,8 +285,68 @@ export const BakarRoom = (props) => {
     )
   }
 
+  const _renderParticipantsCount = () => {
+    const peers = peerTrackNodes.length > 4 ? 4 : peerTrackNodes.length
+
+    return (
+      <View
+        style={StyleSheet.applyWidth(
+          {
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            marginBottom: 10,
+            marginLeft: 20,
+            marginRight: 10,
+            marginTop: 10,
+          },
+          dimensions.width,
+        )}
+      >
+        {Array(peers)
+          .fill(1)
+          .map((item, index) => (
+            <View
+              key={`${index}`}
+              style={StyleSheet.applyWidth(
+                {
+                  backgroundColor:
+                    index === peers - 1
+                      ? theme.colors['Community_Secondary_Alt']
+                      : theme.colors['Studily Emerald Mint'],
+                  borderRadius: 50,
+                  height: 20,
+                  width: 20,
+                  left: index * -9,
+                },
+                dimensions.width,
+              )}
+            />
+          ))}
+
+        <Text
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+              color: theme.colors['PF-Grey'],
+              fontFamily: 'Rubik_400Regular',
+              fontSize: 12,
+              marginLeft: peers * -5 + 10,
+            }),
+            dimensions.width,
+          )}
+        >
+          {`+ ${peerTrackNodes.length} participants`}
+        </Text>
+      </View>
+    )
+  }
+
   return (
-    <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom, backgroundColor: 'white' }}>
+    <ScreenContainer
+      style={StyleSheet.applyWidth({ marginLeft: 10, marginRight: 10, marginTop: 10 }, dimensions.width)}
+      scrollable={false}
+      hasSafeArea={true}
+    >
       {loading ? (
         // Showing loader while Join is under process
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -283,109 +356,98 @@ export const BakarRoom = (props) => {
         <View style={{ flex: 1 }}>
           {/* Header */}
           <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              paddingTop: '2%',
-              paddingBottom: '2%',
-            }}
+            style={StyleSheet.applyWidth(
+              {
+                alignItems: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                marginBottom: 20,
+                marginLeft: 20,
+                marginRight: 20,
+                marginTop: 20,
+              },
+              dimensions.width,
+            )}
           >
             <Text
-              style={{
-                color: 'black',
-                fontWeight: 'bold',
-                fontSize: 22,
-                marginRight: '2%',
-              }}
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: theme.colors['PF-Grey'],
+                  fontFamily: 'Rubik_600SemiBold',
+                  fontSize: 24,
+                }),
+                dimensions.width,
+              )}
             >
-              PagalFan - Bakarr Room
+              {'PagalFan - Bakarr Room'}
             </Text>
-            <Image source={require('./assets/gold-mic.png')} style={{ width: 30, height: 35, marginEnd: '1%' }} />
+            <Icon size={24} name={'Entypo/mic'} color={theme.colors['Custom Color_13']} />
           </View>
 
           {/* Main -- Tiles  */}
-          <View style={{ flex: 1, position: 'relative', backgroundColor: 'white' }}>
-            {trackIds.length > 0 ? (
-              <FlatList
-                centerContent={true}
-                key={1}
-                data={trackIds}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={_keyExtractor}
-                // inverted={true}
-                renderItem={_renderItem}
-                contentContainerStyle={{
-                  paddingBottom: 120,
-                  flexGrow: Platform.OS === 'android' ? 1 : undefined,
-                  justifyContent: Platform.OS === 'android' ? 'center' : undefined,
-                }}
-              />
-            ) : (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Text style={{ fontSize: 28, marginBottom: 32 }}>Welcome!</Text>
-                <Text style={{ fontSize: 16 }}>You’re the first one here.</Text>
-                <Text style={{ fontSize: 16 }}>Sit back and relax till the others join.</Text>
-              </View>
-            )}
-          </View>
-
-          {/* Footer */}
-          <View
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              width: windowWidth,
-              padding: 10,
-              backgroundColor: 'white',
-            }}
-          >
+          {trackIds.length > 0 ? (
+            <FlatList
+              style={{ paddingHorizontal: 20 }}
+              bounces={true}
+              data={trackIds}
+              numColumns={2}
+              keyExtractor={_keyExtractor}
+              renderItem={_renderItem}
+            />
+          ) : (
             <View
               style={{
-                display: 'flex',
+                flex: 1,
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                width: '90%',
-                borderColor: '#87CEEB',
-                borderWidth: 1,
-                borderRightWidth: 2.5,
-                borderLeftWidth: 2.5,
+                justifyContent: 'center',
               }}
             >
-              <View>
-                <TouchableHighlight onPress={toggleAudio}>
-                  <View>
-                    {muteStatus ? (
-                      <Image source={require('./assets/mute.png')} style={{ width: 55, height: 60 }} />
-                    ) : (
-                      <Image source={require('./assets/unmute.png')} style={{ width: 55, height: 60 }} />
-                    )}
-                  </View>
-                </TouchableHighlight>
-              </View>
-
-              <View>
-                <TouchableHighlight onPress={handleChat} style={{}}>
-                  <Image source={require('./assets/chat.png')} style={{ width: 55, height: 60 }} />
-                </TouchableHighlight>
-              </View>
-
-              <View>
-                <TouchableHighlight onPress={handleRoomEnd}>
-                  <Image source={require('./assets/leave.png')} style={{ width: 55, height: 60 }} />
-                </TouchableHighlight>
-              </View>
+              <Text style={{ fontSize: 28, marginBottom: 32 }}>Welcome!</Text>
+              <Text style={{ fontSize: 16 }}>You’re the first one here.</Text>
+              <Text style={{ fontSize: 16 }}>Sit back and relax till the others join.</Text>
             </View>
+          )}
+          {/* All Participants */}
+          {_renderParticipantsCount()}
+          {/* Footer */}
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                backgroundColor: '"rgba(0, 0, 0, 0)"',
+                borderBottomWidth: 0.5,
+                borderColor: theme.colors['Secondary'],
+                borderRadius: 12,
+                borderTopWidth: 0.5,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 10,
+                marginLeft: 20,
+                marginRight: 20,
+                marginTop: 10,
+                paddingBottom: 8,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 8,
+              },
+              dimensions.width,
+            )}
+          >
+            {/* Mic Icon Button */}
+            <IconButton
+              size={36}
+              onPress={toggleAudio}
+              color={theme.colors['Secondary']}
+              icon={muteStatus ? 'Feather/mic-off' : 'Feather/mic'}
+            />
+            {/* Chat Icon Button */}
+            <IconButton onPress={handleChat} icon={'Entypo/chat'} size={36} color={theme.colors['Secondary']} />
+            {/* Exit Icon Button */}
+            <IconButton
+              onPress={handleRoomEnd}
+              size={36}
+              icon={'MaterialIcons/exit-to-app'}
+              color={theme.colors['PF-Primary']}
+            />
           </View>
 
           <>
@@ -439,7 +501,7 @@ export const BakarRoom = (props) => {
                     }}
                   >
                     {chatData.length > 0 ? (
-                      <FlatList centerContent={true} data={chatData} renderItem={_renderItem2} />
+                      <FlatList data={chatData} renderItem={_renderItem2} />
                     ) : (
                       <View
                         style={{
@@ -515,7 +577,7 @@ export const BakarRoom = (props) => {
           </>
         </View>
       )}
-    </View>
+    </ScreenContainer>
   )
 }
 //#endregion Screens
@@ -897,3 +959,5 @@ export const updateNode = (data) => {
 }
 
 //#endregion Utility
+
+export default withTheme(BakarRoomScreen)

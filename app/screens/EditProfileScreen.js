@@ -368,7 +368,7 @@ const EditProfileScreen = (props) => {
           onPress={() => {
             const handler = async () => {
               try {
-                snackbar.show({ title: 'Updating user details …”' })
+                snackbar.show({ title: 'Updating user details …' })
                 const remoteUrl = await uploadImage('user-bucket', userPic)
 
                 const valueQdKRlmdM = remoteUrl

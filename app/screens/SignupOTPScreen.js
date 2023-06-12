@@ -160,9 +160,12 @@ const SignupOTPScreen = (props) => {
                     emailId: props.route?.params?.user_email ?? 'sg-ml1@yopmail.com',
                     otp: signupOTP,
                   })
-                  console.log('Complete ON_PRESS:0 FETCH_REQUEST', {
-                    responseJson,
-                  })
+                  console.log(
+                    'Complete ON_PRESS:0 FETCH_REQUEST',
+                    JSON.stringify({
+                      responseJson,
+                    }),
+                  )
                   console.log('Start ON_PRESS:1 EXTRACT_KEY')
                   const message = responseJson?.msg
                   console.log('Complete ON_PRESS:1 EXTRACT_KEY', { message })

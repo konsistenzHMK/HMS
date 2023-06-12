@@ -117,7 +117,7 @@ const HomeScreen = (props) => {
       setShowBakarrPopup(false)
       const roomCode = Constants['HMS_ROOM_CODE']
       const username = `${Constants['user_first_name']} ${Constants['user_last_name']}`
-      navigation.navigate('BakarRoom', { roomCode, username })
+      navigation.navigate('BakarRoomScreen', { roomCode, username })
     } catch (err) {
       console.error(err)
     }

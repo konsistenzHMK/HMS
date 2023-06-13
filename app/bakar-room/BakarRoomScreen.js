@@ -24,7 +24,6 @@ import {
 import * as GlobalStyles from '../GlobalStyles.js'
 
 import { useSnackbar } from '../components/index.js'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Icon, IconButton, ScreenContainer, withTheme } from '@draftbit/ui'
 
 /**
@@ -72,8 +71,6 @@ const BakarRoomScreen = (props) => {
 
   const [viewChat, setViewChat] = useState(false)
   const [text, onChangeText] = React.useState('')
-
-  const insets = useSafeAreaInsets()
 
   const _keyExtractor = (item) => item.id
 
@@ -589,7 +586,7 @@ const BakarRoomScreen = (props) => {
 const usePeerTrackNodes = ({ onConnectionError, username, roomCode }) => {
   const hmsInstanceRef = useRef(null) // We will save `hmsInstance` in this ref
   const [loading, setLoading] = useState(true)
-  const [muteStatus, ChangeMuteStatus] = useState(false)
+  const [muteStatus, ChangeMuteStatus] = useState(true)
   const [peerTrackNodes, setPeerTrackNodes] = useState([]) // Use this state to render Peer Tiles
   const [trackIds, setTrackIds] = useState([])
   const [chatData, setChatData] = useState([])
@@ -673,7 +670,7 @@ const usePeerTrackNodes = ({ onConnectionError, username, roomCode }) => {
   const onPeerListener = ({ peer, type }) => {
     // We will create Tile for the Joined Peer when we receive `HMSUpdateListenerActions.ON_TRACK_UPDATE` event.
     // Note: We are chosing to not create Tiles for Peers which does not have any tracks
-    if (type === HMSPeerUpdate.PEER_JOINED) return
+    // if (type === HMSPeerUpdate.PEER_JOINED) return
 
     if (type === HMSPeerUpdate.PEER_LEFT) {
       // Remove all Tiles which has peer same as the peer which just left the room.
@@ -682,15 +679,13 @@ const usePeerTrackNodes = ({ onConnectionError, username, roomCode }) => {
       return
     }
 
-    if (peer.isLocal) {
-      // Updating the LocalPeer Tile.
-      // `updateNodeWithPeer` function updates Peer object in PeerTrackNodes and returns updated list.
-      // if none exist then we are "creating a new PeerTrackNode for the updated Peer".
-      setPeerTrackNodes((prevPeerTrackNodes) =>
-        updateNodeWithPeer({ nodes: prevPeerTrackNodes, peer, createNew: true }),
-      )
-      return
-    }
+    // if (peer.isLocal) {
+    // Updating the LocalPeer Tile.
+    // `updateNodeWithPeer` function updates Peer object in PeerTrackNodes and returns updated list.
+    // if none exist then we are "creating a new PeerTrackNode for the updated Peer".
+    setPeerTrackNodes((prevPeerTrackNodes) => updateNodeWithPeer({ nodes: prevPeerTrackNodes, peer, createNew: true }))
+    // return
+    // }
 
     if (
       type === HMSPeerUpdate.ROLE_CHANGED ||

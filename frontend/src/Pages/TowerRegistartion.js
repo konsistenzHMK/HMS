@@ -72,7 +72,7 @@ const TowerRegistartion = () => {
     };
 
   return (
-    <div className="flex">
+    <div className="flex bg-defaultBg" >
       {/* Side Navbar */}
       <div className="w-1/6 bg-orange-400">
 
@@ -82,25 +82,25 @@ const TowerRegistartion = () => {
       <div className="w-5/6 h-full">
       <form onSubmit={handleSubmit}>
         {/* Header */}
-        <div className='w-full bg-cyan-300 h-36 flex '>
-          <div className='h-2/3 bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
-            <p className='pl-10 pt-2 text-sky-800 font-bold text-3xl '>Hostel Mangement System 🎉</p>
-            <p className='pl-10 pt-1 text-orange-400 font-semibold text-2xl'>Tower Registration Form</p>
+        <div className='w-full bg-defaultBg h-36 flex '>
+          <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
+            <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
+            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Tower Registration Form</p>
           </div>
         </div>
 
         {/* Form Data */}
-        <div className='w-full h-full bg-white flex justify-center '>
-          <div className="bg-orange-100 w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center">
-            <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col'>
+        <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
+          <div className="bg-white w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
+            <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
               {/* 1 --> Basic Details */}
               <div className='font-bold underline  underline-offset-1 text-sky-950 text-xl mb-3'>
-                <p className=''>Basic Details</p>
+                <p className='text-3xl font-semibold pt-4 mb-3 font-popins '>Basic Details</p>
               </div>
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-1'>
-                <div className="mb-1 " htmlFor="description">Hostel Id *</div>
+                <div className="mb-1 font-popins text-xl font-medium  " htmlFor="description">Hostel Id *</div>
                 <input
                   id="hostel_id"
                   name="hostel_id"
@@ -113,27 +113,9 @@ const TowerRegistartion = () => {
 
             {/* 1.2 */}
               {/*  --> UUID */}
-              <div className='font-bold underline  underline-offset-1 text-sky-950 text-xl mt-6 mb-1'>
-                <p className=''>Tower UUID </p>
-              </div>
 
-              {/*  */}
-              <div className='w-full h-auto flex justify-between mb-2'>
-              <div className='w-full'>
-                  <div className='text-red-600 text-sm mb-2 ml-1 font-semibold' htmlFor="email_id">* Tower UUID will be auto generated</div>
-                    <input
-                      type="text"
-                      id="UUID"
-                      name="UUID"
-                      value={formData.uuid}
-                      className='w-full border-2 border-sky-500 rounded-md bg-slate-200'
-                    />
-                    {/* {errors.country && <span className="error">{errors.country}</span>} */}
-                </div>
-              </div>
-
-            <div className='w-full h-auto flex flex-col mb-2 '>
-            <div className="mb-1 " htmlFor="description">Tower Name*</div>
+            <div className='w-full h-auto flex flex-col mb-2 mt-2'>
+            <div className="mb-1 font-popins text-xl font-medium " htmlFor="description">Tower Name*</div>
             <input
                 id="tower_name"
                 name="tower_name"
@@ -144,9 +126,9 @@ const TowerRegistartion = () => {
             {errors.tower_name && <span className="error">{errors.tower_name}</span>}
             </div>
 
-            <div className='w-full h-auto flex justify-between'>
+            <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 " htmlFor="email_id">No of Floors **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">No of Floors **</div>
                     <input
                       type="Number"
                       id="no_wings"
@@ -158,9 +140,9 @@ const TowerRegistartion = () => {
                     {errors.no_wings && <span className="error">{errors.no_wings}</span>}
                 </div>
 
-                <div className='w-1/2 flex flex-col items-end mb-2'>
+                <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 " htmlFor="email_id">No of Rooms **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">No of Rooms **</div>
                     <input
                       type="number"
                       id="no_rooms"
@@ -174,9 +156,9 @@ const TowerRegistartion = () => {
                 </div>
               </div>
 
-              <div className='w-full h-auto flex justify-between '>
+              <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 " htmlFor="email_id">Capacity **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Capacity **</div>
                     <input
                       type="number"
                       id="capacity"
@@ -188,9 +170,9 @@ const TowerRegistartion = () => {
                     {errors.Capacity && <span className="error">{errors.Capacity}</span>}
                 </div>
 
-                <div className='w-1/2 flex flex-col items-end mb-2'>
+                <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 " htmlFor="email_id">Total Area **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Total Area **</div>
                     <input
                       type="number"
                       id="total_area"
@@ -203,9 +185,9 @@ const TowerRegistartion = () => {
                 </div>
                 </div>
               </div>
-              <div className='w-full h-auto flex justify-between mb-2'>
+              <div className='w-full h-auto flex justify-between mb-2 mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 " htmlFor="email_id">Other Facilities **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Other Facilities **</div>
                     <input
                       type="text"
                       id="other_facilities"
@@ -217,9 +199,9 @@ const TowerRegistartion = () => {
                     {errors.other_facilities && <span className="error">{errors.other_facilities}</span>}
                 </div>
 
-                <div className='w-1/2 flex flex-col items-end'>
+                <div className='w-1/2 flex flex-col items-end mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-2 " htmlFor="email_id">Type **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Type **</div>
                     <input
                       type="text"
                       id="type"
@@ -232,9 +214,9 @@ const TowerRegistartion = () => {
                 </div>
                 </div>
               </div>
-              <div className='w-full h-auto flex justify-between'>
+              <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                    <div className="mb-1 " htmlFor="email_id">Status **</div>
+                    <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Status **</div>
                     <select 
                         className='w-full border-2 border-sky-500 rounded-md' 
                         value={status} 
@@ -252,18 +234,17 @@ const TowerRegistartion = () => {
         </div>
 
         {/* Footer - Logo + Submit button*/}
-        <div className='w-full h-52 flex items-center justify-center'>
-          <div className='w-11/12 h-4/5 flex items-center justify-center'>
+        <div className='w-full h-52 flex items-center justify-center bg-defaultBg'>
+          <div className='w-11/12 h-4/5 flex items-center justify-center bg-defaultBg'>
             <div className='w-11/12 h-1/2 flex justify-between'>
               <div className='w-auto flex flex-col justify-center items-start'>
                 {/* Logo */}
                 <div className='text-sky-950 text-3xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-2xl font-semibold'>Tower Registration Form ✨</div>
+                <div className='text-orange-600 text-2xl font-semibold'>Hostel Registration Form ✨</div>
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
-                <button className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl'>
-                  Save
-                  {/* Cancel action */}
+                <button className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
+                  Submit 
                 </button>
               </div>
             </div>

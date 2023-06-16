@@ -5,10 +5,10 @@ import './config.js';
 import { addDoc, doc, setDoc,getDoc ,updateDoc} from "firebase/firestore";
 import {v4 as uuidv4} from 'uuid';
 // import {UUIDFunction,studentIdFunction,tower_id_function,wing_id_function,room_id_function} from './logics.js';
-// import cors from 'cors';
+import cors from 'cors';
 const app = express();
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 
 app.get('/allAddressDetails', async(req,res)=>{
     const obj={

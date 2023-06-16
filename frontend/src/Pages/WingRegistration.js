@@ -40,10 +40,9 @@ const TowerRegistartion = () => {
         const formErrors = validateForm();
         if (Object.keys(formErrors).length === 0) {
         console.log('Form submitted successfully!');
-        axios.post('http://localhost:7000/hostel/tower', formData)
+        axios.post('http://localhost:7000/hostel/tower/wing', formData)
         .then((response) => {
-          console.log('API response:', response.data);
-          alert(response.data);
+            console.log('API response:', response.data);
         })
         .catch((error) => {
             console.error('API request error:', error);
@@ -86,7 +85,7 @@ const TowerRegistartion = () => {
         <div className='w-full bg-defaultBg h-36 flex '>
           <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
             <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
-            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Tower Registration Form</p>
+            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Wing Registration Form</p>
           </div>
         </div>
 
@@ -101,7 +100,7 @@ const TowerRegistartion = () => {
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-1'>
-                <div className="mb-1 font-popins text-xl font-medium  " htmlFor="description">Hostel Name or ID *</div>
+                <div className="mb-1 font-popins text-xl font-medium  " htmlFor="description">Tower Name or ID *</div>
                 <input
                   id="hostel_id"
                   name="hostel_id"
@@ -116,7 +115,7 @@ const TowerRegistartion = () => {
               {/*  --> UUID */}
 
             <div className='w-full h-auto flex flex-col mb-2 mt-2'>
-            <div className="mb-1 font-popins text-xl font-medium " htmlFor="description">Tower Name*</div>
+            <div className="mb-1 font-popins text-xl font-medium " htmlFor="description">Wing Name*</div>
             <input
                 id="tower_name"
                 name="tower_name"
@@ -129,7 +128,7 @@ const TowerRegistartion = () => {
 
             <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">No of Floors **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">No of Rooms **</div>
                     <input
                       type="Number"
                       id="no_wings"
@@ -143,7 +142,7 @@ const TowerRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">No of Rooms **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Capacity **</div>
                     <input
                       type="number"
                       id="no_rooms"
@@ -159,36 +158,36 @@ const TowerRegistartion = () => {
 
               <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Capacity **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Total Area (sq.ft) **</div>
                     <input
-                      type="number"
-                      id="capacity"
-                      name="capacity"
-                      value={formData.capacity}
+                      type="Number"
+                      id="no_wings"
+                      name="no_wings"
+                      value={formData.no_wings}
                       onChange={handleChange}
                       className='w-11/12 border-2 border-sky-500 rounded-md'
                     />
-                    {errors.Capacity && <span className="error">{errors.Capacity}</span>}
+                    {errors.no_wings && <span className="error">{errors.no_wings}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Total Area **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Other facility **</div>
                     <input
-                      type="number"
-                      id="total_area"
-                      name="total_area"
-                      value={formData.total_area}
+                      type="text"
+                      id="no_rooms"
+                      name="no_rooms"
+                      value={formData.no_rooms}
                       onChange={handleChange}
                       className='w-full border-2 border-sky-500 rounded-md'
                     />
-                    {errors.total_area && <span className="error">{errors.total_area}</span>}
+                    {errors.no_rooms && <span className="error">{errors.no_rooms}</span>}
                 </div>
                 </div>
               </div>
               <div className='w-full h-auto flex justify-between mb-2 mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Other Facilities **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Type **</div>
                     <input
                       type="text"
                       id="other_facilities"
@@ -199,37 +198,8 @@ const TowerRegistartion = () => {
                     />
                     {errors.other_facilities && <span className="error">{errors.other_facilities}</span>}
                 </div>
-
-                <div className='w-1/2 flex flex-col items-end mt-1'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Type **</div>
-                    <input
-                      type="text"
-                      id="type"
-                      name="type"
-                      value={formData.type}
-                      onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md'
-                    />
-                    {errors.address2 && <span className="error">{errors.address2}</span>}
-                </div>
-                </div>
               </div>
-              <div className='w-full h-auto flex justify-between mt-1'>
-                <div className='w-1/2'>
-                    <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Status **</div>
-                    <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
-                        value={status} 
-                        onChange={handleDropdownStatus}
-                        >
-                        <option value="">Select an option</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                      </select>
-                    {errors.address1 && <span className="error">{errors.address1}</span>}
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -241,7 +211,7 @@ const TowerRegistartion = () => {
               <div className='w-auto flex flex-col justify-center items-start'>
                 {/* Logo */}
                 <div className='text-sky-950 text-3xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-2xl font-semibold'>Tower Registration Form ✨</div>
+                <div className='text-orange-600 text-2xl font-semibold'>Wing Registration Form ✨</div>
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
                 <button className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>

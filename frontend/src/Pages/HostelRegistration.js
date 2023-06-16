@@ -160,8 +160,8 @@ const App = () => {
       axios.post('http://localhost:7000/hostel/registration', formData)
       .then((response) => {
         // alert
-        alert("Done")
         console.log('API response:', response.data);
+        alert(response.data);
       })
       .catch((error) => {
         console.error('API request error:', error);
@@ -660,7 +660,7 @@ const App = () => {
                   Save
                 </button>
                 <button className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
-                  Submit
+                  Send for Approval
                 </button>
               </div>
             </div>

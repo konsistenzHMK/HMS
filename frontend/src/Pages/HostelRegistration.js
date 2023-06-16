@@ -248,7 +248,7 @@ const App = () => {
 
               {/* 1.2 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
-                <div className="mb-1 font-popins" htmlFor="description">Hostel Description *</div>
+                <div className="mb-1 font-popins text-xl font-medium  " htmlFor="description">Hostel Description *</div>
                 <textarea
                   id="description"
                   name="description"
@@ -260,14 +260,14 @@ const App = () => {
               </div>
 
             {/* 2 --> Address*/}
-            <div className='font-bold underline  underline-offset-1 text-sky-950 text-xl mt-6 mb-3'>
-                <p className='font-popins'>Address </p>
+            <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mb-3 font-popins'>
+                <p className=' font-popins'>Address </p>
             </div>
             {/* 2.1 */}
 
             <div className='w-full h-auto flex justify-between'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins" htmlFor="email_id">Address Line 1 **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Address Line 1 **</div>
                     <input
                       type="text"
                       id="address1"
@@ -281,7 +281,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 " htmlFor="email_id">Address Line 2 **</div>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Address Line 2 **</div>
                     <input
                       type="text"
                       id="address2"
@@ -297,7 +297,7 @@ const App = () => {
               {/* 2.2 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 " htmlFor="email_id">Country **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Country **</div>
                     <input
                       type="text"
                       id="state"
@@ -311,7 +311,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 " htmlFor="email_id">State **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">State **</div>
                     <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={State} 
@@ -328,7 +328,7 @@ const App = () => {
               {/* 2.3 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 " htmlFor="email_id">Region **</div>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Region **</div>
                       <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={region} 
@@ -346,7 +346,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 " htmlFor="email_id">District **</div>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">District **</div>
                       <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={District} 
@@ -368,7 +368,7 @@ const App = () => {
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 " htmlFor="email_id">City **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">City **</div>
                     <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={City} 
@@ -386,7 +386,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 " htmlFor="email_id">Pincode **</div>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Pincode **</div>
                     <input
                       type="text"
                       id="pincode"
@@ -401,14 +401,14 @@ const App = () => {
               </div>
 
               {/* 4 */}
-              <div className='font-bold underline  underline-offset-1 text-sky-950 text-xl mt-6 mb-3'>
+              <div className='underline underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mb-3 font-popins'>
                 <p className=''>Advance Details</p>
             </div>
 
             {/* 4.1 --> 1*/}
             <div className='w-full h-auto flex justify-between'>
                 <div className='w-full'>
-                  <div className="w-full mb-1 " htmlFor="email_id">Hostel Rector *</div>
+                  <div className="w-full mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Hostel Rector *</div>
                     <input
                       type="text"
                       id="rector_name"
@@ -425,7 +425,7 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Category-1 **</div>
+                    <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Category-1 **</div>
                       <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={category1} 
@@ -441,7 +441,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Category-2 **</div>
+                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Category-2 **</div>
                       <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={category2} 
@@ -457,7 +457,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Category-3 **</div>
+                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Category-3 **</div>
                       <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={category3} 
@@ -476,7 +476,7 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">No of Towers **</div>
+                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">No of Towers **</div>
                       <input
                         type="number"
                         id="tower"
@@ -490,7 +490,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">No of Floors **</div>
+                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">No of Floors **</div>
                       <input
                         type="number"
                         id="floor"
@@ -504,7 +504,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">No of Rooms **</div>
+                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">No of Rooms **</div>
                       <input
                         type="number"
                         id="room"
@@ -522,7 +522,7 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Sanctioned Capacity **</div>
+                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Sanctioned Capacity **</div>
                       <input
                         type="number"
                         id="scapacity"
@@ -536,7 +536,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Building Capacity **</div>
+                    <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Building Capacity **</div>
                       <input
                         type="number"
                         id="bcapacity"
@@ -550,7 +550,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Total Area *</div>
+                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Total Area *</div>
                       <input
                         type="number"
                         id="area"
@@ -567,7 +567,7 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Mess Type **</div>
+                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Mess Type **</div>
                     <select 
                         className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={messType} 
@@ -584,7 +584,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Other Facility **</div>
+                    <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Other Facility **</div>
                       <input
                         type="text"
                         id="other_facility"
@@ -598,7 +598,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 " htmlFor="email_id">Status *</div>
+                    <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Status *</div>
                       <input
                         type="text"
                         id="status"
@@ -615,7 +615,7 @@ const App = () => {
               {/* 4.5 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 " htmlFor="email_id">Hostel Email *</div>
+                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Hostel Email *</div>
                     <input
                       type="text"
                       id="email_id"
@@ -629,7 +629,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div htmlFor="email_id">Hostel Website *</div>
+                  <div htmlFor="email_id" className='mb-1 font-popins text-xl font-medium'>Hostel Website *</div>
                     <input
                       type="text"
                       id="website"

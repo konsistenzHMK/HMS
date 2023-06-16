@@ -82,10 +82,10 @@ const TowerRegistartion = () => {
       <div className="w-5/6 h-full">
       <form onSubmit={handleSubmit}>
         {/* Header */}
-        <div className='w-full bg-cyan-300 h-36 flex '>
-          <div className='h-2/3 bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
-            <p className='pl-10 pt-2 text-sky-800 font-bold text-3xl '>Hostel Mangement System 🎉</p>
-            <p className='pl-10 pt-1 text-orange-400 font-semibold text-2xl'>Tower Registration Form</p>
+        <div className='w-full bg-defaultBg h-36 flex '>
+          <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
+            <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
+            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Tower Registration Form</p>
           </div>
         </div>
 

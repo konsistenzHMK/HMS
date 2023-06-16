@@ -241,7 +241,7 @@ const App = () => {
                   name="hostel_name"
                   value={formData.hostel_name}
                   onChange={handleChange}
-                  className='w-full border border-borderColor rounded-md font-montserrat px-1 py-1'
+                  className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                 ></input>
                 {errors.hostel_name && <span className="error">{errors.hostel_name}</span>}
               </div>
@@ -254,7 +254,7 @@ const App = () => {
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  className='w-full border-2 border-sky-500 rounded-md font-popins'
+                  className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                 ></textarea>
                 {errors.description && <span className="error">{errors.description}</span>}
               </div>
@@ -274,7 +274,7 @@ const App = () => {
                       name="address1"
                       value={formData.address1}
                       onChange={handleChange}
-                      className='w-11/12 border-2 border-sky-500 rounded-md font-popins'
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
                     {errors.address1 && <span className="error">{errors.address1}</span>}
                 </div>
@@ -288,7 +288,7 @@ const App = () => {
                       name="address2"
                       value={formData.address2}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md'
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
                     {errors.address2 && <span className="error">{errors.address2}</span>}
                 </div>
@@ -304,7 +304,7 @@ const App = () => {
                       name="country"
                       value={'India'}
                       onChange={handleChange}
-                      className='w-11/12 border-2 border-sky-500 rounded-md bg-slate-200'
+                      className='w-11/12 border-2 border-sky-500 rounded-md bg-slate-200 font-montserrat px-1 py-1'
                     />
                     {errors.country && <span className="error">{errors.country}</span>}
                 </div>
@@ -313,7 +313,7 @@ const App = () => {
                   <div className='w-11/12'>
                   <div className="mb-1 " htmlFor="email_id">State **</div>
                     <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={State} 
                         onChange={handleChangeState}
                         >
@@ -330,7 +330,7 @@ const App = () => {
                 <div className='w-1/2'>
                   <div className="mb-1 " htmlFor="email_id">Region **</div>
                       <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={region} 
                         onChange={handleChangeRegion}
                         >
@@ -348,7 +348,7 @@ const App = () => {
                   <div className='w-11/12'>
                   <div className="mb-1 " htmlFor="email_id">District **</div>
                       <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={District} 
                         onChange={handleChangeDistrict}
                         >
@@ -370,7 +370,7 @@ const App = () => {
                 <div className='w-1/2'>
                   <div className="mb-1 " htmlFor="email_id">City **</div>
                     <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={City} 
                         onChange={handleChangeCity}
                         >
@@ -393,30 +393,10 @@ const App = () => {
                       name="pincode"
                       value={formData.pincode}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md'
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                     />
                     {errors.pincode && <span className="error">{errors.pincode}</span>}
                 </div>
-                </div>
-              </div>
-              
-              {/* 3 --> UUID */}
-              <div className='font-bold underline  underline-offset-1 text-sky-950 text-xl mt-6 mb-1'>
-                <p className=''>Hostel UID </p>
-              </div>
-
-              {/* 3.1 */}
-              <div className='w-full h-auto flex justify-between '>
-              <div className='w-full'>
-                  <div className='text-red-600 text-sm mb-2 ml-1 font-semibold' htmlFor="email_id">* Hostel UID will be auto generated</div>
-                    <input
-                      type="text"
-                      id="UUID"
-                      name="UUID"
-                      value={formData.uuid}
-                      className='w-full border-2 border-sky-500 rounded-md bg-slate-200'
-                    />
-                    {/* {errors.country && <span className="error">{errors.country}</span>} */}
                 </div>
               </div>
 
@@ -435,7 +415,7 @@ const App = () => {
                       name="rector_name"
                       value={formData.rector_name}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md'
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
                     {errors.rector_name && <span className="error">{errors.rector_name}</span>}
                 </div>
@@ -447,7 +427,7 @@ const App = () => {
                     <div className='w-11/12'>
                     <div className="mb-1 " htmlFor="email_id">Category-1 **</div>
                       <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={category1} 
                         onChange={handleDropdownCat1}
                         >
@@ -463,7 +443,7 @@ const App = () => {
                     <div className='w-11/12'>
                     <div className="mb-1 " htmlFor="email_id">Category-2 **</div>
                       <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={category2} 
                         onChange={handleDropdownCat2}
                         >
@@ -479,7 +459,7 @@ const App = () => {
                     <div className='w-11/12'>
                     <div className="mb-1 " htmlFor="email_id">Category-3 **</div>
                       <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={category3} 
                         onChange={handleDropdownCat3}
                         >
@@ -503,7 +483,7 @@ const App = () => {
                         name="tower"
                         value={formData.tower}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.tower && <span className="error">{errors.tower}</span>}
                   </div>
@@ -517,7 +497,7 @@ const App = () => {
                         name="floor"
                         value={formData.floor}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.floor && <span className="error">{errors.floor}</span>}
                   </div>
@@ -531,7 +511,7 @@ const App = () => {
                         name="room"
                         value={formData.room}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.room && <span className="error">{errors.room}</span>}
                   </div>
@@ -549,7 +529,7 @@ const App = () => {
                         name="scapacity"
                         value={formData.scapacity}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.scapacity && <span className="error">{errors.scapacity}</span>}
                   </div>
@@ -563,7 +543,7 @@ const App = () => {
                         name="bcapacity"
                         value={formData.bcapacity}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.bcapacity && <span className="error">{errors.bcapacity}</span>}
                   </div>
@@ -577,7 +557,7 @@ const App = () => {
                         name="area"
                         value={formData.area}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.area && <span className="error">{errors.area}</span>}
                   </div>
@@ -589,7 +569,7 @@ const App = () => {
                     <div className='w-11/12'>
                     <div className="mb-1 " htmlFor="email_id">Mess Type **</div>
                     <select 
-                        className='w-full border-2 border-sky-500 rounded-md' 
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                         value={messType} 
                         onChange={handleDropdownMessType}
                         >
@@ -611,7 +591,7 @@ const App = () => {
                         name="other_facility"
                         value={formData.other_facility}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.other_facility && <span className="error">{errors.other_facility}</span>}
                   </div>
@@ -625,7 +605,7 @@ const App = () => {
                         name="status"
                         value={formData.status}
                         onChange={handleChange}
-                        className='w-full border-2 border-sky-500 rounded-md'
+                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                       />
                       {errors.status && <span className="error">{errors.status}</span>}
                   </div>
@@ -642,7 +622,7 @@ const App = () => {
                       name="email_id"
                       value={formData.email_id}
                       onChange={handleChange}
-                      className='w-11/12 border-2 border-sky-500 rounded-md'
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
                     {errors.email_id && <span className="error">{errors.email_id}</span>}
                 </div>
@@ -656,7 +636,7 @@ const App = () => {
                       name="website"
                       value={formData.website}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md'
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
                     {errors.website && <span className="error">{errors.website}</span>}
                 </div>
@@ -677,13 +657,15 @@ const App = () => {
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
                 <button className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl'>
+                  Save
+                </button>
+                <button className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
                   Submit
                 </button>
               </div>
             </div>
           </div>
         </div>
-
       </form>
       </div>
     </div>

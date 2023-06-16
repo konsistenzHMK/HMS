@@ -173,7 +173,7 @@ const TowerRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Total Area **</div>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Total Area (sq.ft) **</div>
                     <input
                       type="number"
                       id="total_area"

@@ -74,7 +74,7 @@ const TowerRegistartion = () => {
   return (
     <div className="flex bg-defaultBg" >
       {/* Side Navbar */}
-      <div className="w-1/6 bg-orange-400">
+      <div className="w-1/6 bg-accent">
 
       </div>
 

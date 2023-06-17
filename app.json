@@ -1,3 +1,49 @@
 {
-  "name": "PagalFan"
+  "name": "PagalFan",
+  "expo": {
+    "name": "Pagal Fan",
+    "slug": "pagalfan-app",
+    "scheme": "pagalfan-app",
+    "description": "PagalFan is a super app for sports fans.",
+    "privacy": "unlisted",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/app/icon.png",
+    "splash": {
+      "image": "./app/assets/app/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#FF4545"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.pagalfan",
+      "supportsTablet": null,
+      "buildNumber": "1.0.0",
+      "infoPlist": {},
+      "usesIcloudStorage": false
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.pagalfan",
+      "permissions": []
+    },
+    "web": {
+      "display": null,
+      "barStyle": null,
+      "themeColor": "#000000",
+      "orientation": null,
+      "backgroundColor": null,
+      "preferRelatedApplications": null
+    },
+    "notification": {
+      "androidMode": "default"
+    }
+  }
 }

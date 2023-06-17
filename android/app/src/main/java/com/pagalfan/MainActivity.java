@@ -1,8 +1,6 @@
 package com.pagalfan;
 import android.os.Bundle;
 
-import androidx.core.splashscreen.SplashScreen;
-
 import expo.modules.ReactActivityDelegateWrapper;
 
 import com.facebook.react.ReactActivity;
@@ -38,10 +36,4 @@ public class MainActivity extends ReactActivity {
         ));
   }
 
-  @Override
-    protected void onCreate(Bundle savedInstanceState) {
-         // Handle the splash screen transition.
-         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-         super.onCreate(savedInstanceState);
-    }
 }

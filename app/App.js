@@ -10,6 +10,8 @@ import cacheAssetsAsync from './config/cacheAssetsAsync'
 import { GlobalVariableProvider } from './config/GlobalVariableContext'
 import { useFonts } from 'expo-font'
 import { SnackbarProvider } from './components'
+import SplashScreen from './screens/SplashScreen'
+import { Platform } from 'react-native'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -26,20 +28,19 @@ const App = () => {
   const [fontsLoaded] = useFonts(AppFonts)
 
   useEffect(() => {
-    async function prepare() {
+    const duration = Platform.OS === 'android' ? 0 : 3000 // for android Native splash screen made delay of 3secs
+    setTimeout(async () => {
       try {
         await cacheAssetsAsync()
       } catch (e) {
         console.warn(e)
-      } finally {
-        setIsReady(true)
       }
-    }
-    prepare()
+      setIsReady(true)
+    }, duration) // show splash screen for 3 seconds atleast
   }, [])
 
   if (!isReady || !fontsLoaded) {
-    return null
+    return Platform.OS === 'ios' ? <SplashScreen /> : null // for android Native splash screen is being shown
   }
 
   return (

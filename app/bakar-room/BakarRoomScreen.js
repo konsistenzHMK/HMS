@@ -48,6 +48,20 @@ const BakarRoomScreen = (props) => {
   const { roomCode, username } = route.params
   const { theme } = props
 
+  useEffect(() => {
+    // check for permission and go back with toast message if not granted
+    checkPermissions([PERMISSIONS.ANDROID.RECORD_AUDIO]).then((permissionsGranted) => {
+      if (!permissionsGranted) {
+        snackbar.show({
+          title: 'Microphone permission not granted. Please go to settings and allow mic permission',
+          variant: 'negative',
+          delay: 6000,
+        })
+        navigation.goBack()
+      }
+    })
+  }, [])
+
   const onConnectionError = (error) => {
     navigation.goBack()
     snackbar.show({ title: 'Connection error' })
@@ -818,7 +832,7 @@ const usePeerTrackNodes = ({ onConnectionError, username, roomCode }) => {
  * @param {string[]} permissions
  * @returns {boolean} all permissions granted or not
  */
-export const checkPermissions = async (permissions) => {
+const checkPermissions = async (permissions) => {
   try {
     if (Platform.OS === 'ios') {
       return true

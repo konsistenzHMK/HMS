@@ -3,7 +3,6 @@
  */
 
 import { AppRegistry, LogBox } from 'react-native'
-// import { BakarRoom as App } from './app/bakar-room/BakarRoom'
 import App from './app/App'
 import { name as appName } from './app.json'
 

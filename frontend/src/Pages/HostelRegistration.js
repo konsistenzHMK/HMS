@@ -550,7 +550,7 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Total Area *</div>
+                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Total Area (sq.ft) *</div>
                       <input
                         type="number"
                         id="area"

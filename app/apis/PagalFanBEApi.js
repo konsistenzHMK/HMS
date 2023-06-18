@@ -1810,8 +1810,11 @@ export const FetchFetchFanClubsFollowedByUserGET = ({ children, onData = () => {
   const Constants = GlobalVariables.useValues()
   const isFocused = useIsFocused()
   const prevIsFocused = usePrevious(isFocused)
+  const lastFetch = React.useRef(Date.now())
 
-  const refetch = () => {}
+  const refetch = () => {
+    lastFetch.current = Date.now()
+  }
   const {
     isLoading: loading,
     data,
@@ -1821,7 +1824,7 @@ export const FetchFetchFanClubsFollowedByUserGET = ({ children, onData = () => {
       userId ?? ''
     }`,
     {
-      depends: [isFocused],
+      depends: [isFocused, lastFetch.current],
       headers: {
         Accept: 'application/json',
         Authorization: Constants['AUTHORIZATION_HEADER'],

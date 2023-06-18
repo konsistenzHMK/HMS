@@ -161,24 +161,20 @@ const SignupOTPScreen = (props) => {
                   const userId = responseJson?.user.id
                   setGlobalVariableValue({
                     key: 'LOGGED_IN_USER',
-                    value: (() => {
-                      const e = userId
-                      console.log(e)
-                      return e
-                    })(),
+                    value: userId,
                   })
-                  if (Constants['user_onboarded'] === false) {
+                  const onboarded = await PagalFanBEApi.fetchUserOnboardingStatusGET(Constants, { id: userId })
+                  console.log(onboarded?.length)
+                  if (onboarded?.length === 0) {
                     navigation.navigate('OnboardingScreen')
-                    return
                   }
-                  if (Constants['user_onboarded'] === true) {
+                  if (onboarded?.length > 0) {
                     navigation.navigate('Tabs', { screen: 'HomeScreen' })
                     return
                   }
                 } catch (err) {
                   console.error(err)
                 }
-                snackbar.show({ title: 'Error please try again' })
               }
               handler()
             }}

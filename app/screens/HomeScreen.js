@@ -40,12 +40,12 @@ const HomeScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
 
-  const navigateOnInvalidAuth = () => {
-    return props.navigation.navigate('SignupStartScreen')
-  }
-
   const { theme } = props
   const { navigation } = props
+
+  const navigateOnInvalidAuth = () => {
+    navigation.replace('SignupStartScreen')
+  }
 
   const isFocused = useIsFocused()
   React.useEffect(() => {
@@ -56,12 +56,10 @@ const HomeScreen = (props) => {
         }
         if (!Constants['AUTHORIZATION_HEADER']) {
           navigateOnInvalidAuth()
-        }
-        if (!Constants['AUTHORIZATION_HEADER']) {
           return
         }
         const apiResponseResult = await PagalFanBEApi.fetchSingleUserGET(Constants, { id: Constants['LOGGED_IN_USER'] })
-        const test = setGlobalVariableValue({
+        setGlobalVariableValue({
           key: 'user_can_post',
           value: apiResponseResult && apiResponseResult[0]?.can_post,
         })

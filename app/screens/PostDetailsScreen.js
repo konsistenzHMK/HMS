@@ -1113,33 +1113,20 @@ const PostDetailsScreen = (props) => {
             style={StyleSheet.applyWidth(
               {
                 alignItems: 'center',
+                justifyContent: 'center',
                 flexDirection: 'row',
                 height: 20,
-                justifyContent: 'space-between',
                 marginBottom: 20,
-                marginLeft: 20,
               },
               dimensions.width,
             )}
           >
-            {/* Blank */}
-            <View />
-            {/* Divider */}
-            <View>
-              {/* Divider */}
-              <Icon
-                style={StyleSheet.applyWidth({ marginTop: 2, top: -8 }, dimensions.width)}
-                name={'MaterialIcons/horizontal-rule'}
-                color={theme.colors['PF-Grey']}
-                size={36}
-              />
-            </View>
-            {/* Close */}
-            <View style={StyleSheet.applyWidth({ right: -10 }, dimensions.width)}>
-              <Pressable onPress={hideModal}>
-                <Icon color={theme.colors['Peoplebit_Stone_Gray']} name={'Ionicons/ios-close-circle-sharp'} size={20} />
-              </Pressable>
-            </View>
+            <Icon
+              style={StyleSheet.applyWidth({ marginTop: 2, top: -8 }, dimensions.width)}
+              name={'MaterialIcons/horizontal-rule'}
+              color={theme.colors['PF-Grey']}
+              size={36}
+            />
           </View>
           {/* ActionLinks */}
           <View

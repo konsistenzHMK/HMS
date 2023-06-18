@@ -1,22 +1,10 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
-import {
-  Circle,
-  Divider,
-  Icon,
-  IconButton,
-  Pressable,
-  ScreenContainer,
-  Surface,
-  Touchable,
-  withTheme,
-} from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
+import { Circle, Divider, Icon, Pressable, ScreenContainer, Surface, Touchable, withTheme } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
 import {
   ActivityIndicator,
@@ -29,15 +17,13 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native'
-import { Fetch } from 'react-request'
 import { useSnackbar } from '../components'
 
 const MyFanClubsScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
-
   const snackbar = useSnackbar()
+  const fetchFanClubsFollowedByUserRef = useRef(null)
 
   const removeFollowed = (list) => {
     if (list.length) {
@@ -58,8 +44,6 @@ const MyFanClubsScreen = (props) => {
   const { navigation } = props
 
   const pagalFanBEAddNewFanClubFollowsPOST = PagalFanBEApi.useAddNewFanClubFollowsPOST()
-
-  const [selectedTab, setSelectedTab] = React.useState('category')
   const [textInputValue, setTextInputValue] = React.useState('')
 
   return (
@@ -127,7 +111,8 @@ const MyFanClubsScreen = (props) => {
           <PagalFanBEApi.FetchFetchFanClubsFollowedByUserGET userId={Constants['LOGGED_IN_USER']}>
             {({ loading, error, data, refetchFetchFanClubsFollowedByUser }) => {
               const followedClubsData = data
-              if (!followedClubsData || loading) {
+              fetchFanClubsFollowedByUserRef.current = refetchFetchFanClubsFollowedByUser
+              if (!followedClubsData && loading) {
                 return <ActivityIndicator />
               }
 
@@ -520,6 +505,12 @@ const MyFanClubsScreen = (props) => {
                                       fanclubId: flashListData?.id,
                                       userId: Constants['LOGGED_IN_USER'],
                                     })
+                                    refetchFetchRecommendedFanClubs()
+                                    fetchFanClubsFollowedByUserRef.current()
+                                    console.log(
+                                      'fetchFanClubsFollowedByUserRef.current',
+                                      fetchFanClubsFollowedByUserRef.current,
+                                    )
                                     snackbar.show({ title: 'Fanclub followed successfully' })
                                   } catch (err) {
                                     console.error(err)

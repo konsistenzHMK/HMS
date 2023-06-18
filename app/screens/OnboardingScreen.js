@@ -628,7 +628,6 @@ const OnboardingScreen = (props) => {
 
   const onScroll = ({ nativeEvent }) => {
     const { contentOffset, layoutMeasurement } = nativeEvent
-    console.log({ nativeEvent })
     const index = Math.floor((contentOffset.x + layoutMeasurement.width / 2) / layoutMeasurement.width)
 
     if (index !== currentTabIndex) {

@@ -3,10 +3,8 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Button, ScreenContainer, TextInput, withTheme } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
 import { Image, Text, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar } from '../components/index.js'
@@ -14,28 +12,13 @@ import { useSnackbar } from '../components/index.js'
 const SignupOTPScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
   const setGlobalVariableValue = GlobalVariables.useSetValue()
 
   const snackbar = useSnackbar()
 
   const { theme } = props
   const { navigation } = props
-
-  const isFocused = useIsFocused()
-  React.useEffect(() => {
-    try {
-      if (!isFocused) {
-        return
-      }
-      console.log(Constants['user_onboarded'])
-    } catch (err) {
-      console.error(err)
-    }
-  }, [isFocused])
-
   const [signupOTP, setSignupOTP] = React.useState('')
-  const [textInputValue, setTextInputValue] = React.useState('')
 
   return (
     <ScreenContainer hasSafeArea={true}>
@@ -152,41 +135,21 @@ const SignupOTPScreen = (props) => {
             onPress={() => {
               const handler = async () => {
                 snackbar.show({ title: 'Checking OTP …' })
-                console.log('Continue Button ON_PRESS Start')
-                let error = null
                 try {
-                  console.log('Start ON_PRESS:0 FETCH_REQUEST')
                   const responseJson = await PagalFanBEApi.loginViaEmailOTPPOST(Constants, {
                     emailId: props.route?.params?.user_email ?? 'sg-ml1@yopmail.com',
                     otp: signupOTP,
                   })
-                  console.log(
-                    'Complete ON_PRESS:0 FETCH_REQUEST',
-                    JSON.stringify({
-                      responseJson,
-                    }),
-                  )
-                  console.log('Start ON_PRESS:1 EXTRACT_KEY')
                   const message = responseJson?.msg
-                  console.log('Complete ON_PRESS:1 EXTRACT_KEY', { message })
-                  console.log('Start ON_PRESS:2 SET_GLOBAL_VARIABLE')
                   setGlobalVariableValue({
                     key: 'ERROR_MESSAGE',
                     value: message,
                   })
-                  console.log('Complete ON_PRESS:2 SET_GLOBAL_VARIABLE')
-                  console.log('Start ON_PRESS:3 TERMINATION_CHECK')
                   if (message) {
                     snackbar.show({ title: message, variant: 'negative' })
                     return
                   }
-                  console.log('Complete ON_PRESS:3 TERMINATION_CHECK')
-                  console.log('Start ON_PRESS:4 EXTRACT_KEY')
                   const accessToken = responseJson?.access_token
-                  console.log('Complete ON_PRESS:4 EXTRACT_KEY', {
-                    accessToken,
-                  })
-                  console.log('Start ON_PRESS:5 SET_GLOBAL_VARIABLE')
                   setGlobalVariableValue({
                     key: 'AUTHORIZATION_HEADER',
                     value: (() => {
@@ -195,11 +158,7 @@ const SignupOTPScreen = (props) => {
                       return e
                     })(),
                   })
-                  console.log('Complete ON_PRESS:5 SET_GLOBAL_VARIABLE')
-                  console.log('Start ON_PRESS:6 EXTRACT_KEY')
                   const userId = responseJson?.user.id
-                  console.log('Complete ON_PRESS:6 EXTRACT_KEY', { userId })
-                  console.log('Start ON_PRESS:7 SET_GLOBAL_VARIABLE')
                   setGlobalVariableValue({
                     key: 'LOGGED_IN_USER',
                     value: (() => {
@@ -208,29 +167,18 @@ const SignupOTPScreen = (props) => {
                       return e
                     })(),
                   })
-                  console.log('Complete ON_PRESS:7 SET_GLOBAL_VARIABLE')
-                  console.log('Start ON_PRESS:8 NAVIGATE_SCREEN')
                   if (Constants['user_onboarded'] === false) {
                     navigation.navigate('OnboardingScreen')
-                    console.log('Complete ON_PRESS:8 NAVIGATE_SCREEN')
                     return
-                  } else {
-                    console.log('Skipped ON_PRESS:8 NAVIGATE_SCREEN: condition not met')
                   }
-                  console.log('Start ON_PRESS:9 NAVIGATE_SCREEN')
                   if (Constants['user_onboarded'] === true) {
                     navigation.navigate('Tabs', { screen: 'HomeScreen' })
-                    console.log('Complete ON_PRESS:9 NAVIGATE_SCREEN')
                     return
-                  } else {
-                    console.log('Skipped ON_PRESS:9 NAVIGATE_SCREEN: condition not met')
                   }
                 } catch (err) {
                   console.error(err)
-                  error = err.message ?? err
                 }
                 snackbar.show({ title: 'Error please try again' })
-                console.log('Continue Button ON_PRESS Complete', error ? { error } : 'no error')
               }
               handler()
             }}

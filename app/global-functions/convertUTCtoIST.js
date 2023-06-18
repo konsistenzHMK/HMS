@@ -1,4 +1,7 @@
 const convertUTCtoIST = (utcTime) => {
+  if (utcTime === null || utcTime === undefined) {
+    return ''
+  }
   // Extract the UTC hours, minutes, and date components
   const [date, time] = utcTime.split('T')
   const [year, month, day] = date.split('-')

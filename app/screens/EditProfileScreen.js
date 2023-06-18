@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -6,7 +6,6 @@ import uploadImage from '../global-functions/uploadImage'
 import * as StyleSheet from '../utils/StyleSheet'
 import openImagePickerUtil from '../utils/openImagePicker'
 import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
 import { Image, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar } from '../components'
@@ -16,48 +15,71 @@ const EditProfileScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
 
+  const pagalFanBEUpdateUserProfilePATCH = PagalFanBEApi.useUpdateUserProfilePATCH()
+
   const { theme } = props
   const { navigation } = props
 
-  const pagalFanBEUpdateUserProfilePATCH = PagalFanBEApi.useUpdateUserProfilePATCH()
-
-  const isFocused = useIsFocused()
-  React.useEffect(() => {
-    const handler = async () => {
-      try {
-        if (!isFocused) {
-          return
-        }
-        const userDetails = await PagalFanBEApi.fetchSingleUserGET(Constants, {
-          id: Constants['LOGGED_IN_USER'],
-        })
-        console.log(userDetails)
-        setFirstName(userDetails?.[0]?.first_name)
-        setLastName(userDetails && userDetails[0]?.last_name)
-        setUserHandle(userDetails && userDetails[0]?.handle)
-        setBriefBio(userDetails?.[0]?.bio)
-        setUserPic(
-          (() => {
-            const e = userDetails?.[0]?.profile_image
-            console.log(e)
-            return e
-          })(),
-        )
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    handler()
-  }, [isFocused])
-
   const [briefBio, setBriefBio] = React.useState('')
-  const [datePickerValue, setDatePickerValue] = React.useState(new Date())
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
-  const [textAreaValue, setTextAreaValue] = React.useState('')
-  const [textInputValue, setTextInputValue] = React.useState('')
   const [userHandle, setUserHandle] = React.useState('')
   const [userPic, setUserPic] = React.useState('')
+  const profilePicUpdated = useRef(false)
+
+  const fetchProfileData = async () => {
+    try {
+      const userDetails = await PagalFanBEApi.fetchSingleUserGET(Constants, {
+        id: Constants['LOGGED_IN_USER'],
+      })
+      setFirstName(userDetails?.[0]?.first_name)
+      setLastName(userDetails && userDetails[0]?.last_name)
+      setUserHandle(userDetails && userDetails[0]?.handle)
+      setBriefBio(userDetails?.[0]?.bio)
+      setUserPic(userDetails?.[0]?.profile_image)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const handleProfileUpdate = async () => {
+    try {
+      snackbar.show({ title: 'Updating user details …' })
+
+      let imgUrl = userPic
+      if (profilePicUpdated.current) {
+        imgUrl = await uploadImage('user-bucket', userPic)
+      }
+
+      await pagalFanBEUpdateUserProfilePATCH.mutateAsync({
+        briefBio,
+        firstName,
+        imgUrl,
+        lastName,
+        userHandle,
+        userId: Constants['LOGGED_IN_USER'],
+      })
+      navigation.navigate('MySettingsScreen')
+    } catch (err) {
+      console.error('Image upload error ', err)
+    }
+  }
+
+  const handleImageSelect = async () => {
+    try {
+      const imgPicked = await openImagePickerUtil({
+        allowsEditing: true,
+      })
+      profilePicUpdated.current = true
+      setUserPic(imgPicked)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchProfileData()
+  }, [])
 
   return (
     <ScreenContainer
@@ -129,35 +151,21 @@ const EditProfileScreen = (props) => {
         <View>
           {/* Profile Pic */}
           <View style={StyleSheet.applyWidth({ alignItems: 'center', alignSelf: 'auto' }, dimensions.width)}>
-            <Touchable
-              onPress={() => {
-                const handler = async () => {
-                  try {
-                    const imgPicked = await openImagePickerUtil({
-                      allowsEditing: true,
-                    })
-                    setUserPic(imgPicked)
-                  } catch (err) {
-                    console.error(err)
-                  }
-                }
-                handler()
-              }}
-              activeOpacity={0.8}
-              disabledOpacity={0.8}
-            >
-              <Image
-                style={StyleSheet.applyWidth(
-                  StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                    borderRadius: 80,
-                    height: 100,
-                    width: 100,
-                  }),
-                  dimensions.width,
-                )}
-                resizeMode={'cover'}
-                source={{ uri: `${userPic}` }}
-              />
+            <Touchable onPress={handleImageSelect} activeOpacity={0.8} disabledOpacity={0.8}>
+              {userPic && (
+                <Image
+                  style={StyleSheet.applyWidth(
+                    StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                      borderRadius: 80,
+                      height: 100,
+                      width: 100,
+                    }),
+                    dimensions.width,
+                  )}
+                  resizeMode={'cover'}
+                  source={{ uri: `${userPic}` }}
+                />
+              )}
               <Icon
                 style={StyleSheet.applyWidth({ bottom: 5, height: 20, marginLeft: 42, width: 20 }, dimensions.width)}
                 size={20}
@@ -365,30 +373,7 @@ const EditProfileScreen = (props) => {
         </View>
         {/* Update */}
         <Button
-          onPress={() => {
-            const handler = async () => {
-              try {
-                snackbar.show({ title: 'Updating user details …' })
-                const remoteUrl = await uploadImage('user-bucket', userPic)
-
-                const valueQdKRlmdM = remoteUrl
-                setUserPic(valueQdKRlmdM)
-                const newImgUrl = valueQdKRlmdM
-                await pagalFanBEUpdateUserProfilePATCH.mutateAsync({
-                  briefBio: briefBio,
-                  firstName: firstName,
-                  imgUrl: newImgUrl,
-                  lastName: lastName,
-                  userHandle: userHandle,
-                  userId: Constants['LOGGED_IN_USER'],
-                })
-                navigation.navigate('MySettingsScreen')
-              } catch (err) {
-                console.error(err)
-              }
-            }
-            handler()
-          }}
+          onPress={handleProfileUpdate}
           style={StyleSheet.applyWidth(
             {
               backgroundColor: theme.colors['Secondary'],

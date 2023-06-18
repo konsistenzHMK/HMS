@@ -5,6 +5,7 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import convertNullToTBD from '../global-functions/convertNullToTBD'
+import endDate from '../global-functions/endDate'
 import getCorrectDateFormat from '../global-functions/getCorrectDateFormat'
 import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
@@ -288,6 +289,7 @@ const MatchDaysAllScreen = (props) => {
                                   {listData?.venue_city}
                                   {', '}
                                   {getCorrectDateFormat(listData?.match_date)}
+                                  {endDate(listData?.end_date)}
                                 </Text>
                               </View>
                             </View>
@@ -503,7 +505,8 @@ const MatchDaysAllScreen = (props) => {
                                 >
                                   {listData?.venue_city}
                                   {', '}
-                                  {listData?.match_date}
+                                  {getCorrectDateFormat(listData?.match_date)}
+                                  {endDate(listData?.end_date)}
                                 </Text>
                               </View>
                             </View>

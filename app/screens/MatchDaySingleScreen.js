@@ -2,13 +2,13 @@ import React from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
-import Images from '../config/Images'
 import TimeAgo from '../global-functions/TimeAgo'
 import convertNullToTBD from '../global-functions/convertNullToTBD'
 import convertUTCtoIST from '../global-functions/convertUTCtoIST'
+import endDate from '../global-functions/endDate'
 import getCorrectDateFormat from '../global-functions/getCorrectDateFormat'
 import getCorrectTimeFormat from '../global-functions/getCorrectTimeFormat'
-import Breakpoints from '../utils/Breakpoints'
+import isDatetimeInRange from '../global-functions/isDatetimeInRange'
 import * as StyleSheet from '../utils/StyleSheet'
 import {
   Button,
@@ -20,24 +20,13 @@ import {
   ScreenContainer,
   TabView,
   TabViewItem,
+  TextInput,
   Touchable,
   withTheme,
 } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Modal,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-  useWindowDimensions,
-} from 'react-native'
+import { ActivityIndicator, FlatList, Image, Modal, ScrollView, Text, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Fetch } from 'react-request'
 import { useSnackbar } from '../components'
 
 const MatchDaySingleScreen = (props) => {
@@ -56,20 +45,7 @@ const MatchDaySingleScreen = (props) => {
     var toss = name + ' Won The Toss and Elected to ' + elected + ' First'
 
     if (jsonfeed?.data?.play_status == 'pre_match') return toss
-    return 'Match Yet To Start'
-  }
-
-  const hashtagsToArray = (hashtags) => {
-    // Remove any leading or trailing whitespaces and split the string by commas
-    const hashtagList = hashtags.trim().split(',')
-
-    // Map over the array and remove the '#' character from each string
-    const strippedList = hashtagList.map((hashtag) => {
-      return hashtag.trim().replace('#', '')
-    })
-
-    // Return the array as a string representation
-    return `{${strippedList.join(',')}}`
+    return 'Match Feed Not Available'
   }
 
   const GiveBowlingDetails = (rawName) => {
@@ -323,23 +299,6 @@ const MatchDaySingleScreen = (props) => {
     if (jsonfeed?.data?.play_status == 'rain_delay') return 'Rain delay'
   }
 
-  const boolCurrentTime = (time) => {
-    var d = new Date()
-    var curr_hour = d.getHours()
-    var curr_min = d.getMinutes()
-
-    var current = curr_hour * 60 + curr_min
-
-    const myArray = time.split(':')
-    var hr = parseInt(myArray[0])
-    var min = parseInt(myArray[1])
-
-    var matchTime = hr * 60 + min
-
-    if (current >= matchTime) return true
-    return false
-  }
-
   const Team1RR = () => {
     var team1
     var team2
@@ -363,6 +322,7 @@ const MatchDaySingleScreen = (props) => {
   const pagalFanBEAddNewMatchCommentPOST = PagalFanBEApi.useAddNewMatchCommentPOST()
 
   const [Rz_match_key, setRz_match_key] = React.useState('')
+  const [isSessionLive, setIsSessionLive] = React.useState(false)
   const [jsonfeed, setJsonfeed] = React.useState('Loading...')
   const [showBakarrPopup, setShowBakarrPopup] = React.useState(false)
   const [team1_name, setTeam1_name] = React.useState('')
@@ -650,6 +610,7 @@ const MatchDaySingleScreen = (props) => {
                               )}
                             >
                               {getCorrectDateFormat(listData?.match_date)}
+                              {endDate(listData?.end_date)}
                             </Text>
                             {/* StartTime */}
                             <Text
@@ -664,7 +625,7 @@ const MatchDaySingleScreen = (props) => {
                               )}
                             >
                               {getCorrectTimeFormat(listData?.start_time)}
-                              {' (IST)'}
+                              {' IST'}
                             </Text>
                           </View>
                         </View>
@@ -680,110 +641,184 @@ const MatchDaySingleScreen = (props) => {
                             dimensions.width,
                           )}
                         >
-                          {/* Top */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingRight: 0,
-                              },
-                              dimensions.width,
-                            )}
+                          <PagalFanBEApi.FetchFetchNextBakarrSessionForMatchGET
+                            matchId={listData?.id}
+                            onData={(fetchData) => {
+                              try {
+                                const isLive = isDatetimeInRange(
+                                  fetchData && fetchData[0]?.session_start,
+                                  fetchData && fetchData[0]?.session_end,
+                                )
+                                setIsSessionLive(isLive)
+                              } catch (err) {
+                                console.error(err)
+                              }
+                            }}
                           >
-                            {/* LiveBadgeView */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignContent: 'flex-start',
-                                  alignItems: 'center',
-                                  backgroundColor: theme.colors['PF-Primary'],
-                                  flexDirection: 'row',
-                                  height: 20,
-                                  justifyContent: 'space-around',
-                                  marginBottom: 5,
-                                  paddingLeft: 2,
-                                  paddingRight: 2,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    color: theme.colors['PF-BG'],
-                                    fontFamily: 'Rubik_600SemiBold',
-                                    fontSize: 14,
-                                    marginRight: 5,
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                {'live bakarr'}
-                              </Text>
-                              <Icon size={24} name={'Ionicons/ios-radio-outline'} color={theme.colors['PF-BG']} />
-                            </View>
+                            {({ loading, error, data }) => {
+                              const fetchData = data
+                              if (!fetchData || loading) {
+                                return <ActivityIndicator />
+                              }
 
-                            <Pressable
-                              onPress={() => {
-                                try {
-                                  setShowBakarrPopup(true)
-                                } catch (err) {
-                                  console.error(err)
-                                }
-                              }}
-                            >
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    color: theme.colors['Secondary'],
-                                    fontFamily: 'Rubik_700Bold',
-                                    fontSize: 12,
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                {'Join Now'}
-                              </Text>
-                            </Pressable>
-                          </View>
-                          {/* EventTitle */}
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                color: theme.colors['Community_Medium_Black'],
-                                fontFamily: 'Rubik_600SemiBold',
-                                fontSize: 12,
-                              }),
-                              dimensions.width,
-                            )}
-                          >
-                            {listData?.team_1?.team_name}
-                            {' vs '}
-                            {listData?.team_2?.team_name}
-                            {' - Before Start'}
-                          </Text>
+                              if (error) {
+                                return (
+                                  <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                                )
+                              }
 
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                color: theme.colors['Community_Medium_Black'],
-                                fontFamily: 'Rubik_400Regular_Italic',
-                                fontSize: 12,
-                              }),
-                              dimensions.width,
-                            )}
-                          >
-                            {'Will '}
-                            {listData?.team_1?.team_initials}
-                            {' be able to dominate '}
-                            {listData?.team_2?.team_initials}
-                            {'? Or will '}
-                            {listData?.team_2?.team_initials}
-                            {' prove too strong for '}
-                            {listData?.team_1?.team_initials}
-                            {'? Who would be the key players to watch out for? Join our experts in this analysis.'}
-                          </Text>
+                              return (
+                                <>
+                                  {/* Live View */}
+                                  <>
+                                    {!isSessionLive ? null : (
+                                      <View
+                                        style={StyleSheet.applyWidth(
+                                          {
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            paddingRight: 0,
+                                          },
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {/* LiveBadgeView */}
+                                        <View
+                                          style={StyleSheet.applyWidth(
+                                            {
+                                              alignContent: 'flex-start',
+                                              alignItems: 'center',
+                                              backgroundColor: theme.colors['PF-Primary'],
+                                              flexDirection: 'row',
+                                              height: 20,
+                                              justifyContent: 'space-around',
+                                              marginBottom: 5,
+                                              paddingLeft: 2,
+                                              paddingRight: 2,
+                                            },
+                                            dimensions.width,
+                                          )}
+                                        >
+                                          <Text
+                                            style={StyleSheet.applyWidth(
+                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                color: theme.colors['PF-BG'],
+                                                fontFamily: 'Rubik_600SemiBold',
+                                                fontSize: 14,
+                                                marginRight: 5,
+                                              }),
+                                              dimensions.width,
+                                            )}
+                                          >
+                                            {'live bakarr'}
+                                          </Text>
+                                          <Icon
+                                            size={24}
+                                            name={'Ionicons/ios-radio-outline'}
+                                            color={theme.colors['PF-BG']}
+                                          />
+                                        </View>
+
+                                        <Pressable
+                                          onPress={() => {
+                                            try {
+                                              setShowBakarrPopup(true)
+                                            } catch (err) {
+                                              console.error(err)
+                                            }
+                                          }}
+                                        >
+                                          <Text
+                                            style={StyleSheet.applyWidth(
+                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                color: theme.colors['Secondary'],
+                                                fontFamily: 'Rubik_700Bold',
+                                                fontSize: 12,
+                                              }),
+                                              dimensions.width,
+                                            )}
+                                          >
+                                            {'Join Now'}
+                                          </Text>
+                                        </Pressable>
+                                      </View>
+                                    )}
+                                  </>
+                                  {/* TitleView */}
+                                  <View style={StyleSheet.applyWidth({ flexDirection: 'column' }, dimensions.width)}>
+                                    {/* Header */}
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          flexDirection: 'row',
+                                        },
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            color: theme.colors['Secondary'],
+                                            fontFamily: 'Rubik_700Bold',
+                                            fontSize: 12,
+                                            marginBottom: 4,
+                                            marginRight: 4,
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {'BAKARR session'}
+                                      </Text>
+                                      {/* Time */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            color: theme.colors['PF-Grey'],
+                                            fontFamily: 'Rubik_400Regular',
+                                            fontSize: 10,
+                                            marginBottom: 4,
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {convertUTCtoIST(fetchData && fetchData[0]?.session_start)}
+                                      </Text>
+                                    </View>
+                                    {/* Title */}
+                                    <Text
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                          color: theme.colors['PF-Primary'],
+                                          fontFamily: 'Rubik_400Regular',
+                                          fontSize: 12,
+                                          marginBottom: 4,
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {fetchData && fetchData[0]?.session_title}
+                                    </Text>
+                                  </View>
+
+                                  <Text
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                        color: theme.colors['Community_Medium_Black'],
+                                        fontFamily: 'Rubik_400Regular_Italic',
+                                        fontSize: 12,
+                                      }),
+                                      dimensions.width,
+                                    )}
+                                  >
+                                    {
+                                      'Hear celebrities and fans speak, and put forward \nyour own POV - in the PagalFan audio chatroom!!'
+                                    }
+                                  </Text>
+                                </>
+                              )
+                            }}
+                          </PagalFanBEApi.FetchFetchNextBakarrSessionForMatchGET>
                         </View>
                       </>
                     )

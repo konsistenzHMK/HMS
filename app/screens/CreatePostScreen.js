@@ -4,27 +4,15 @@ import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
 import uploadImage from '../global-functions/uploadImage'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import openImagePickerUtil from '../utils/openImagePicker'
-import {
-  Button,
-  CheckboxRow,
-  Circle,
-  Icon,
-  IconButton,
-  Picker,
-  ScreenContainer,
-  Touchable,
-  withTheme,
-} from '@draftbit/ui'
-import { FlatList, Image, Modal, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
+import { Image, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { useSnackbar } from '../components'
 
 const CreatePostScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
   const snackbar = useSnackbar()
 
   const submitSetTimer = async () => {
@@ -39,83 +27,13 @@ const CreatePostScreen = (props) => {
     setTimeout(timer, 1000)
   }
 
-  // a Javascript ES6 function that takes in a long string of hashtags and returns a string representation of an array
-  const hashtagsToArray = (hashtags) => {
-    // Remove any leading or trailing whitespaces and split the string by commas
-    const hashtagList = hashtags.trim().split(',')
-
-    // Map over the array and remove the '#' character from each string
-    const strippedList = hashtagList.map((hashtag) => {
-      return hashtag.trim().replace('#', '')
-    })
-
-    // Return the array as a string representation
-    return `{${strippedList.join(',')}}`
-  }
-
-  const filterFansList = (list) => {
-    //console.log(list)
-
-    if (list.length) {
-      return list?.filter((item) => item.label.toLowerCase().includes(searchField.toLowerCase()))
-    }
-    return list
-  }
-
-  const addItemToFanClubsList = (item) => {
-    // if(selectedFanClubs.includes(item)){
-    //     setSelectedFanClubs( list => list.filter( i => i == item))
-    // }else{
-    //     setSelectedFanClubs(list => [...list,item])
-    // }
-
-    const includesObj = (arr, obj) => arr.some((item) => JSON.stringify(item) === JSON.stringify(obj))
-
-    if (includesObj(selectedFanClubs, item)) {
-      setSelectedFanClubs((list) => list.filter((i) => JSON.stringify(i) != JSON.stringifyitem))
-    } else {
-      setSelectedFanClubs((list) => [...list, item])
-    }
-  }
-
-  const convertObjectArrayToStringArray = (objArray) => {
-    const idArray = objArray.map((item) => item.value)
-    return idArray
-  }
-
-  // Transforms an input Json string into the format needed for Picker component
-  const transformToPickerOptions = (inputJson) => {
-    return inputJson.map((item) => {
-      return { label: item.name, value: item.id }
-    })
-  }
-
-  const RemoveItemFromSelectedFansList = (item) => {
-    return setSelectedFanClubs((ext) => ext.filter((d) => d.label !== item.label))
-  }
-
   const { theme } = props
   const { navigation } = props
 
   const pagalFanBEAddNewPostPOST = PagalFanBEApi.useAddNewPostPOST()
-
-  const [checkboxRowValue, setCheckboxRowValue] = React.useState('')
-  const [fanclub_options, setFanclub_options] = React.useState('')
-  const [hashtags, setHashtags] = React.useState([])
-  const [match_options, setMatch_options] = React.useState('')
   const [pickedImage, setPickedImage] = React.useState('')
-  const [pickerValue, setPickerValue] = React.useState('')
-  const [pickerValue2, setPickerValue2] = React.useState('')
-  const [searchField, setSearchField] = React.useState('')
-  const [selectedFanClubs, setSelectedFanClubs] = React.useState([])
-  const [showfanClubModel, setShowfanClubModel] = React.useState(false)
-  const [sports_options, setSports_options] = React.useState('')
   const [submitted, setSubmitted] = React.useState('')
-  const [taggedFanClubs, setTaggedFanClubs] = React.useState([])
-  const [taggedMatch, setTaggedMatch] = React.useState('')
-  const [taggedSport, setTaggedSport] = React.useState('')
   const [textAreaValue, setTextAreaValue] = React.useState('')
-  const [textInputValue, setTextInputValue] = React.useState('')
 
   return (
     <ScreenContainer
@@ -357,7 +275,7 @@ const CreatePostScreen = (props) => {
                 snackbar.show({ title: 'Uploading post …' })
                 const remoteUrl = await uploadImage('post-bucket', pickedImage)
                 setPickedImage(remoteUrl)
-                const newpostresponse = await pagalFanBEAddNewPostPOST.mutateAsync({
+                await pagalFanBEAddNewPostPOST.mutateAsync({
                   caption: textAreaValue,
                   image_url: remoteUrl,
                   posted_by: Constants['LOGGED_IN_USER'],

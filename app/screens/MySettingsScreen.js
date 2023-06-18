@@ -126,61 +126,7 @@ const MySettingsScreen = (props) => {
             color={theme.colors.divider}
           />
         </Touchable>
-
-        <Touchable
-          onPress={() => {
-            try {
-              navigation.navigate('EditNotificationPrefsScreen')
-            } catch (err) {
-              console.error(err)
-            }
-          }}
-        >
-          {/* Row Wrapper */}
-          <View
-            style={StyleSheet.applyWidth(
-              {
-                flexDirection: 'row',
-                height: 60,
-                justifyContent: 'space-between',
-              },
-              dimensions.width,
-            )}
-          >
-            {/* Left Aligned */}
-            <View
-              style={StyleSheet.applyWidth({ alignItems: 'center', flex: 1, flexDirection: 'row' }, dimensions.width)}
-            >
-              <Icon color={theme.colors.strong} name={'FontAwesome/bell'} size={24} />
-              <Text
-                style={StyleSheet.applyWidth(
-                  {
-                    color: theme.colors.strong,
-                    fontFamily: 'System',
-                    fontWeight: '600',
-                    marginLeft: 12,
-                  },
-                  dimensions.width,
-                )}
-                allowFontScaling={true}
-                ellipsizeMode={'tail'}
-                textBreakStrategy={'highQuality'}
-              >
-                {'Notifications'}
-              </Text>
-            </View>
-            {/* Right Aligned */}
-            <View style={StyleSheet.applyWidth({ alignItems: 'center', flexDirection: 'row' }, dimensions.width)}>
-              <Icon name={'MaterialIcons/chevron-right'} color={theme.colors.strong} size={24} />
-            </View>
-          </View>
-          <Divider
-            style={StyleSheet.applyWidth({ height: 1 }, dimensions.width)}
-            height={1}
-            color={theme.colors.divider}
-          />
-        </Touchable>
-
+        {/* Support */}
         <Touchable>
           {/* Row Wrapper */}
           <View
@@ -227,53 +173,7 @@ const MySettingsScreen = (props) => {
             color={theme.colors.divider}
           />
         </Touchable>
-
-        <Touchable>
-          {/* Row Wrapper */}
-          <View
-            style={StyleSheet.applyWidth(
-              {
-                flexDirection: 'row',
-                height: 60,
-                justifyContent: 'space-between',
-              },
-              dimensions.width,
-            )}
-          >
-            {/* Left Aligned */}
-            <View
-              style={StyleSheet.applyWidth({ alignItems: 'center', flex: 1, flexDirection: 'row' }, dimensions.width)}
-            >
-              <Icon color={theme.colors.strong} name={'AntDesign/questioncircle'} size={24} />
-              <Text
-                style={StyleSheet.applyWidth(
-                  {
-                    color: theme.colors.strong,
-                    fontFamily: 'System',
-                    fontWeight: '600',
-                    marginLeft: 12,
-                  },
-                  dimensions.width,
-                )}
-                allowFontScaling={true}
-                ellipsizeMode={'tail'}
-                textBreakStrategy={'highQuality'}
-              >
-                {'FAQ'}
-              </Text>
-            </View>
-            {/* Row Aligned */}
-            <View style={StyleSheet.applyWidth({ alignItems: 'center', flexDirection: 'row' }, dimensions.width)}>
-              <Icon name={'MaterialIcons/chevron-right'} color={theme.colors.strong} size={24} />
-            </View>
-          </View>
-          <Divider
-            style={StyleSheet.applyWidth({ height: 1 }, dimensions.width)}
-            height={1}
-            color={theme.colors.divider}
-          />
-        </Touchable>
-
+        {/* About */}
         <Touchable>
           {/* Row Wrapper */}
           <View

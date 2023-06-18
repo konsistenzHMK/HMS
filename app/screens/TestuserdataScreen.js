@@ -62,7 +62,7 @@ const TestuserdataScreen = (props) => {
         )}
       >
         {'User onboarded: '}
-        {Constants['user_onboarded']}
+        {null}
       </Text>
       {/* auth token */}
       <Text

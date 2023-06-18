@@ -4,6 +4,10 @@
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need microphone access for bakar room</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need photo library access</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Need camera access</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

@@ -1986,6 +1986,146 @@ export const FetchFetchFeedForSingleMatchGET = ({ children, onData = () => {}, r
   })
 }
 
+export const fetchNextBakarrSessionGETStatusAndText = (Constants) =>
+  fetch(
+    'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_talks?limit=1&order=session_start.asc&session_end=gte.now()',
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+    },
+  ).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const fetchNextBakarrSessionGET = (Constants) =>
+  fetchNextBakarrSessionGETStatusAndText(Constants).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useFetchNextBakarrSessionGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  const queryClient = useQueryClient()
+  return useQuery(['bakarr', args], () => fetchNextBakarrSessionGET(Constants, args), {
+    refetchInterval,
+    onSuccess: () => queryClient.invalidateQueries(['bakarrs']),
+  })
+}
+
+export const FetchFetchNextBakarrSessionGET = ({ children, onData = () => {}, refetchInterval }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
+
+  const { loading, data, error, refetch } = useFetchNextBakarrSessionGET({}, { refetchInterval })
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch()
+    }
+  }, [isFocused, prevIsFocused])
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
+    }
+  }, [error])
+  React.useEffect(() => {
+    if (data) {
+      onData(data)
+    }
+  }, [data])
+
+  return children({
+    loading,
+    data,
+    error,
+    refetchFetchNextBakarrSession: refetch,
+  })
+}
+
+export const fetchNextBakarrSessionForMatchGETStatusAndText = (Constants, { matchId }) =>
+  fetch(
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_talks?limit=1&match_id=eq.${
+      matchId ?? ''
+    }&order=session_start.asc&session_end=gte.now()`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+    },
+  ).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const fetchNextBakarrSessionForMatchGET = (Constants, { matchId }) =>
+  fetchNextBakarrSessionForMatchGETStatusAndText(Constants, { matchId }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useFetchNextBakarrSessionForMatchGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  const queryClient = useQueryClient()
+  return useQuery(['bakarr', args], () => fetchNextBakarrSessionForMatchGET(Constants, args), {
+    refetchInterval,
+    onSuccess: () => queryClient.invalidateQueries(['bakarrs']),
+  })
+}
+
+export const FetchFetchNextBakarrSessionForMatchGET = ({ children, onData = () => {}, refetchInterval, matchId }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
+
+  const { loading, data, error, refetch } = useFetchNextBakarrSessionForMatchGET({ matchId }, { refetchInterval })
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch()
+    }
+  }, [isFocused, prevIsFocused])
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
+    }
+  }, [error])
+  React.useEffect(() => {
+    if (data) {
+      onData(data)
+    }
+  }, [data])
+
+  return children({
+    loading,
+    data,
+    error,
+    refetchFetchNextBakarrSessionForMatch: refetch,
+  })
+}
+
 export const fetchPostLikeGETStatusAndText = (Constants, { postId, userId }) =>
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_likes?post_id=eq.${postId ?? ''}&select=*&user_id=eq.${
@@ -2585,6 +2725,73 @@ export const FetchFetchSingleUserGET = ({ children, onData = () => {}, refetchIn
   }, [data])
 
   return children({ loading, data, error, refetchFetchSingleUser: refetch })
+}
+
+export const fetchUserOnboardingStatusGETStatusAndText = (Constants, { id }) =>
+  fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/user_profiles?select=onboarded&user_id=eq.${id ?? ''}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: Constants['AUTHORIZATION_HEADER'],
+      'Content-Type': 'application/json',
+      apiKey: Constants['API_KEY_HEADER'],
+    },
+  }).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const fetchUserOnboardingStatusGET = (Constants, { id }) =>
+  fetchUserOnboardingStatusGETStatusAndText(Constants, { id }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useFetchUserOnboardingStatusGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  const queryClient = useQueryClient()
+  return useQuery(['user', args], () => fetchUserOnboardingStatusGET(Constants, args), {
+    refetchInterval,
+    onSuccess: () => queryClient.invalidateQueries(['users']),
+  })
+}
+
+export const FetchFetchUserOnboardingStatusGET = ({ children, onData = () => {}, refetchInterval, id }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
+
+  const { loading, data, error, refetch } = useFetchUserOnboardingStatusGET({ id }, { refetchInterval })
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch()
+    }
+  }, [isFocused, prevIsFocused])
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
+    }
+  }, [error])
+  React.useEffect(() => {
+    if (data) {
+      onData(data)
+    }
+  }, [data])
+
+  return children({
+    loading,
+    data,
+    error,
+    refetchFetchUserOnboardingStatus: refetch,
+  })
 }
 
 export const fetchMatchMomentsGETStatusAndText = (Constants, { matchId }) =>

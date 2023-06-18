@@ -1,15 +1,16 @@
 import React from 'react'
 
 const getCorrectDateFormat = (dateString) => {
-  var parts = dateString.split('-')
-  if (parts.length !== 3) {
-    throw new Error('Invalid date format. Expected format: yyyy-mm-dd')
-  }
-  var year = parts[0]
-  var month = parts[1]
-  var day = parts[2]
+  const [year, month, day] = dateString.split('-')
 
-  return day + '-' + month + '-' + year
+  // Get the abbreviated month name
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const monthName = months[parseInt(month) - 1]
+
+  // Format the date in mmm-dd format
+  const formattedDate = `${monthName} ${day}`
+
+  return formattedDate
 }
 
 export default getCorrectDateFormat

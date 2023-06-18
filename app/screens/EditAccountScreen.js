@@ -277,7 +277,7 @@ const EditAccountScreen = (props) => {
                 dimensions.width,
               )}
               placeholder={
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.'
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
               }
               textAlignVertical={'top'}
               multiline={true}
@@ -287,7 +287,7 @@ const EditAccountScreen = (props) => {
           </View>
         </View>
         {/* Update */}
-        <Button
+        {/* <Button
           style={StyleSheet.applyWidth(
             {
               backgroundColor: theme.colors['Secondary'],
@@ -303,7 +303,7 @@ const EditAccountScreen = (props) => {
           activeOpacity={0.8}
           disabledOpacity={0.8}
           title={'Update '}
-        />
+        /> */}
       </KeyboardAwareScrollView>
     </ScreenContainer>
   )

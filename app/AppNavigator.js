@@ -8,7 +8,6 @@ import LinkingConfiguration from './LinkingConfiguration.js'
 
 import BakarrUIScreen from './screens/BakarrUIScreen'
 import CreatePostScreen from './screens/CreatePostScreen'
-import EditNotificationPrefsScreen from './screens/EditNotificationPrefsScreen'
 import EditPostScreen from './screens/EditPostScreen'
 import EditProfileScreen from './screens/EditProfileScreen'
 import FanClubSingleScreen from './screens/FanClubSingleScreen'
@@ -167,13 +166,6 @@ export default function RootAppNavigator() {
           component={EditProfileScreen}
           options={{
             title: 'Edit Profile',
-          }}
-        />
-        <Stack.Screen
-          name="EditNotificationPrefsScreen"
-          component={EditNotificationPrefsScreen}
-          options={{
-            title: 'Edit Notification Prefs',
           }}
         />
         <Stack.Screen

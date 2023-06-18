@@ -3,7 +3,8 @@ import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const DeviceVariables = {
-  AUTHORIZATION_HEADER: '',
+  AUTHORIZATION_HEADER:
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjg3NjEwNDU3LCJzdWIiOiJjMTZkNjU4NC1iZThmLTQzNWUtYTYzNi1iNjZlZDFlYzA4YWEiLCJlbWFpbCI6InNnLW1sNEB5b3BtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnt9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im90cCIsInRpbWVzdGFtcCI6MTY4NzAwNTY1N31dLCJzZXNzaW9uX2lkIjoiODg3YmM3NzMtMTMxOS00MTA5LTk5MTQtNDUyYjkzMjdmMDhiIn0.Xp1_Bs_vHfWjn_CVHK8iMg7I1oRHGtjYdDxndN-5FCM',
   LOGGED_IN_USER: '',
   Language: 'English',
   user_onboarded: false,

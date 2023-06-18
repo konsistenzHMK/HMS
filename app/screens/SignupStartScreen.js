@@ -5,7 +5,6 @@ import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Button, Checkbox, Icon, ScreenContainer, withTheme } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
 import { Image, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar } from '../components'
@@ -13,24 +12,9 @@ import { useSnackbar } from '../components'
 const SignupStartScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
-
   const snackbar = useSnackbar()
-
   const { theme } = props
   const { navigation } = props
-
-  const isFocused = useIsFocused()
-  React.useEffect(() => {
-    try {
-      if (!isFocused) {
-        return
-      }
-      console.log(Constants['user_onboarded'])
-    } catch (err) {
-      console.error(err)
-    }
-  }, [isFocused])
 
   const [checkboxValue, setCheckboxValue] = React.useState(false)
   const [signupEmail, setSignupEmail] = React.useState('')
@@ -173,14 +157,7 @@ const SignupStartScreen = (props) => {
             )}
           >
             <Checkbox
-              onPress={(newCheckboxValue) => {
-                const checkboxValue = newCheckboxValue
-                try {
-                  setCheckboxValue(newCheckboxValue)
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
+              onPress={setCheckboxValue}
               status={checkboxValue}
               color={theme.colors['Secondary']}
               uncheckedColor={theme.colors['Secondary']}
@@ -205,7 +182,7 @@ const SignupStartScreen = (props) => {
               const handler = async () => {
                 try {
                   snackbar.show({ title: 'Sending OTP …' })
-                  const result = await PagalFanBEApi.signupWithMailOTPPOST(Constants, { emailId: signupEmail })
+                  await PagalFanBEApi.signupWithMailOTPPOST(Constants, { emailId: signupEmail })
                   navigation.navigate('SignupOTPScreen', {
                     user_email: signupEmail,
                   })

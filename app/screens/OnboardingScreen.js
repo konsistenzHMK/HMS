@@ -54,6 +54,52 @@ const OnboardingScreen = (props) => {
 
   const snackbar = useSnackbar()
 
+  const validatUserDetails = () => {
+    let message = null
+
+    if (!firstName.length || !lastName.length) {
+      message = 'Please enter valid first and last name'
+    } else if (isNaN(age)) {
+      message = 'Please enter valid age'
+    } else if (sportsPref.length < 3) {
+      message = 'Please selected atleast 3 sports'
+    }
+
+    if (message) {
+      snackbar.show({ title: message, variant: 'negative' })
+      return false
+    }
+
+    return true
+  }
+
+  const handleGetStarted = async () => {
+    try {
+      if (!validatUserDetails()) {
+        return
+      }
+
+      snackbar.show({ title: 'Saving user details …' })
+      await pagalFanBECreateUserProfilePOST.mutateAsync({
+        age: age,
+        firstName: firstName,
+        lastName: lastName,
+        sportsList: sportsPref,
+        userId: Constants['LOGGED_IN_USER'],
+        userOnboarded: true,
+      })
+      // const expo_token = await getPushTokenUtil({})
+      // await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
+      //   expoToken: expo_token,
+      //   userId: Constants['LOGGED_IN_USER'],
+      // })
+      navigation.navigate('Tabs', { screen: 'HomeScreen' })
+    } catch (err) {
+      snackbar.show({ title: 'Error saving user details …', variant: 'negative' })
+      console.error(err)
+    }
+  }
+
   const swipeToPage = (index) => {
     swiperRef.current?.scrollToIndex?.({ index, animated: true })
     setCurrentTabIndex(index)
@@ -538,31 +584,7 @@ const OnboardingScreen = (props) => {
         </View>
         {/* Start Button */}
         <Button
-          onPress={() => {
-            const handler = async () => {
-              try {
-                snackbar.show({ title: 'Saving user details …' })
-                await pagalFanBECreateUserProfilePOST.mutateAsync({
-                  age: age,
-                  firstName: firstName,
-                  lastName: lastName,
-                  sportsList: sportsPref,
-                  userId: Constants['LOGGED_IN_USER'],
-                  userOnboarded: true,
-                })
-                // const expo_token = await getPushTokenUtil({})
-                // await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
-                //   expoToken: expo_token,
-                //   userId: Constants['LOGGED_IN_USER'],
-                // })
-                navigation.navigate('Tabs', { screen: 'HomeScreen' })
-              } catch (err) {
-                snackbar.show({ title: 'Error saving user details …', variant: 'negative' })
-                console.error(err)
-              }
-            }
-            handler()
-          }}
+          onPress={handleGetStarted}
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.ButtonStyles(theme)['Button'], {
               backgroundColor: theme.colors['Secondary'],

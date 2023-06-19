@@ -152,11 +152,7 @@ const SignupOTPScreen = (props) => {
                   const accessToken = responseJson?.access_token
                   setGlobalVariableValue({
                     key: 'AUTHORIZATION_HEADER',
-                    value: (() => {
-                      const e = 'Bearer ' + accessToken
-                      console.log(e)
-                      return e
-                    })(),
+                    value: 'Bearer ' + accessToken,
                   })
                   const userId = responseJson?.user.id
                   setGlobalVariableValue({
@@ -164,13 +160,10 @@ const SignupOTPScreen = (props) => {
                     value: userId,
                   })
                   const onboarded = await PagalFanBEApi.fetchUserOnboardingStatusGET(Constants, { id: userId })
-                  console.log(onboarded?.length)
-                  if (onboarded?.length === 0) {
-                    navigation.navigate('OnboardingScreen')
-                  }
-                  if (onboarded?.length > 0) {
+                  if (onboarded?.[0]?.onboarded === true) {
                     navigation.navigate('Tabs', { screen: 'HomeScreen' })
-                    return
+                  } else {
+                    navigation.navigate('OnboardingScreen')
                   }
                 } catch (err) {
                   console.error(err)

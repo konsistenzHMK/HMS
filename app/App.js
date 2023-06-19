@@ -28,7 +28,6 @@ const App = () => {
   const [fontsLoaded] = useFonts(AppFonts)
 
   useEffect(() => {
-    const duration = Platform.OS === 'android' ? 0 : 3000 // for android Native splash screen made delay of 3secs
     setTimeout(async () => {
       try {
         await cacheAssetsAsync()
@@ -36,11 +35,11 @@ const App = () => {
         console.warn(e)
       }
       setIsReady(true)
-    }, duration) // show splash screen for 3 seconds atleast
+    }, 3000) // show splash screen for 3 seconds atleast
   }, [])
 
   if (!isReady || !fontsLoaded) {
-    return Platform.OS === 'ios' ? <SplashScreen /> : null // for android Native splash screen is being shown
+    return <SplashScreen />
   }
 
   return (

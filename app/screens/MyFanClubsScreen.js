@@ -7,7 +7,6 @@ import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, Divider, Icon, Pressable, ScreenContainer, Surface, Touchable, withTheme } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
 import {
-  ActivityIndicator,
   FlatList,
   Image,
   ImageBackground,
@@ -16,8 +15,9 @@ import {
   TextInput,
   View,
   useWindowDimensions,
+  StyleSheet as RNStyleSheet,
 } from 'react-native'
-import { useSnackbar } from '../components'
+import { ShimmerPlaceHolder, useSnackbar } from '../components'
 
 const MyFanClubsScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -113,7 +113,7 @@ const MyFanClubsScreen = (props) => {
               const followedClubsData = data
               fetchFanClubsFollowedByUserRef.current = refetchFetchFanClubsFollowedByUser
               if (!followedClubsData && loading) {
-                return <ActivityIndicator />
+                return <FollowedFanClubLoader />
               }
 
               if (error) {
@@ -337,7 +337,7 @@ const MyFanClubsScreen = (props) => {
             {({ loading, error, data, refetchFetchRecommendedFanClubs }) => {
               const fetchData = data
               if (!fetchData || loading) {
-                return <ActivityIndicator />
+                return <RecommendedFanClubLoader />
               }
 
               if (error) {
@@ -587,7 +587,7 @@ const MyFanClubsScreen = (props) => {
               {({ loading, error, data, refetchFetchAllPosts }) => {
                 const fetchData = data
                 if (!fetchData || loading) {
-                  return <ActivityIndicator />
+                  return <FeedLoader />
                 }
 
                 if (error) {
@@ -754,5 +754,58 @@ const MyFanClubsScreen = (props) => {
     </ScreenContainer>
   )
 }
+
+const FollowedFanClubLoader = () => {
+  return (
+    <View style={styles.loaderContainer}>
+      <ShimmerPlaceHolder style={styles.followedFanClubLoader} />
+      <ShimmerPlaceHolder style={styles.followedFanClubLoader} />
+    </View>
+  )
+}
+
+const RecommendedFanClubLoader = () => {
+  return (
+    <View style={styles.loaderContainer}>
+      <ShimmerPlaceHolder style={styles.recommendedFanClubLoader} />
+      <ShimmerPlaceHolder style={styles.recommendedFanClubLoader} />
+    </View>
+  )
+}
+
+const FeedLoader = () => {
+  return (
+    <View style={styles.loaderContainer}>
+      <ShimmerPlaceHolder style={styles.feedLoader} />
+      <ShimmerPlaceHolder style={styles.feedLoader} />
+    </View>
+  )
+}
+
+const styles = RNStyleSheet.create({
+  loaderContainer: {
+    flexDirection: 'row',
+  },
+  followedFanClubLoader: {
+    borderRadius: 20,
+    height: 120,
+    width: 140,
+    marginRight: 10,
+  },
+  recommendedFanClubLoader: {
+    borderRadius: 20,
+    height: 170,
+    marginTop: 10,
+    marginRight: 10,
+    width: 140,
+  },
+  feedLoader: {
+    borderRadius: 12,
+    margin: 2,
+    marginVertical: 10,
+    height: 130,
+    width: '49%',
+  },
+})
 
 export default withTheme(MyFanClubsScreen)

@@ -24,7 +24,6 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
 import {
-  ActivityIndicator,
   FlatList,
   Image,
   ImageBackground,
@@ -33,7 +32,9 @@ import {
   Text,
   View,
   useWindowDimensions,
+  StyleSheet as RNStyleSheet,
 } from 'react-native'
+import { ShimmerPlaceHolder } from '../components'
 
 const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -210,235 +211,211 @@ const HomeScreen = (props) => {
           </Pressable>
         </View>
       </View>
-      {/* BakarrView */}
-      <View
-        style={StyleSheet.applyWidth(
-          StyleSheet.compose(GlobalStyles.ViewStyles(theme)['BakarrHeader'], {
-            marginBottom: 2,
-            marginTop: 2,
-          }),
-          dimensions.width,
-        )}
-      >
-        {/* Card */}
-        <View
-          style={StyleSheet.applyWidth(
-            {
-              borderBottomWidth: 1,
-              borderColor: theme.colors['Secondary'],
-              borderLeftWidth: 1,
-              borderRightWidth: 1,
-              borderTopWidth: 1,
-              paddingLeft: 4,
-            },
-            dimensions.width,
-          )}
+      {/* Bakarr View */}
+      <View style={StyleSheet.applyWidth({ flexDirection: 'column' }, dimensions.width)}>
+        <PagalFanBEApi.FetchFetchNextBakarrSessionGET
+          onData={(fetchData) => {
+            try {
+              const isLive = isDatetimeInRange(
+                fetchData && fetchData[0]?.session_start,
+                fetchData && fetchData[0]?.session_end,
+              )
+              setIsSessionLive(isLive)
+            } catch (err) {
+              console.error(err)
+            }
+          }}
         >
-          {/* Bakarr View */}
-          <View style={StyleSheet.applyWidth({ flexDirection: 'column' }, dimensions.width)}>
-            <PagalFanBEApi.FetchFetchNextBakarrSessionGET
-              onData={(fetchData) => {
-                try {
-                  const isLive = isDatetimeInRange(
-                    fetchData && fetchData[0]?.session_start,
-                    fetchData && fetchData[0]?.session_end,
-                  )
-                  setIsSessionLive(isLive)
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
-            >
-              {({ loading, error, data }) => {
-                const fetchData = data
-                if (!fetchData || loading) {
-                  return <ActivityIndicator />
-                }
+          {({ loading, error, data }) => {
+            const fetchData = data
+            if (!fetchData || loading) {
+              return <BakarLoader />
+            }
 
-                if (error) {
-                  return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                }
+            if (error) {
+              return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+            }
 
-                return (
-                  <>
-                    {/* LiveBadge */}
-                    <>
-                      {!isSessionLive ? null : (
-                        <View
-                          style={StyleSheet.applyWidth(
-                            {
-                              alignItems: 'center',
-                              backgroundColor: theme.colors['PF-Primary'],
-                              flexDirection: 'row',
-                              paddingLeft: 2,
-                              paddingRight: 2,
-                              width: 80,
-                            },
-                            dimensions.width,
-                          )}
-                        >
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                color: theme.colors['PF-BG'],
-                                fontFamily: 'Inter_600SemiBold',
-                                fontSize: 10,
-                              }),
-                              dimensions.width,
-                            )}
-                          >
-                            {'LIVE NOW'}
-                          </Text>
-                          <Icon
-                            style={StyleSheet.applyWidth({ marginLeft: 4 }, dimensions.width)}
-                            name={'Feather/radio'}
-                            size={20}
-                            color={theme.colors['PF-BG']}
-                          />
-                        </View>
+            return (
+              <View
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.ViewStyles(theme)['BakarrHeader'], {
+                    marginVertical: 2,
+                    borderColor: theme.colors['Secondary'],
+                    borderWidth: 1,
+                    padding: 5,
+                  }),
+                  dimensions.width,
+                )}
+              >
+                {/* LiveBadge */}
+                <>
+                  {!isSessionLive ? null : (
+                    <View
+                      style={StyleSheet.applyWidth(
+                        {
+                          alignItems: 'center',
+                          backgroundColor: theme.colors['PF-Primary'],
+                          flexDirection: 'row',
+                          paddingLeft: 2,
+                          paddingRight: 2,
+                          width: 80,
+                        },
+                        dimensions.width,
                       )}
-                    </>
-                    {/* Details */}
-                    <View style={StyleSheet.applyWidth({ flexDirection: 'row' }, dimensions.width)}>
-                      <Image
+                    >
+                      <Text
                         style={StyleSheet.applyWidth(
-                          StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                            borderRadius: 20,
-                            height: 80,
-                            marginRight: 10,
-                            width: 80,
+                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                            color: theme.colors['PF-BG'],
+                            fontFamily: 'Inter_600SemiBold',
+                            fontSize: 10,
                           }),
                           dimensions.width,
                         )}
-                        resizeMode={'cover'}
-                        source={Images.Mic1}
+                      >
+                        {'LIVE NOW'}
+                      </Text>
+                      <Icon
+                        style={StyleSheet.applyWidth({ marginLeft: 4 }, dimensions.width)}
+                        name={'Feather/radio'}
+                        size={20}
+                        color={theme.colors['PF-BG']}
                       />
-                      {/* CardRight */}
+                    </View>
+                  )}
+                </>
+                {/* Details */}
+                <View style={StyleSheet.applyWidth({ flexDirection: 'row' }, dimensions.width)}>
+                  <Image
+                    style={StyleSheet.applyWidth(
+                      StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                        borderRadius: 20,
+                        height: 80,
+                        marginRight: 10,
+                        width: 80,
+                      }),
+                      dimensions.width,
+                    )}
+                    resizeMode={'cover'}
+                    source={Images.Mic1}
+                  />
+                  {/* CardRight */}
+                  <View
+                    style={StyleSheet.applyWidth(
+                      {
+                        alignItems: 'flex-start',
+                        flexWrap: 'nowrap',
+                        marginLeft: 8,
+                      },
+                      dimensions.width,
+                    )}
+                  >
+                    {/* Header */}
+                    <View
+                      style={StyleSheet.applyWidth({ alignItems: 'center', flexDirection: 'row' }, dimensions.width)}
+                    >
+                      <Text
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                            color: theme.colors['Secondary'],
+                            fontFamily: 'Rubik_600SemiBold',
+                            fontSize: 12,
+                            marginRight: 4,
+                          }),
+                          dimensions.width,
+                        )}
+                      >
+                        {'Match BAKARR'}
+                      </Text>
+                      {/* Time */}
+                      <Text
+                        style={StyleSheet.applyWidth(
+                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                            color: theme.colors['PF-Grey'],
+                            fontFamily: 'Rubik_400Regular',
+                            fontSize: 10,
+                          }),
+                          dimensions.width,
+                        )}
+                      >
+                        {' '}
+                        {convertUTCtoIST(fetchData && fetchData[0]?.session_start)}{' '}
+                      </Text>
+                    </View>
+                    {/* Title */}
+                    <Text
+                      style={StyleSheet.applyWidth(
+                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                          color: theme.colors['PF-Primary'],
+                          fontFamily: 'Rubik_400Regular',
+                          fontSize: 10,
+                          marginBottom: 4,
+                        }),
+                        dimensions.width,
+                      )}
+                    >
+                      {fetchData && fetchData[0]?.session_title}
+                    </Text>
+
+                    <Text
+                      style={StyleSheet.applyWidth(
+                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                          fontFamily: 'Rubik_400Regular',
+                          fontSize: 10,
+                          marginBottom: 4,
+                        }),
+                        dimensions.width,
+                      )}
+                    >
+                      {'Hear celebrities and fans speak, and assert your \nviews - in the PagalFan audio chatroom!!'}
+                    </Text>
+
+                    <Pressable
+                      onPress={() => {
+                        try {
+                          setShowBakarrPopup(true)
+                        } catch (err) {
+                          console.error(err)
+                        }
+                      }}
+                      style={StyleSheet.applyWidth({ height: 25, marginRight: 40, width: '100%' }, dimensions.width)}
+                    >
                       <View
                         style={StyleSheet.applyWidth(
                           {
-                            alignItems: 'flex-start',
-                            flexWrap: 'nowrap',
-                            marginLeft: 8,
+                            alignContent: 'flex-start',
+                            alignItems: 'center',
+                            backgroundColor: theme.colors['Secondary'],
+                            borderRadius: 20,
+                            height: 22,
+                            justifyContent: 'center',
+                            marginTop: 2,
+                            width: 125,
                           },
                           dimensions.width,
                         )}
                       >
-                        {/* Header */}
-                        <View
-                          style={StyleSheet.applyWidth(
-                            { alignItems: 'center', flexDirection: 'row' },
-                            dimensions.width,
-                          )}
-                        >
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                color: theme.colors['Secondary'],
-                                fontFamily: 'Rubik_600SemiBold',
-                                fontSize: 12,
-                                marginRight: 4,
-                              }),
-                              dimensions.width,
-                            )}
-                          >
-                            {'Match BAKARR'}
-                          </Text>
-                          {/* Time */}
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                color: theme.colors['PF-Grey'],
-                                fontFamily: 'Rubik_400Regular',
-                                fontSize: 10,
-                              }),
-                              dimensions.width,
-                            )}
-                          >
-                            {' '}
-                            {convertUTCtoIST(fetchData && fetchData[0]?.session_start)}{' '}
-                          </Text>
-                        </View>
-                        {/* Title */}
                         <Text
                           style={StyleSheet.applyWidth(
                             StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                              color: theme.colors['PF-Primary'],
-                              fontFamily: 'Rubik_400Regular',
-                              fontSize: 10,
-                              marginBottom: 4,
+                              color: theme.colors['PF-BG'],
+                              fontFamily: 'Montserrat_700Bold',
+                              fontSize: 12,
                             }),
                             dimensions.width,
                           )}
                         >
-                          {fetchData && fetchData[0]?.session_title}
+                          {'DIVE IN 👋'}
                         </Text>
-
-                        <Text
-                          style={StyleSheet.applyWidth(
-                            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                              fontFamily: 'Rubik_400Regular',
-                              fontSize: 10,
-                              marginBottom: 4,
-                            }),
-                            dimensions.width,
-                          )}
-                        >
-                          {
-                            'Hear celebrities and fans speak, and assert your \nviews - in the PagalFan audio chatroom!!'
-                          }
-                        </Text>
-
-                        <Pressable
-                          onPress={() => {
-                            try {
-                              setShowBakarrPopup(true)
-                            } catch (err) {
-                              console.error(err)
-                            }
-                          }}
-                          style={StyleSheet.applyWidth(
-                            { height: 25, marginRight: 40, width: '100%' },
-                            dimensions.width,
-                          )}
-                        >
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignContent: 'flex-start',
-                                alignItems: 'center',
-                                backgroundColor: theme.colors['Secondary'],
-                                borderRadius: 20,
-                                height: 22,
-                                justifyContent: 'center',
-                                marginTop: 2,
-                                width: 125,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            <Text
-                              style={StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                  color: theme.colors['PF-BG'],
-                                  fontFamily: 'Montserrat_700Bold',
-                                  fontSize: 12,
-                                }),
-                                dimensions.width,
-                              )}
-                            >
-                              {'DIVE IN 👋'}
-                            </Text>
-                          </View>
-                        </Pressable>
                       </View>
-                    </View>
-                  </>
-                )
-              }}
-            </PagalFanBEApi.FetchFetchNextBakarrSessionGET>
-          </View>
-        </View>
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            )
+          }}
+        </PagalFanBEApi.FetchFetchNextBakarrSessionGET>
       </View>
 
       <ScrollView bounces={true} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
@@ -521,7 +498,7 @@ const HomeScreen = (props) => {
             {({ loading, error, data }) => {
               const fetchData = data
               if (!fetchData || loading) {
-                return <ActivityIndicator />
+                return <LiveUpcomingLoader />
               }
 
               if (error) {
@@ -868,7 +845,7 @@ const HomeScreen = (props) => {
             {({ loading, error, data }) => {
               const fetchData = data
               if (!fetchData || loading) {
-                return <ActivityIndicator />
+                return <FanClubLoader />
               }
 
               if (error) {
@@ -967,27 +944,6 @@ const HomeScreen = (props) => {
           )}
           color={theme.colors['PF-Primary']}
         />
-        {/* OPAddPostView */}
-        <>
-          {!Constants['user_can_post'] ? null : (
-            <View style={StyleSheet.applyWidth({ alignItems: 'center', height: 20, zIndex: 1 }, dimensions.width)}>
-              {/* AddPostButton */}
-              <IconButton
-                onPress={() => {
-                  try {
-                    navigation.navigate('CreatePostScreen')
-                  } catch (err) {
-                    console.error(err)
-                  }
-                }}
-                style={StyleSheet.applyWidth({ bottom: -10, position: 'relative' }, dimensions.width)}
-                icon={'MaterialIcons/add-circle'}
-                color={theme.colors['Secondary']}
-                size={50}
-              />
-            </View>
-          )}
-        </>
         {/* Feed */}
         <View style={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}>
           <ScrollView
@@ -1000,7 +956,7 @@ const HomeScreen = (props) => {
               {({ loading, error, data }) => {
                 const fetchData = data
                 if (!fetchData || loading) {
-                  return <ActivityIndicator />
+                  return <FeedLoader />
                 }
 
                 if (error) {
@@ -1164,6 +1120,31 @@ const HomeScreen = (props) => {
           </ScrollView>
         </View>
       </ScrollView>
+      {/* OPAddPostView */}
+      <>
+        {!Constants['user_can_post'] ? null : (
+          <IconButton
+            onPress={() => {
+              try {
+                navigation.navigate('CreatePostScreen')
+              } catch (err) {
+                console.error(err)
+              }
+            }}
+            style={StyleSheet.applyWidth(
+              {
+                bottom: 10,
+                position: 'absolute',
+                alignSelf: 'center',
+              },
+              dimensions.width,
+            )}
+            icon={'MaterialIcons/add-circle'}
+            color={theme.colors['Secondary']}
+            size={50}
+          />
+        )}
+      </>
       {/* BakarrModal */}
       <>
         {!showBakarrPopup ? null : (
@@ -1311,5 +1292,68 @@ const HomeScreen = (props) => {
     </ScreenContainer>
   )
 }
+
+const LiveUpcomingLoader = () => {
+  return (
+    <View style={styles.shimmerContainer}>
+      <ShimmerPlaceHolder style={styles.liveUpcomingShimmer} />
+      <ShimmerPlaceHolder style={styles.liveUpcomingShimmer} />
+    </View>
+  )
+}
+
+const FanClubLoader = () => {
+  return (
+    <View style={styles.shimmerContainer}>
+      <ShimmerPlaceHolder style={styles.fanClubShimmer} />
+      <ShimmerPlaceHolder style={styles.fanClubShimmer} />
+      <ShimmerPlaceHolder style={styles.fanClubShimmer} />
+    </View>
+  )
+}
+
+const FeedLoader = () => {
+  return (
+    <View style={styles.shimmerContainer}>
+      <ShimmerPlaceHolder style={styles.feedShimmer} />
+      <ShimmerPlaceHolder style={styles.feedShimmer} />
+    </View>
+  )
+}
+
+const BakarLoader = () => {
+  return <ShimmerPlaceHolder style={styles.bakarShimmer} />
+}
+
+const styles = RNStyleSheet.create({
+  shimmerContainer: {
+    flexDirection: 'row',
+  },
+  liveUpcomingShimmer: {
+    borderRadius: 12,
+    height: 100,
+    marginRight: 14,
+    width: 160,
+  },
+  fanClubShimmer: {
+    marginRight: 14,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+  },
+  feedShimmer: {
+    borderRadius: 12,
+    margin: 2,
+    marginBottom: 10,
+    height: 100,
+    width: '49%',
+  },
+  bakarShimmer: {
+    height: 100,
+    width: '100%',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+})
 
 export default withTheme(HomeScreen)

@@ -1005,7 +1005,7 @@ const Page4 = ({formData,setFormData}) =>{
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
-      axios.post('http://localhost:7000/hostel/registration', formData)
+      axios.post('http://localhost:7000/student/registration', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -1046,6 +1046,7 @@ const Page4 = ({formData,setFormData}) =>{
       aadhar_file: file
     }));
   };
+
 
   return (
     <div className="flex bg-defaultBg" >
@@ -1180,7 +1181,7 @@ const Page4 = ({formData,setFormData}) =>{
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Account Number**</div>
                     <input
-                      type="Number"
+                      type="number"
                       id="account_number"
                       name="account_number"
                       value={formData.account_number}

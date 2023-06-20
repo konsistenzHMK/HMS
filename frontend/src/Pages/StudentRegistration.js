@@ -1259,7 +1259,7 @@ const StudentRegistartion = () =>{
     teacher_email:'',
     collage_name:'',
     principle_name:'',
-    class:'',
+    classs:'',
     result:'',
     religon:'',
     category:'',
@@ -1268,7 +1268,6 @@ const StudentRegistartion = () =>{
     quota:'',
     photo_file:null,
     aadhar_file:null,
-    // Bank Details
     account_holder_name:'',
     bank_name:'',
     ifsc:'',

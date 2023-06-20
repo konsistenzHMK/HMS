@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios, { all } from 'axios';
+import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const TowerRegistartion = () =>{
-
+const Page1 = ({ formData, setFormData, nextPage }) =>{
   const [State,changeState]=useState('');
   const [allRegion,changeAllRegion]=useState([]);
   const [region,ChangeRegion]=useState('');
   const [allDistrict,changeAllDistrict]=useState([]);
   const [District,changeDistrict]=useState('');
   const [City,changeCity]=useState('');
-
   const handleChangeDistrict = (event) =>{
     changeDistrict(event.target.value);
     setFormData((prevData) => ({
@@ -81,59 +80,6 @@ const TowerRegistartion = () =>{
     }
   };
 
-
-  const [formData, setFormData] = useState({
-    first_name: '',
-    last_name:'',
-    father_name:'',
-    mother_name:'',
-    address_type:'',
-    address1:'',
-    address2:'',
-    country:'India',
-    state:'',
-    region:'',
-    district:'',
-    city:'',
-    pincode:'',
-    gender:'',
-    aadhar_id:'',
-    dob:null,
-    height:Number,
-    weight:Number,
-    blood_group:'',
-    medical_history:'',
-    medicine_taken:'',
-    birth_mark:'',
-    handicapped:'',
-    handicapped_per:Number,
-    handicapped_type:String,
-    orphan:Boolean,
-    personal_mobile:Number,
-    parent_mobile:Number,
-    teacher_mobile:Number,
-    emergency_number:Number,
-    personal_email:'',
-    parent_email:'',
-    teacher_email:'',
-    collage_name:'',
-    principle_name:'',
-    class:'',
-    result:'',
-    religon:'',
-    category:'',
-    subCategory:'',
-    income:'',
-    quota:'',
-    photo_file:null,
-    aadhar_file:null,
-    // Bank Details
-    account_holder_name:'',
-    bank_name:'',
-    ifsc:'',
-    account_number:Number
-  });
-
   const [errors, setErrors] = useState({});
   
   const handleChange = (e) => {
@@ -142,31 +88,6 @@ const TowerRegistartion = () =>{
       ...prevData,
       [name]: value
     }));
-  };
-
-  
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formErrors = validateForm();
-    if (Object.keys(formErrors).length === 0) {
-      console.log('Form submitted successfully!');
-      axios.post('http://localhost:7000/hostel/registration', formData)
-      .then((response) => {
-        // alert
-        console.log('API response:', response.data);
-        alert(response.data);
-      })
-      .catch((error) => {
-        console.error('API request error:', error);
-      });
-      // setFormData({
-      // });
-      setErrors({});
-    } else {
-      console.log("error");
-      setErrors(formErrors);
-    }
   };
 
   const validateForm = () => {
@@ -193,51 +114,12 @@ const TowerRegistartion = () =>{
       ...prevData,
       address_type: event.target.value
     }));
-  } 
-  const changeBloodGroup =(event) =>{
-    setFormData((prevData) => ({
-      ...prevData,
-      blood_group: event.target.value
-    }));
-  }
-  const changeHandicappStatus =(event) =>{
-    setFormData((prevData) => ({
-      ...prevData,
-      handicapped: event.target.value
-    }));
-  }
-  const changeHandicappType =(event) =>{
-    setFormData((prevData) => ({
-      ...prevData,
-      handicapped_type: event.target.value
-    }));
-  }
-  const changeOrphan =(event) =>{
-    setFormData((prevData) => ({
-      ...prevData,
-      orphan: event.target.value
-    }));
   }
 
-
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    
-    setFormData((prevData) => ({
-      ...prevData,
-      photo_file: file
-    }));
-  };
-
-
-  const handleAadharChange = (e) => {
-    const file = e.target.files[0];
-    
-    setFormData((prevData) => ({
-      ...prevData,
-      aadhar_file: file
-    }));
-  };
+  const handleNextPage =(e) =>{
+    e.preventDefault();
+    nextPage();
+  }
 
   return (
     <div className="flex bg-defaultBg" >
@@ -248,7 +130,7 @@ const TowerRegistartion = () =>{
 
       {/* Main Content */}
       <div className="w-5/6 h-full">
-      <form onSubmit={handleSubmit}>
+      <form >
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
           <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
@@ -525,7 +407,102 @@ const TowerRegistartion = () =>{
                 </div>
                 </div> 
               </div>
-              
+            {/* end */}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer - Logo + Submit button*/}
+        <div className='w-full h-52 flex items-center justify-center bg-defaultBg'>
+          <div className='w-11/12 h-4/5 flex items-center justify-center bg-defaultBg'>
+            <div className='w-11/12 h-1/2 flex justify-between'>
+              <div className='w-auto flex flex-col justify-center items-start'>
+                {/* Logo */}
+                <div className='text-sky-950 text-3xl font-bold font-sans'>Hostel Management System 🎉</div>
+                <div className='text-orange-600 text-2xl font-semibold'>Student Registration Form ✨</div>
+              </div>
+              <div className='w-1/4 flex flex-col justify-center'>
+                <button onClick={handleNextPage} className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
+                  Next Page
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+    </div>
+
+  );
+};
+const Page2 = ({formData,setFormData,nextPage,previousPage}) =>{
+  const [errors, setErrors] = useState({});
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+   
+  const changeBloodGroup =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      blood_group: event.target.value
+    }));
+  }
+  const changeHandicappStatus =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      handicapped: event.target.value
+    }));
+  }
+  const changeHandicappType =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      handicapped_type: event.target.value
+    }));
+  }
+  const changeOrphan =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      orphan: event.target.value
+    }));
+  }
+
+  const handleNextPage =(e) =>{
+    e.preventDefault();
+    nextPage();
+  }
+
+  const handlePrevPage =(e) =>{
+    e.preventDefault();
+    previousPage();
+  }
+  return (
+    <div className="flex bg-defaultBg" >
+      {/* Side Navbar */}
+      <div className="w-1/6 bg-accent">
+
+      </div>
+
+      {/* Main Content */}
+      <div className="w-5/6 h-full">
+      <form>
+        {/* Header */}
+        <div className='w-full bg-defaultBg h-36 flex '>
+          <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
+            <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
+            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Student Registration Form</p>
+          </div>
+        </div>
+
+        {/* Form Data */}
+        <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
+          <div className="bg-white w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
+            <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
             <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
                 <p className=' font-popins'>Medical History </p>
             </div>
@@ -690,6 +667,91 @@ const TowerRegistartion = () =>{
                 </div>
                 </div> 
               </div>
+            {/* end */}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer - Logo + Submit button*/}
+        <div className='w-full h-52 flex items-center justify-center bg-defaultBg'>
+          <div className='w-11/12 h-4/5 flex items-center justify-center bg-defaultBg'>
+            <div className='w-11/12 h-1/2 flex justify-between'>
+              <div className='w-auto flex flex-col justify-center items-start'>
+                {/* Logo */}
+                <div className='text-sky-950 text-3xl font-bold font-sans'>Hostel Management System 🎉</div>
+                <div className='text-orange-600 text-2xl font-semibold'>Student Registration Form ✨</div>
+              </div>
+              <div className='w-1/4 flex flex-col justify-center'>
+                <button onClick={handleNextPage} className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
+                  Next Page
+                </button>
+                <button onClick={handlePrevPage} className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
+                  Previous Page 
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+      </div>
+    </div>
+
+  );
+};
+
+const Page3 = ({formData,setFormData,nextPage,previousPage}) =>{
+  const [errors, setErrors] = useState({});
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const handleNextPage =(e) =>{
+    e.preventDefault();
+    nextPage();
+  }
+
+  const handlePrevPage =(e) =>{
+    e.preventDefault();
+    previousPage();
+  }
+
+
+
+  const validateForm = () => {
+    const errors = {};
+    return {};
+  };
+
+
+  return (
+    <div className="flex bg-defaultBg" >
+      {/* Side Navbar */}
+      <div className="w-1/6 bg-accent">
+
+      </div>
+
+      {/* Main Content */}
+      <div className="w-5/6 h-full">
+      <form>
+        {/* Header */}
+        <div className='w-full bg-defaultBg h-36 flex '>
+          <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
+            <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
+            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Student Registration Form</p>
+          </div>
+        </div>
+
+        {/* Form Data */}
+        <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
+          <div className="bg-white w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
+            <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
+              {/* 1 --> Basic Details */}
+              
 
               <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
                 <p className=' font-popins'>Contact details </p>
@@ -893,7 +955,120 @@ const TowerRegistartion = () =>{
                 </div>
                 </div>
               </div>
+            {/* end */}
+            </div>
+          </div>
+        </div>
 
+        {/* Footer - Logo + Submit button*/}
+        <div className='w-full h-52 flex items-center justify-center bg-defaultBg'>
+          <div className='w-11/12 h-4/5 flex items-center justify-center bg-defaultBg'>
+            <div className='w-11/12 h-1/2 flex justify-between'>
+              <div className='w-auto flex flex-col justify-center items-start'>
+                {/* Logo */}
+                <div className='text-sky-950 text-3xl font-bold font-sans'>Hostel Management System 🎉</div>
+                <div className='text-orange-600 text-2xl font-semibold'>Student Registration Form ✨</div>
+              </div>
+              <div className='w-1/4 flex flex-col justify-center'>
+                <button onClick={handleNextPage} className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
+                  Next Page
+                </button>
+                <button onClick={handlePrevPage} className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
+                  Previous Page 
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+      </div>
+    </div>
+
+  );
+};
+
+const Page4 = ({formData,setFormData}) =>{
+  const [errors, setErrors] = useState({});
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form submitted successfully!');
+      axios.post('http://localhost:7000/hostel/registration', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      // setFormData({
+      // });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    return {};
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    
+    setFormData((prevData) => ({
+      ...prevData,
+      photo_file: file
+    }));
+  };
+
+
+  const handleAadharChange = (e) => {
+    const file = e.target.files[0];
+    
+    setFormData((prevData) => ({
+      ...prevData,
+      aadhar_file: file
+    }));
+  };
+
+  return (
+    <div className="flex bg-defaultBg" >
+      {/* Side Navbar */}
+      <div className="w-1/6 bg-accent">
+
+      </div>
+
+      {/* Main Content */}
+      <div className="w-5/6 h-full">
+      <form onSubmit={handleSubmit}>
+        {/* Header */}
+        <div className='w-full bg-defaultBg h-36 flex '>
+          <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
+            <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
+            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Student Registration Form</p>
+          </div>
+        </div>
+
+        {/* Form Data */}
+        <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
+          <div className="bg-white w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
+            <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
               <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
                 <p className=' font-popins'>Attachments </p>
               </div>
@@ -918,7 +1093,7 @@ const TowerRegistartion = () =>{
                       type="file" 
                       id="photo" 
                       accept=".pdf"
-                      onChange={handlePhotoChange}
+                      onChange={handleAadharChange}
                       className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                     />
                     {errors.aadhar_file && <span className="error">{errors.aadhar_file}</span>}
@@ -1047,4 +1222,85 @@ const TowerRegistartion = () =>{
   );
 };
 
-export default TowerRegistartion;
+const StudentRegistartion = () =>{
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name:'',
+    father_name:'',
+    mother_name:'',
+    address_type:'',
+    address1:'',
+    address2:'',
+    country:'India',
+    state:'',
+    region:'',
+    district:'',
+    city:'',
+    pincode:'',
+    gender:'',
+    aadhar_id:'',
+    dob:null,
+    height:Number,
+    weight:Number,
+    blood_group:'',
+    medical_history:'',
+    medicine_taken:'',
+    birth_mark:'',
+    handicapped:'',
+    handicapped_per:Number,
+    handicapped_type:String,
+    orphan:Boolean,
+    personal_mobile:Number,
+    parent_mobile:Number,
+    teacher_mobile:Number,
+    emergency_number:Number,
+    personal_email:'',
+    parent_email:'',
+    teacher_email:'',
+    collage_name:'',
+    principle_name:'',
+    class:'',
+    result:'',
+    religon:'',
+    category:'',
+    subCategory:'',
+    income:'',
+    quota:'',
+    photo_file:null,
+    aadhar_file:null,
+    // Bank Details
+    account_holder_name:'',
+    bank_name:'',
+    ifsc:'',
+    account_number:Number
+  });
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const previousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  return (
+    <>
+      {currentPage === 1 && (
+        <Page1 formData={formData} setFormData={setFormData} nextPage={nextPage} />
+      )}
+      {currentPage === 2 && (
+        <Page2 formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
+      )}
+      {currentPage === 3 && (
+        <Page3 formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
+      )}
+      {currentPage === 4 && (
+        <Page4 formData={formData} setFormData={setFormData} />
+      )}
+    </>
+    
+  );
+}
+export default StudentRegistartion;

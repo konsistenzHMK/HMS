@@ -667,186 +667,7 @@ const PostDetailsScreen = (props) => {
                           </View>
                           {/* CommentsFrame */}
                           <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1 }, dimensions.width)}>
-                            <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
-                              {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
-                                const fetchData = data
-                                if (!fetchData || loading) {
-                                  return <ActivityIndicator />
-                                }
-
-                                if (error) {
-                                  return (
-                                    <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                                  )
-                                }
-
-                                return (
-                                  <FlatList
-                                    data={fetchData}
-                                    listKey={JSON.stringify(fetchData)}
-                                    keyExtractor={(listData) =>
-                                      listData?.id || listData?.uuid || JSON.stringify(listData)
-                                    }
-                                    renderItem={({ item }) => {
-                                      const listData = item
-                                      return (
-                                        <>
-                                          {/* Record Frame */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              { flexGrow: 0, flexShrink: 0 },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Message Frame */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  flexDirection: 'row',
-                                                  flexGrow: 1,
-                                                  flexShrink: 0,
-                                                  paddingTop: 10,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Left Side Frame */}
-                                              <View>
-                                                {/* Flex Frame for Touchable */}
-                                                <View>
-                                                  <Pressable
-                                                    onPress={() => {
-                                                      try {
-                                                        if (
-                                                          listData?.user_profiles?.user_id !==
-                                                          Constants['LOGGED_IN_USER']
-                                                        ) {
-                                                          navigation.navigate('OthersProfileScreen', {
-                                                            userid: listData?.user_profiles?.user_id,
-                                                          })
-                                                        }
-                                                        if (
-                                                          listData?.user_profiles?.user_id ===
-                                                          Constants['LOGGED_IN_USER']
-                                                        ) {
-                                                          navigation.navigate('Tabs', {
-                                                            screen: 'MyProfileScreen',
-                                                          })
-                                                        }
-                                                      } catch (err) {
-                                                        console.error(err)
-                                                      }
-                                                    }}
-                                                  >
-                                                    {/* Commenter Image */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          flexGrow: 1,
-                                                          flexShrink: 0,
-                                                          paddingBottom: 12,
-                                                          paddingLeft: 12,
-                                                          paddingRight: 6,
-                                                          paddingTop: 18,
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {listData?.user_profiles?.profile_image && (
-                                                        <CircleImage
-                                                          size={36}
-                                                          source={{
-                                                            uri: `${listData.user_profiles.profile_image}`,
-                                                          }}
-                                                        />
-                                                      )}
-                                                    </View>
-                                                  </Pressable>
-                                                </View>
-                                              </View>
-                                              {/* Commenter Details */}
-                                              <View
-                                                style={StyleSheet.applyWidth(
-                                                  {
-                                                    flexGrow: 1,
-                                                    flexShrink: 0,
-                                                    justifyContent: 'center',
-                                                    marginLeft: 12,
-                                                  },
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {/* Data Frame */}
-                                                <View>
-                                                  {/* NameandTimeago */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        alignItems: 'center',
-                                                        flexDirection: 'row',
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    {/* Commenter Name */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          color: theme.colors.communityDarkUI,
-                                                          fontFamily: 'Inter_600SemiBold',
-                                                          fontSize: 13,
-                                                          lineHeight: 19,
-                                                          marginRight: 10,
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {listData?.user_profiles?.first_name}
-                                                    </Text>
-                                                    {/* TimeAgo */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          color: theme.colors['PF-Grey'],
-                                                          fontFamily: 'System',
-                                                          fontSize: 10,
-                                                          fontWeight: '200',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {TimeAgo(listData?.created_at)}
-                                                    </Text>
-                                                  </View>
-                                                  {/* Comment */}
-                                                  <Text
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        color: theme.colors.communityTrueOption,
-                                                        fontFamily: 'Inter_400Regular',
-                                                        fontSize: 11,
-                                                        lineHeight: 17,
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    {listData?.comment}
-                                                  </Text>
-                                                </View>
-                                              </View>
-                                            </View>
-                                          </View>
-                                        </>
-                                      )
-                                    }}
-                                    numColumns={1}
-                                  />
-                                )
-                              }}
-                            </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
-                          </View>
-                        </ScrollView>
-                        {/* Keyboard Component Frame */}
+                       {/* Keyboard Component Frame */}
                         <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
                           {/* Emoticons Frame */}
                           <View
@@ -1069,6 +890,186 @@ const PostDetailsScreen = (props) => {
                             </View>
                           </View>
                         </View>
+                                    
+                            <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
+                              {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
+                                const fetchData = data
+                                if (!fetchData || loading) {
+                                  return <ActivityIndicator />
+                                }
+
+                                if (error) {
+                                  return (
+                                    <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                                  )
+                                }
+
+                                return (
+                                  <FlatList
+                                    data={fetchData}
+                                    listKey={JSON.stringify(fetchData)}
+                                    keyExtractor={(listData) =>
+                                      listData?.id || listData?.uuid || JSON.stringify(listData)
+                                    }
+                                    renderItem={({ item }) => {
+                                      const listData = item
+                                      return (
+                                        <>
+                                          {/* Record Frame */}
+                                          <View
+                                            style={StyleSheet.applyWidth(
+                                              { flexGrow: 0, flexShrink: 0 },
+                                              dimensions.width,
+                                            )}
+                                          >
+                                            {/* Message Frame */}
+                                            <View
+                                              style={StyleSheet.applyWidth(
+                                                {
+                                                  flexDirection: 'row',
+                                                  flexGrow: 1,
+                                                  flexShrink: 0,
+                                                  paddingTop: 10,
+                                                },
+                                                dimensions.width,
+                                              )}
+                                            >
+                                              {/* Left Side Frame */}
+                                              <View>
+                                                {/* Flex Frame for Touchable */}
+                                                <View>
+                                                  <Pressable
+                                                    onPress={() => {
+                                                      try {
+                                                        if (
+                                                          listData?.user_profiles?.user_id !==
+                                                          Constants['LOGGED_IN_USER']
+                                                        ) {
+                                                          navigation.navigate('OthersProfileScreen', {
+                                                            userid: listData?.user_profiles?.user_id,
+                                                          })
+                                                        }
+                                                        if (
+                                                          listData?.user_profiles?.user_id ===
+                                                          Constants['LOGGED_IN_USER']
+                                                        ) {
+                                                          navigation.navigate('Tabs', {
+                                                            screen: 'MyProfileScreen',
+                                                          })
+                                                        }
+                                                      } catch (err) {
+                                                        console.error(err)
+                                                      }
+                                                    }}
+                                                  >
+                                                    {/* Commenter Image */}
+                                                    <View
+                                                      style={StyleSheet.applyWidth(
+                                                        {
+                                                          flexGrow: 1,
+                                                          flexShrink: 0,
+                                                          paddingBottom: 12,
+                                                          paddingLeft: 12,
+                                                          paddingRight: 6,
+                                                          paddingTop: 18,
+                                                        },
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {listData?.user_profiles?.profile_image && (
+                                                        <CircleImage
+                                                          size={36}
+                                                          source={{
+                                                            uri: `${listData.user_profiles.profile_image}`,
+                                                          }}
+                                                        />
+                                                      )}
+                                                    </View>
+                                                  </Pressable>
+                                                </View>
+                                              </View>
+                                              {/* Commenter Details */}
+                                              <View
+                                                style={StyleSheet.applyWidth(
+                                                  {
+                                                    flexGrow: 1,
+                                                    flexShrink: 0,
+                                                    justifyContent: 'center',
+                                                    marginLeft: 12,
+                                                  },
+                                                  dimensions.width,
+                                                )}
+                                              >
+                                                {/* Data Frame */}
+                                                <View>
+                                                  {/* NameandTimeago */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        alignItems: 'center',
+                                                        flexDirection: 'row',
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Commenter Name */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        {
+                                                          color: theme.colors.communityDarkUI,
+                                                          fontFamily: 'Inter_600SemiBold',
+                                                          fontSize: 13,
+                                                          lineHeight: 19,
+                                                          marginRight: 10,
+                                                        },
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {listData?.user_profiles?.first_name}
+                                                    </Text>
+                                                    {/* TimeAgo */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          color: theme.colors['PF-Grey'],
+                                                          fontFamily: 'System',
+                                                          fontSize: 10,
+                                                          fontWeight: '200',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {TimeAgo(listData?.created_at)}
+                                                    </Text>
+                                                  </View>
+                                                  {/* Comment */}
+                                                  <Text
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        color: theme.colors.communityTrueOption,
+                                                        fontFamily: 'Inter_400Regular',
+                                                        fontSize: 11,
+                                                        lineHeight: 17,
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {listData?.comment}
+                                                  </Text>
+                                                </View>
+                                              </View>
+                                            </View>
+                                          </View>
+                                        </>
+                                      )
+                                    }}
+                                    numColumns={1}
+                                  />
+                                )
+                              }}
+                            </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
+                          </View>
+                        </ScrollView>
                       </>
                     )
                   }}

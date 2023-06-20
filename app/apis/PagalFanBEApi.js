@@ -893,7 +893,7 @@ export const fetchAllCommentsForAMatchGETStatusAndText = (Constants, { id }) =>
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_comments?match_id=eq.${
       id ?? ''
-    }&select=*,user_profiles(first_name,last_name,profile_image)`,
+    }&order=created_at.desc&select=*,user_profiles(first_name,last_name,profile_image)`,
     {
       headers: {
         Accept: 'application/json',
@@ -960,7 +960,7 @@ export const FetchFetchAllCommentsForAMatchGET = ({ children, onData = () => {},
 
 export const fetchAllCommentsForAPostGETStatusAndText = (Constants, { id }) =>
   fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_comments?post_id=eq.${id ?? ''}&select=*,user_profiles(*)`,
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_comments?post_id=eq.${id ?? ''}&order=created_at.desc&select=*,user_profiles(*)`,
     {
       headers: {
         Accept: 'application/json',

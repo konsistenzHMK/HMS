@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios, { all } from 'axios';
-import Dropdown from 'react-dropdown';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const TowerRegistartion = () =>{
-  const [category1, setCategory1] = useState('');
-  const [category2, setCategory2] = useState('');
-  const [category3, setCategory3] = useState('');
-  const [messType, setMessType] = useState('');
 
   const [State,changeState]=useState('');
   const [allRegion,changeAllRegion]=useState([]);
@@ -83,34 +80,6 @@ const TowerRegistartion = () =>{
       alert(err);
     }
   };
-  const handleDropdownCat1 = (event) => {
-    setCategory1(event.target.value);
-    setFormData((prevData) => ({
-      ...prevData,
-      categ1: event.target.value
-    }));
-  };
-  const handleDropdownCat2 = (event) => {
-    setCategory2(event.target.value);
-    setFormData((prevData) => ({
-      ...prevData,
-      categ2: event.target.value
-    }));
-  };
-  const handleDropdownCat3 = (event) => {
-    setCategory3(event.target.value);
-    setFormData((prevData) => ({
-      ...prevData,
-      categ3: event.target.value
-    }));
-  };
-  const handleDropdownMessType = (event) => {
-    setMessType(event.target.value);
-    setFormData((prevData) => ({
-      ...prevData,
-      mess: event.target.value
-    }));
-  };
 
 
   const [formData, setFormData] = useState({
@@ -129,15 +98,16 @@ const TowerRegistartion = () =>{
     pincode:'',
     gender:'',
     aadhar_id:'',
-    dob:'',
+    dob:null,
     height:Number,
     weight:Number,
     blood_group:'',
-    medicle_history:'',
+    medical_history:'',
     medicine_taken:'',
     birth_mark:'',
-    handicapped:Boolean,
+    handicapped:'',
     handicapped_per:Number,
+    handicapped_type:String,
     orphan:Boolean,
     personal_mobile:Number,
     parent_mobile:Number,
@@ -155,8 +125,13 @@ const TowerRegistartion = () =>{
     subCategory:'',
     income:'',
     quota:'',
-    // attchments
+    photo_file:null,
+    aadhar_file:null,
     // Bank Details
+    account_holder_name:'',
+    bank_name:'',
+    ifsc:'',
+    account_number:Number
   });
 
   const [errors, setErrors] = useState({});
@@ -168,6 +143,8 @@ const TowerRegistartion = () =>{
       [name]: value
     }));
   };
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -195,6 +172,71 @@ const TowerRegistartion = () =>{
   const validateForm = () => {
     const errors = {};
     return {};
+  };
+
+  const changeDate = date  =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      dob: date
+    }));
+  }
+
+  const changeGender = event  =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      gender: event.target.value
+    }));
+  }
+
+  const changeAddress =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      address_type: event.target.value
+    }));
+  } 
+  const changeBloodGroup =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      blood_group: event.target.value
+    }));
+  }
+  const changeHandicappStatus =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      handicapped: event.target.value
+    }));
+  }
+  const changeHandicappType =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      handicapped_type: event.target.value
+    }));
+  }
+  const changeOrphan =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      orphan: event.target.value
+    }));
+  }
+
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    
+    setFormData((prevData) => ({
+      ...prevData,
+      photo_file: file
+    }));
+  };
+
+
+  const handleAadharChange = (e) => {
+    const file = e.target.files[0];
+    
+    setFormData((prevData) => ({
+      ...prevData,
+      aadhar_file: file
+    }));
   };
 
   return (
@@ -229,13 +271,13 @@ const TowerRegistartion = () =>{
                   <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Firstname **</div>
                     <input
                       type="text"
-                      id="address1"
-                      name="address1"
-                      value={formData.address1}
+                      id="first_name"
+                      name="first_name"
+                      value={formData.first_name}
                       onChange={handleChange}
                       className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
-                    {errors.address1 && <span className="error">{errors.address1}</span>}
+                    {errors.first_name && <span className="error">{errors.first_name}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -243,13 +285,13 @@ const TowerRegistartion = () =>{
                   <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Lastname **</div>
                     <input
                       type="text"
-                      id="address2"
-                      name="address2"
-                      value={formData.address2}
+                      id="last_name"
+                      name="last_name"
+                      value={formData.last_name}
                       onChange={handleChange}
                       className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
-                    {errors.address2 && <span className="error">{errors.address2}</span>}
+                    {errors.last_name && <span className="error">{errors.last_name}</span>}
                 </div>
                 </div>
               </div>
@@ -260,13 +302,13 @@ const TowerRegistartion = () =>{
                   <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Father's Name **</div>
                     <input
                       type="text"
-                      id="address1"
-                      name="address1"
-                      value={formData.address1}
+                      id="father_name"
+                      name="father_name"
+                      value={formData.father_name}
                       onChange={handleChange}
                       className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
-                    {errors.address1 && <span className="error">{errors.address1}</span>}
+                    {errors.father_name && <span className="error">{errors.father_name}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -274,9 +316,9 @@ const TowerRegistartion = () =>{
                   <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Mother's Name **</div>
                     <input
                       type="text"
-                      id="address2"
-                      name="address2"
-                      value={formData.address2}
+                      id="mother_name"
+                      name="mother_name"
+                      value={formData.mother_name}
                       onChange={handleChange}
                       className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
                     />
@@ -426,22 +468,556 @@ const TowerRegistartion = () =>{
             <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Address Type **</div>
-                      <select 
+                    <select 
                         className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
-                        value={region} 
-                        onChange={handleChangeRegion}
+                        value={formData.address_type} 
+                        onChange={changeAddress}
                         >
-                        <option value="">Select an option</option>
-                          {allRegion.map((region) => (
-                            <option key={region.value} value={region.value}>
-                              {region.label}
-                            </option>
-                          ))}
+                        <option value="none">Select an option</option>
+                        <option value="Permanent Address">Permanent Address</option>
+                        <option value="Relative Address">Relative Address</option>
+                        <option value="College Address">College Address</option>
+                        <option value="School Address">School Address</option>
                       </select>
-                    {errors.region && <span className="error">{errors.region}</span>}
+                      {errors.mess && <span className="error">{errors.mess}</span>}
+                </div>
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Aadhar Number **</div>
+                    <input
+                      type="Number"
+                      id="aadhar_id"
+                      name="aadhar_id"
+                      value={formData.aadhar_id}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                    />
+                    {errors.pincode && <span className="error">{errors.pincode}</span>}
+                </div>
+                </div> 
+              </div>
+              <div className='w-full h-auto flex justify-between mt-3'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Gender **</div>
+                    <select 
+                        className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                        value={formData.gender} 
+                        onChange={changeGender}
+                        >
+                        <option value="none">Select an option</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="non-binary">Non-Binary</option>
+                      
+                      </select>
+                      {errors.mess && <span className="error">{errors.mess}</span>}
+                </div>
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Date of Birth **</div>
+                    <DatePicker
+                      selected={formData.dob}
+                      onChange={changeDate}
+                      dateFormat="yyyy-MM-dd"
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                    />
+                    {errors.pincode && <span className="error">{errors.pincode}</span>}
+                </div>
+                </div> 
+              </div>
+              
+            <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
+                <p className=' font-popins'>Medical History </p>
+            </div>
+
+            <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Height (in cm)**</div>
+                    <input
+                      type="Number"
+                      id="height"
+                      name="height"
+                      value={formData.height}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.height && <span className="error">{errors.height}</span>}
                 </div>
 
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Weight (in kg) **</div>
+                    <input
+                      type="Number"
+                      id="weight"
+                      name="weight"
+                      value={formData.weight}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.weight && <span className="error">{errors.weight}</span>}
+                </div>
+                </div>
               </div>
+
+              <div className='w-full h-auto flex justify-between mt-3'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Blood Group **</div>
+                    <select
+                        className='overflow-y-scroll max-h-10 w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1 ' 
+                        value={formData.blood_group} 
+                        onChange={changeBloodGroup}
+                        >
+                        <option value="none">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                      </select>
+                      {errors.mess && <span className="error">{errors.mess}</span>}
+                </div>
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="medical_history"> Medical History **</div>
+                    <input
+                      type="text"
+                      id="medical_history"
+                      name="medical_history"
+                      value={formData.medical_history}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.medical_history && <span className="error">{errors.medical_history}</span>}
+                </div>
+                </div> 
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Medicine taken</div>
+                    <input
+                      type="text"
+                      id="medicine_taken"
+                      name="medicine_taken"
+                      value={formData.medicine_taken}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.medicine_taken && <span className="error">{errors.medicine_taken}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Birth Mark</div>
+                    <input
+                      type="text"
+                      id="birth_mark"
+                      name="birth_mark"
+                      value={formData.birth_mark}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.birth_mark && <span className="error">{errors.birth_mark}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-3'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Handicapped **</div>
+                    <select
+                        className='overflow-y-scroll max-h-10 w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1 ' 
+                        value={formData.handicapped} 
+                        onChange={changeHandicappStatus}
+                        >
+                        <option value="none">Handicapped Status</option>
+                        <option value='true'>Yes</option>
+                        <option value='partial'>Partially</option>
+                        <option value='false'>No</option>
+                      </select>
+                      {errors.mess && <span className="error">{errors.mess}</span>}
+                </div>
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="medical_history">Handicapped Percentage**</div>
+                    <input
+                      type="number"
+                      id="handicapped_per"
+                      name="handicapped_per"
+                      value={formData.handicapped_per}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.handicapped_per && <span className="error">{errors.handicapped_per}</span>}
+                </div>
+                </div> 
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-3'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Handicapped Type **</div>
+                    <select
+                        className='overflow-y-scroll max-h-10 w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1 ' 
+                        value={formData.handicapped_type} 
+                        onChange={changeHandicappType}
+                        >
+                        <option value="">Select Handicap Type</option>
+                        <option value="Physical">Physical</option>
+                        <option value="Visual">Visual</option>
+                        <option value="Hearing">Hearing</option>
+                        <option value="Intellectual">Intellectual</option>
+                        <option value="Developmental">Developmental</option>
+                      </select>
+                      {errors.mess && <span className="error">{errors.mess}</span>}
+                </div>
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="medical_history">Orphan**</div>
+                    <select
+                          className='overflow-y-scroll max-h-10 w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1 ' 
+                          value={formData.orphan} 
+                          onChange={changeOrphan}
+                          >
+                          <option value="">Select status </option>
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                        {errors.mess && <span className="error">{errors.mess}</span>}
+                </div>
+                </div> 
+              </div>
+
+              <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
+                <p className=' font-popins'>Contact details </p>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Personal Mobile no **</div>
+                    <input
+                      type="Number"
+                      id="personal_mobile"
+                      name="personal_mobile"
+                      value={formData.personal_mobile}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.personal_mobile && <span className="error">{errors.personal_mobile}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Parents Mobile no **</div>
+                    <input
+                      type="Number"
+                      id="parent_mobile"
+                      name="parent_mobile"
+                      value={formData.parent_mobile}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.parent_mobile && <span className="error">{errors.parent_mobile}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Teacher Mobile no**</div>
+                    <input
+                      type="Number"
+                      id="teacher_mobile"
+                      name="teacher_mobile"
+                      value={formData.teacher_mobile}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.teacher_mobile && <span className="error">{errors.teacher_mobile}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Emergency Contact no**</div>
+                    <input
+                      type="Number"
+                      id="emergency_number"
+                      name="emergency_number"
+                      value={formData.emergency_number}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.weight && <span className="error">{errors.weight}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Personal Email ID**</div>
+                    <input
+                      type="text"
+                      id="personal_email"
+                      name="personal_email"
+                      value={formData.personal_email}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.personal_email && <span className="error">{errors.personal_email}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Parents Email ID**</div>
+                    <input
+                      type="text"
+                      id="parent_email"
+                      name="parent_email"
+                      value={formData.parent_email}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.parent_email && <span className="error">{errors.parent_email}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Teacher Email ID**</div>
+                    <input
+                      type="text"
+                      id="teacher_email"
+                      name="teacher_email"
+                      value={formData.teacher_email}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.teacher_email && <span className="error">{errors.teacher_email}</span>}
+                </div>
+              </div>
+
+              <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
+                <p className=' font-popins'>Other details </p>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">College Name**</div>
+                    <input
+                      type="text"
+                      id="collage_name"
+                      name="collage_name"
+                      value={formData.collage_name}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.collage_name && <span className="error">{errors.collage_name}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Principle Name**</div>
+                    <input
+                      type="text"
+                      id="principle_name"
+                      name="principle_name"
+                      value={formData.principle_name}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.principle_name && <span className="error">{errors.principle_name}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Religon**</div>
+                    <input
+                      type="text"
+                      id="religon"
+                      name="religon"
+                      value={formData.religon}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.religon && <span className="error">{errors.religon}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Category**</div>
+                    <input
+                      type="text"
+                      id="category"
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.category && <span className="error">{errors.category}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Sub Category**</div>
+                    <input
+                      type="text"
+                      id="subCategory"
+                      name="subCategory"
+                      value={formData.subCategory}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.subCategory && <span className="error">{errors.subCategory}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Family Income (lakh per annum)**</div>
+                    <input
+                      type="number"
+                      id="income"
+                      name="income"
+                      value={formData.income}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.income && <span className="error">{errors.income}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
+                <p className=' font-popins'>Attachments </p>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Photo Attachment **</div>
+                    <input 
+                      type="file" 
+                      id="photo" 
+                      accept=".jpg, .jpeg, .png"
+                      onChange={handlePhotoChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                    />
+                    {errors.photo_file && <span className="error">{errors.photo_file}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Upload Aadhar**</div>
+                  <input 
+                      type="file" 
+                      id="photo" 
+                      accept=".pdf"
+                      onChange={handlePhotoChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                    />
+                    {errors.aadhar_file && <span className="error">{errors.aadhar_file}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Caste Certificate  **</div>
+                    <input 
+                      type="file" 
+                      id="photo" 
+                      accept=".pdf"
+                      onChange={handlePhotoChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                    />
+                    {errors.photo_file && <span className="error">{errors.photo_file}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Medical Certificates**</div>
+                  <input 
+                      type="file" 
+                      id="photo" 
+                      accept=".pdf"
+                      onChange={handlePhotoChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                    />
+                    {errors.aadhar_file && <span className="error">{errors.aadhar_file}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mt-1 mb-3 font-popins'>
+                <p className=' font-popins'>Bank Details </p>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Account Holder Name**</div>
+                    <input
+                      type="text"
+                      id="account_holder_name"
+                      name="account_holder_name"
+                      value={formData.account_holder_name}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.account_holder_name && <span className="error">{errors.account_holder_name}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Bank name**</div>
+                    <input
+                      type="text"
+                      id="bank_name"
+                      name="bank_name"
+                      value={formData.bank_name}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.bank_name && <span className="error">{errors.bank_name}</span>}
+                </div>
+                </div>
+              </div>
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">IFSC**</div>
+                    <input
+                      type="text"
+                      id="ifsc"
+                      name="ifsc"
+                      value={formData.ifsc}
+                      onChange={handleChange}
+                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.ifsc && <span className="error">{errors.ifsc}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Account Number**</div>
+                    <input
+                      type="Number"
+                      id="account_number"
+                      name="account_number"
+                      value={formData.account_number}
+                      onChange={handleChange}
+                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                    />
+                    {errors.account_number && <span className="error">{errors.account_number}</span>}
+                </div>
+                </div>
+              </div>
+
+            {/* end */}
             </div>
           </div>
         </div>

@@ -1,12 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import HostelRegistration from './Pages/HostelRegistration';
+import TowerRegistartion from './Pages/TowerRegistartion';
+import WingRegistration from './Pages/WingRegistration';
+import RoomRegistration from './Pages/RoomRegistration';
+import StudentRegistartion from './Pages/StudentRegistration';
+
 import './index.css'
+import {BrowserRouter,Routes,Route} from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <BrowserRouter>
+      <Routes>
+        <Route path="/hostel-Registration" element={<HostelRegistration />} />
+        <Route path="/tower-Registration" element={<TowerRegistartion />} />
+        <Route path="/wing-Registration" element={<WingRegistration />} />
+        <Route path="/room-Registration" element={<RoomRegistration />} />
+        <Route path="/student-Registration" element={<StudentRegistartion />} />
+      </Routes>
+  </BrowserRouter>
 );
 

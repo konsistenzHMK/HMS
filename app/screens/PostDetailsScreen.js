@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -32,9 +32,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useSnackbar, Modal } from '../components'
 
 const PostDetailsScreen = (props) => {
-  const [likeCount,setLikesCount]=useState(0);
-  const [commentsCount,setCommentsCount]=useState(0);
-
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
@@ -389,18 +386,14 @@ const PostDetailsScreen = (props) => {
                                 >
                                   {/* Left Side */}
                                   <View>
-                                  
-                                    <PagalFanBEApi.FetchFetchPostLikeGETCount
+                                    <PagalFanBEApi.FetchFetchPostLikeGET
                                       postId={props.route?.params?.post_id ?? 1}
                                       userId={Constants['LOGGED_IN_USER']}
                                       onData={(fetchData) => {
                                         try {
-                                          console.log(fetchData);
-                                          let value0wzmJ6EV = false;
-                                          fetchData.map((item)=>{
-                                            if(item.post_id==props.route?.params?.post_id && item.user_id==Constants['LOGGED_IN_USER']) value0wzmJ6EV=true;
-                                          })
-                                          setLikesCount(fetchData.length);
+                                          console.log(fetchData)
+
+                                          const value0wzmJ6EV = fetchData?.length > 0
                                           setIsLiked(value0wzmJ6EV)
                                           const newlikestatus = value0wzmJ6EV
                                           console.log(newlikestatus)
@@ -459,8 +452,7 @@ const PostDetailsScreen = (props) => {
                                           </>
                                         )
                                       }}
-                                    </PagalFanBEApi.FetchFetchPostLikeGETCount>
-                                    
+                                    </PagalFanBEApi.FetchFetchPostLikeGET>
                                   </View>
                                   {/* Data Point Frame */}
                                   <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
@@ -476,7 +468,7 @@ const PostDetailsScreen = (props) => {
                                         dimensions.width,
                                       )}
                                     >
-                                      {likeCount}
+                                      {'23.5k'}
                                     </Text>
                                   </View>
                                 </View>
@@ -512,12 +504,6 @@ const PostDetailsScreen = (props) => {
                                 </View>
                                 {/* Data Point Frame */}
                                 <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
-                                <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
-                                  {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
-                                    const fetchData = data
-                                    if(fetchData) setCommentsCount(fetchData.length)
-                                  }}
-                                </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
                                   {/* CommentsCount */}
                                   <Text
                                     style={StyleSheet.applyWidth(
@@ -530,7 +516,7 @@ const PostDetailsScreen = (props) => {
                                       dimensions.width,
                                     )}
                                   >
-                                    {commentsCount}
+                                    {'3.3k'}
                                   </Text>
                                 </View>
                               </View>

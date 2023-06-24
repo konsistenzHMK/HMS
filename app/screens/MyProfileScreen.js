@@ -402,34 +402,6 @@ const MyProfileScreen = (props) => {
                                     resizeMode={'cover'}
                                     source={{ uri: `${listData?.image_path}` }}
                                   >
-                                    <Surface
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'center',
-                                          backgroundColor: theme.colors['Studily_Opacity_25'],
-                                          borderRadius: 12,
-                                          height: 24,
-                                          justifyContent: 'center',
-                                          marginTop: 10,
-                                          position: 'absolute',
-                                          right: 10,
-                                          top: 0,
-                                          width: 24,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      <Circle bgColor={theme.colors.custom_rgb255_255_255} size={20}>
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            GlobalStyles.TextStyles(theme)['Text'],
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {listData?.emoji}
-                                        </Text>
-                                      </Circle>
-                                    </Surface>
                                     {/* Details */}
                                     <View
                                       style={StyleSheet.applyWidth(
@@ -586,33 +558,6 @@ const MyProfileScreen = (props) => {
                                       uri: `${listData?.posts?.image_path}`,
                                     }}
                                   >
-                                    <Surface
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'center',
-                                          borderRadius: 12,
-                                          height: 24,
-                                          justifyContent: 'center',
-                                          marginTop: 10,
-                                          position: 'absolute',
-                                          right: 10,
-                                          top: 0,
-                                          width: 24,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      <Circle bgColor={theme.colors.custom_rgb255_255_255} size={20}>
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            GlobalStyles.TextStyles(theme)['Text'],
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {listData?.posts?.emoji}
-                                        </Text>
-                                      </Circle>
-                                    </Surface>
                                     {/* Details */}
                                     <View
                                       style={StyleSheet.applyWidth(

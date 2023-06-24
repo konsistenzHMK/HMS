@@ -507,32 +507,6 @@ const FanClubSingleScreen = (props) => {
                                   source={{ uri: `${listData?.image_path}` }}
                                   resizeMode={'cover'}
                                 >
-                                  <Surface
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'center',
-                                        backgroundColor: theme.colors['BG Gray'],
-                                        borderRadius: 12,
-                                        height: 24,
-                                        justifyContent: 'center',
-                                        marginTop: 10,
-                                        position: 'absolute',
-                                        right: 10,
-                                        top: 0,
-                                        width: 24,
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        GlobalStyles.TextStyles(theme)['Text'],
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {listData?.emoji}
-                                    </Text>
-                                  </Surface>
                                   {/* Details */}
                                   <View
                                     style={StyleSheet.applyWidth(

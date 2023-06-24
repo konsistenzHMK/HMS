@@ -3,27 +3,9 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as StyleSheet from '../utils/StyleSheet'
-import {
-  Circle,
-  Divider,
-  Icon,
-  IconButton,
-  Pressable,
-  ScreenContainer,
-  Surface,
-  Touchable,
-  withTheme,
-} from '@draftbit/ui'
-import {
-  ActivityIndicator,
-  FlatList,
-  ImageBackground,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-  useWindowDimensions,
-} from 'react-native'
+import { Circle, Divider, Icon, Pressable, ScreenContainer, Surface, Touchable, withTheme } from '@draftbit/ui'
+import { ActivityIndicator, FlatList, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { BlurImage, Image } from '../components'
 
 const SearchScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -100,14 +82,7 @@ const SearchScreen = (props) => {
             )}
           >
             <TextInput
-              onChangeText={(newTextInputValue) => {
-                const textInputValue = newTextInputValue
-                try {
-                  setTextInputValue(newTextInputValue)
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
+              onChangeText={setTextInputValue}
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
                   borderBottomWidth: 0,
@@ -219,7 +194,7 @@ const SearchScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              <ImageBackground
+                              <BlurImage
                                 style={StyleSheet.applyWidth(
                                   {
                                     alignItems: 'flex-start',
@@ -232,6 +207,11 @@ const SearchScreen = (props) => {
                                 source={{ uri: `${listData?.image_path}` }}
                                 resizeMode={'cover'}
                               >
+                                <Image
+                                  resizeMode="contain"
+                                  style={{ height: '100%', width: '100%' }}
+                                  source={{ uri: `${listData?.image_path}` }}
+                                />
                                 {/* Details */}
                                 <View
                                   style={StyleSheet.applyWidth(
@@ -267,7 +247,7 @@ const SearchScreen = (props) => {
                                     {listData?.caption}
                                   </Text>
                                 </View>
-                              </ImageBackground>
+                              </BlurImage>
                             </View>
                           </View>
                         </Surface>

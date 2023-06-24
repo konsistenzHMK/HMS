@@ -4,6 +4,7 @@ import useFetch from 'react-fetch-hook'
 import { useIsFocused } from '@react-navigation/native'
 import usePrevious from '../utils/usePrevious'
 import * as GlobalVariables from '../config/GlobalVariableContext'
+import { useMemo } from 'react'
 
 export const addNewCommentPOSTStatusAndText = (Constants, { comment_text, post_id, user_id }) =>
   fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_comments', {
@@ -1299,9 +1300,9 @@ export const FetchFetchAllMatchesGET = ({ children, onData = () => {}, refetchIn
   return children({ loading, data, error, refetchFetchAllMatches: refetch })
 }
 
-export const fetchAllPastMatchesGETStatusAndText = (Constants) =>
+export const fetchAllPastMatchesGETStatusAndText = (Constants, args) =>
   fetch(
-    'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/matches?match_date=lt.now()&order=match_date.desc&select=*,team_1(*),team_2(*)',
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/matches?match_date=lt.now()&order=match_date.desc&select=*,team_1(*),team_2(*)&limit=${args.limit}&offset=${args.offset}}`,
     {
       headers: {
         Accept: 'application/json',
@@ -1315,8 +1316,8 @@ export const fetchAllPastMatchesGETStatusAndText = (Constants) =>
     text: await res.text(),
   }))
 
-export const fetchAllPastMatchesGET = (Constants) =>
-  fetchAllPastMatchesGETStatusAndText(Constants).then(({ status, statusText, text }) => {
+export const fetchAllPastMatchesGET = (Constants, args) =>
+  fetchAllPastMatchesGETStatusAndText(Constants, args).then(({ status, statusText, text }) => {
     try {
       return JSON.parse(text)
     } catch (e) {
@@ -1337,8 +1338,28 @@ export const FetchFetchAllPastMatchesGET = ({ children, onData = () => {}, refet
   const Constants = GlobalVariables.useValues()
   const isFocused = useIsFocused()
   const prevIsFocused = usePrevious(isFocused)
+  const PER_PAGE = 10
+  const [page, setPage] = React.useState(1)
+  const limitAndOffset = useMemo(() => {
+    return {
+      limit: PER_PAGE,
+      offset: (page - 1) * PER_PAGE || 0,
+    }
+  }, [page])
+  const [hasNextPage, setHasNextPage] = React.useState(true)
+  const [posts, setPosts] = React.useState([])
 
-  const { loading, data, error, refetch } = useFetchAllPastMatchesGET({}, { refetchInterval })
+  const { loading, data, error, refetch } = useFetchAllPastMatchesGET(limitAndOffset, { refetchInterval })
+
+  React.useEffect(() => {
+    if (data?.length < PER_PAGE) {
+      setHasNextPage(false)
+    }
+
+    if (data) {
+      setPosts((prev) => [...prev, ...data])
+    }
+  }, [data])
 
   React.useEffect(() => {
     if (!prevIsFocused && isFocused) {
@@ -1360,9 +1381,25 @@ export const FetchFetchAllPastMatchesGET = ({ children, onData = () => {}, refet
 
   return children({
     loading,
-    data,
+    data: posts,
     error,
-    refetchFetchAllPastMatches: refetch,
+    nextPage: () => {
+      if (hasNextPage) {
+        if (!loading) {
+          setPage(page + 1)
+          // refetch()
+        }
+      }
+
+      // setPage(page + 1)
+      // setPage(page + 1)
+      // refetch()
+    },
+    refetchFetchAllPastMatches: (page) => {
+      console.log('abc next page page', page)
+      // if (hasNextPage) setPage(page)
+      // refetch()
+    },
   })
 }
 
@@ -3340,7 +3377,7 @@ export const FetchTagPostToFanClubPOST = ({ children, onData = () => {}, refetch
 
 export const updateExpoTokenPATCHStatusAndText = (Constants, { expoToken, userId }) =>
   fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/user_profiles?user_id=eq.${userId ?? ''}`, {
-    body: JSON.stringify({ expo_token: expoToken }),
+    body: JSON.stringify({ notification_token: expoToken }),
     headers: {
       Accept: 'application/json',
       Authorization: Constants['AUTHORIZATION_HEADER'],

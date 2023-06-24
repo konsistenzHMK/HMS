@@ -10,8 +10,13 @@ import cacheAssetsAsync from './config/cacheAssetsAsync'
 import { GlobalVariableProvider } from './config/GlobalVariableContext'
 import { useFonts } from 'expo-font'
 import { SnackbarProvider } from './components'
+import messaging from '@react-native-firebase/messaging'
+import { PermissionsAndroid, LogBox } from 'react-native'
+import OneSignal from 'react-native-onesignal'
+
+PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
+OneSignal.setAppId('e51a8dc2-3942-491a-85f9-b78d6ca8479f')
 import SplashScreen from './screens/SplashScreen'
-import { Platform } from 'react-native'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -20,6 +25,18 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 })
+
+LogBox.ignoreLogs([/Warning/])
+
+async function requestUserPermission() {
+  const authStatus = await messaging().requestPermission()
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL
+
+  if (enabled) {
+    console.log('Authorization status:', authStatus)
+  }
+}
 
 const queryClient = new QueryClient()
 
@@ -30,7 +47,9 @@ const App = () => {
   useEffect(() => {
     setTimeout(async () => {
       try {
+        requestUserPermission()
         await cacheAssetsAsync()
+        await messaging().registerDeviceForRemoteMessages()
       } catch (e) {
         console.warn(e)
       }

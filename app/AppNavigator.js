@@ -25,6 +25,7 @@ import SignupOTPScreen from './screens/SignupOTPScreen'
 import SignupStartScreen from './screens/SignupStartScreen'
 import TestuserdataScreen from './screens/TestuserdataScreen'
 import BakarRoomScreen from './bakar-room/BakarRoomScreen'
+import NotificationsScreen from './screens/NotificationsScreen.js'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -229,6 +230,13 @@ export default function RootAppNavigator() {
           component={SignupOTPScreen}
           options={{
             title: 'Signup-OTP',
+          }}
+        />
+        <Stack.Screen
+          name="NotificationsScreen"
+          component={NotificationsScreen}
+          options={{
+            title: 'Notifications',
           }}
         />
         <Stack.Screen name="Tabs" component={Tabs} />

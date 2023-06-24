@@ -16,6 +16,7 @@ import {
   useWindowDimensions,
 } from 'react-native'
 import { useSnackbar } from '../components'
+import messaging from '@react-native-firebase/messaging'
 
 const SWIPE_SCREENS = Array(4).fill()
 
@@ -88,11 +89,14 @@ const OnboardingScreen = (props) => {
         userId: Constants['LOGGED_IN_USER'],
         userOnboarded: true,
       })
-      // const expo_token = await getPushTokenUtil({})
-      // await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
-      //   expoToken: expo_token,
-      //   userId: Constants['LOGGED_IN_USER'],
-      // })
+
+      const token = await messaging().getToken()
+      // expoToken -> notification_token
+      await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
+        expoToken: token,
+        userId: Constants['LOGGED_IN_USER'],
+      })
+
       navigation.navigate('Tabs', { screen: 'HomeScreen' })
     } catch (err) {
       snackbar.show({ title: 'Error saving user details …', variant: 'negative' })

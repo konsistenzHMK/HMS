@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "436069547444",
+    "project_id": "pagalfan-f901a",
+    "storage_bucket": "pagalfan-f901a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436069547444:android:2b67a3e457a74713e146e1",
+        "android_client_info": {
+          "package_name": "com.pagalfan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436069547444-200c81g5pci6hq3l0khpp0jk80oaprg5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5wbXmoH4IS6_UWa4WfUkSbhEej64ykeY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436069547444-200c81g5pci6hq3l0khpp0jk80oaprg5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

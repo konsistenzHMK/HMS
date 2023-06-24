@@ -76,6 +76,26 @@ const PostDetailsScreen = (props) => {
     )
   }
 
+  const handleSendCommentPress = async () => {
+    try {
+      const comment = textInputValue.trim()
+      if (!comment) {
+        return
+      }
+
+      snackbar.show({ title: 'Uploading comment …' })
+      await pagalFanBEAddNewCommentPOST.mutateAsync({
+        comment_text: comment,
+        post_id: props.route?.params?.post_id ?? 1,
+        user_id: Constants['LOGGED_IN_USER'],
+      })
+      Keyboard.dismiss()
+      setTextInputValue('')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <>
       <ScreenContainer
@@ -727,13 +747,7 @@ const PostDetailsScreen = (props) => {
                                 <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
                                   {/* CommentText */}
                                   <TextInput
-                                    onChangeText={(newCommentTextValue) => {
-                                      try {
-                                        setTextInputValue(newCommentTextValue)
-                                      } catch (err) {
-                                        console.error(err)
-                                      }
-                                    }}
+                                    onChangeText={setTextInputValue}
                                     style={StyleSheet.applyWidth(
                                       {
                                         borderBottomWidth: 1,
@@ -758,25 +772,7 @@ const PostDetailsScreen = (props) => {
                                 </View>
                                 {/* SendFrame */}
                                 <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
-                                  <Touchable
-                                    onPress={() => {
-                                      const handler = async () => {
-                                        try {
-                                          snackbar.show({ title: 'Uploading comment …' })
-                                          await pagalFanBEAddNewCommentPOST.mutateAsync({
-                                            comment_text: textInputValue,
-                                            post_id: props.route?.params?.post_id ?? 1,
-                                            user_id: Constants['LOGGED_IN_USER'],
-                                          })
-                                          Keyboard.dismiss()
-                                          setTextInputValue('')
-                                        } catch (err) {
-                                          console.error(err)
-                                        }
-                                      }
-                                      handler()
-                                    }}
-                                  >
+                                  <Touchable disabled={!textInputValue.trim()} onPress={handleSendCommentPress}>
                                     <Circle size={48} bgColor={theme.colors.communityTertiaryGreen}>
                                       {/* Flex Frame for Icons */}
                                       <View

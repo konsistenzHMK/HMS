@@ -374,20 +374,36 @@ const MatchDaysAllScreen = (props) => {
             />
           </View>
           {/* MatchesViewPast */}
-          <ScrollView bounces={true} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-            <PagalFanBEApi.FetchFetchAllPastMatchesGET>
-              {({ loading, error, data, refetchFetchAllPastMatches }) => {
-                const fetchData = data
-                if (!fetchData || loading) {
-                  return <ActivityIndicator />
-                }
 
-                if (error) {
-                  return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                }
+          <PagalFanBEApi.FetchFetchAllPastMatchesGET>
+            {({ loading, error, data, refetchFetchAllPastMatches, nextPage }) => {
+              const fetchData = data
+              if (!fetchData || loading) {
+                return <ActivityIndicator />
+              }
 
-                return (
+              if (error) {
+                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+              }
+
+              return (
+                <ScrollView
+                  style={{ flex: 1 }}
+                  onScroll={(e) => {
+                    let paddingToBottom = 10
+                    paddingToBottom += e.nativeEvent.layoutMeasurement.height
+                    if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
+                      // make something...
+                      nextPage()
+                    }
+                  }}
+                  // bounces={true}
+                  // showsHorizontalScrollIndicator={false}
+                  // showsVerticalScrollIndicator={false}
+                  // nestedScrollEnabled
+                >
                   <FlatList
+                    nestedScrollEnabled
                     data={FilterList(fetchData)}
                     listKey={'qH2rZQRo'}
                     keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
@@ -552,14 +568,13 @@ const MatchDaysAllScreen = (props) => {
                       dimensions.width,
                     )}
                     numColumns={1}
-                    onEndReachedThreshold={0.5}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                   />
-                )
-              }}
-            </PagalFanBEApi.FetchFetchAllPastMatchesGET>
-          </ScrollView>
+                </ScrollView>
+              )
+            }}
+          </PagalFanBEApi.FetchFetchAllPastMatchesGET>
         </TabViewItem>
       </TabView>
     </ScreenContainer>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -24,12 +24,16 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
 import { FlatList, Modal, ScrollView, Text, View, useWindowDimensions, StyleSheet as RNStyleSheet } from 'react-native'
+import messaging from '@react-native-firebase/messaging'
+import { notificationStore } from '../store/notification.js'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { BlurImage, Image, ShimmerPlaceHolder } from '../components'
 
 const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
+  const notifications = notificationStore.useState((s) => s.notifications)
 
   const { theme } = props
   const { navigation } = props
@@ -39,6 +43,7 @@ const HomeScreen = (props) => {
   }
 
   const isFocused = useIsFocused()
+
   React.useEffect(() => {
     const handler = async () => {
       try {
@@ -75,6 +80,49 @@ const HomeScreen = (props) => {
     }
     handler()
   }, [isFocused])
+
+  useEffect(() => {
+    AsyncStorage.getItem('@notification').then((notifications) => {
+      if (notifications) {
+        notificationStore.update((s) => {
+          s.notifications = JSON.parse(notifications)
+        })
+      }
+    })
+
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          const { data } = remoteMessage
+          if (data.post_id) {
+            navigation.navigate('PostDetailsScreen', {
+              post_id: data.post_id,
+            })
+          }
+          if (data.follower_id) {
+            navigation.navigate('OthersProfileScreen', {
+              userid: data.follower_id,
+            })
+          }
+        }
+      })
+
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      notificationStore.update((s) => {
+        s.notifications.push(remoteMessage.notification)
+      })
+    })
+
+    messaging().onMessage(async (remoteMessage) => {
+      notificationStore.update((s) => {
+        s.notifications.push(remoteMessage.notification)
+        AsyncStorage.setItem('@notification', JSON.stringify(s.notifications)).then(() => {
+          console.log('notification saved')
+        })
+      })
+    })
+  }, [])
 
   const [isSessionLive, setIsSessionLive] = React.useState(false)
   const [showBakarrPopup, setShowBakarrPopup] = React.useState(false)
@@ -279,60 +327,66 @@ const HomeScreen = (props) => {
           </Text>
         </View>
         {/* TopRight */}
-        <View
-          style={StyleSheet.applyWidth(
-            { flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10 },
-            dimensions.width,
-          )}
+        <Pressable
+          onPress={() => {
+            navigation.navigate('NotificationsScreen')
+          }}
         >
-          <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
-            {/* Notif */}
-            <Icon size={24} name={'Feather/bell'} color={theme.colors['PF-Grey']} />
-            {/* New */}
-            <Icon
-              style={StyleSheet.applyWidth(
-                {
-                  backgroundColor: '"rgba(0, 0, 0, 0)"',
-                  position: 'absolute',
-                  right: -10,
-                  top: -12,
-                  zIndex: 2,
-                },
-                dimensions.width,
-              )}
-              name={'Entypo/dot-single'}
-              color={theme.colors['PF-Primary']}
-              size={32}
-            />
-          </View>
-
-          <Pressable
-            onPress={() => {
-              try {
-                navigation.navigate('Tabs', { screen: 'MyProfileScreen' })
-              } catch (err) {
-                console.error(err)
-              }
-            }}
+          <View
+            style={StyleSheet.applyWidth(
+              { flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10 },
+              dimensions.width,
+            )}
           >
-            <Surface
-              style={StyleSheet.applyWidth(
-                {
-                  borderRadius: 20,
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                },
-                dimensions.width,
-              )}
-              elevation={3}
+            <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
+              {/* Notif */}
+              <Icon size={24} name={'Feather/bell'} color={theme.colors['PF-Grey']} />
+              {/* New */}
+              <Icon
+                style={StyleSheet.applyWidth(
+                  {
+                    backgroundColor: '"rgba(0, 0, 0, 0)"',
+                    position: 'absolute',
+                    right: -10,
+                    top: -12,
+                    zIndex: 2,
+                  },
+                  dimensions.width,
+                )}
+                name={'Entypo/dot-single'}
+                color={theme.colors['PF-Primary']}
+                size={notifications.length > 0 ? 32 : 0}
+              />
+            </View>
+
+            <Pressable
+              onPress={() => {
+                try {
+                  navigation.navigate('Tabs', { screen: 'MyProfileScreen' })
+                } catch (err) {
+                  console.error(err)
+                }
+              }}
             >
-              {/* userpic */}
-              {Constants['user_profile_pic_url'] && (
-                <CircleImage size={24} source={{ uri: `${Constants['user_profile_pic_url']}` }} />
-              )}
-            </Surface>
-          </Pressable>
-        </View>
+              <Surface
+                style={StyleSheet.applyWidth(
+                  {
+                    borderRadius: 20,
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                  },
+                  dimensions.width,
+                )}
+                elevation={3}
+              >
+                {/* userpic */}
+                {Constants['user_profile_pic_url'] && (
+                  <CircleImage size={24} source={{ uri: `${Constants['user_profile_pic_url']}` }} />
+                )}
+              </Surface>
+            </Pressable>
+          </View>
+        </Pressable>
       </View>
       {/* Bakarr View */}
       <View style={StyleSheet.applyWidth({ flexDirection: 'column' }, dimensions.width)}>

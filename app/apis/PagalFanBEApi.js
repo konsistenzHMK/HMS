@@ -2196,6 +2196,71 @@ export const FetchFetchPostLikeGET = ({ children, onData = () => {}, refetchInte
   return children({ loading, data, error, refetchFetchPostLike: refetch })
 }
 
+
+export const fetchPostLikeGETStatusAndTextCount = (Constants, { postId, userId }) =>
+  fetch(
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_likes?post_id=eq.${postId ?? ''}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: Constants['AUTHORIZATION_HEADER'],
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+    },
+  ).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const fetchPostLikeGETCount = (Constants, { postId, userId }) =>
+  fetchPostLikeGETStatusAndTextCount(Constants, { postId, userId }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useFetchPostLikeGETCount = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  const queryClient = useQueryClient()
+  return useQuery(['like', args], () => fetchPostLikeGETCount(Constants, args), {
+    refetchInterval,
+    onSuccess: () => queryClient.invalidateQueries(['likes']),
+  })
+}
+
+export const FetchFetchPostLikeGETCount = ({ children, onData = () => {}, refetchInterval, postId, userId }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
+
+  const { loading, data, error, refetch } = useFetchPostLikeGETCount({ postId, userId }, { refetchInterval })
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch()
+    }
+  }, [isFocused, prevIsFocused])
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
+    }
+  }, [error])
+  React.useEffect(() => {
+    if (data) {
+      onData(data)
+    }
+  }, [data])
+
+  return children({ loading, data, error, refetchFetchPostLike: refetch })
+}
 export const fetchPostSaveGETStatusAndText = (Constants, { postId, userId }) =>
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_saves?post_id=eq.${postId ?? ''}&select=*&user_id=eq.${
@@ -2397,7 +2462,7 @@ export const fetchSingleFanClubFollowsGETStatusAndText = (Constants, { fanclubId
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/fanclub_followers?fanclub_id=eq.${
       fanclubId ?? ''
-    }&select=*&user_id=eq.${userId ?? ''}`,
+    }`,
     {
       headers: {
         Accept: 'application/json',
@@ -2476,9 +2541,7 @@ export const FetchFetchSingleFanClubFollowsGET = ({
 
 export const fetchSingleFollowGETStatusAndText = (Constants, { followeeId, followerId }) =>
   fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/follows?followee_id=eq.${followeeId ?? ''}&follower_id=eq.${
-      followerId ?? ''
-    }&select=*`,
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/follows?followee_id=eq.${followeeId ?? ''}&select=*`,
     {
       headers: {
         Accept: 'application/json',

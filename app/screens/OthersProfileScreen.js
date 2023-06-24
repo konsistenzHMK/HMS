@@ -58,6 +58,8 @@ const OthersProfileScreen = (props) => {
   const [menuTab3, setMenuTab3] = React.useState(false)
   const [modalOpen, setModalOpen] = React.useState(false)
 
+  const [Followers,setFollwers] =React.useState(0);
+
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
@@ -205,7 +207,22 @@ const OthersProfileScreen = (props) => {
                       }}
                     />
                   )}
+                  
                 </Circle>
+                <Text
+                    style={StyleSheet.applyWidth(
+                      {
+                        alignItems: 'flex-start',
+                        color: theme.colors.LightGrey,
+                        fontFamily: 'Rubik_400Regular',
+                        fontSize: 12,
+                        paddingRight: 15
+                      },
+                      dimensions.width,
+                    )}
+                  >
+                    {Followers} Followers
+                  </Text>
               </View>
               {/* Profile Detail Frame */}
               <View
@@ -240,6 +257,7 @@ const OthersProfileScreen = (props) => {
                   >
                     {(fetchData && fetchData[0])?.first_name} {(fetchData && fetchData[0])?.last_name}
                   </Text>
+                  
                   {/* User Handle */}
                   <Text
                     style={StyleSheet.applyWidth(
@@ -320,7 +338,12 @@ const OthersProfileScreen = (props) => {
                         onData={(fetchData) => {
                           try {
                             console.log(fetchData)
-                            setAccountFriend(fetchData?.length > 0)
+                            setFollwers(fetchData.length)
+                            let ans=false;
+                            fetchData.map((item)=>{
+                              if(item.follower_id == Constants['LOGGED_IN_USER']) ans=true;
+                            })
+                            setAccountFriend(ans)
                           } catch (err) {
                             console.error(err)
                           }

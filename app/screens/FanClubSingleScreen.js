@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -23,6 +23,8 @@ const FanClubSingleScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
   const snackbar = useSnackbar()
+
+  const [follwersCount,setFollowersCount] = useState(0);
 
   const filterFeed = (Variables, list) => {
     if (list.length) {
@@ -190,7 +192,7 @@ const FanClubSingleScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {'24.5M Followers'}
+                              {follwersCount} Followers
                             </Text>
 
                             <View
@@ -268,7 +270,12 @@ const FanClubSingleScreen = (props) => {
                         userId={Constants['LOGGED_IN_USER']}
                         onData={(fetchData) => {
                           try {
-                            setClubfriend(fetchData?.length > 0)
+                            var b=false;
+                            setFollowersCount(fetchData.length)
+                            fetchData.map((item)=>{
+                              if(item.fanclub_id==props.route?.params?.id && item.user_id==Constants['LOGGED_IN_USER']) b=true;
+                            })
+                            setClubfriend(b)
                           } catch (err) {
                             console.error(err)
                           }

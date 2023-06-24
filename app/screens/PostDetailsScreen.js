@@ -27,13 +27,16 @@ import {
   TextInput,
   View,
   useWindowDimensions,
+  StyleSheet as RNStyleSheet,
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar, Modal } from '../components'
 
+const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
+
 const PostDetailsScreen = (props) => {
-  const [likeCount,setLikesCount]=useState(0);
-  const [commentsCount,setCommentsCount]=useState(0);
+  const [likeCount, setLikesCount] = useState(0)
+  const [commentsCount, setCommentsCount] = useState(0)
 
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
@@ -55,6 +58,22 @@ const PostDetailsScreen = (props) => {
 
   function hideModal() {
     setShowShareModal(false)
+  }
+
+  const handleEmoticonPress = (item) => {
+    setTextInputValue(textInputValue + item)
+  }
+
+  const renderEmoticons = () => {
+    return (
+      <View style={styles.emoticonsContainer}>
+        {EMOTICONS.map((item, index) => (
+          <Pressable key={index} onPress={() => handleEmoticonPress(item)}>
+            <Text style={styles.emoticon}>{item}</Text>
+          </Pressable>
+        ))}
+      </View>
+    )
   }
 
   return (
@@ -394,12 +413,16 @@ const PostDetailsScreen = (props) => {
                                       userId={Constants['LOGGED_IN_USER']}
                                       onData={(fetchData) => {
                                         try {
-                                          console.log(fetchData);
-                                          let value0wzmJ6EV = false;
-                                          fetchData.map((item)=>{
-                                            if(item.post_id==props.route?.params?.post_id && item.user_id==Constants['LOGGED_IN_USER']) value0wzmJ6EV=true;
+                                          console.log(fetchData)
+                                          let value0wzmJ6EV = false
+                                          fetchData.map((item) => {
+                                            if (
+                                              item.post_id == props.route?.params?.post_id &&
+                                              item.user_id == Constants['LOGGED_IN_USER']
+                                            )
+                                              value0wzmJ6EV = true
                                           })
-                                          setLikesCount(fetchData.length);
+                                          setLikesCount(fetchData.length)
                                           setIsLiked(value0wzmJ6EV)
                                           const newlikestatus = value0wzmJ6EV
                                           console.log(newlikestatus)
@@ -510,12 +533,14 @@ const PostDetailsScreen = (props) => {
                                 </View>
                                 {/* Data Point Frame */}
                                 <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
-                                <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
-                                  {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
-                                    const fetchData = data
-                                    if(fetchData) setCommentsCount(fetchData.length)
-                                  }}
-                                </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
+                                  <PagalFanBEApi.FetchFetchAllCommentsForAPostGET
+                                    id={props.route?.params?.post_id ?? 1}
+                                  >
+                                    {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
+                                      const fetchData = data
+                                      if (fetchData) setCommentsCount(fetchData.length)
+                                    }}
+                                  </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
                                   {/* CommentsCount */}
                                   <Text
                                     style={StyleSheet.applyWidth(
@@ -679,230 +704,99 @@ const PostDetailsScreen = (props) => {
                           </View>
                           {/* CommentsFrame */}
                           <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1 }, dimensions.width)}>
-                       {/* Keyboard Component Frame */}
-                        <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                          {/* Emoticons Frame */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                backgroundColor: theme.colors.communityWhite,
-                                flexDirection: 'row',
-                                flexGrow: 0,
-                                flexShrink: 0,
-                                paddingBottom: 12,
-                                paddingLeft: 12,
-                                paddingRight: 12,
-                                paddingTop: 12,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            {/* Icon1 Frame */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexGrow: 1,
-                                  flexShrink: 0,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <Touchable>
-                                {/* Flex Frame for Icons */}
-                                <View>
-                                  {/* Icon1 */}
-                                  <Icon
-                                    name={'MaterialCommunityIcons/emoticon'}
-                                    size={30}
-                                    color={theme.colors.communitySecondaryAlt}
-                                  />
-                                </View>
-                              </Touchable>
-                            </View>
-                            {/* Icon2 Frame */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexGrow: 1,
-                                  flexShrink: 0,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <Touchable>
-                                {/* Flex Frame for Icons */}
-                                <View>
-                                  {/* Icon2 */}
-                                  <Icon
-                                    name={'MaterialCommunityIcons/emoticon-angry'}
-                                    size={30}
-                                    color={theme.colors.communitySecondaryAlt}
-                                  />
-                                </View>
-                              </Touchable>
-                            </View>
-                            {/* Icon3 Frame */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexGrow: 1,
-                                  flexShrink: 0,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <Touchable>
-                                {/* Flex Frame for Icons */}
-                                <View>
-                                  {/* Icon3 */}
-                                  <Icon
-                                    name={'MaterialCommunityIcons/emoticon-confused'}
-                                    size={30}
-                                    color={theme.colors.communitySecondaryAlt}
-                                  />
-                                </View>
-                              </Touchable>
-                            </View>
-                            {/* Icon4 Frame */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexGrow: 1,
-                                  flexShrink: 0,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <Touchable>
-                                {/* Flex Frame for Icons */}
-                                <View>
-                                  {/* Icon4 */}
-                                  <Icon
-                                    name={'MaterialCommunityIcons/emoticon-cool'}
-                                    size={30}
-                                    color={theme.colors.communitySecondaryAlt}
-                                  />
-                                </View>
-                              </Touchable>
-                            </View>
-                            {/* Icon5 Frame */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexGrow: 1,
-                                  flexShrink: 0,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <Touchable>
-                                {/* Flex Frame for Icons */}
-                                <View>
-                                  {/* Icon5 */}
-                                  <Icon
-                                    name={'MaterialCommunityIcons/emoticon-cry'}
-                                    size={30}
-                                    color={theme.colors.communitySecondaryAlt}
-                                  />
-                                </View>
-                              </Touchable>
-                            </View>
-                          </View>
-                          {/* Keyboard Input Frame */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'center',
-                                backgroundColor: theme.colors.communityWhite,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingBottom: 12,
-                                paddingLeft: 12,
-                                paddingRight: 12,
-                                paddingTop: 12,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            {/* CommentInput */}
+                            {/* Keyboard Component Frame */}
                             <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                              {/* CommentText */}
-                              <TextInput
-                                onChangeText={(newCommentTextValue) => {
-                                  try {
-                                    setTextInputValue(newCommentTextValue)
-                                  } catch (err) {
-                                    console.error(err)
-                                  }
-                                }}
+                              {renderEmoticons()}
+                              {/* Keyboard Input Frame */}
+                              <View
                                 style={StyleSheet.applyWidth(
                                   {
-                                    borderBottomWidth: 1,
-                                    borderColor: theme.colors.communityIconFill,
-                                    borderLeftWidth: 1,
-                                    borderRadius: 60,
-                                    borderRightWidth: 1,
-                                    borderTopWidth: 1,
-                                    marginLeft: 12,
-                                    marginRight: 12,
-                                    paddingBottom: 15,
+                                    alignItems: 'center',
+                                    backgroundColor: theme.colors.communityWhite,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    paddingBottom: 12,
                                     paddingLeft: 12,
                                     paddingRight: 12,
-                                    paddingTop: 15,
+                                    paddingTop: 12,
                                   },
                                   dimensions.width,
                                 )}
-                                placeholder={'Type something...'}
-                                value={textInputValue}
-                                placeholderTextColor={theme.colors.communityLightBlack}
-                              />
-                            </View>
-                            {/* SendFrame */}
-                            <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
-                              <Touchable
-                                onPress={() => {
-                                  const handler = async () => {
-                                    try {
-                                      snackbar.show({ title: 'Uploading comment …' })
-                                      await pagalFanBEAddNewCommentPOST.mutateAsync({
-                                        comment_text: textInputValue,
-                                        post_id: props.route?.params?.post_id ?? 1,
-                                        user_id: Constants['LOGGED_IN_USER'],
-                                      })
-                                      Keyboard.dismiss()
-                                      setTextInputValue('')
-                                    } catch (err) {
-                                      console.error(err)
-                                    }
-                                  }
-                                  handler()
-                                }}
                               >
-                                <Circle size={48} bgColor={theme.colors.communityTertiaryGreen}>
-                                  {/* Flex Frame for Icons */}
-                                  <View
+                                {/* CommentInput */}
+                                <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
+                                  {/* CommentText */}
+                                  <TextInput
+                                    onChangeText={(newCommentTextValue) => {
+                                      try {
+                                        setTextInputValue(newCommentTextValue)
+                                      } catch (err) {
+                                        console.error(err)
+                                      }
+                                    }}
                                     style={StyleSheet.applyWidth(
                                       {
-                                        flexGrow: 0,
-                                        flexShrink: 0,
-                                        justifyContent: 'center',
+                                        borderBottomWidth: 1,
+                                        borderColor: theme.colors.communityIconFill,
+                                        borderLeftWidth: 1,
+                                        borderRadius: 60,
+                                        borderRightWidth: 1,
+                                        borderTopWidth: 1,
+                                        marginLeft: 12,
+                                        marginRight: 12,
+                                        paddingBottom: 15,
+                                        paddingLeft: 12,
+                                        paddingRight: 12,
+                                        paddingTop: 15,
                                       },
                                       dimensions.width,
                                     )}
+                                    placeholder={'Type something...'}
+                                    value={textInputValue}
+                                    placeholderTextColor={theme.colors.communityLightBlack}
+                                  />
+                                </View>
+                                {/* SendFrame */}
+                                <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
+                                  <Touchable
+                                    onPress={() => {
+                                      const handler = async () => {
+                                        try {
+                                          snackbar.show({ title: 'Uploading comment …' })
+                                          await pagalFanBEAddNewCommentPOST.mutateAsync({
+                                            comment_text: textInputValue,
+                                            post_id: props.route?.params?.post_id ?? 1,
+                                            user_id: Constants['LOGGED_IN_USER'],
+                                          })
+                                          Keyboard.dismiss()
+                                          setTextInputValue('')
+                                        } catch (err) {
+                                          console.error(err)
+                                        }
+                                      }
+                                      handler()
+                                    }}
                                   >
-                                    <Icon name={'FontAwesome/send'} size={24} color={theme.colors.communityWhite} />
-                                  </View>
-                                </Circle>
-                              </Touchable>
+                                    <Circle size={48} bgColor={theme.colors.communityTertiaryGreen}>
+                                      {/* Flex Frame for Icons */}
+                                      <View
+                                        style={StyleSheet.applyWidth(
+                                          {
+                                            flexGrow: 0,
+                                            flexShrink: 0,
+                                            justifyContent: 'center',
+                                          },
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        <Icon name={'FontAwesome/send'} size={24} color={theme.colors.communityWhite} />
+                                      </View>
+                                    </Circle>
+                                  </Touchable>
+                                </View>
+                              </View>
                             </View>
-                          </View>
-                        </View>
-                                    
+
                             <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
                               {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
                                 const fetchData = data
@@ -1390,5 +1284,17 @@ draftbit://PostDetailsScreen/:${props.route?.params?.post_id ?? 1}`)
     </>
   )
 }
+
+const styles = RNStyleSheet.create({
+  emoticonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    height: 50,
+  },
+  emoticon: {
+    fontSize: 25,
+  },
+})
 
 export default withTheme(PostDetailsScreen)

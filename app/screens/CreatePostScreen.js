@@ -7,25 +7,13 @@ import uploadImage from '../global-functions/uploadImage'
 import * as StyleSheet from '../utils/StyleSheet'
 import openImagePickerUtil from '../utils/openImagePicker'
 import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
-import { Image, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { Image, Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { useSnackbar } from '../components'
 
 const CreatePostScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
-
-  const submitSetTimer = async () => {
-    setSubmitted(true)
-    console.log(submitted)
-
-    const timer = () => {
-      console.log(submitted)
-      setSubmitted(false)
-    }
-
-    setTimeout(timer, 1000)
-  }
 
   const { theme } = props
   const { navigation } = props
@@ -34,6 +22,41 @@ const CreatePostScreen = (props) => {
   const [pickedImage, setPickedImage] = React.useState('')
   const [submitted, setSubmitted] = React.useState('')
   const [textAreaValue, setTextAreaValue] = React.useState('')
+
+  const submitSetTimer = async () => {
+    setSubmitted(true)
+    console.log(submitted)
+
+    const timer = () => {
+      console.log(submitted)
+      setSubmitted(false)
+      navigation.goBack()
+    }
+
+    setTimeout(timer, 1000)
+  }
+
+  const handlePostNowPress = async () => {
+    Keyboard.dismiss()
+    try {
+      if (!pickedImage || !textAreaValue) {
+        snackbar.show({ title: "Post can't be empty" })
+        return
+      }
+      snackbar.show({ title: 'Uploading post …' })
+      const remoteUrl = await uploadImage('post-bucket', pickedImage)
+      setPickedImage(remoteUrl)
+      await pagalFanBEAddNewPostPOST.mutateAsync({
+        caption: textAreaValue,
+        image_url: remoteUrl,
+        posted_by: Constants['LOGGED_IN_USER'],
+      })
+      submitSetTimer()
+    } catch (err) {
+      snackbar.show({ title: 'Error uploading post', variant: 'negative' })
+      console.error(err)
+    }
+  }
 
   return (
     <ScreenContainer
@@ -101,7 +124,7 @@ const CreatePostScreen = (props) => {
         />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={true} bounces={true}>
+      <ScrollView showsVerticalScrollIndicator={true} bounces={true} keyboardShouldPersistTaps="handled">
         {/* Post Content */}
         <View style={StyleSheet.applyWidth({ marginTop: 10, paddingLeft: 10, paddingRight: 10 }, dimensions.width)}>
           {/* ImageView */}
@@ -212,15 +235,7 @@ const CreatePostScreen = (props) => {
           </View>
           {/* Caption */}
           <TextInput
-            onChangeText={(newCaptionValue) => {
-              try {
-                if (newCaptionValue) {
-                  setTextAreaValue(newCaptionValue)
-                }
-              } catch (err) {
-                console.error(err)
-              }
-            }}
+            onChangeText={setTextAreaValue}
             style={StyleSheet.applyWidth(
               {
                 borderBottomWidth: 1,
@@ -269,25 +284,7 @@ const CreatePostScreen = (props) => {
         </View>
         {/* Post Now */}
         <Button
-          onPress={() => {
-            const handler = async () => {
-              try {
-                snackbar.show({ title: 'Uploading post …' })
-                const remoteUrl = await uploadImage('post-bucket', pickedImage)
-                setPickedImage(remoteUrl)
-                await pagalFanBEAddNewPostPOST.mutateAsync({
-                  caption: textAreaValue,
-                  image_url: remoteUrl,
-                  posted_by: Constants['LOGGED_IN_USER'],
-                })
-                await submitSetTimer()
-              } catch (err) {
-                snackbar.show({ title: 'Error uploading post', variant: 'negative' })
-                console.error(err)
-              }
-            }
-            handler()
-          }}
+          onPress={handlePostNowPress}
           style={StyleSheet.applyWidth(
             {
               backgroundColor: theme.colors['Secondary'],

@@ -6,17 +6,8 @@ import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, Divider, Icon, Pressable, ScreenContainer, Surface, Touchable, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ImageBackground,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native'
-import { useSnackbar } from '../components'
+import { ActivityIndicator, FlatList, ScrollView, Text, View, useWindowDimensions } from 'react-native'
+import { useSnackbar, Image, BlurImage } from '../components'
 
 const FanClubSingleScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -24,7 +15,7 @@ const FanClubSingleScreen = (props) => {
   const Variables = Constants
   const snackbar = useSnackbar()
 
-  const [follwersCount,setFollowersCount] = useState(0);
+  const [follwersCount, setFollowersCount] = useState(0)
 
   const filterFeed = (Variables, list) => {
     if (list.length) {
@@ -270,10 +261,14 @@ const FanClubSingleScreen = (props) => {
                         userId={Constants['LOGGED_IN_USER']}
                         onData={(fetchData) => {
                           try {
-                            var b=false;
+                            var b = false
                             setFollowersCount(fetchData.length)
-                            fetchData.map((item)=>{
-                              if(item.fanclub_id==props.route?.params?.id && item.user_id==Constants['LOGGED_IN_USER']) b=true;
+                            fetchData.map((item) => {
+                              if (
+                                item.fanclub_id == props.route?.params?.id &&
+                                item.user_id == Constants['LOGGED_IN_USER']
+                              )
+                                b = true
                             })
                             setClubfriend(b)
                           } catch (err) {
@@ -501,7 +496,7 @@ const FanClubSingleScreen = (props) => {
                                   dimensions.width,
                                 )}
                               >
-                                <ImageBackground
+                                <BlurImage
                                   style={StyleSheet.applyWidth(
                                     {
                                       alignItems: 'flex-start',
@@ -514,6 +509,11 @@ const FanClubSingleScreen = (props) => {
                                   source={{ uri: `${listData?.image_path}` }}
                                   resizeMode={'cover'}
                                 >
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ height: '100%', width: '100%' }}
+                                    source={{ uri: `${listData?.image_path}` }}
+                                  />
                                   {/* Details */}
                                   <View
                                     style={StyleSheet.applyWidth(
@@ -549,7 +549,7 @@ const FanClubSingleScreen = (props) => {
                                       {listData?.caption}
                                     </Text>
                                   </View>
-                                </ImageBackground>
+                                </BlurImage>
                               </View>
                             </View>
                           </Surface>

@@ -23,18 +23,8 @@ import {
 } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  Modal,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-  StyleSheet as RNStyleSheet,
-} from 'react-native'
-import { ShimmerPlaceHolder } from '../components'
+import { FlatList, Modal, ScrollView, Text, View, useWindowDimensions, StyleSheet as RNStyleSheet } from 'react-native'
+import { BlurImage, Image, ShimmerPlaceHolder } from '../components'
 
 const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -100,6 +90,140 @@ const HomeScreen = (props) => {
     }
   }
 
+  const renderFeedItem = ({ item }) => {
+    const listData = item
+    return (
+      <Pressable
+        onPress={() => {
+          try {
+            navigation.navigate('PostDetailsScreen', {
+              post_id: listData?.id,
+            })
+          } catch (err) {
+            console.error(err)
+          }
+        }}
+        style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
+      >
+        <Surface
+          style={StyleSheet.applyWidth(
+            {
+              borderColor: theme.colors.viewBG,
+              borderLeftWidth: 1,
+              borderRadius: 12,
+              borderRightWidth: 1,
+              margin: 2,
+              marginBottom: 10,
+              minHeight: 40,
+            },
+            dimensions.width,
+          )}
+          elevation={3}
+        >
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                alignItems: 'flex-start',
+                flex: 1,
+                justifyContent: 'space-between',
+                overflow: 'hidden',
+                width: '100%',
+              },
+              dimensions.width,
+            )}
+          >
+            <BlurImage
+              style={StyleSheet.applyWidth(
+                {
+                  alignItems: 'flex-start',
+                  height: 130,
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                },
+                dimensions.width,
+              )}
+              resizeMode="cover"
+              blurRadius={50}
+              source={{ uri: `${listData?.image_path}` }}
+            >
+              <Image
+                resizeMode="contain"
+                style={{ height: '100%', width: '100%' }}
+                source={{ uri: `${listData?.image_path}` }}
+              />
+              {/* Details */}
+              <View
+                style={StyleSheet.applyWidth(
+                  {
+                    alignItems: 'flex-start',
+                    backgroundColor: theme.colors['Studily_Opacity_25'],
+                    borderColor: theme.colors['Studily_Opacity_25'],
+                    bottom: 0,
+                    flex: 1,
+                    justifyContent: 'center',
+                    padding: 4,
+                    position: 'absolute',
+                    width: '100%',
+                  },
+                  dimensions.width,
+                )}
+              >
+                {/* Title */}
+                <Text
+                  style={StyleSheet.applyWidth(
+                    {
+                      color: theme.colors.custom_rgb255_255_255,
+                      fontFamily: 'Inter_400Regular',
+                      fontSize: 10,
+                      padding: 2,
+                    },
+                    dimensions.width,
+                  )}
+                  ellipsizeMode={'tail'}
+                  numberOfLines={2}
+                >
+                  {'🖖 '}
+                  {listData?.caption}
+                </Text>
+              </View>
+            </BlurImage>
+          </View>
+        </Surface>
+      </Pressable>
+    )
+  }
+
+  const renderFeed = ({ loading, error, data }) => {
+    const fetchData = data
+    if (!fetchData || loading) {
+      return <FeedLoader />
+    }
+
+    if (error) {
+      return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+    }
+
+    return (
+      <FlatList
+        data={fetchData}
+        listKey={'IOYEaY2u'}
+        keyExtractor={(listData) => listData?.id}
+        renderItem={renderFeedItem}
+        style={StyleSheet.applyWidth(
+          StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
+          dimensions.width,
+        )}
+        contentContainerStyle={StyleSheet.applyWidth(GlobalStyles.FlatListStyles(theme)['List'], dimensions.width)}
+        onEndReachedThreshold={0.5}
+        showsVerticalScrollIndicator={false}
+        numColumns={2}
+        showsHorizontalScrollIndicator={false}
+      />
+    )
+  }
+
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
@@ -111,10 +235,9 @@ const HomeScreen = (props) => {
         },
         dimensions.width,
       )}
-      hasTopSafeArea={false}
+      hasTopSafeArea={true}
       hasBottomSafeArea={false}
       scrollable={false}
-      hasSafeArea={true}
     >
       {/* Header */}
       <View
@@ -371,45 +494,47 @@ const HomeScreen = (props) => {
                       {'Hear celebrities and fans speak, and assert your \nviews - in the PagalFan audio chatroom!!'}
                     </Text>
 
-                    <Pressable
-                      onPress={() => {
-                        try {
-                          setShowBakarrPopup(true)
-                        } catch (err) {
-                          console.error(err)
-                        }
-                      }}
-                      style={StyleSheet.applyWidth({ height: 25, marginRight: 40, width: '100%' }, dimensions.width)}
-                    >
-                      <View
-                        style={StyleSheet.applyWidth(
-                          {
-                            alignContent: 'flex-start',
-                            alignItems: 'center',
-                            backgroundColor: theme.colors['Secondary'],
-                            borderRadius: 20,
-                            height: 22,
-                            justifyContent: 'center',
-                            marginTop: 2,
-                            width: 125,
-                          },
-                          dimensions.width,
-                        )}
+                    {isSessionLive ? (
+                      <Pressable
+                        onPress={() => {
+                          try {
+                            setShowBakarrPopup(true)
+                          } catch (err) {
+                            console.error(err)
+                          }
+                        }}
+                        style={StyleSheet.applyWidth({ height: 25, marginRight: 40, width: '100%' }, dimensions.width)}
                       >
-                        <Text
+                        <View
                           style={StyleSheet.applyWidth(
-                            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                              color: theme.colors['PF-BG'],
-                              fontFamily: 'Montserrat_700Bold',
-                              fontSize: 12,
-                            }),
+                            {
+                              alignContent: 'flex-start',
+                              alignItems: 'center',
+                              backgroundColor: theme.colors['Secondary'],
+                              borderRadius: 20,
+                              height: 22,
+                              justifyContent: 'center',
+                              marginTop: 2,
+                              width: 125,
+                            },
                             dimensions.width,
                           )}
                         >
-                          {'DIVE IN 👋'}
-                        </Text>
-                      </View>
-                    </Pressable>
+                          <Text
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                color: theme.colors['PF-BG'],
+                                fontFamily: 'Montserrat_700Bold',
+                                fontSize: 12,
+                              }),
+                              dimensions.width,
+                            )}
+                          >
+                            {'DIVE IN 👋'}
+                          </Text>
+                        </View>
+                      </Pressable>
+                    ) : null}
                   </View>
                 </View>
               </View>
@@ -952,145 +1077,7 @@ const HomeScreen = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >
-            <PagalFanBEApi.FetchFetchAllPostsGET>
-              {({ loading, error, data }) => {
-                const fetchData = data
-                if (!fetchData || loading) {
-                  return <FeedLoader />
-                }
-
-                if (error) {
-                  return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                }
-
-                return (
-                  <FlatList
-                    data={fetchData}
-                    listKey={'IOYEaY2u'}
-                    keyExtractor={(listData) => listData?.id}
-                    renderItem={({ item }) => {
-                      const listData = item
-                      return (
-                        <Pressable
-                          onPress={() => {
-                            try {
-                              navigation.navigate('PostDetailsScreen', {
-                                post_id: listData?.id,
-                              })
-                            } catch (err) {
-                              console.error(err)
-                            }
-                          }}
-                          style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-                        >
-                          <Surface
-                            style={StyleSheet.applyWidth(
-                              {
-                                borderColor: theme.colors.viewBG,
-                                borderLeftWidth: 1,
-                                borderRadius: 12,
-                                borderRightWidth: 1,
-                                margin: 2,
-                                marginBottom: 10,
-                                minHeight: 40,
-                              },
-                              dimensions.width,
-                            )}
-                            elevation={3}
-                          >
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'flex-start',
-                                  flex: 1,
-                                  justifyContent: 'space-between',
-                                  overflow: 'hidden',
-                                  width: '100%',
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    borderRadius: 12,
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                <ImageBackground
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      alignItems: 'flex-start',
-                                      height: 130,
-                                      justifyContent: 'space-between',
-                                      width: '100%',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                  resizeMode={'cover'}
-                                  source={{ uri: `${listData?.image_path}` }}
-                                >
-                                  {/* Details */}
-                                  <View
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'flex-start',
-                                        backgroundColor: theme.colors['Studily_Opacity_25'],
-                                        borderColor: theme.colors['Studily_Opacity_25'],
-                                        bottom: 0,
-                                        flex: 1,
-                                        justifyContent: 'center',
-                                        padding: 4,
-                                        position: 'absolute',
-                                        width: '100%',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {/* Title */}
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          color: theme.colors.custom_rgb255_255_255,
-                                          fontFamily: 'Inter_400Regular',
-                                          fontSize: 10,
-                                          padding: 2,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                      ellipsizeMode={'tail'}
-                                      numberOfLines={2}
-                                    >
-                                      {'🖖 '}
-                                      {listData?.caption}
-                                    </Text>
-                                  </View>
-                                </ImageBackground>
-                              </View>
-                            </View>
-                          </Surface>
-                        </Pressable>
-                      )
-                    }}
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
-                      dimensions.width,
-                    )}
-                    contentContainerStyle={StyleSheet.applyWidth(
-                      GlobalStyles.FlatListStyles(theme)['List'],
-                      dimensions.width,
-                    )}
-                    onEndReachedThreshold={0.5}
-                    showsVerticalScrollIndicator={false}
-                    numColumns={2}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                )
-              }}
-            </PagalFanBEApi.FetchFetchAllPostsGET>
+            <PagalFanBEApi.FetchFetchAllPostsGET>{renderFeed}</PagalFanBEApi.FetchFetchAllPostsGET>
           </ScrollView>
         </View>
       </ScrollView>
@@ -1110,6 +1097,9 @@ const HomeScreen = (props) => {
                 bottom: 10,
                 position: 'absolute',
                 alignSelf: 'center',
+                zIndex: 999,
+                backgroundColor: '#fff',
+                borderRadius: 50,
               },
               dimensions.width,
             )}

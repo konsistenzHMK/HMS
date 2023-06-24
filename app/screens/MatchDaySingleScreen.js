@@ -25,9 +25,9 @@ import {
   withTheme,
 } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
-import { ActivityIndicator, FlatList, Image, Modal, ScrollView, Text, View, useWindowDimensions } from 'react-native'
+import { ActivityIndicator, FlatList, Modal, ScrollView, Text, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useSnackbar } from '../components'
+import { useSnackbar, Image } from '../components'
 
 const MatchDaySingleScreen = (props) => {
   const dimensions = useWindowDimensions()

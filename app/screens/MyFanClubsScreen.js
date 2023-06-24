@@ -8,8 +8,6 @@ import { Circle, Divider, Icon, Pressable, ScreenContainer, Surface, Touchable, 
 import { FlashList } from '@shopify/flash-list'
 import {
   FlatList,
-  Image,
-  ImageBackground,
   ScrollView,
   Text,
   TextInput,
@@ -17,7 +15,7 @@ import {
   useWindowDimensions,
   StyleSheet as RNStyleSheet,
 } from 'react-native'
-import { ShimmerPlaceHolder, useSnackbar } from '../components'
+import { BlurImage, Image, ShimmerPlaceHolder, useSnackbar } from '../components'
 
 const MyFanClubsScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -651,7 +649,7 @@ const MyFanClubsScreen = (props) => {
                                   dimensions.width,
                                 )}
                               >
-                                <ImageBackground
+                                <BlurImage
                                   style={StyleSheet.applyWidth(
                                     {
                                       alignItems: 'flex-start',
@@ -662,8 +660,14 @@ const MyFanClubsScreen = (props) => {
                                     dimensions.width,
                                   )}
                                   source={{ uri: `${listData?.image_path}` }}
+                                  blurRadius={50}
                                   resizeMode={'cover'}
                                 >
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ height: '100%', width: '100%' }}
+                                    source={{ uri: `${listData?.image_path}` }}
+                                  />
                                   {/* Details */}
                                   <View
                                     style={StyleSheet.applyWidth(
@@ -699,7 +703,7 @@ const MyFanClubsScreen = (props) => {
                                       {listData?.caption}
                                     </Text>
                                   </View>
-                                </ImageBackground>
+                                </BlurImage>
                               </View>
                             </View>
                           </Surface>

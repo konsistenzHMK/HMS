@@ -23,7 +23,6 @@ import { FlashList } from '@shopify/flash-list'
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   Modal,
   ScrollView,
   Text,
@@ -32,6 +31,7 @@ import {
   useWindowDimensions,
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Image } from '../components'
 
 const MDStest2Screen = (props) => {
   const dimensions = useWindowDimensions()

@@ -5,7 +5,6 @@ import {
   View,
   TouchableHighlight,
   ActivityIndicator,
-  Image,
   Modal,
   TextInput,
   Platform,
@@ -23,7 +22,7 @@ import {
 } from '@100mslive/react-native-hms'
 import * as GlobalStyles from '../GlobalStyles.js'
 
-import { useSnackbar } from '../components/index.js'
+import { useSnackbar, Image } from '../components/index.js'
 import { Icon, IconButton, ScreenContainer, withTheme } from '@draftbit/ui'
 
 /**
@@ -668,7 +667,9 @@ const usePeerTrackNodes = ({ onConnectionError, username, roomCode }) => {
     console.log('Changed')
   }
   const onChangeLocalAudioStats = (data) => {
-    ChangeMuteStatus(data.track.isMute())
+    if (muteStatus !== data.track.isMute()) {
+      ChangeMuteStatus(data.track.isMute())
+    }
   }
   const onMessageReceived = (message) => {
     // console.log(message);
@@ -701,8 +702,13 @@ const usePeerTrackNodes = ({ onConnectionError, username, roomCode }) => {
     // return
     // }
 
+    if (type === HMSPeerUpdate.ROLE_CHANGED) {
+      // change mute status if role changed
+      ChangeMuteStatus(true)
+      return
+    }
+
     if (
-      type === HMSPeerUpdate.ROLE_CHANGED ||
       type === HMSPeerUpdate.METADATA_CHANGED ||
       type === HMSPeerUpdate.NAME_CHANGED ||
       type === HMSPeerUpdate.NETWORK_QUALITY_UPDATED

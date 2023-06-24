@@ -21,7 +21,6 @@ import {
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   ImageBackground,
   Modal,
   ScrollView,
@@ -29,6 +28,8 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { BlurImage, Image } from '../components'
 
 const MyProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -45,9 +46,7 @@ const MyProfileScreen = (props) => {
   const [menuTab3, setMenuTab3] = React.useState(false)
   const [modalOpen, setModalOpen] = React.useState(false)
 
-
-  const [Followers,setFollwers] =React.useState(0);
-
+  const [Followers, setFollwers] = React.useState(0)
 
   return (
     <ScreenContainer
@@ -218,29 +217,27 @@ const MyProfileScreen = (props) => {
                     />
                   )}
                 </Circle>
-                <PagalFanBEApi.FetchFetchSingleFollowGET
-                    followeeId={Constants['LOGGED_IN_USER']}
-                >
-                  {({data})=>{
-                    if(data){
-                      setFollwers(data.length);
+                <PagalFanBEApi.FetchFetchSingleFollowGET followeeId={Constants['LOGGED_IN_USER']}>
+                  {({ data }) => {
+                    if (data) {
+                      setFollwers(data.length)
                     }
                   }}
                 </PagalFanBEApi.FetchFetchSingleFollowGET>
                 <Text
-                    style={StyleSheet.applyWidth(
-                      {
-                        alignItems: 'flex-start',
-                        color: theme.colors.LightGrey,
-                        fontFamily: 'Rubik_400Regular',
-                        fontSize: 12,
-                        paddingRight: 15
-                      },
-                      dimensions.width,
-                    )}
-                  >
-                    {Followers} Followers
-                  </Text>
+                  style={StyleSheet.applyWidth(
+                    {
+                      alignItems: 'flex-start',
+                      color: theme.colors.LightGrey,
+                      fontFamily: 'Rubik_400Regular',
+                      fontSize: 12,
+                      paddingRight: 15,
+                    },
+                    dimensions.width,
+                  )}
+                >
+                  {Followers} Followers
+                </Text>
               </View>
               {/* Profile Detail Frame */}
               <View
@@ -416,7 +413,7 @@ const MyProfileScreen = (props) => {
                                     dimensions.width,
                                   )}
                                 >
-                                  <ImageBackground
+                                  <BlurImage
                                     style={StyleSheet.applyWidth(
                                       {
                                         alignItems: 'flex-start',
@@ -427,8 +424,14 @@ const MyProfileScreen = (props) => {
                                       dimensions.width,
                                     )}
                                     resizeMode={'cover'}
+                                    blurRadius={50}
                                     source={{ uri: `${listData?.image_path}` }}
                                   >
+                                    <FastImage
+                                      resizeMode="contain"
+                                      style={{ height: '100%', width: '100%' }}
+                                      source={{ uri: `${listData?.image_path}` }}
+                                    />
                                     {/* Details */}
                                     <View
                                       style={StyleSheet.applyWidth(
@@ -463,7 +466,7 @@ const MyProfileScreen = (props) => {
                                         {listData?.caption}
                                       </Text>
                                     </View>
-                                  </ImageBackground>
+                                  </BlurImage>
                                 </View>
                               </View>
                             </Surface>

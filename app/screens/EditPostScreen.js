@@ -5,7 +5,7 @@ import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
-import { Image, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { Image, Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { useSnackbar } from '../components'
 
 const EditPostScreen = (props) => {
@@ -44,6 +44,27 @@ const EditPostScreen = (props) => {
   const [originalCaption, setOriginalCaption] = React.useState('')
   const [pickedImage, setPickedImage] = React.useState('')
   const [textAreaValue, setTextAreaValue] = React.useState('')
+
+  const handlePostUpdatePress = async () => {
+    try {
+      Keyboard.dismiss()
+
+      if (!textAreaValue) {
+        snackbar.show({ title: 'Please add post details' })
+        return
+      }
+
+      snackbar.show({ title: 'Updating post …' })
+      const newCaption = concatStrings(originalCaption, textAreaValue)
+      await pagalFanBEUpdatePostPATCH.mutateAsync({
+        postId: props.route?.params?.post_id ?? 1,
+        updatedCaption: newCaption,
+      })
+    } catch (err) {
+      snackbar.show({ title: 'Error updating post', variant: 'negative' })
+      console.error(err)
+    }
+  }
 
   return (
     <ScreenContainer
@@ -128,7 +149,7 @@ const EditPostScreen = (props) => {
         </View>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={true} bounces={true}>
+      <ScrollView showsVerticalScrollIndicator={true} bounces={true} keyboardShouldPersistTaps="handled">
         {/* Post Content */}
         <View style={StyleSheet.applyWidth({ marginTop: 10, paddingLeft: 10, paddingRight: 10 }, dimensions.width)}>
           {/* ImageView */}
@@ -229,22 +250,7 @@ const EditPostScreen = (props) => {
         </View>
         {/* Update */}
         <Button
-          onPress={() => {
-            const handler = async () => {
-              try {
-                snackbar.show({ title: 'Updating post …' })
-                const newCaption = concatStrings(originalCaption, textAreaValue)
-                await pagalFanBEUpdatePostPATCH.mutateAsync({
-                  postId: props.route?.params?.post_id ?? 1,
-                  updatedCaption: newCaption,
-                })
-              } catch (err) {
-                snackbar.show({ title: 'Error updating post', variant: 'negative' })
-                console.error(err)
-              }
-            }
-            handler()
-          }}
+          onPress={handlePostUpdatePress}
           style={StyleSheet.applyWidth(
             {
               backgroundColor: theme.colors['Secondary'],

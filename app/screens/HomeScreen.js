@@ -1030,35 +1030,9 @@ const HomeScreen = (props) => {
                                     },
                                     dimensions.width,
                                   )}
-                                  resizeMode={'stretch'}
+                                  resizeMode={'cover'}
                                   source={{ uri: `${listData?.image_path}` }}
                                 >
-                                  <Surface
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'center',
-                                        backgroundColor: theme.colors['Studily_Opacity_25'],
-                                        borderRadius: 12,
-                                        height: 24,
-                                        justifyContent: 'center',
-                                        marginTop: 4,
-                                        position: 'absolute',
-                                        right: 2,
-                                        top: 0,
-                                        width: 24,
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], { fontSize: 12 }),
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {listData?.emoji}
-                                    </Text>
-                                  </Surface>
                                   {/* Details */}
                                   <View
                                     style={StyleSheet.applyWidth(

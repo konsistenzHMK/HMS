@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -31,6 +31,7 @@ import {
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar, Modal } from '../components'
+import branch from 'react-native-branch'
 
 const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
 
@@ -55,6 +56,7 @@ const PostDetailsScreen = (props) => {
   const [isSaved, setIsSaved] = React.useState(false)
   const [showShareModal, setShowShareModal] = React.useState(false)
   const [textInputValue, setTextInputValue] = React.useState('')
+  const postDetailsRef = useRef(null)
 
   function hideModal() {
     setShowShareModal(false)
@@ -96,6 +98,30 @@ const PostDetailsScreen = (props) => {
     }
   }
 
+  const handleSharePress = async () => {
+    if (!postDetailsRef.current) {
+      return
+    }
+
+    try {
+      let buo = await branch.createBranchUniversalObject(`post/${postDetailsRef.current.id}`, {
+        title: postDetailsRef.current.caption,
+        contentImageUrl: postDetailsRef.current.image_path,
+        contentMetadata: {
+          customMetadata: {
+            post_id: String(postDetailsRef.current.id),
+          },
+        },
+      })
+
+      const response = await buo.generateShortUrl()
+      openShareUtil(response.url)
+      hideModal()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <>
       <ScreenContainer
@@ -114,7 +140,7 @@ const PostDetailsScreen = (props) => {
           keyboardShouldPersistTaps={'always'}
         >
           <PagalFanBEApi.FetchFetchSinglePostGET id={props.route?.params?.post_id ?? 1}>
-            {({ loading, error, data, refetchFetchSinglePost }) => {
+            {({ loading, error, data }) => {
               const fetchData = data
               if (!fetchData || loading) {
                 return <ActivityIndicator />
@@ -123,6 +149,8 @@ const PostDetailsScreen = (props) => {
               if (error) {
                 return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
               }
+
+              postDetailsRef.current = fetchData?.[0]
 
               return (
                 <FlatList
@@ -623,15 +651,7 @@ const PostDetailsScreen = (props) => {
                             </View>
                             {/* ShareFrame */}
                             <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                              <Pressable
-                                onPress={() => {
-                                  try {
-                                    setShowShareModal(true)
-                                  } catch (err) {
-                                    console.error(err)
-                                  }
-                                }}
-                              >
+                              <Pressable onPress={() => setShowShareModal(true)}>
                                 {/* Action 1 Frame */}
                                 <View
                                   style={StyleSheet.applyWidth(
@@ -1042,19 +1062,7 @@ const PostDetailsScreen = (props) => {
             )}
           >
             {/* PressableShare */}
-            <Pressable
-              onPress={() => {
-                const handler = async () => {
-                  try {
-                    await openShareUtil(`Check out this post on PagalFan
-draftbit://PostDetailsScreen/:${props.route?.params?.post_id ?? 1}`)
-                  } catch (err) {
-                    console.error(err)
-                  }
-                }
-                handler()
-              }}
-            >
+            <Pressable onPress={handleSharePress}>
               <View
                 style={StyleSheet.applyWidth(
                   {

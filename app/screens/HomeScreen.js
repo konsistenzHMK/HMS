@@ -29,6 +29,7 @@ import { notificationStore } from '../store/notification.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Image, ShimmerPlaceHolder } from '../components'
 import { FeedCard } from '../shared'
+import branch from 'react-native-branch'
 
 const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -82,6 +83,19 @@ const HomeScreen = (props) => {
     handler()
   }, [isFocused])
 
+  const handleDeeplink = (data) => {
+    if (data.post_id) {
+      navigation.navigate('PostDetailsScreen', {
+        post_id: data.post_id,
+      })
+    }
+    if (data.follower_id) {
+      navigation.navigate('OthersProfileScreen', {
+        userid: data.follower_id,
+      })
+    }
+  }
+
   useEffect(async () => {
     AsyncStorage.getItem('@notification').then((notifications) => {
       if (notifications) {
@@ -95,17 +109,7 @@ const HomeScreen = (props) => {
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
-          const { data } = remoteMessage
-          if (data.post_id) {
-            navigation.navigate('PostDetailsScreen', {
-              post_id: data.post_id,
-            })
-          }
-          if (data.follower_id) {
-            navigation.navigate('OthersProfileScreen', {
-              userid: data.follower_id,
-            })
-          }
+          handleDeeplink(remoteMessage.data)
         }
       })
 
@@ -133,6 +137,17 @@ const HomeScreen = (props) => {
       u1()
       u2()
     }
+  }, [])
+
+  useEffect(() => {
+    const unsubscribe = branch.subscribe({
+      onOpenComplete: ({ error, params, uri }) => {
+        if (!error) {
+          handleDeeplink(params)
+        }
+      },
+    })
+    return unsubscribe
   }, [])
 
   const [isSessionLive, setIsSessionLive] = React.useState(false)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -19,6 +19,9 @@ import { useIsFocused } from '@react-navigation/native'
 import { ActivityIndicator, FlatList, Image, ScrollView, Text, View, useWindowDimensions } from 'react-native'
 import { useSnackbar } from '../components'
 import { FeedCard } from '../shared'
+import branch from 'react-native-branch'
+import openShareUtil from '../utils/openShare'
+
 const OthersProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
@@ -43,13 +46,28 @@ const OthersProfileScreen = (props) => {
   }, [isFocused])
 
   const [accountFriend, setAccountFriend] = React.useState(false)
-  const [actionSheet, setActionSheet] = React.useState(false)
-  const [menuTab1, setMenuTab1] = React.useState(true)
-  const [menuTab2, setMenuTab2] = React.useState(false)
-  const [menuTab3, setMenuTab3] = React.useState(false)
-  const [modalOpen, setModalOpen] = React.useState(false)
 
   const [Followers, setFollwers] = React.useState(0)
+  const profileRef = useRef()
+
+  const handSharePress = async () => {
+    try {
+      let buo = await branch.createBranchUniversalObject(`profile/${profileRef.current.user_id}`, {
+        title: profileRef.current.first_name,
+        contentImageUrl: profileRef.current.profile_image,
+        contentMetadata: {
+          customMetadata: {
+            follower_id: String(profileRef.current.user_id),
+          },
+        },
+      })
+
+      const response = await buo.generateShortUrl()
+      openShareUtil(response.url)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <ScreenContainer
@@ -65,7 +83,7 @@ const OthersProfileScreen = (props) => {
       scrollable={false}
     >
       <PagalFanBEApi.FetchFetchSingleUserGET id={props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343'}>
-        {({ loading, error, data, refetchFetchSingleUser }) => {
+        {({ loading, error, data }) => {
           const fetchData = data
           if (!fetchData || loading) {
             return <ActivityIndicator />
@@ -74,7 +92,7 @@ const OthersProfileScreen = (props) => {
           if (error) {
             return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
           }
-
+          profileRef.current = fetchData?.[0]
           return (
             <>
               {/* Navigation Frame */}
@@ -148,7 +166,7 @@ const OthersProfileScreen = (props) => {
                       dimensions.width,
                     )}
                   >
-                    <Touchable>
+                    <Touchable onPress={handSharePress}>
                       <Circle size={31} bgColor={theme.colors.communityModalOpacityOverlay}>
                         <Icon name={'Ionicons/ios-share'} size={18} color={theme.colors.communityWhite} />
                       </Circle>

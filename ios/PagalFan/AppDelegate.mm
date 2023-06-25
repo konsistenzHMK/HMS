@@ -11,6 +11,10 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+  // Uncomment this line to use the test key instead of the live one.
+  [RNBranch useTestInstance];
+  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES];
+
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
@@ -31,6 +35,16 @@
 - (BOOL)concurrentRootEnabled
 {
   return true;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    [RNBranch application:app openURL:url options:options];
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
+   [RNBranch continueUserActivity:userActivity];
+   return YES;
 }
 
 @end

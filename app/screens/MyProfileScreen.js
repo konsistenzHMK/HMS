@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -8,6 +8,8 @@ import { Circle, CircleImage, Icon, ScreenContainer, TabView, TabViewItem, Touch
 import { ActivityIndicator, FlatList, ScrollView, Text, View, useWindowDimensions } from 'react-native'
 import { Image } from '../components'
 import { FeedCard } from '../shared'
+import branch from 'react-native-branch'
+import openShareUtil from '../utils/openShare'
 
 const MyProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -17,6 +19,26 @@ const MyProfileScreen = (props) => {
   const { navigation } = props
 
   const [Followers, setFollwers] = React.useState(0)
+  const profileRef = useRef()
+
+  const handSharePress = async () => {
+    try {
+      let buo = await branch.createBranchUniversalObject(`profile/${profileRef.current.user_id}`, {
+        title: profileRef.current.first_name,
+        contentImageUrl: profileRef.current.profile_image,
+        contentMetadata: {
+          customMetadata: {
+            follower_id: String(profileRef.current.user_id),
+          },
+        },
+      })
+
+      const response = await buo.generateShortUrl()
+      openShareUtil(response.url)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <ScreenContainer
@@ -41,7 +63,7 @@ const MyProfileScreen = (props) => {
           if (error) {
             return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
           }
-
+          profileRef.current = fetchData?.[0]
           return (
             <>
               {/* Navigation Frame */}
@@ -115,7 +137,7 @@ const MyProfileScreen = (props) => {
                       dimensions.width,
                     )}
                   >
-                    <Touchable>
+                    <Touchable onPress={handSharePress}>
                       <Circle size={31} bgColor={theme.colors.communityModalOpacityOverlay}>
                         <Icon name={'Ionicons/ios-share'} size={18} color={theme.colors.communityWhite} />
                       </Circle>

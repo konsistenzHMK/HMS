@@ -1,11 +1,15 @@
 import { Circle, Icon, ScreenContainer } from '@draftbit/ui'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useWindowDimensions, Text, View, Touchable, FlatList, Pressable } from 'react-native'
 import * as StyleSheet from '../utils/StyleSheet'
 import { notificationStore } from '../store/notification'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import moment from 'moment'
 
-function NotificationItem({ title = '', body = '' }) {
+function NotificationItem({ title = '', body = '', time }) {
+  console.log('time', time)
+  const ago = moment(time).fromNow()
+
   return (
     <View
       style={{
@@ -27,34 +31,54 @@ function NotificationItem({ title = '', body = '' }) {
       <View
         style={{
           flex: 1,
-          flexDirection: 'column',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
         }}
       >
-        <Text
-          style={{
-            fontFamily: 'Inter_500Medium',
-            fontSize: 14,
-          }}
-        >
-          {title}
-        </Text>
-        <Text
-          style={{
-            fontFamily: 'Inter_400Regular',
-            fontSize: 12,
-          }}
-        >
-          {body}
-        </Text>
+        <View>
+          <Text
+            style={{
+              fontFamily: 'Inter_500Medium',
+              fontSize: 14,
+            }}
+          >
+            {title}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Inter_400Regular',
+              fontSize: 12,
+            }}
+          >
+            {body}
+          </Text>
+        </View>
+        <View>
+          <Text style={{ fontSize: 12 }}>{ago}</Text>
+        </View>
       </View>
     </View>
   )
 }
 
 function NotificationsScreen(props) {
-  const { navigation, theme } = props
+  const { navigation } = props
   const dimensions = useWindowDimensions()
   const notifications = notificationStore.useState((s) => s.notifications)
+  console.log('abc', notifications)
+
+  useEffect(() => {
+    // set unread to false
+
+    notificationStore.update((s) => {
+      // s.notifications = s.notifications.map((n) => {
+      //   return {
+      //     ...n,
+      //     unread: false,
+      //   }
+      // })
+    })
+  }, [])
 
   return (
     <ScreenContainer
@@ -117,8 +141,8 @@ function NotificationsScreen(props) {
       </View>
 
       <FlatList
-        data={notifications}
-        renderItem={({ item }) => <NotificationItem title={item.title} body={item.body} />}
+        data={[...notifications].reverse()}
+        renderItem={({ item }) => <NotificationItem title={item.title} body={item.body} time={item.time} />}
         keyExtractor={(item) => item.id}
       />
     </ScreenContainer>

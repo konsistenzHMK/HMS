@@ -961,7 +961,9 @@ export const FetchFetchAllCommentsForAMatchGET = ({ children, onData = () => {},
 
 export const fetchAllCommentsForAPostGETStatusAndText = (Constants, { id }) =>
   fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_comments?post_id=eq.${id ?? ''}&order=created_at.desc&select=*,user_profiles(*)`,
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_comments?post_id=eq.${
+      id ?? ''
+    }&order=created_at.desc&select=*,user_profiles(*)`,
     {
       headers: {
         Accept: 'application/json',
@@ -1403,21 +1405,24 @@ export const FetchFetchAllPastMatchesGET = ({ children, onData = () => {}, refet
   })
 }
 
-export const fetchAllPostsGETStatusAndText = (Constants) =>
-  fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc', {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      apiKey: Constants['API_KEY_HEADER'],
+export const fetchAllPostsGETStatusAndText = (Constants, args) =>
+  fetch(
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc&limit=${args.limit}&offset=${args.offset}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
     },
-  }).then(async (res) => ({
+  ).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),
   }))
 
-export const fetchAllPostsGET = (Constants) =>
-  fetchAllPostsGETStatusAndText(Constants).then(({ status, statusText, text }) => {
+export const fetchAllPostsGET = (Constants, args) =>
+  fetchAllPostsGETStatusAndText(Constants, args).then(({ status, statusText, text }) => {
     try {
       return JSON.parse(text)
     } catch (e) {
@@ -1436,10 +1441,30 @@ export const useFetchAllPostsGET = (args, { refetchInterval } = {}) => {
 
 export const FetchFetchAllPostsGET = ({ children, onData = () => {}, refetchInterval }) => {
   const Constants = GlobalVariables.useValues()
+  const PER_PAGE = 10
   const isFocused = useIsFocused()
   const prevIsFocused = usePrevious(isFocused)
+  const [page, setPage] = React.useState(1)
+  const limitAndOffset = useMemo(() => {
+    return {
+      limit: PER_PAGE,
+      offset: (page - 1) * PER_PAGE || 0,
+    }
+  }, [page])
+  const [posts, setPosts] = React.useState([])
 
-  const { loading, data, error, refetch } = useFetchAllPostsGET({}, { refetchInterval })
+  const { loading, data, error, refetch } = useFetchAllPostsGET(
+    {
+      ...limitAndOffset,
+    },
+    { refetchInterval },
+  )
+
+  React.useEffect(() => {
+    if (data) {
+      setPosts((prev) => [...prev, ...data])
+    }
+  }, [data])
 
   React.useEffect(() => {
     if (!prevIsFocused && isFocused) {
@@ -1459,7 +1484,17 @@ export const FetchFetchAllPostsGET = ({ children, onData = () => {}, refetchInte
     }
   }, [data])
 
-  return children({ loading, data, error, refetchFetchAllPosts: refetch })
+  return children({
+    loading,
+    data: posts,
+    error,
+    refetchFetchAllPosts: refetch,
+    nextPage: () => {
+      if (data?.length >= PER_PAGE) {
+        setPage(page + 1)
+      }
+    },
+  })
 }
 
 export const fetchAllPostsSavedByUserGETStatusAndText = (Constants, { userId }) =>
@@ -2233,19 +2268,15 @@ export const FetchFetchPostLikeGET = ({ children, onData = () => {}, refetchInte
   return children({ loading, data, error, refetchFetchPostLike: refetch })
 }
 
-
 export const fetchPostLikeGETStatusAndTextCount = (Constants, { postId, userId }) =>
-  fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_likes?post_id=eq.${postId ?? ''}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        Authorization: Constants['AUTHORIZATION_HEADER'],
-        'Content-Type': 'application/json',
-        apiKey: Constants['API_KEY_HEADER'],
-      },
+  fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_likes?post_id=eq.${postId ?? ''}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: Constants['AUTHORIZATION_HEADER'],
+      'Content-Type': 'application/json',
+      apiKey: Constants['API_KEY_HEADER'],
     },
-  ).then(async (res) => ({
+  }).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),
@@ -2496,19 +2527,14 @@ export const FetchFetchSingleFanClubGET = ({ children, onData = () => {}, refetc
 }
 
 export const fetchSingleFanClubFollowsGETStatusAndText = (Constants, { fanclubId, userId }) =>
-  fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/fanclub_followers?fanclub_id=eq.${
-      fanclubId ?? ''
-    }`,
-    {
-      headers: {
-        Accept: 'application/json',
-        Authorization: Constants['AUTHORIZATION_HEADER'],
-        'Content-Type': 'application/json',
-        apiKey: Constants['API_KEY_HEADER'],
-      },
+  fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/fanclub_followers?fanclub_id=eq.${fanclubId ?? ''}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: Constants['AUTHORIZATION_HEADER'],
+      'Content-Type': 'application/json',
+      apiKey: Constants['API_KEY_HEADER'],
     },
-  ).then(async (res) => ({
+  }).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),
@@ -2577,17 +2603,14 @@ export const FetchFetchSingleFanClubFollowsGET = ({
 }
 
 export const fetchSingleFollowGETStatusAndText = (Constants, { followeeId, followerId }) =>
-  fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/follows?followee_id=eq.${followeeId ?? ''}&select=*`,
-    {
-      headers: {
-        Accept: 'application/json',
-        Authorization: Constants['AUTHORIZATION_HEADER'],
-        'Content-Type': 'application/json',
-        apiKey: Constants['API_KEY_HEADER'],
-      },
+  fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/follows?followee_id=eq.${followeeId ?? ''}&select=*`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: Constants['AUTHORIZATION_HEADER'],
+      'Content-Type': 'application/json',
+      apiKey: Constants['API_KEY_HEADER'],
     },
-  ).then(async (res) => ({
+  }).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),

@@ -33,7 +33,7 @@ const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
-  const notifications = notificationStore.useState((s) => s.notifications)
+  const notifications = [] || notificationStore.useState((s) => s.notifications)
 
   const { theme } = props
   const { navigation } = props
@@ -81,7 +81,7 @@ const HomeScreen = (props) => {
     handler()
   }, [isFocused])
 
-  useEffect(() => {
+  useEffect(async () => {
     AsyncStorage.getItem('@notification').then((notifications) => {
       if (notifications) {
         notificationStore.update((s) => {
@@ -108,20 +108,30 @@ const HomeScreen = (props) => {
         }
       })
 
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+    const u1 = messaging().setBackgroundMessageHandler(async (remoteMessage) => {
       notificationStore.update((s) => {
-        s.notifications.push(remoteMessage.notification)
-      })
-    })
-
-    messaging().onMessage(async (remoteMessage) => {
-      notificationStore.update((s) => {
-        s.notifications.push(remoteMessage.notification)
+        s.notifications.push({ ...remoteMessage.notification, time: Date.now(), unread: true })
         AsyncStorage.setItem('@notification', JSON.stringify(s.notifications)).then(() => {
           console.log('notification saved')
         })
       })
     })
+
+    const u2 = messaging().onMessage(async (remoteMessage) => {
+      notificationStore.update((s) => {
+        s.notifications.push({ ...remoteMessage.notification, time: Date.now(), unread: true })
+        console.log(s.notifications)
+        AsyncStorage.setItem('@notification', JSON.stringify(s.notifications)).then(() => {
+          console.log('notification saved')
+        })
+      })
+    })
+
+    return () => {
+      // remove messaging handler
+      u1()
+      u2()
+    }
   }, [])
 
   const [isSessionLive, setIsSessionLive] = React.useState(false)
@@ -137,6 +147,8 @@ const HomeScreen = (props) => {
       console.error(err)
     }
   }
+
+  const isUnreadNotif = notifications?.some((notif) => notif.unread)
 
   const renderFeedItem = ({ item }) => {
     const listData = item
@@ -243,35 +255,6 @@ const HomeScreen = (props) => {
     )
   }
 
-  const renderFeed = ({ loading, error, data }) => {
-    const fetchData = data
-    if (!fetchData || loading) {
-      return <FeedLoader />
-    }
-
-    if (error) {
-      return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-    }
-
-    return (
-      <FlatList
-        data={fetchData}
-        listKey={'IOYEaY2u'}
-        keyExtractor={(listData) => listData?.id}
-        renderItem={renderFeedItem}
-        style={StyleSheet.applyWidth(
-          StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
-          dimensions.width,
-        )}
-        contentContainerStyle={StyleSheet.applyWidth(GlobalStyles.FlatListStyles(theme)['List'], dimensions.width)}
-        onEndReachedThreshold={0.5}
-        showsVerticalScrollIndicator={false}
-        numColumns={2}
-        showsHorizontalScrollIndicator={false}
-      />
-    )
-  }
-
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
@@ -355,7 +338,7 @@ const HomeScreen = (props) => {
                 )}
                 name={'Entypo/dot-single'}
                 color={theme.colors['PF-Primary']}
-                size={notifications.length > 0 ? 32 : 0}
+                size={isUnreadNotif ? 32 : 0}
               />
             </View>
 
@@ -1131,7 +1114,39 @@ const HomeScreen = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >
-            <PagalFanBEApi.FetchFetchAllPostsGET>{renderFeed}</PagalFanBEApi.FetchFetchAllPostsGET>
+            <PagalFanBEApi.FetchFetchAllPostsGET>
+              {({ loading, error, data }) => {
+                const fetchData = data
+                if (!fetchData || loading) {
+                  return <FeedLoader />
+                }
+
+                if (error) {
+                  return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                }
+
+                return (
+                  <FlatList
+                    data={fetchData}
+                    listKey={'IOYEaY2u'}
+                    keyExtractor={(listData) => listData?.id}
+                    renderItem={renderFeedItem}
+                    style={StyleSheet.applyWidth(
+                      StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
+                      dimensions.width,
+                    )}
+                    contentContainerStyle={StyleSheet.applyWidth(
+                      GlobalStyles.FlatListStyles(theme)['List'],
+                      dimensions.width,
+                    )}
+                    onEndReachedThreshold={0.5}
+                    showsVerticalScrollIndicator={false}
+                    numColumns={2}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                )
+              }}
+            </PagalFanBEApi.FetchFetchAllPostsGET>
           </ScrollView>
         </View>
       </ScrollView>

@@ -602,33 +602,6 @@ const OthersProfileScreen = (props) => {
                                     resizeMode={'cover'}
                                     source={{ uri: `${listData?.image_path}` }}
                                   >
-                                    <Surface
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'center',
-                                          borderRadius: 12,
-                                          height: 24,
-                                          justifyContent: 'center',
-                                          marginTop: 10,
-                                          position: 'absolute',
-                                          right: 10,
-                                          top: 0,
-                                          width: 24,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      <Circle size={20} bgColor={theme.colors['Studily_Opacity_25']}>
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            GlobalStyles.TextStyles(theme)['Text'],
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {listData?.emoji}
-                                        </Text>
-                                      </Circle>
-                                    </Surface>
                                     {/* Details */}
                                     <View
                                       style={StyleSheet.applyWidth(
@@ -788,33 +761,6 @@ const OthersProfileScreen = (props) => {
                                       uri: `${listData?.posts?.image_path}`,
                                     }}
                                   >
-                                    <Surface
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'center',
-                                          borderRadius: 12,
-                                          height: 24,
-                                          justifyContent: 'center',
-                                          marginTop: 10,
-                                          position: 'absolute',
-                                          right: 10,
-                                          top: 0,
-                                          width: 24,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      <Circle size={20} bgColor={theme.colors['Studily_Opacity_25']}>
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            GlobalStyles.TextStyles(theme)['Text'],
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {listData?.posts?.emoji}
-                                        </Text>
-                                      </Circle>
-                                    </Surface>
                                     {/* Details */}
                                     <View
                                       style={StyleSheet.applyWidth(

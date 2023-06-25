@@ -880,12 +880,138 @@ const OthersProfileScreen = (props) => {
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
           title={'Followers'}
-        />
+        >
+          {/* Followers-Feed */}
+          <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
+            <ScrollView
+              contentContainerStyle={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}
+              bounces={true}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            >
+              <PagalFanBEApi.FetchFetchAllFollowersOfUserGET
+                followeeId={props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343'}
+              >
+                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
+                  const fetchData = data
+                  if (!fetchData || loading) {
+                    return <ActivityIndicator />
+                  }
+                  if (error) {
+                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                  }
+                  return (
+                    <FlatList
+                      data={fetchData}
+                      listKey={'96XJJXKTT'}
+                      renderItem={({ item }) => {
+                        return (
+                          <View style={{ marginTop:20 ,marginLeft:10}}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Circle size={70} bgColor={theme.colors.communityWhite}
+                              style={{ width: 50, height: 50, marginRight: 20 }}
+                            >
+                              {/* Profile Image */}
+                              {(item)?.user_profiles?.profile_image && (
+                                <CircleImage
+                                  size={90}
+                                  source={{
+                                    uri: `${item.user_profiles?.profile_image}`,
+                                  }}
+                                />
+                              )}
+                            </Circle>
+                            <Text 
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'flex-start',
+                                color: theme.colors.Studily_Dark_UI,
+                                fontFamily: 'Rubik_500Bold',
+                                fontSize: 14,
+                                paddingRight: 15
+                              },
+                              dimensions.width,
+                            )}>
+                              {item.user_profiles?.first_name} {item.user_profiles?.last_name} 
+                            </Text>
+                            </View>
+                          </View>
+                        )
+                      }}
+                    />
+                  )}}  
+              </PagalFanBEApi.FetchFetchAllFollowersOfUserGET>
+            </ScrollView>
+          </View>
+        </TabViewItem>
         {/* Following */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
           title={'Following'}
-        />
+        >
+          {/* Following-Feed */}
+          <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
+            <ScrollView
+              contentContainerStyle={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}
+              bounces={true}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            >
+              <PagalFanBEApi.FetchFetchAllFollowedByUserGET
+                followerId={props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343'}
+              >
+                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
+                  const fetchData = data
+                  if (!fetchData || loading) {
+                    return <ActivityIndicator />
+                  }
+                  if (error) {
+                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                  }
+                  return (
+                    <FlatList
+                      data={fetchData}
+                      listKey={'96XJJXKTT'}
+                      renderItem={({ item }) => {
+                        return (
+                          <View style={{ marginTop:20 ,marginLeft:10}}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Circle size={70} bgColor={theme.colors.communityWhite}
+                              style={{ width: 50, height: 50, marginRight: 20 }}
+                            >
+                              {/* Profile Image */}
+                              {(item)?.user_profiles?.profile_image && (
+                                <CircleImage
+                                  size={90}
+                                  source={{
+                                    uri: `${item.user_profiles?.profile_image}`,
+                                  }}
+                                />
+                              )}
+                            </Circle>
+                            <Text 
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'flex-start',
+                                color: theme.colors.Studily_Dark_UI,
+                                fontFamily: 'Rubik_500Bold',
+                                fontSize: 14,
+                                paddingRight: 15
+                              },
+                              dimensions.width,
+                            )}>
+                              {item.user_profiles?.first_name} {item.user_profiles?.last_name} 
+                            </Text>
+                            </View>
+                          </View>
+                        )
+                      }}
+                    />
+                  )}}  
+              </PagalFanBEApi.FetchFetchAllFollowedByUserGET>
+            </ScrollView>
+          </View>
+        </TabViewItem>
       </TabView>
     </ScreenContainer>
   )

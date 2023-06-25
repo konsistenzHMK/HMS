@@ -10,24 +10,15 @@ import {
   Icon,
   Pressable,
   ScreenContainer,
-  Surface,
   TabView,
   TabViewItem,
   Touchable,
   withTheme,
 } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ImageBackground,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native'
+import { ActivityIndicator, FlatList, Image, ScrollView, Text, View, useWindowDimensions } from 'react-native'
 import { useSnackbar } from '../components'
+import { FeedCard } from '../shared'
 const OthersProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
@@ -58,7 +49,7 @@ const OthersProfileScreen = (props) => {
   const [menuTab3, setMenuTab3] = React.useState(false)
   const [modalOpen, setModalOpen] = React.useState(false)
 
-  const [Followers,setFollwers] =React.useState(0);
+  const [Followers, setFollwers] = React.useState(0)
 
   return (
     <ScreenContainer
@@ -207,22 +198,21 @@ const OthersProfileScreen = (props) => {
                       }}
                     />
                   )}
-                  
                 </Circle>
                 <Text
-                    style={StyleSheet.applyWidth(
-                      {
-                        alignItems: 'flex-start',
-                        color: theme.colors.LightGrey,
-                        fontFamily: 'Rubik_400Regular',
-                        fontSize: 12,
-                        paddingRight: 15
-                      },
-                      dimensions.width,
-                    )}
-                  >
-                    {Followers} Followers
-                  </Text>
+                  style={StyleSheet.applyWidth(
+                    {
+                      alignItems: 'flex-start',
+                      color: theme.colors.LightGrey,
+                      fontFamily: 'Rubik_400Regular',
+                      fontSize: 12,
+                      paddingRight: 15,
+                    },
+                    dimensions.width,
+                  )}
+                >
+                  {Followers} Followers
+                </Text>
               </View>
               {/* Profile Detail Frame */}
               <View
@@ -257,7 +247,7 @@ const OthersProfileScreen = (props) => {
                   >
                     {(fetchData && fetchData[0])?.first_name} {(fetchData && fetchData[0])?.last_name}
                   </Text>
-                  
+
                   {/* User Handle */}
                   <Text
                     style={StyleSheet.applyWidth(
@@ -339,9 +329,9 @@ const OthersProfileScreen = (props) => {
                           try {
                             console.log(fetchData)
                             setFollwers(fetchData.length)
-                            let ans=false;
-                            fetchData.map((item)=>{
-                              if(item.follower_id == Constants['LOGGED_IN_USER']) ans=true;
+                            let ans = false
+                            fetchData.map((item) => {
+                              if (item.follower_id == Constants['LOGGED_IN_USER']) ans = true
                             })
                             setAccountFriend(ans)
                           } catch (err) {
@@ -537,113 +527,7 @@ const OthersProfileScreen = (props) => {
                       data={fetchData}
                       listKey={'dnhb2Trm'}
                       keyExtractor={(listData) => listData?.id}
-                      renderItem={({ item }) => {
-                        const listData = item
-                        return (
-                          <Pressable
-                            onPress={() => {
-                              try {
-                                navigation.navigate('PostDetailsScreen', {
-                                  post_id: listData?.id,
-                                })
-                              } catch (err) {
-                                console.error(err)
-                              }
-                            }}
-                            style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-                          >
-                            <Surface
-                              style={StyleSheet.applyWidth(
-                                {
-                                  borderColor: theme.colors.viewBG,
-                                  borderLeftWidth: 1,
-                                  borderRadius: 12,
-                                  borderRightWidth: 1,
-                                  margin: 2,
-                                  marginBottom: 10,
-                                  minHeight: 40,
-                                },
-                                dimensions.width,
-                              )}
-                              elevation={3}
-                            >
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    flex: 1,
-                                    justifyContent: 'space-between',
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      borderRadius: 12,
-                                      overflow: 'hidden',
-                                      width: '100%',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  <ImageBackground
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'flex-start',
-                                        height: 130,
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                    resizeMode={'cover'}
-                                    source={{ uri: `${listData?.image_path}` }}
-                                  >
-                                    {/* Details */}
-                                    <View
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'flex-start',
-                                          backgroundColor: theme.colors['Studily_Opacity_25'],
-                                          borderColor: theme.colors['Studily_Opacity_25'],
-                                          bottom: 0,
-                                          flex: 1,
-                                          justifyContent: 'center',
-                                          padding: 4,
-                                          position: 'absolute',
-                                          width: '100%',
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {/* Title */}
-                                      <Text
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            color: theme.colors.custom_rgb255_255_255,
-                                            fontFamily: 'Inter_400Regular',
-                                            fontSize: 10,
-                                            padding: 2,
-                                          },
-                                          dimensions.width,
-                                        )}
-                                        ellipsizeMode={'tail'}
-                                        numberOfLines={2}
-                                      >
-                                        {'🖖 '}
-                                        {listData?.caption}
-                                      </Text>
-                                    </View>
-                                  </ImageBackground>
-                                </View>
-                              </View>
-                            </Surface>
-                          </Pressable>
-                        )
-                      }}
+                      renderItem={({ item }) => <FeedCard feed={item} />}
                       style={StyleSheet.applyWidth(
                         StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
                         dimensions.width,
@@ -694,115 +578,11 @@ const OthersProfileScreen = (props) => {
                       data={fetchData}
                       listKey={'96XJJXKT'}
                       keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                      renderItem={({ item }) => {
-                        const listData = item
-                        return (
-                          <Pressable
-                            onPress={() => {
-                              try {
-                                navigation.navigate('PostDetailsScreen', {
-                                  post_id: listData?.post_id,
-                                })
-                              } catch (err) {
-                                console.error(err)
-                              }
-                            }}
-                            style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-                          >
-                            <Surface
-                              style={StyleSheet.applyWidth(
-                                {
-                                  borderColor: theme.colors.viewBG,
-                                  borderLeftWidth: 1,
-                                  borderRadius: 12,
-                                  borderRightWidth: 1,
-                                  margin: 2,
-                                  marginBottom: 10,
-                                  minHeight: 40,
-                                },
-                                dimensions.width,
-                              )}
-                              elevation={3}
-                            >
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    flex: 1,
-                                    justifyContent: 'space-between',
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      borderRadius: 12,
-                                      overflow: 'hidden',
-                                      width: '100%',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  <ImageBackground
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'flex-start',
-                                        height: 130,
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                    resizeMode={'cover'}
-                                    source={{
-                                      uri: `${listData?.posts?.image_path}`,
-                                    }}
-                                  >
-                                    {/* Details */}
-                                    <View
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'flex-start',
-                                          backgroundColor: theme.colors['Studily_Opacity_25'],
-                                          borderColor: theme.colors['Studily_Opacity_25'],
-                                          bottom: 0,
-                                          flex: 1,
-                                          justifyContent: 'center',
-                                          padding: 4,
-                                          position: 'absolute',
-                                          width: '100%',
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {/* Title */}
-                                      <Text
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            color: theme.colors.custom_rgb255_255_255,
-                                            fontFamily: 'Inter_400Regular',
-                                            fontSize: 10,
-                                            padding: 2,
-                                          },
-                                          dimensions.width,
-                                        )}
-                                        ellipsizeMode={'tail'}
-                                        numberOfLines={2}
-                                      >
-                                        {'🖖 '}
-                                        {listData?.posts?.caption}
-                                      </Text>
-                                    </View>
-                                  </ImageBackground>
-                                </View>
-                              </View>
-                            </Surface>
-                          </Pressable>
-                        )
-                      }}
+                      renderItem={({ item }) => (
+                        <FeedCard
+                          feed={{ id: item.post_id, image_path: item.posts?.image_path, caption: item.posts?.caption }}
+                        />
+                      )}
                       style={StyleSheet.applyWidth(
                         StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
                         dimensions.width,
@@ -852,40 +632,44 @@ const OthersProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop:20 ,marginLeft:10}}>
+                          <View style={{ marginTop: 20, marginLeft: 10 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Circle size={70} bgColor={theme.colors.communityWhite}
-                              style={{ width: 50, height: 50, marginRight: 20 }}
-                            >
-                              {/* Profile Image */}
-                              {(item)?.user_profiles?.profile_image && (
-                                <CircleImage
-                                  size={90}
-                                  source={{
-                                    uri: `${item.user_profiles?.profile_image}`,
-                                  }}
-                                />
-                              )}
-                            </Circle>
-                            <Text 
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'flex-start',
-                                color: theme.colors.Studily_Dark_UI,
-                                fontFamily: 'Rubik_500Bold',
-                                fontSize: 14,
-                                paddingRight: 15
-                              },
-                              dimensions.width,
-                            )}>
-                              {item.user_profiles?.first_name} {item.user_profiles?.last_name} 
-                            </Text>
+                              <Circle
+                                size={70}
+                                bgColor={theme.colors.communityWhite}
+                                style={{ width: 50, height: 50, marginRight: 20 }}
+                              >
+                                {/* Profile Image */}
+                                {item?.user_profiles?.profile_image && (
+                                  <CircleImage
+                                    size={90}
+                                    source={{
+                                      uri: `${item.user_profiles?.profile_image}`,
+                                    }}
+                                  />
+                                )}
+                              </Circle>
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'flex-start',
+                                    color: theme.colors.Studily_Dark_UI,
+                                    fontFamily: 'Rubik_500Bold',
+                                    fontSize: 14,
+                                    paddingRight: 15,
+                                  },
+                                  dimensions.width,
+                                )}
+                              >
+                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                              </Text>
                             </View>
                           </View>
                         )
                       }}
                     />
-                  )}}  
+                  )
+                }}
               </PagalFanBEApi.FetchFetchAllFollowersOfUserGET>
             </ScrollView>
           </View>
@@ -920,40 +704,44 @@ const OthersProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop:20 ,marginLeft:10}}>
+                          <View style={{ marginTop: 20, marginLeft: 10 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Circle size={70} bgColor={theme.colors.communityWhite}
-                              style={{ width: 50, height: 50, marginRight: 20 }}
-                            >
-                              {/* Profile Image */}
-                              {(item)?.user_profiles?.profile_image && (
-                                <CircleImage
-                                  size={90}
-                                  source={{
-                                    uri: `${item.user_profiles?.profile_image}`,
-                                  }}
-                                />
-                              )}
-                            </Circle>
-                            <Text 
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'flex-start',
-                                color: theme.colors.Studily_Dark_UI,
-                                fontFamily: 'Rubik_500Bold',
-                                fontSize: 14,
-                                paddingRight: 15
-                              },
-                              dimensions.width,
-                            )}>
-                              {item.user_profiles?.first_name} {item.user_profiles?.last_name} 
-                            </Text>
+                              <Circle
+                                size={70}
+                                bgColor={theme.colors.communityWhite}
+                                style={{ width: 50, height: 50, marginRight: 20 }}
+                              >
+                                {/* Profile Image */}
+                                {item?.user_profiles?.profile_image && (
+                                  <CircleImage
+                                    size={90}
+                                    source={{
+                                      uri: `${item.user_profiles?.profile_image}`,
+                                    }}
+                                  />
+                                )}
+                              </Circle>
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'flex-start',
+                                    color: theme.colors.Studily_Dark_UI,
+                                    fontFamily: 'Rubik_500Bold',
+                                    fontSize: 14,
+                                    paddingRight: 15,
+                                  },
+                                  dimensions.width,
+                                )}
+                              >
+                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                              </Text>
                             </View>
                           </View>
                         )
                       }}
                     />
-                  )}}  
+                  )
+                }}
               </PagalFanBEApi.FetchFetchAllFollowedByUserGET>
             </ScrollView>
           </View>

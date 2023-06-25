@@ -4,7 +4,7 @@ import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
 import * as StyleSheet from '../utils/StyleSheet'
-import { Circle, Divider, Icon, Pressable, ScreenContainer, Surface, Touchable, withTheme } from '@draftbit/ui'
+import { Circle, Divider, Icon, Pressable, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
 import {
   FlatList,
@@ -15,7 +15,8 @@ import {
   useWindowDimensions,
   StyleSheet as RNStyleSheet,
 } from 'react-native'
-import { BlurImage, Image, ShimmerPlaceHolder, useSnackbar } from '../components'
+import { Image, ShimmerPlaceHolder, useSnackbar } from '../components'
+import { FeedCard } from '../shared'
 
 const MyFanClubsScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -582,7 +583,7 @@ const MyFanClubsScreen = (props) => {
             showsHorizontalScrollIndicator={false}
           >
             <PagalFanBEApi.FetchFetchAllPostsGET>
-              {({ loading, error, data, refetchFetchAllPosts }) => {
+              {({ loading, error, data }) => {
                 const fetchData = data
                 if (!fetchData || loading) {
                   return <FeedLoader />
@@ -597,119 +598,7 @@ const MyFanClubsScreen = (props) => {
                     data={fetchData}
                     listKey={'ZamU1eFh'}
                     keyExtractor={(listData) => listData?.id}
-                    renderItem={({ item }) => {
-                      const listData = item
-                      return (
-                        <Pressable
-                          onPress={() => {
-                            try {
-                              navigation.navigate('PostDetailsScreen', {
-                                post_id: listData?.id,
-                              })
-                            } catch (err) {
-                              console.error(err)
-                            }
-                          }}
-                          style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-                        >
-                          <Surface
-                            style={StyleSheet.applyWidth(
-                              {
-                                borderColor: theme.colors.viewBG,
-                                borderLeftWidth: 1,
-                                borderRadius: 12,
-                                borderRightWidth: 1,
-                                margin: 2,
-                                marginBottom: 10,
-                                minHeight: 40,
-                              },
-                              dimensions.width,
-                            )}
-                            elevation={3}
-                          >
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'flex-start',
-                                  flex: 1,
-                                  justifyContent: 'space-between',
-                                  overflow: 'hidden',
-                                  width: '100%',
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    borderRadius: 12,
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                <BlurImage
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      alignItems: 'flex-start',
-                                      height: 130,
-                                      justifyContent: 'space-between',
-                                      width: '100%',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                  source={{ uri: `${listData?.image_path}` }}
-                                  blurRadius={50}
-                                  resizeMode={'cover'}
-                                >
-                                  <Image
-                                    resizeMode="contain"
-                                    style={{ height: '100%', width: '100%' }}
-                                    source={{ uri: `${listData?.image_path}` }}
-                                  />
-                                  {/* Details */}
-                                  <View
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'flex-start',
-                                        backgroundColor: theme.colors['Studily_Opacity_25'],
-                                        borderColor: theme.colors['Studily_Opacity_25'],
-                                        bottom: 0,
-                                        flex: 1,
-                                        justifyContent: 'center',
-                                        padding: 4,
-                                        position: 'absolute',
-                                        width: '100%',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {/* Title */}
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          color: theme.colors.custom_rgb255_255_255,
-                                          fontFamily: 'Inter_400Regular',
-                                          fontSize: 10,
-                                          padding: 2,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                      ellipsizeMode={'tail'}
-                                      numberOfLines={2}
-                                    >
-                                      {'🖖 '}
-                                      {listData?.caption}
-                                    </Text>
-                                  </View>
-                                </BlurImage>
-                              </View>
-                            </View>
-                          </Surface>
-                        </Pressable>
-                      )
-                    }}
+                    renderItem={({ item }) => <FeedCard feed={item} />}
                     style={StyleSheet.applyWidth(
                       StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
                       dimensions.width,

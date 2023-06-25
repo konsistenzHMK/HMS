@@ -27,7 +27,8 @@ import { FlatList, Modal, ScrollView, Text, View, useWindowDimensions, StyleShee
 import messaging from '@react-native-firebase/messaging'
 import { notificationStore } from '../store/notification.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { BlurImage, Image, ShimmerPlaceHolder } from '../components'
+import { Image, ShimmerPlaceHolder } from '../components'
+import { FeedCard } from '../shared'
 
 const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -151,108 +152,7 @@ const HomeScreen = (props) => {
   const isUnreadNotif = notifications?.some((notif) => notif.unread)
 
   const renderFeedItem = ({ item }) => {
-    const listData = item
-    return (
-      <Pressable
-        onPress={() => {
-          try {
-            navigation.navigate('PostDetailsScreen', {
-              post_id: listData?.id,
-            })
-          } catch (err) {
-            console.error(err)
-          }
-        }}
-        style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-      >
-        <Surface
-          style={StyleSheet.applyWidth(
-            {
-              borderColor: theme.colors.viewBG,
-              borderLeftWidth: 1,
-              borderRadius: 12,
-              borderRightWidth: 1,
-              margin: 2,
-              marginBottom: 10,
-              minHeight: 40,
-            },
-            dimensions.width,
-          )}
-          elevation={3}
-        >
-          <View
-            style={StyleSheet.applyWidth(
-              {
-                alignItems: 'flex-start',
-                flex: 1,
-                justifyContent: 'space-between',
-                overflow: 'hidden',
-                width: '100%',
-              },
-              dimensions.width,
-            )}
-          >
-            <BlurImage
-              style={StyleSheet.applyWidth(
-                {
-                  alignItems: 'flex-start',
-                  height: 130,
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                },
-                dimensions.width,
-              )}
-              resizeMode="cover"
-              blurRadius={50}
-              source={{ uri: `${listData?.image_path}` }}
-            >
-              <Image
-                resizeMode="contain"
-                style={{ height: '100%', width: '100%' }}
-                source={{ uri: `${listData?.image_path}` }}
-              />
-              {/* Details */}
-              <View
-                style={StyleSheet.applyWidth(
-                  {
-                    alignItems: 'flex-start',
-                    backgroundColor: theme.colors['Studily_Opacity_25'],
-                    borderColor: theme.colors['Studily_Opacity_25'],
-                    bottom: 0,
-                    flex: 1,
-                    justifyContent: 'center',
-                    padding: 4,
-                    position: 'absolute',
-                    width: '100%',
-                  },
-                  dimensions.width,
-                )}
-              >
-                {/* Title */}
-                <Text
-                  style={StyleSheet.applyWidth(
-                    {
-                      color: theme.colors.custom_rgb255_255_255,
-                      fontFamily: 'Inter_400Regular',
-                      fontSize: 10,
-                      padding: 2,
-                    },
-                    dimensions.width,
-                  )}
-                  ellipsizeMode={'tail'}
-                  numberOfLines={2}
-                >
-                  {'🖖 '}
-                  {listData?.caption}
-                </Text>
-              </View>
-            </BlurImage>
-          </View>
-        </Surface>
-      </Pressable>
-    )
+    return <FeedCard feed={item} />
   }
 
   return (

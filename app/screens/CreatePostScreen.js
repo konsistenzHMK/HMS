@@ -20,21 +20,7 @@ const CreatePostScreen = (props) => {
 
   const pagalFanBEAddNewPostPOST = PagalFanBEApi.useAddNewPostPOST()
   const [pickedImage, setPickedImage] = React.useState('')
-  const [submitted, setSubmitted] = React.useState('')
   const [textAreaValue, setTextAreaValue] = React.useState('')
-
-  const submitSetTimer = async () => {
-    setSubmitted(true)
-    console.log(submitted)
-
-    const timer = () => {
-      console.log(submitted)
-      setSubmitted(false)
-      navigation.goBack()
-    }
-
-    setTimeout(timer, 1000)
-  }
 
   const handlePostNowPress = async () => {
     Keyboard.dismiss()
@@ -51,7 +37,7 @@ const CreatePostScreen = (props) => {
         image_url: remoteUrl,
         posted_by: Constants['LOGGED_IN_USER'],
       })
-      submitSetTimer()
+      navigation.goBack()
     } catch (err) {
       snackbar.show({ title: 'Error uploading post', variant: 'negative' })
       console.error(err)
@@ -303,22 +289,6 @@ const CreatePostScreen = (props) => {
           title={'Post Now'}
         />
       </ScrollView>
-      <>
-        {!submitted ? null : (
-          <Text
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                alignSelf: 'center',
-                color: 'rgb(55, 249, 14)',
-                fontSize: 20,
-              }),
-              dimensions.width,
-            )}
-          >
-            {'Posted'}
-          </Text>
-        )}
-      </>
     </ScreenContainer>
   )
 }

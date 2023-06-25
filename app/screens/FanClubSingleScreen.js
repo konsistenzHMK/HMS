@@ -2,27 +2,18 @@ import React, { useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
-import { Circle, Divider, Icon, Pressable, ScreenContainer, Surface, Touchable, withTheme } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
+import { Circle, Divider, Icon, Pressable, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { ActivityIndicator, FlatList, ScrollView, Text, View, useWindowDimensions } from 'react-native'
-import { useSnackbar, Image, BlurImage } from '../components'
+import { useSnackbar, Image } from '../components'
+import { FeedCard } from '../shared'
 
 const FanClubSingleScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
   const snackbar = useSnackbar()
 
   const [follwersCount, setFollowersCount] = useState(0)
-
-  const filterFeed = (Variables, list) => {
-    if (list.length) {
-      return list?.filter((item) => item.caption.toLowerCase().includes(team_initials.toLowerCase()))
-    }
-    return list
-  }
 
   const { theme } = props
   const { navigation } = props
@@ -31,7 +22,6 @@ const FanClubSingleScreen = (props) => {
   const pagalFanBEDeleteFanClubFollowsDELETE = PagalFanBEApi.useDeleteFanClubFollowsDELETE()
 
   const [clubfriend, setClubfriend] = React.useState(false)
-  const [selectedtab, setSelectedtab] = React.useState('livechannel')
   const [team_initials, setTeam_initials] = React.useState('')
 
   return (
@@ -90,7 +80,7 @@ const FanClubSingleScreen = (props) => {
               }
             }}
           >
-            {({ loading, error, data, refetchFetchSingleFanClub }) => {
+            {({ loading, error, data }) => {
               const fetchData = data
               if (!fetchData || loading) {
                 return <ActivityIndicator />
@@ -276,7 +266,7 @@ const FanClubSingleScreen = (props) => {
                           }
                         }}
                       >
-                        {({ loading, error, data, refetchFetchSingleFanClubFollows }) => {
+                        {({ loading, error, data }) => {
                           const fetchData = data
                           if (!fetchData || loading) {
                             return <ActivityIndicator />
@@ -431,7 +421,7 @@ const FanClubSingleScreen = (props) => {
             showsHorizontalScrollIndicator={false}
           >
             <PagalFanBEApi.FetchFetchAllPostsTaggedByFanclubNameGET substring={team_initials}>
-              {({ loading, error, data, refetchFetchAllPostsTaggedByFanclubName }) => {
+              {({ loading, error, data }) => {
                 const fetchData = data
                 if (!fetchData || loading) {
                   return <ActivityIndicator />
@@ -446,116 +436,7 @@ const FanClubSingleScreen = (props) => {
                     data={fetchData}
                     listKey={'avX33S5V'}
                     keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                    renderItem={({ item }) => {
-                      const listData = item
-                      return (
-                        <Pressable
-                          onPress={() => {
-                            try {
-                              navigation.navigate('PostDetailsScreen')
-                            } catch (err) {
-                              console.error(err)
-                            }
-                          }}
-                          style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-                        >
-                          <Surface
-                            style={StyleSheet.applyWidth(
-                              {
-                                borderColor: theme.colors.viewBG,
-                                borderLeftWidth: 1,
-                                borderRadius: 12,
-                                borderRightWidth: 1,
-                                margin: 2,
-                                marginBottom: 10,
-                                minHeight: 40,
-                              },
-                              dimensions.width,
-                            )}
-                            elevation={3}
-                          >
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'flex-start',
-                                  flex: 1,
-                                  justifyContent: 'space-between',
-                                  overflow: 'hidden',
-                                  width: '100%',
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    borderRadius: 12,
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                <BlurImage
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      alignItems: 'flex-start',
-                                      height: 130,
-                                      justifyContent: 'space-between',
-                                      width: '100%',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                  source={{ uri: `${listData?.image_path}` }}
-                                  resizeMode={'cover'}
-                                >
-                                  <Image
-                                    resizeMode="contain"
-                                    style={{ height: '100%', width: '100%' }}
-                                    source={{ uri: `${listData?.image_path}` }}
-                                  />
-                                  {/* Details */}
-                                  <View
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'flex-start',
-                                        backgroundColor: theme.colors['Studily_Opacity_25'],
-                                        borderColor: theme.colors['Studily_Opacity_25'],
-                                        bottom: 0,
-                                        flex: 1,
-                                        justifyContent: 'center',
-                                        padding: 4,
-                                        position: 'absolute',
-                                        width: '100%',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {/* Title */}
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          color: theme.colors.custom_rgb255_255_255,
-                                          fontFamily: 'Inter_400Regular',
-                                          fontSize: 10,
-                                          padding: 2,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                      ellipsizeMode={'tail'}
-                                      numberOfLines={2}
-                                    >
-                                      {'🖖 '}
-                                      {listData?.caption}
-                                    </Text>
-                                  </View>
-                                </BlurImage>
-                              </View>
-                            </View>
-                          </Surface>
-                        </Pressable>
-                      )
-                    }}
+                    renderItem={({ item }) => <FeedCard feed={item} />}
                     style={StyleSheet.applyWidth(
                       StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
                       dimensions.width,

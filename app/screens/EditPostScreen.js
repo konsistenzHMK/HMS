@@ -192,15 +192,7 @@ const EditPostScreen = (props) => {
           </Text>
           {/* AddCaption */}
           <TextInput
-            onChangeText={(newAddCaptionValue) => {
-              try {
-                if (newAddCaptionValue) {
-                  setTextAreaValue(newAddCaptionValue)
-                }
-              } catch (err) {
-                console.error(err)
-              }
-            }}
+            onChangeText={setTextAreaValue}
             style={StyleSheet.applyWidth(
               {
                 borderBottomWidth: 1,

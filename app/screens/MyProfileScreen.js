@@ -4,47 +4,17 @@ import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
 import * as StyleSheet from '../utils/StyleSheet'
-import {
-  Checkbox,
-  Circle,
-  CircleImage,
-  Icon,
-  LinearGradient,
-  Pressable,
-  ScreenContainer,
-  Surface,
-  TabView,
-  TabViewItem,
-  Touchable,
-  withTheme,
-} from '@draftbit/ui'
-import {
-  ActivityIndicator,
-  FlatList,
-  ImageBackground,
-  Modal,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native'
-import FastImage from 'react-native-fast-image'
-import { BlurImage, Image } from '../components'
+import { Circle, CircleImage, Icon, ScreenContainer, TabView, TabViewItem, Touchable, withTheme } from '@draftbit/ui'
+import { ActivityIndicator, FlatList, ScrollView, Text, View, useWindowDimensions } from 'react-native'
+import { Image } from '../components'
+import { FeedCard } from '../shared'
 
 const MyProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
 
   const { theme } = props
   const { navigation } = props
-
-  const [accountFriend, setAccountFriend] = React.useState(false)
-  const [actionSheet, setActionSheet] = React.useState(false)
-  const [menuTab1, setMenuTab1] = React.useState(true)
-  const [menuTab2, setMenuTab2] = React.useState(false)
-  const [menuTab3, setMenuTab3] = React.useState(false)
-  const [modalOpen, setModalOpen] = React.useState(false)
 
   const [Followers, setFollwers] = React.useState(0)
 
@@ -62,7 +32,7 @@ const MyProfileScreen = (props) => {
       scrollable={false}
     >
       <PagalFanBEApi.FetchFetchSingleUserGET id={Constants['LOGGED_IN_USER']}>
-        {({ loading, error, data, refetchFetchSingleUser }) => {
+        {({ loading, error, data }) => {
           const fetchData = data
           if (!fetchData || loading) {
             return <ActivityIndicator />
@@ -346,7 +316,7 @@ const MyProfileScreen = (props) => {
               showsHorizontalScrollIndicator={false}
             >
               <PagalFanBEApi.FetchFetchAllPostsUploadedByUserGET userId={Constants['LOGGED_IN_USER']}>
-                {({ loading, error, data, refetchFetchAllPostsUploadedByUser }) => {
+                {({ loading, error, data }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -361,118 +331,7 @@ const MyProfileScreen = (props) => {
                       data={fetchData}
                       listKey={'l9BdpIAA'}
                       keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                      renderItem={({ item }) => {
-                        const listData = item
-                        return (
-                          <Pressable
-                            onPress={() => {
-                              try {
-                                navigation.navigate('PostDetailsScreen', {
-                                  post_id: listData?.id,
-                                })
-                              } catch (err) {
-                                console.error(err)
-                              }
-                            }}
-                            style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-                          >
-                            <Surface
-                              style={StyleSheet.applyWidth(
-                                {
-                                  borderColor: theme.colors.viewBG,
-                                  borderLeftWidth: 1,
-                                  borderRadius: 12,
-                                  borderRightWidth: 1,
-                                  margin: 2,
-                                  marginBottom: 10,
-                                  minHeight: 40,
-                                },
-                                dimensions.width,
-                              )}
-                              elevation={3}
-                            >
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    flex: 1,
-                                    justifyContent: 'space-between',
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      borderRadius: 12,
-                                      overflow: 'hidden',
-                                      width: '100%',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  <BlurImage
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'flex-start',
-                                        height: 130,
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                    resizeMode={'cover'}
-                                    blurRadius={50}
-                                    source={{ uri: `${listData?.image_path}` }}
-                                  >
-                                    <FastImage
-                                      resizeMode="contain"
-                                      style={{ height: '100%', width: '100%' }}
-                                      source={{ uri: `${listData?.image_path}` }}
-                                    />
-                                    {/* Details */}
-                                    <View
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'flex-start',
-                                          backgroundColor: theme.colors['Studily_Opacity_25'],
-                                          borderColor: theme.colors['Studily_Opacity_25'],
-                                          bottom: 0,
-                                          flex: 1,
-                                          justifyContent: 'center',
-                                          padding: 4,
-                                          position: 'absolute',
-                                          width: '100%',
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {/* Title */}
-                                      <Text
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            color: theme.colors.custom_rgb255_255_255,
-                                            fontFamily: 'Inter_400Regular',
-                                            fontSize: 10,
-                                            padding: 2,
-                                          },
-                                          dimensions.width,
-                                        )}
-                                        ellipsizeMode={'tail'}
-                                        numberOfLines={2}
-                                      >
-                                        {listData?.caption}
-                                      </Text>
-                                    </View>
-                                  </BlurImage>
-                                </View>
-                              </View>
-                            </Surface>
-                          </Pressable>
-                        )
-                      }}
+                      renderItem={({ item }) => <FeedCard feed={item} />}
                       style={StyleSheet.applyWidth(
                         StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
                         dimensions.width,
@@ -506,7 +365,7 @@ const MyProfileScreen = (props) => {
               showsHorizontalScrollIndicator={false}
             >
               <PagalFanBEApi.FetchFetchAllPostsSavedByUserGET userId={Constants['LOGGED_IN_USER']}>
-                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
+                {({ loading, error, data }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -521,114 +380,11 @@ const MyProfileScreen = (props) => {
                       data={fetchData}
                       listKey={'mm2A8R7y'}
                       keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                      renderItem={({ item }) => {
-                        const listData = item
-                        return (
-                          <Pressable
-                            onPress={() => {
-                              try {
-                                navigation.navigate('PostDetailsScreen', {
-                                  post_id: listData?.post_id,
-                                })
-                              } catch (err) {
-                                console.error(err)
-                              }
-                            }}
-                            style={StyleSheet.applyWidth({ marginTop: 16, width: '50%' }, dimensions.width)}
-                          >
-                            <Surface
-                              style={StyleSheet.applyWidth(
-                                {
-                                  borderColor: theme.colors.viewBG,
-                                  borderLeftWidth: 1,
-                                  borderRadius: 12,
-                                  borderRightWidth: 1,
-                                  margin: 2,
-                                  marginBottom: 10,
-                                  minHeight: 40,
-                                },
-                                dimensions.width,
-                              )}
-                              elevation={3}
-                            >
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    flex: 1,
-                                    justifyContent: 'space-between',
-                                    overflow: 'hidden',
-                                    width: '100%',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      borderRadius: 12,
-                                      overflow: 'hidden',
-                                      width: '100%',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  <ImageBackground
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'flex-start',
-                                        height: 130,
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                    resizeMode={'cover'}
-                                    source={{
-                                      uri: `${listData?.posts?.image_path}`,
-                                    }}
-                                  >
-                                    {/* Details */}
-                                    <View
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          alignItems: 'flex-start',
-                                          backgroundColor: theme.colors['Studily_Opacity_25'],
-                                          borderColor: theme.colors['Studily_Opacity_25'],
-                                          bottom: 0,
-                                          flex: 1,
-                                          justifyContent: 'center',
-                                          padding: 4,
-                                          position: 'absolute',
-                                          width: '100%',
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {/* Title */}
-                                      <Text
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            color: theme.colors.custom_rgb255_255_255,
-                                            fontFamily: 'Inter_400Regular',
-                                            fontSize: 10,
-                                            padding: 2,
-                                          },
-                                          dimensions.width,
-                                        )}
-                                        ellipsizeMode={'tail'}
-                                        numberOfLines={2}
-                                      >
-                                        {listData?.posts?.caption}
-                                      </Text>
-                                    </View>
-                                  </ImageBackground>
-                                </View>
-                              </View>
-                            </Surface>
-                          </Pressable>
-                        )
-                      }}
+                      renderItem={({ item }) => (
+                        <FeedCard
+                          feed={{ id: item.post_id, image_path: item.posts?.image_path, caption: item.posts?.caption }}
+                        />
+                      )}
                       style={StyleSheet.applyWidth(
                         StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
                         dimensions.width,
@@ -660,10 +416,8 @@ const MyProfileScreen = (props) => {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
             >
-              <PagalFanBEApi.FetchFetchAllFollowersOfUserGET
-                followeeId={Constants['LOGGED_IN_USER']}
-              >
-                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
+              <PagalFanBEApi.FetchFetchAllFollowersOfUserGET followeeId={Constants['LOGGED_IN_USER']}>
+                {({ loading, error, data }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -677,40 +431,44 @@ const MyProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop:20 ,marginLeft:10}}>
+                          <View style={{ marginTop: 20, marginLeft: 10 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Circle size={70} bgColor={theme.colors.communityWhite}
-                              style={{ width: 50, height: 50, marginRight: 20 }}
-                            >
-                              {/* Profile Image */}
-                              {(item)?.user_profiles?.profile_image && (
-                                <CircleImage
-                                  size={90}
-                                  source={{
-                                    uri: `${item.user_profiles?.profile_image}`,
-                                  }}
-                                />
-                              )}
-                            </Circle>
-                            <Text 
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'flex-start',
-                                color: theme.colors.Studily_Dark_UI,
-                                fontFamily: 'Rubik_500Bold',
-                                fontSize: 14,
-                                paddingRight: 15
-                              },
-                              dimensions.width,
-                            )}>
-                              {item.user_profiles?.first_name} {item.user_profiles?.last_name} 
-                            </Text>
+                              <Circle
+                                size={70}
+                                bgColor={theme.colors.communityWhite}
+                                style={{ width: 50, height: 50, marginRight: 20 }}
+                              >
+                                {/* Profile Image */}
+                                {item?.user_profiles?.profile_image && (
+                                  <CircleImage
+                                    size={90}
+                                    source={{
+                                      uri: `${item.user_profiles?.profile_image}`,
+                                    }}
+                                  />
+                                )}
+                              </Circle>
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'flex-start',
+                                    color: theme.colors.Studily_Dark_UI,
+                                    fontFamily: 'Rubik_500Bold',
+                                    fontSize: 14,
+                                    paddingRight: 15,
+                                  },
+                                  dimensions.width,
+                                )}
+                              >
+                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                              </Text>
                             </View>
                           </View>
                         )
                       }}
                     />
-                  )}}  
+                  )
+                }}
               </PagalFanBEApi.FetchFetchAllFollowersOfUserGET>
             </ScrollView>
           </View>
@@ -729,10 +487,8 @@ const MyProfileScreen = (props) => {
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
             >
-              <PagalFanBEApi.FetchFetchAllFollowedByUserGET
-                followerId={Constants['LOGGED_IN_USER']}
-              >
-                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
+              <PagalFanBEApi.FetchFetchAllFollowedByUserGET followerId={Constants['LOGGED_IN_USER']}>
+                {({ loading, error, data }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -746,40 +502,44 @@ const MyProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop:20 ,marginLeft:10}}>
+                          <View style={{ marginTop: 20, marginLeft: 10 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Circle size={70} bgColor={theme.colors.communityWhite}
-                              style={{ width: 50, height: 50, marginRight: 20 }}
-                            >
-                              {/* Profile Image */}
-                              {(item)?.user_profiles?.profile_image && (
-                                <CircleImage
-                                  size={90}
-                                  source={{
-                                    uri: `${item.user_profiles?.profile_image}`,
-                                  }}
-                                />
-                              )}
-                            </Circle>
-                            <Text 
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'flex-start',
-                                color: theme.colors.Studily_Dark_UI,
-                                fontFamily: 'Rubik_500Bold',
-                                fontSize: 14,
-                                paddingRight: 15
-                              },
-                              dimensions.width,
-                            )}>
-                              {item.user_profiles?.first_name} {item.user_profiles?.last_name} 
-                            </Text>
+                              <Circle
+                                size={70}
+                                bgColor={theme.colors.communityWhite}
+                                style={{ width: 50, height: 50, marginRight: 20 }}
+                              >
+                                {/* Profile Image */}
+                                {item?.user_profiles?.profile_image && (
+                                  <CircleImage
+                                    size={90}
+                                    source={{
+                                      uri: `${item.user_profiles?.profile_image}`,
+                                    }}
+                                  />
+                                )}
+                              </Circle>
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'flex-start',
+                                    color: theme.colors.Studily_Dark_UI,
+                                    fontFamily: 'Rubik_500Bold',
+                                    fontSize: 14,
+                                    paddingRight: 15,
+                                  },
+                                  dimensions.width,
+                                )}
+                              >
+                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                              </Text>
                             </View>
                           </View>
                         )
                       }}
                     />
-                  )}}  
+                  )
+                }}
               </PagalFanBEApi.FetchFetchAllFollowedByUserGET>
             </ScrollView>
           </View>

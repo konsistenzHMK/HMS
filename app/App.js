@@ -12,11 +12,10 @@ import { useFonts } from 'expo-font'
 import { SnackbarProvider } from './components'
 import messaging from '@react-native-firebase/messaging'
 import { PermissionsAndroid, LogBox } from 'react-native'
-import OneSignal from 'react-native-onesignal'
+import SplashScreen from './screens/SplashScreen'
+
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
-OneSignal.setAppId('e51a8dc2-3942-491a-85f9-b78d6ca8479f')
-import SplashScreen from './screens/SplashScreen'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

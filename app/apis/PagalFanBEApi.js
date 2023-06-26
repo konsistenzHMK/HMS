@@ -6,10 +6,7 @@ import usePrevious from '../utils/usePrevious'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import { useMemo } from 'react'
 
-export const fetchAllFollowedByUserGETStatusAndText = (
-  Constants,
-  { followerId }
-) =>
+export const fetchAllFollowedByUserGETStatusAndText = (Constants, { followerId }) =>
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/follows?follower_id=eq.${
       followerId ?? ''
@@ -21,89 +18,65 @@ export const fetchAllFollowedByUserGETStatusAndText = (
         'Content-Type': 'application/json',
         apiKey: Constants['API_KEY_HEADER'],
       },
-    }
-  ).then(async res => ({
+    },
+  ).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),
-  }));
+  }))
 
 export const fetchAllFollowedByUserGET = (Constants, { followerId }) =>
-  fetchAllFollowedByUserGETStatusAndText(Constants, { followerId }).then(
-    ({ status, statusText, text }) => {
-      try {
-        return JSON.parse(text);
-      } catch (e) {
-        console.error(
-          [
-            'Failed to parse response text as JSON.',
-            `Error: ${e.message}`,
-            `Text: ${JSON.stringify(text)}`,
-          ].join('\n\n')
-        );
-      }
+  fetchAllFollowedByUserGETStatusAndText(Constants, { followerId }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
     }
-  );
+  })
 
-export const useFetchAllFollowedByUserGET = (
-  args,
-  { refetchInterval } = {}
-) => {
-  const Constants = GlobalVariables.useValues();
-  return useQuery(
-    ['follows', args],
-    () => fetchAllFollowedByUserGET(Constants, args),
-    {
-      refetchInterval,
-    }
-  );
-};
+export const useFetchAllFollowedByUserGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  return useQuery(['follows', args], () => fetchAllFollowedByUserGET(Constants, args), {
+    refetchInterval,
+  })
+}
 
-export const FetchFetchAllFollowedByUserGET = ({
-  children,
-  onData = () => {},
-  refetchInterval,
-  followerId,
-}) => {
-  const Constants = GlobalVariables.useValues();
-  const isFocused = useIsFocused();
-  const prevIsFocused = usePrevious(isFocused);
+export const FetchFetchAllFollowedByUserGET = ({ children, onData = () => {}, refetchInterval, followerId }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
 
-  const { loading, data, error, refetch } = useFetchAllFollowedByUserGET(
-    { followerId },
-    { refetchInterval }
-  );
+  const { loading, data, error, refetch } = useFetchAllFollowedByUserGET({ followerId }, { refetchInterval })
 
   React.useEffect(() => {
     if (!prevIsFocused && isFocused) {
-      refetch();
+      refetch()
     }
-  }, [isFocused, prevIsFocused]);
+  }, [isFocused, prevIsFocused])
 
   React.useEffect(() => {
     if (error) {
-      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
-      console.error(error);
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
     }
-  }, [error]);
+  }, [error])
   React.useEffect(() => {
     if (data) {
-      onData(data);
+      onData(data)
     }
-  }, [data]);
+  }, [data])
 
   return children({
     loading,
     data,
     error,
     refetchFetchAllFollowedByUser: refetch,
-  });
-};
+  })
+}
 
-export const fetchAllFollowersOfUserGETStatusAndText = (
-  Constants,
-  { followeeId }
-) =>
+export const fetchAllFollowersOfUserGETStatusAndText = (Constants, { followeeId }) =>
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/follows?followee_id=eq.${
       followeeId ?? ''
@@ -115,85 +88,63 @@ export const fetchAllFollowersOfUserGETStatusAndText = (
         'Content-Type': 'application/json',
         apiKey: Constants['API_KEY_HEADER'],
       },
-    }
-  ).then(async res => ({
+    },
+  ).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),
-  }));
+  }))
 
 export const fetchAllFollowersOfUserGET = (Constants, { followeeId }) =>
-  fetchAllFollowersOfUserGETStatusAndText(Constants, { followeeId }).then(
-    ({ status, statusText, text }) => {
-      try {
-        return JSON.parse(text);
-      } catch (e) {
-        console.error(
-          [
-            'Failed to parse response text as JSON.',
-            `Error: ${e.message}`,
-            `Text: ${JSON.stringify(text)}`,
-          ].join('\n\n')
-        );
-      }
+  fetchAllFollowersOfUserGETStatusAndText(Constants, { followeeId }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
     }
-  );
+  })
 
-export const useFetchAllFollowersOfUserGET = (
-  args,
-  { refetchInterval } = {}
-) => {
-  const Constants = GlobalVariables.useValues();
-  return useQuery(
-    ['follows', args],
-    () => fetchAllFollowersOfUserGET(Constants, args),
-    {
-      refetchInterval,
-    }
-  );
-};
+export const useFetchAllFollowersOfUserGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  return useQuery(['follows', args], () => fetchAllFollowersOfUserGET(Constants, args), {
+    refetchInterval,
+  })
+}
 
-export const FetchFetchAllFollowersOfUserGET = ({
-  children,
-  onData = () => {},
-  refetchInterval,
-  followeeId,
-}) => {
-  const Constants = GlobalVariables.useValues();
-  const isFocused = useIsFocused();
-  const prevIsFocused = usePrevious(isFocused);
+export const FetchFetchAllFollowersOfUserGET = ({ children, onData = () => {}, refetchInterval, followeeId }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
 
-  const { loading, data, error, refetch } = useFetchAllFollowersOfUserGET(
-    { followeeId },
-    { refetchInterval }
-  );
+  const { loading, data, error, refetch } = useFetchAllFollowersOfUserGET({ followeeId }, { refetchInterval })
 
   React.useEffect(() => {
     if (!prevIsFocused && isFocused) {
-      refetch();
+      refetch()
     }
-  }, [isFocused, prevIsFocused]);
+  }, [isFocused, prevIsFocused])
 
   React.useEffect(() => {
     if (error) {
-      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
-      console.error(error);
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
     }
-  }, [error]);
+  }, [error])
   React.useEffect(() => {
     if (data) {
-      onData(data);
+      onData(data)
     }
-  }, [data]);
+  }, [data])
 
   return children({
     loading,
     data,
     error,
     refetchFetchAllFollowersOfUser: refetch,
-  });
-};
-
+  })
+}
 
 export const addNewCommentPOSTStatusAndText = (Constants, { comment_text, post_id, user_id }) =>
   fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/post_comments', {
@@ -1680,7 +1631,7 @@ export const FetchFetchAllPostsGET = ({ children, onData = () => {}, refetchInte
     refetchFetchAllPosts: refetch,
     nextPage: () => {
       if (data?.length >= PER_PAGE) {
-        setPage(page + 1)
+        if (!loading) setPage(page + 1)
       }
     },
   })

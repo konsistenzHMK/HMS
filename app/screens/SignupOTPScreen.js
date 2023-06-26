@@ -7,12 +7,14 @@ import * as StyleSheet from '../utils/StyleSheet'
 import { Button, ScreenContainer, TextInput, withTheme } from '@draftbit/ui'
 import { Image, Text, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import messaging from '@react-native-firebase/messaging'
 import { useSnackbar } from '../components/index.js'
 
 const SignupOTPScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
+  const pagalFanBEUpdateExpoTokenPATCH = PagalFanBEApi.useUpdateExpoTokenPATCH()
 
   const snackbar = useSnackbar()
 
@@ -161,6 +163,12 @@ const SignupOTPScreen = (props) => {
                   })
                   const onboarded = await PagalFanBEApi.fetchUserOnboardingStatusGET(Constants, { id: userId })
                   if (onboarded?.[0]?.onboarded === true) {
+                    const token = await messaging().getToken()
+                    // expoToken -> notification_token
+                    await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
+                      expoToken: token,
+                      userId: Constants['LOGGED_IN_USER'],
+                    })
                     navigation.navigate('Tabs', { screen: 'HomeScreen' })
                   } else {
                     navigation.navigate('OnboardingScreen')

@@ -22,18 +22,17 @@ import {
   FlatList,
   ImageBackground,
   Keyboard,
-  ScrollView,
   Text,
   TextInput,
   View,
   useWindowDimensions,
   StyleSheet as RNStyleSheet,
 } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar, Modal } from '../components'
 import branch from 'react-native-branch'
 
 const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
+const SECTIONS = ['POST', 'COMMENTS']
 
 const PostDetailsScreen = (props) => {
   const [likeCount, setLikesCount] = useState(0)
@@ -122,888 +121,835 @@ const PostDetailsScreen = (props) => {
     }
   }
 
-  return (
-    <>
-      <ScreenContainer
-        style={StyleSheet.applyWidth(
-          { marginBottom: 10, marginLeft: 10, marginRight: 10, marginTop: 10 },
-          dimensions.width,
-        )}
-        hasSafeArea={true}
-        scrollable={false}
-      >
-        <KeyboardAwareScrollView
-          style={StyleSheet.applyWidth({ flexGrow: 0 }, dimensions.width)}
-          contentContainerStyle={StyleSheet.applyWidth({ flexShrink: 2 }, dimensions.width)}
-          enableOnAndroid={true}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={'always'}
+  const renderHeader = (listData) => {
+    return (
+      <View style={StyleSheet.applyWidth({ flexDirection: 'row', flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
+        {/* Left Frame */}
+        <View style={StyleSheet.applyWidth({ paddingBottom: 7, paddingTop: 7 }, dimensions.width)}>
+          {/* Back */}
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                flexGrow: 1,
+                flexShrink: 0,
+                justifyContent: 'center',
+              },
+              dimensions.width,
+            )}
+          >
+            <Touchable
+              onPress={() => {
+                try {
+                  navigation.navigate('Tabs', {
+                    screen: 'HomeScreen',
+                  })
+                } catch (err) {
+                  console.error(err)
+                }
+              }}
+            >
+              <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
+                <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityIconFill} />
+              </Circle>
+            </Touchable>
+          </View>
+        </View>
+        {/* Middle Frame */}
+        <View
+          style={StyleSheet.applyWidth(
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              flexGrow: 1,
+              flexShrink: 0,
+              paddingLeft: 12,
+              paddingRight: 12,
+            },
+            dimensions.width,
+          )}
         >
-          <PagalFanBEApi.FetchFetchSinglePostGET id={props.route?.params?.post_id ?? 1}>
-            {({ loading, error, data }) => {
-              const fetchData = data
-              if (!fetchData || loading) {
-                return <ActivityIndicator />
+          <Pressable
+            onPress={() => {
+              try {
+                navigation.navigate('OthersProfileScreen', {
+                  userid: listData?.posted_by_id,
+                })
+              } catch (err) {
+                console.error(err)
               }
+            }}
+          >
+            <View style={StyleSheet.applyWidth({ flexDirection: 'row' }, dimensions.width)}>
+              {/* Left Side */}
+              <View style={StyleSheet.applyWidth({ justifyContent: 'center' }, dimensions.width)}>
+                {/* Circle Image Frame */}
+                <View>
+                  {/* imgOP */}
+                  <CircleImage size={30} source={Images.IconProfile} />
+                </View>
+              </View>
+              {/* Right Side */}
+              <View style={StyleSheet.applyWidth({ justifyContent: 'center', paddingLeft: 12 }, dimensions.width)}>
+                {/* NameandTimeAgo */}
+                <View
+                  style={StyleSheet.applyWidth(
+                    {
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    },
+                    dimensions.width,
+                  )}
+                >
+                  {/* nameOP */}
+                  <Text
+                    style={StyleSheet.applyWidth(
+                      {
+                        color: theme.colors.communityTrueOption,
+                        fontFamily: 'Rubik_700Bold',
+                        fontSize: 13,
+                        lineHeight: 19,
+                        marginRight: 14,
+                      },
+                      dimensions.width,
+                    )}
+                    numberOfLines={2}
+                  >
+                    {listData?.user_profiles?.first_name}
+                  </Text>
+                  {/* TimeAgo */}
+                  <Text
+                    style={StyleSheet.applyWidth(
+                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                        color: theme.colors['PF-Grey'],
+                        fontFamily: 'System',
+                        fontSize: 10,
+                        fontWeight: '200',
+                      }),
+                      dimensions.width,
+                    )}
+                  >
+                    {TimeAgo(listData?.created_at)}
+                  </Text>
+                </View>
+                {/* handleOP */}
+                {listData?.user_profiles?.handle ? (
+                  <Text
+                    style={StyleSheet.applyWidth(
+                      {
+                        color: theme.colors.communityLightBlack,
+                        fontFamily: 'Rubik_400Regular',
+                        fontSize: 12,
+                        lineHeight: 18,
+                      },
+                      dimensions.width,
+                    )}
+                  >
+                    {listData.user_profiles.handle}
+                  </Text>
+                ) : null}
+              </View>
+            </View>
+          </Pressable>
+        </View>
+        {/* Right Frame */}
+        <>
+          {!(listData?.posted_by_id === Constants['LOGGED_IN_USER']) ? null : (
+            <View style={StyleSheet.applyWidth({ paddingBottom: 7, paddingTop: 7 }, dimensions.width)}>
+              {/* Edit Post */}
+              <View
+                style={StyleSheet.applyWidth(
+                  {
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    justifyContent: 'center',
+                  },
+                  dimensions.width,
+                )}
+              >
+                <Touchable
+                  onPress={() => {
+                    try {
+                      navigation.navigate('EditPostScreen', {
+                        post_id: props.route?.params?.post_id ?? 1,
+                      })
+                    } catch (err) {
+                      console.error(err)
+                    }
+                  }}
+                >
+                  <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
+                    <Icon name={'Ionicons/grid'} size={18} color={theme.colors.communityIconFill} />
+                  </Circle>
+                </Touchable>
+              </View>
+            </View>
+          )}
+        </>
+      </View>
+    )
+  }
 
-              if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-              }
+  const renderPost = (listData) => {
+    return (
+      <View>
+        {/* Image Frame */}
+        <View
+          style={StyleSheet.applyWidth(
+            {
+              alignItems: 'center',
+              flexGrow: 0,
+              flexShrink: 0,
+              paddingTop: 12,
+            },
+            dimensions.width,
+          )}
+        >
+          {/* Flex for Image */}
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                borderColor: theme.colors.background,
+                borderRadius: 12,
+                flexShrink: 0,
+                height: 300,
+                overflow: 'hidden',
+                width: 350,
+              },
+              dimensions.width,
+            )}
+          >
+            <ImageBackground
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.ImageBackgroundStyles(theme)['Image Background'], {
+                  flexBasis: 0,
+                  flexGrow: 1,
+                  flexShrink: 0,
+                }),
+                dimensions.width,
+              )}
+              source={{ uri: `${listData?.image_path}` }}
+              resizeMode={'contain'}
+            ></ImageBackground>
+          </View>
+        </View>
+        {/* Actions Frame */}
+        <View
+          style={StyleSheet.applyWidth(
+            {
+              backgroundColor: theme.colors.communityWhite,
+              borderRadius: 64,
+              flexDirection: 'row',
+              flexGrow: 0,
+              flexShrink: 0,
+              marginLeft: 36,
+              marginRight: 36,
+              marginTop: -30,
+              paddingBottom: 6,
+              paddingLeft: 12,
+              paddingRight: 12,
+              paddingTop: 6,
+              zIndex: 50,
+            },
+            dimensions.width,
+          )}
+        >
+          {/* LikesCountFrame */}
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                flexDirection: 'row',
+                flexGrow: 1,
+                flexShrink: 0,
+              },
+              dimensions.width,
+            )}
+          >
+            <Pressable
+              onPress={() => {
+                const handler = async () => {
+                  try {
+                    const valueQwbJ5IFg = !isLiked
+                    setIsLiked(valueQwbJ5IFg)
+                    const newlike = valueQwbJ5IFg
+                    if (newlike) {
+                      snackbar.show({ title: 'Saving post like…' })
+                      await pagalFanBEAddPostLikePOST.mutateAsync({
+                        post_id: props.route?.params?.post_id ?? 1,
+                        user_id: Constants['LOGGED_IN_USER'],
+                      })
+                    }
+                    if (!newlike) {
+                      await pagalFanBEDeletePostLikeDELETE.mutateAsync({
+                        postId: props.route?.params?.post_id ?? 1,
+                        userId: Constants['LOGGED_IN_USER'],
+                      })
+                    }
+                  } catch (err) {
+                    console.error(err)
+                  }
+                }
+                handler()
+              }}
+            >
+              {/* Likes */}
+              <View
+                style={StyleSheet.applyWidth(
+                  {
+                    flexDirection: 'row',
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    paddingBottom: 12,
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    paddingTop: 12,
+                  },
+                  dimensions.width,
+                )}
+              >
+                {/* Left Side */}
+                <View>
+                  <PagalFanBEApi.FetchFetchPostLikeGETCount
+                    postId={props.route?.params?.post_id ?? 1}
+                    userId={Constants['LOGGED_IN_USER']}
+                    onData={(fetchData) => {
+                      try {
+                        console.log(fetchData)
+                        let value0wzmJ6EV = false
+                        fetchData.map((item) => {
+                          if (
+                            item.post_id == props.route?.params?.post_id &&
+                            item.user_id == Constants['LOGGED_IN_USER']
+                          )
+                            value0wzmJ6EV = true
+                        })
+                        setLikesCount(fetchData.length)
+                        setIsLiked(value0wzmJ6EV)
+                        const newlikestatus = value0wzmJ6EV
+                        console.log(newlikestatus)
+                      } catch (err) {
+                        console.error(err)
+                      }
+                    }}
+                  >
+                    {({ loading, error, data, refetchFetchPostLike }) => {
+                      const fetchData = data
+                      if (!fetchData || loading) {
+                        return <ActivityIndicator />
+                      }
 
-              postDetailsRef.current = fetchData?.[0]
+                      if (error) {
+                        return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                      }
 
-              return (
-                <FlatList
-                  data={fetchData}
-                  listKey={'GUkR33bu'}
-                  keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                  renderItem={({ item }) => {
-                    const listData = item
-                    return (
-                      <>
-                        {/* Navigation Frame */}
-                        <View
-                          style={StyleSheet.applyWidth(
-                            { flexDirection: 'row', flexGrow: 0, flexShrink: 0 },
-                            dimensions.width,
-                          )}
-                        >
-                          {/* Left Frame */}
-                          <View style={StyleSheet.applyWidth({ paddingBottom: 7, paddingTop: 7 }, dimensions.width)}>
-                            {/* Back */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  flexGrow: 1,
-                                  flexShrink: 0,
-                                  justifyContent: 'center',
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <Touchable
-                                onPress={() => {
-                                  try {
-                                    navigation.navigate('Tabs', {
-                                      screen: 'HomeScreen',
-                                    })
-                                  } catch (err) {
-                                    console.error(err)
-                                  }
-                                }}
-                              >
-                                <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
-                                  <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityIconFill} />
-                                </Circle>
-                              </Touchable>
-                            </View>
-                          </View>
-                          {/* Middle Frame */}
+                      return (
+                        <>
+                          {/* Flex Frame for Icons */}
                           <View
                             style={StyleSheet.applyWidth(
                               {
                                 flexDirection: 'row',
-                                flexGrow: 1,
-                                flexShrink: 0,
-                                paddingLeft: 12,
-                                paddingRight: 12,
+                                width: 20,
                               },
                               dimensions.width,
                             )}
                           >
+                            {/* heart-outline */}
+                            <>
+                              {isLiked ? null : (
+                                <Icon size={18} color={theme.colors.communityDarkRed} name={'Feather/heart'} />
+                              )}
+                            </>
+                            {/* heart-filled */}
+                            <>
+                              {!isLiked ? null : (
+                                <Icon size={18} color={theme.colors.communityDarkRed} name={'FontAwesome/heart'} />
+                              )}
+                            </>
+                          </View>
+                        </>
+                      )
+                    }}
+                  </PagalFanBEApi.FetchFetchPostLikeGETCount>
+                </View>
+                {/* Data Point Frame */}
+                <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
+                  {/* LikesCount */}
+                  <Text
+                    style={StyleSheet.applyWidth(
+                      {
+                        color: theme.colors.communityTrueOption,
+                        fontFamily: 'Inter_400Regular',
+                        fontSize: 12,
+                        lineHeight: 18,
+                      },
+                      dimensions.width,
+                    )}
+                  >
+                    {likeCount}
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+          </View>
+          {/* CommentsCountFrame */}
+          <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
+            {/* Action 1 Frame */}
+            <View
+              style={StyleSheet.applyWidth(
+                {
+                  flexDirection: 'row',
+                  flexGrow: 1,
+                  flexShrink: 0,
+                  paddingBottom: 12,
+                  paddingLeft: 12,
+                  paddingRight: 12,
+                  paddingTop: 12,
+                },
+                dimensions.width,
+              )}
+            >
+              {/* Left Side */}
+              <View>
+                {/* Flex Frame for Icons */}
+                <View>
+                  <Icon
+                    name={'MaterialCommunityIcons/message-bulleted'}
+                    size={18}
+                    color={theme.colors.communityHighlightBlue}
+                  />
+                </View>
+              </View>
+              {/* Data Point Frame */}
+              <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
+                <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
+                  {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
+                    const fetchData = data
+                    if (fetchData) setCommentsCount(fetchData.length)
+                  }}
+                </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
+                {/* CommentsCount */}
+                <Text
+                  style={StyleSheet.applyWidth(
+                    {
+                      color: theme.colors.communityTrueOption,
+                      fontFamily: 'Inter_400Regular',
+                      fontSize: 12,
+                      lineHeight: 18,
+                    },
+                    dimensions.width,
+                  )}
+                >
+                  {commentsCount}
+                </Text>
+              </View>
+            </View>
+          </View>
+          {/* ViewsCountFrame */}
+          <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
+            {/* Action 1 Frame */}
+            <View
+              style={StyleSheet.applyWidth(
+                {
+                  flexDirection: 'row',
+                  flexGrow: 1,
+                  flexShrink: 0,
+                  paddingBottom: 12,
+                  paddingLeft: 12,
+                  paddingRight: 12,
+                  paddingTop: 12,
+                },
+                dimensions.width,
+              )}
+            >
+              {/* Left Side */}
+              <View>
+                {/* Flex Frame for Icons */}
+                <View>
+                  <Icon name={'AntDesign/eye'} size={18} color={theme.colors.communityYellow} />
+                </View>
+              </View>
+              {/* Data Point Frame */}
+              <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
+                {/* ViewsCount */}
+                <Text
+                  style={StyleSheet.applyWidth(
+                    {
+                      color: theme.colors.communityTrueOption,
+                      fontFamily: 'Inter_400Regular',
+                      fontSize: 12,
+                      lineHeight: 18,
+                    },
+                    dimensions.width,
+                  )}
+                >
+                  {'104k'}
+                </Text>
+              </View>
+            </View>
+          </View>
+          {/* ShareFrame */}
+          <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
+            <Pressable onPress={() => setShowShareModal(true)}>
+              {/* Action 1 Frame */}
+              <View
+                style={StyleSheet.applyWidth(
+                  {
+                    flexDirection: 'row',
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    paddingBottom: 12,
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    paddingTop: 12,
+                  },
+                  dimensions.width,
+                )}
+              >
+                {/* Left Side */}
+                <View>
+                  {/* Flex Frame for Icons */}
+                  <View>
+                    <Icon name={'Ionicons/share'} size={18} color={theme.colors.communityIconFill} />
+                  </View>
+                </View>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+        {/* Three Tabs Gradient for Aesthetic */}
+        <View
+          style={StyleSheet.applyWidth(
+            {
+              borderBottomLeftRadius: 24,
+              borderBottomRightRadius: 24,
+              flexGrow: 0,
+              flexShrink: 0,
+              height: 36,
+              marginLeft: 36,
+              marginRight: 36,
+              marginTop: -30,
+            },
+            dimensions.width,
+          )}
+        >
+          <LinearGradient
+            style={StyleSheet.applyWidth(
+              {
+                borderBottomLeftRadius: 24,
+                borderBottomRightRadius: 24,
+                height: '100%',
+                width: '100%',
+              },
+              dimensions.width,
+            )}
+            startY={0}
+            color1={theme.colors.communityWhite}
+            color2={theme.colors.communityStoneGray}
+          />
+        </View>
+        {/* Post Frame */}
+        <View
+          style={StyleSheet.applyWidth(
+            {
+              alignContent: 'flex-start',
+              flexGrow: 0,
+              flexShrink: 0,
+              paddingBottom: 12,
+              paddingLeft: 4,
+              paddingRight: 4,
+              paddingTop: 18,
+            },
+            dimensions.width,
+          )}
+        >
+          {/* Content Frame */}
+          <View>
+            {/* postCaption */}
+            <Text
+              style={StyleSheet.applyWidth(
+                {
+                  color: theme.colors.communityTrueOption,
+                  fontFamily: 'Rubik_400Regular',
+                  fontSize: 11,
+                  lineHeight: 12,
+                },
+                dimensions.width,
+              )}
+            >
+              {listData?.caption}
+            </Text>
+          </View>
+        </View>
+        <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
+          {renderEmoticons()}
+          {/* Keyboard Input Frame */}
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                alignItems: 'center',
+                backgroundColor: theme.colors.communityWhite,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingBottom: 12,
+                paddingLeft: 12,
+                paddingRight: 12,
+                paddingTop: 12,
+              },
+              dimensions.width,
+            )}
+          >
+            {/* CommentInput */}
+            <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
+              {/* CommentText */}
+              <TextInput
+                onChangeText={setTextInputValue}
+                style={StyleSheet.applyWidth(
+                  {
+                    borderBottomWidth: 1,
+                    borderColor: theme.colors.communityIconFill,
+                    borderLeftWidth: 1,
+                    borderRadius: 60,
+                    borderRightWidth: 1,
+                    borderTopWidth: 1,
+                    marginLeft: 12,
+                    marginRight: 12,
+                    paddingBottom: 15,
+                    paddingLeft: 12,
+                    paddingRight: 12,
+                    paddingTop: 15,
+                  },
+                  dimensions.width,
+                )}
+                placeholder={'Type something...'}
+                value={textInputValue}
+                placeholderTextColor={theme.colors.communityLightBlack}
+              />
+            </View>
+            {/* SendFrame */}
+            <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
+              <Touchable disabled={!textInputValue.trim()} onPress={handleSendCommentPress}>
+                <Circle size={48} bgColor={theme.colors.communityTertiaryGreen}>
+                  {/* Flex Frame for Icons */}
+                  <View
+                    style={StyleSheet.applyWidth(
+                      {
+                        flexGrow: 0,
+                        flexShrink: 0,
+                        justifyContent: 'center',
+                      },
+                      dimensions.width,
+                    )}
+                  >
+                    <Icon name={'FontAwesome/send'} size={24} color={theme.colors.communityWhite} />
+                  </View>
+                </Circle>
+              </Touchable>
+            </View>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  const renderComments = () => {
+    return (
+      <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
+        {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
+          const fetchData = data
+          if (!fetchData || loading) {
+            return <ActivityIndicator />
+          }
+
+          if (error) {
+            return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+          }
+
+          return (
+            <FlatList
+              data={fetchData}
+              listKey={JSON.stringify(fetchData)}
+              keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
+              renderItem={({ item }) => {
+                const listData = item
+                return (
+                  <>
+                    {/* Record Frame */}
+                    <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
+                      {/* Message Frame */}
+                      <View
+                        style={StyleSheet.applyWidth(
+                          {
+                            flexDirection: 'row',
+                            flexGrow: 1,
+                            flexShrink: 0,
+                            paddingTop: 10,
+                          },
+                          dimensions.width,
+                        )}
+                      >
+                        {/* Left Side Frame */}
+                        <View>
+                          {/* Flex Frame for Touchable */}
+                          <View>
                             <Pressable
                               onPress={() => {
                                 try {
-                                  navigation.navigate('OthersProfileScreen', {
-                                    userid: listData?.posted_by_id,
-                                  })
+                                  if (listData?.user_profiles?.user_id !== Constants['LOGGED_IN_USER']) {
+                                    navigation.navigate('OthersProfileScreen', {
+                                      userid: listData?.user_profiles?.user_id,
+                                    })
+                                  }
+                                  if (listData?.user_profiles?.user_id === Constants['LOGGED_IN_USER']) {
+                                    navigation.navigate('Tabs', {
+                                      screen: 'MyProfileScreen',
+                                    })
+                                  }
                                 } catch (err) {
                                   console.error(err)
                                 }
                               }}
                             >
-                              <View style={StyleSheet.applyWidth({ flexDirection: 'row' }, dimensions.width)}>
-                                {/* Left Side */}
-                                <View style={StyleSheet.applyWidth({ justifyContent: 'center' }, dimensions.width)}>
-                                  {/* Circle Image Frame */}
-                                  <View>
-                                    {/* imgOP */}
-                                    <CircleImage size={30} source={Images.IconProfile} />
-                                  </View>
-                                </View>
-                                {/* Right Side */}
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    { justifyContent: 'center', paddingLeft: 12 },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {/* NameandTimeAgo */}
-                                  <View
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        alignItems: 'center',
-                                        flexDirection: 'row',
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {/* nameOP */}
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          color: theme.colors.communityTrueOption,
-                                          fontFamily: 'Rubik_700Bold',
-                                          fontSize: 13,
-                                          lineHeight: 19,
-                                          marginRight: 14,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                      numberOfLines={2}
-                                    >
-                                      {listData?.user_profiles?.first_name}
-                                    </Text>
-                                    {/* TimeAgo */}
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                          color: theme.colors['PF-Grey'],
-                                          fontFamily: 'System',
-                                          fontSize: 10,
-                                          fontWeight: '200',
-                                        }),
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {TimeAgo(listData?.created_at)}
-                                    </Text>
-                                  </View>
-                                  {/* handleOP */}
-                                  <Text
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        color: theme.colors.communityLightBlack,
-                                        fontFamily: 'Rubik_400Regular',
-                                        fontSize: 12,
-                                        lineHeight: 18,
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {listData?.user_profiles?.handle}
-                                  </Text>
-                                </View>
+                              {/* Commenter Image */}
+                              <View
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    flexGrow: 1,
+                                    flexShrink: 0,
+                                    paddingBottom: 12,
+                                    paddingLeft: 12,
+                                    paddingRight: 6,
+                                    paddingTop: 18,
+                                  },
+                                  dimensions.width,
+                                )}
+                              >
+                                {listData?.user_profiles?.profile_image && (
+                                  <CircleImage
+                                    size={36}
+                                    source={{
+                                      uri: `${listData.user_profiles.profile_image}`,
+                                    }}
+                                  />
+                                )}
                               </View>
                             </Pressable>
                           </View>
-                          {/* Right Frame */}
-                          <>
-                            {!(listData?.posted_by_id === Constants['LOGGED_IN_USER']) ? null : (
-                              <View
-                                style={StyleSheet.applyWidth({ paddingBottom: 7, paddingTop: 7 }, dimensions.width)}
-                              >
-                                {/* Edit Post */}
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      flexGrow: 1,
-                                      flexShrink: 0,
-                                      justifyContent: 'center',
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  <Touchable
-                                    onPress={() => {
-                                      try {
-                                        navigation.navigate('EditPostScreen', {
-                                          post_id: props.route?.params?.post_id ?? 1,
-                                        })
-                                      } catch (err) {
-                                        console.error(err)
-                                      }
-                                    }}
-                                  >
-                                    <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
-                                      <Icon name={'Ionicons/grid'} size={18} color={theme.colors.communityIconFill} />
-                                    </Circle>
-                                  </Touchable>
-                                </View>
-                              </View>
-                            )}
-                          </>
                         </View>
-                        {/* Content Frame with Scroll */}
-                        <ScrollView
-                          bounces={true}
-                          showsVerticalScrollIndicator={false}
-                          showsHorizontalScrollIndicator={false}
+                        {/* Commenter Details */}
+                        <View
+                          style={StyleSheet.applyWidth(
+                            {
+                              flexGrow: 1,
+                              flexShrink: 0,
+                              justifyContent: 'center',
+                              marginLeft: 12,
+                            },
+                            dimensions.width,
+                          )}
                         >
-                          {/* Image Frame */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'center',
-                                flexGrow: 0,
-                                flexShrink: 0,
-                                paddingTop: 12,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            {/* Flex for Image */}
+                          {/* Data Frame */}
+                          <View>
+                            {/* NameandTimeago */}
                             <View
                               style={StyleSheet.applyWidth(
                                 {
-                                  borderColor: theme.colors.background,
-                                  borderRadius: 12,
-                                  flexShrink: 0,
-                                  height: 300,
-                                  overflow: 'hidden',
-                                  width: 350,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              <ImageBackground
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.ImageBackgroundStyles(theme)['Image Background'], {
-                                    flexBasis: 0,
-                                    flexGrow: 1,
-                                    flexShrink: 0,
-                                  }),
-                                  dimensions.width,
-                                )}
-                                source={{ uri: `${listData?.image_path}` }}
-                                resizeMode={'contain'}
-                              ></ImageBackground>
-                            </View>
-                          </View>
-                          {/* Actions Frame */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                backgroundColor: theme.colors.communityWhite,
-                                borderRadius: 64,
-                                flexDirection: 'row',
-                                flexGrow: 0,
-                                flexShrink: 0,
-                                marginLeft: 36,
-                                marginRight: 36,
-                                marginTop: -30,
-                                paddingBottom: 6,
-                                paddingLeft: 12,
-                                paddingRight: 12,
-                                paddingTop: 6,
-                                zIndex: 50,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            {/* LikesCountFrame */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
+                                  alignItems: 'center',
                                   flexDirection: 'row',
-                                  flexGrow: 1,
-                                  flexShrink: 0,
                                 },
                                 dimensions.width,
                               )}
                             >
-                              <Pressable
-                                onPress={() => {
-                                  const handler = async () => {
-                                    try {
-                                      const valueQwbJ5IFg = !isLiked
-                                      setIsLiked(valueQwbJ5IFg)
-                                      const newlike = valueQwbJ5IFg
-                                      if (newlike) {
-                                        snackbar.show({ title: 'Saving post like…' })
-                                        await pagalFanBEAddPostLikePOST.mutateAsync({
-                                          post_id: props.route?.params?.post_id ?? 1,
-                                          user_id: Constants['LOGGED_IN_USER'],
-                                        })
-                                      }
-                                      if (!newlike) {
-                                        await pagalFanBEDeletePostLikeDELETE.mutateAsync({
-                                          postId: props.route?.params?.post_id ?? 1,
-                                          userId: Constants['LOGGED_IN_USER'],
-                                        })
-                                      }
-                                    } catch (err) {
-                                      console.error(err)
-                                    }
-                                  }
-                                  handler()
-                                }}
-                              >
-                                {/* Likes */}
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      flexDirection: 'row',
-                                      flexGrow: 1,
-                                      flexShrink: 0,
-                                      paddingBottom: 12,
-                                      paddingLeft: 12,
-                                      paddingRight: 12,
-                                      paddingTop: 12,
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {/* Left Side */}
-                                  <View>
-                                    <PagalFanBEApi.FetchFetchPostLikeGETCount
-                                      postId={props.route?.params?.post_id ?? 1}
-                                      userId={Constants['LOGGED_IN_USER']}
-                                      onData={(fetchData) => {
-                                        try {
-                                          console.log(fetchData)
-                                          let value0wzmJ6EV = false
-                                          fetchData.map((item) => {
-                                            if (
-                                              item.post_id == props.route?.params?.post_id &&
-                                              item.user_id == Constants['LOGGED_IN_USER']
-                                            )
-                                              value0wzmJ6EV = true
-                                          })
-                                          setLikesCount(fetchData.length)
-                                          setIsLiked(value0wzmJ6EV)
-                                          const newlikestatus = value0wzmJ6EV
-                                          console.log(newlikestatus)
-                                        } catch (err) {
-                                          console.error(err)
-                                        }
-                                      }}
-                                    >
-                                      {({ loading, error, data, refetchFetchPostLike }) => {
-                                        const fetchData = data
-                                        if (!fetchData || loading) {
-                                          return <ActivityIndicator />
-                                        }
-
-                                        if (error) {
-                                          return (
-                                            <Text style={{ textAlign: 'center' }}>
-                                              There was a problem fetching this data
-                                            </Text>
-                                          )
-                                        }
-
-                                        return (
-                                          <>
-                                            {/* Flex Frame for Icons */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  flexDirection: 'row',
-                                                  width: 20,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* heart-outline */}
-                                              <>
-                                                {isLiked ? null : (
-                                                  <Icon
-                                                    size={18}
-                                                    color={theme.colors.communityDarkRed}
-                                                    name={'Feather/heart'}
-                                                  />
-                                                )}
-                                              </>
-                                              {/* heart-filled */}
-                                              <>
-                                                {!isLiked ? null : (
-                                                  <Icon
-                                                    size={18}
-                                                    color={theme.colors.communityDarkRed}
-                                                    name={'FontAwesome/heart'}
-                                                  />
-                                                )}
-                                              </>
-                                            </View>
-                                          </>
-                                        )
-                                      }}
-                                    </PagalFanBEApi.FetchFetchPostLikeGETCount>
-                                  </View>
-                                  {/* Data Point Frame */}
-                                  <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
-                                    {/* LikesCount */}
-                                    <Text
-                                      style={StyleSheet.applyWidth(
-                                        {
-                                          color: theme.colors.communityTrueOption,
-                                          fontFamily: 'Inter_400Regular',
-                                          fontSize: 12,
-                                          lineHeight: 18,
-                                        },
-                                        dimensions.width,
-                                      )}
-                                    >
-                                      {likeCount}
-                                    </Text>
-                                  </View>
-                                </View>
-                              </Pressable>
-                            </View>
-                            {/* CommentsCountFrame */}
-                            <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                              {/* Action 1 Frame */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    flexDirection: 'row',
-                                    flexGrow: 1,
-                                    flexShrink: 0,
-                                    paddingBottom: 12,
-                                    paddingLeft: 12,
-                                    paddingRight: 12,
-                                    paddingTop: 12,
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Left Side */}
-                                <View>
-                                  {/* Flex Frame for Icons */}
-                                  <View>
-                                    <Icon
-                                      name={'MaterialCommunityIcons/message-bulleted'}
-                                      size={18}
-                                      color={theme.colors.communityHighlightBlue}
-                                    />
-                                  </View>
-                                </View>
-                                {/* Data Point Frame */}
-                                <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
-                                  <PagalFanBEApi.FetchFetchAllCommentsForAPostGET
-                                    id={props.route?.params?.post_id ?? 1}
-                                  >
-                                    {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
-                                      const fetchData = data
-                                      if (fetchData) setCommentsCount(fetchData.length)
-                                    }}
-                                  </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
-                                  {/* CommentsCount */}
-                                  <Text
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        color: theme.colors.communityTrueOption,
-                                        fontFamily: 'Inter_400Regular',
-                                        fontSize: 12,
-                                        lineHeight: 18,
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {commentsCount}
-                                  </Text>
-                                </View>
-                              </View>
-                            </View>
-                            {/* ViewsCountFrame */}
-                            <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                              {/* Action 1 Frame */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    flexDirection: 'row',
-                                    flexGrow: 1,
-                                    flexShrink: 0,
-                                    paddingBottom: 12,
-                                    paddingLeft: 12,
-                                    paddingRight: 12,
-                                    paddingTop: 12,
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Left Side */}
-                                <View>
-                                  {/* Flex Frame for Icons */}
-                                  <View>
-                                    <Icon name={'AntDesign/eye'} size={18} color={theme.colors.communityYellow} />
-                                  </View>
-                                </View>
-                                {/* Data Point Frame */}
-                                <View style={StyleSheet.applyWidth({ marginLeft: 6 }, dimensions.width)}>
-                                  {/* ViewsCount */}
-                                  <Text
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        color: theme.colors.communityTrueOption,
-                                        fontFamily: 'Inter_400Regular',
-                                        fontSize: 12,
-                                        lineHeight: 18,
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {'104k'}
-                                  </Text>
-                                </View>
-                              </View>
-                            </View>
-                            {/* ShareFrame */}
-                            <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                              <Pressable onPress={() => setShowShareModal(true)}>
-                                {/* Action 1 Frame */}
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      flexDirection: 'row',
-                                      flexGrow: 1,
-                                      flexShrink: 0,
-                                      paddingBottom: 12,
-                                      paddingLeft: 12,
-                                      paddingRight: 12,
-                                      paddingTop: 12,
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {/* Left Side */}
-                                  <View>
-                                    {/* Flex Frame for Icons */}
-                                    <View>
-                                      <Icon name={'Ionicons/share'} size={18} color={theme.colors.communityIconFill} />
-                                    </View>
-                                  </View>
-                                </View>
-                              </Pressable>
-                            </View>
-                          </View>
-                          {/* Three Tabs Gradient for Aesthetic */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                borderBottomLeftRadius: 24,
-                                borderBottomRightRadius: 24,
-                                flexGrow: 0,
-                                flexShrink: 0,
-                                height: 36,
-                                marginLeft: 36,
-                                marginRight: 36,
-                                marginTop: -30,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            <LinearGradient
-                              style={StyleSheet.applyWidth(
-                                {
-                                  borderBottomLeftRadius: 24,
-                                  borderBottomRightRadius: 24,
-                                  height: '100%',
-                                  width: '100%',
-                                },
-                                dimensions.width,
-                              )}
-                              startY={0}
-                              color1={theme.colors.communityWhite}
-                              color2={theme.colors.communityStoneGray}
-                            />
-                          </View>
-                          {/* Post Frame */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignContent: 'flex-start',
-                                flexGrow: 0,
-                                flexShrink: 0,
-                                paddingBottom: 12,
-                                paddingLeft: 4,
-                                paddingRight: 4,
-                                paddingTop: 18,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            {/* Content Frame */}
-                            <View>
-                              {/* postCaption */}
+                              {/* Commenter Name */}
                               <Text
                                 style={StyleSheet.applyWidth(
                                   {
-                                    color: theme.colors.communityTrueOption,
-                                    fontFamily: 'Rubik_400Regular',
-                                    fontSize: 11,
-                                    lineHeight: 12,
+                                    color: theme.colors.communityDarkUI,
+                                    fontFamily: 'Inter_600SemiBold',
+                                    fontSize: 13,
+                                    lineHeight: 19,
+                                    marginRight: 10,
                                   },
                                   dimensions.width,
                                 )}
                               >
-                                {listData?.caption}
+                                {listData?.user_profiles?.first_name}
+                              </Text>
+                              {/* TimeAgo */}
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                    color: theme.colors['PF-Grey'],
+                                    fontFamily: 'System',
+                                    fontSize: 10,
+                                    fontWeight: '200',
+                                  }),
+                                  dimensions.width,
+                                )}
+                              >
+                                {TimeAgo(listData?.created_at)}
                               </Text>
                             </View>
+                            {/* Comment */}
+                            <Text
+                              style={StyleSheet.applyWidth(
+                                {
+                                  color: theme.colors.communityTrueOption,
+                                  fontFamily: 'Inter_400Regular',
+                                  fontSize: 11,
+                                  lineHeight: 17,
+                                },
+                                dimensions.width,
+                              )}
+                            >
+                              {listData?.comment}
+                            </Text>
                           </View>
-                          {/* CommentsFrame */}
-                          <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1 }, dimensions.width)}>
-                            {/* Keyboard Component Frame */}
-                            <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                              {renderEmoticons()}
-                              {/* Keyboard Input Frame */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    backgroundColor: theme.colors.communityWhite,
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    paddingBottom: 12,
-                                    paddingLeft: 12,
-                                    paddingRight: 12,
-                                    paddingTop: 12,
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* CommentInput */}
-                                <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-                                  {/* CommentText */}
-                                  <TextInput
-                                    onChangeText={setTextInputValue}
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        borderBottomWidth: 1,
-                                        borderColor: theme.colors.communityIconFill,
-                                        borderLeftWidth: 1,
-                                        borderRadius: 60,
-                                        borderRightWidth: 1,
-                                        borderTopWidth: 1,
-                                        marginLeft: 12,
-                                        marginRight: 12,
-                                        paddingBottom: 15,
-                                        paddingLeft: 12,
-                                        paddingRight: 12,
-                                        paddingTop: 15,
-                                      },
-                                      dimensions.width,
-                                    )}
-                                    placeholder={'Type something...'}
-                                    value={textInputValue}
-                                    placeholderTextColor={theme.colors.communityLightBlack}
-                                  />
-                                </View>
-                                {/* SendFrame */}
-                                <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
-                                  <Touchable disabled={!textInputValue.trim()} onPress={handleSendCommentPress}>
-                                    <Circle size={48} bgColor={theme.colors.communityTertiaryGreen}>
-                                      {/* Flex Frame for Icons */}
-                                      <View
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            flexGrow: 0,
-                                            flexShrink: 0,
-                                            justifyContent: 'center',
-                                          },
-                                          dimensions.width,
-                                        )}
-                                      >
-                                        <Icon name={'FontAwesome/send'} size={24} color={theme.colors.communityWhite} />
-                                      </View>
-                                    </Circle>
-                                  </Touchable>
-                                </View>
-                              </View>
-                            </View>
+                        </View>
+                      </View>
+                    </View>
+                  </>
+                )
+              }}
+              numColumns={1}
+            />
+          )
+        }}
+      </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
+    )
+  }
 
-                            <PagalFanBEApi.FetchFetchAllCommentsForAPostGET id={props.route?.params?.post_id ?? 1}>
-                              {({ loading, error, data, refetchFetchAllCommentsForAPost }) => {
-                                const fetchData = data
-                                if (!fetchData || loading) {
-                                  return <ActivityIndicator />
-                                }
+  return (
+    <>
+      <ScreenContainer style={styles.main} hasSafeArea={true} scrollable={false}>
+        <PagalFanBEApi.FetchFetchSinglePostGET id={props.route?.params?.post_id ?? 1}>
+          {({ loading, error, data }) => {
+            const fetchData = data?.[0]
+            if (!fetchData || loading) {
+              return <ActivityIndicator />
+            }
 
-                                if (error) {
-                                  return (
-                                    <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                                  )
-                                }
+            if (error) {
+              return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+            }
 
-                                return (
-                                  <FlatList
-                                    data={fetchData}
-                                    listKey={JSON.stringify(fetchData)}
-                                    keyExtractor={(listData) =>
-                                      listData?.id || listData?.uuid || JSON.stringify(listData)
-                                    }
-                                    renderItem={({ item }) => {
-                                      const listData = item
-                                      return (
-                                        <>
-                                          {/* Record Frame */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              { flexGrow: 0, flexShrink: 0 },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Message Frame */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  flexDirection: 'row',
-                                                  flexGrow: 1,
-                                                  flexShrink: 0,
-                                                  paddingTop: 10,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Left Side Frame */}
-                                              <View>
-                                                {/* Flex Frame for Touchable */}
-                                                <View>
-                                                  <Pressable
-                                                    onPress={() => {
-                                                      try {
-                                                        if (
-                                                          listData?.user_profiles?.user_id !==
-                                                          Constants['LOGGED_IN_USER']
-                                                        ) {
-                                                          navigation.navigate('OthersProfileScreen', {
-                                                            userid: listData?.user_profiles?.user_id,
-                                                          })
-                                                        }
-                                                        if (
-                                                          listData?.user_profiles?.user_id ===
-                                                          Constants['LOGGED_IN_USER']
-                                                        ) {
-                                                          navigation.navigate('Tabs', {
-                                                            screen: 'MyProfileScreen',
-                                                          })
-                                                        }
-                                                      } catch (err) {
-                                                        console.error(err)
-                                                      }
-                                                    }}
-                                                  >
-                                                    {/* Commenter Image */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          flexGrow: 1,
-                                                          flexShrink: 0,
-                                                          paddingBottom: 12,
-                                                          paddingLeft: 12,
-                                                          paddingRight: 6,
-                                                          paddingTop: 18,
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {listData?.user_profiles?.profile_image && (
-                                                        <CircleImage
-                                                          size={36}
-                                                          source={{
-                                                            uri: `${listData.user_profiles.profile_image}`,
-                                                          }}
-                                                        />
-                                                      )}
-                                                    </View>
-                                                  </Pressable>
-                                                </View>
-                                              </View>
-                                              {/* Commenter Details */}
-                                              <View
-                                                style={StyleSheet.applyWidth(
-                                                  {
-                                                    flexGrow: 1,
-                                                    flexShrink: 0,
-                                                    justifyContent: 'center',
-                                                    marginLeft: 12,
-                                                  },
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {/* Data Frame */}
-                                                <View>
-                                                  {/* NameandTimeago */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        alignItems: 'center',
-                                                        flexDirection: 'row',
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    {/* Commenter Name */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          color: theme.colors.communityDarkUI,
-                                                          fontFamily: 'Inter_600SemiBold',
-                                                          fontSize: 13,
-                                                          lineHeight: 19,
-                                                          marginRight: 10,
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {listData?.user_profiles?.first_name}
-                                                    </Text>
-                                                    {/* TimeAgo */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          color: theme.colors['PF-Grey'],
-                                                          fontFamily: 'System',
-                                                          fontSize: 10,
-                                                          fontWeight: '200',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {TimeAgo(listData?.created_at)}
-                                                    </Text>
-                                                  </View>
-                                                  {/* Comment */}
-                                                  <Text
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        color: theme.colors.communityTrueOption,
-                                                        fontFamily: 'Inter_400Regular',
-                                                        fontSize: 11,
-                                                        lineHeight: 17,
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    {listData?.comment}
-                                                  </Text>
-                                                </View>
-                                              </View>
-                                            </View>
-                                          </View>
-                                        </>
-                                      )
-                                    }}
-                                    numColumns={1}
-                                  />
-                                )
-                              }}
-                            </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
-                          </View>
-                        </ScrollView>
-                      </>
-                    )
-                  }}
-                  numColumns={1}
-                  onEndReachedThreshold={0.5}
-                  showsHorizontalScrollIndicator={true}
-                  showsVerticalScrollIndicator={true}
-                />
-              )
-            }}
-          </PagalFanBEApi.FetchFetchSinglePostGET>
-        </KeyboardAwareScrollView>
+            postDetailsRef.current = fetchData
+
+            return (
+              <FlatList
+                data={SECTIONS}
+                ListHeaderComponent={renderHeader(fetchData)}
+                renderItem={({ item }) => {
+                  if (item === 'POST') {
+                    return renderPost(fetchData)
+                  } else {
+                    return renderComments()
+                  }
+                }}
+                showsVerticalScrollIndicator={true}
+              />
+            )
+          }}
+        </PagalFanBEApi.FetchFetchSinglePostGET>
       </ScreenContainer>
       {/* ShareModal */}
       <Modal visible={showShareModal} onDismiss={hideModal}>
@@ -1290,6 +1236,9 @@ const PostDetailsScreen = (props) => {
 }
 
 const styles = RNStyleSheet.create({
+  main: {
+    padding: 10,
+  },
   emoticonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

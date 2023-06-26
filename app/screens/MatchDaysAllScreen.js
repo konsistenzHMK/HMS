@@ -3,20 +3,15 @@
 import React from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
-import * as GlobalVariables from '../config/GlobalVariableContext'
 import convertNullToTBD from '../global-functions/convertNullToTBD'
 import endDate from '../global-functions/endDate'
 import getCorrectDateFormat from '../global-functions/getCorrectDateFormat'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, CircleImage, Icon, ScreenContainer, TabView, TabViewItem, Touchable, withTheme } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
 import { ActivityIndicator, FlatList, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 
 const MatchDaysAllScreen = (props) => {
   const dimensions = useWindowDimensions()
-  const Constants = GlobalVariables.useValues()
-  const Variables = Constants
 
   const FilterList = (list) => {
     //if (item.team_1?.team_name.length == 0) item.team_1.team_name = TBD

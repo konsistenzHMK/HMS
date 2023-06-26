@@ -25,14 +25,24 @@ import {
   withTheme,
 } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
-import { ActivityIndicator, FlatList, Modal, ScrollView, Text, View, useWindowDimensions } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  ScrollView,
+  Text,
+  View,
+  useWindowDimensions,
+  StyleSheet as RNStyleSheet,
+} from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar, Image } from '../components'
+
+const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
 
 const MatchDaySingleScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
-  const Variables = Constants
 
   const snackbar = useSnackbar()
 
@@ -328,6 +338,22 @@ const MatchDaySingleScreen = (props) => {
   const [team1_name, setTeam1_name] = React.useState('')
   const [team2_name, setTeam2_name] = React.useState('')
   const [textInputValue, setTextInputValue] = React.useState('')
+
+  const handleEmoticonPress = (item) => {
+    setTextInputValue(textInputValue + item)
+  }
+
+  const renderEmoticons = () => {
+    return (
+      <View style={styles.emoticonsContainer}>
+        {EMOTICONS.map((item, index) => (
+          <Pressable key={index} onPress={() => handleEmoticonPress(item)}>
+            <Text style={styles.emoticon}>{item}</Text>
+          </Pressable>
+        ))}
+      </View>
+    )
+  }
 
   return (
     <ScreenContainer
@@ -2549,112 +2575,7 @@ const MatchDaySingleScreen = (props) => {
                   )}
                 >
                   {/* Emoticons Frame */}
-                  <View
-                    style={StyleSheet.applyWidth(
-                      {
-                        backgroundColor: theme.colors.communityWhite,
-                        flexDirection: 'row',
-                        flexGrow: 0,
-                        flexShrink: 0,
-                        paddingBottom: 12,
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        paddingTop: 12,
-                      },
-                      dimensions.width,
-                    )}
-                  >
-                    {/* Flex Frame for Touchable */}
-                    <View
-                      style={StyleSheet.applyWidth(
-                        { alignItems: 'center', flexGrow: 1, flexShrink: 0 },
-                        dimensions.width,
-                      )}
-                    >
-                      <Touchable>
-                        {/* Flex Frame for Icons */}
-                        <View>
-                          <Icon
-                            name={'MaterialCommunityIcons/emoticon'}
-                            size={30}
-                            color={theme.colors.communitySecondaryAlt}
-                          />
-                        </View>
-                      </Touchable>
-                    </View>
-                    {/* Flex Frame for Touchable */}
-                    <View
-                      style={StyleSheet.applyWidth(
-                        { alignItems: 'center', flexGrow: 1, flexShrink: 0 },
-                        dimensions.width,
-                      )}
-                    >
-                      <Touchable>
-                        {/* Flex Frame for Icons */}
-                        <View>
-                          <Icon
-                            name={'MaterialCommunityIcons/emoticon-angry'}
-                            size={30}
-                            color={theme.colors.communitySecondaryAlt}
-                          />
-                        </View>
-                      </Touchable>
-                    </View>
-                    {/* Flex Frame for Touchable */}
-                    <View
-                      style={StyleSheet.applyWidth(
-                        { alignItems: 'center', flexGrow: 1, flexShrink: 0 },
-                        dimensions.width,
-                      )}
-                    >
-                      <Touchable>
-                        {/* Flex Frame for Icons */}
-                        <View>
-                          <Icon
-                            name={'MaterialCommunityIcons/emoticon-confused'}
-                            size={30}
-                            color={theme.colors.communitySecondaryAlt}
-                          />
-                        </View>
-                      </Touchable>
-                    </View>
-                    {/* Flex Frame for Touchable */}
-                    <View
-                      style={StyleSheet.applyWidth(
-                        { alignItems: 'center', flexGrow: 1, flexShrink: 0 },
-                        dimensions.width,
-                      )}
-                    >
-                      <Touchable>
-                        {/* Flex Frame for Icons */}
-                        <View>
-                          <Icon
-                            name={'MaterialCommunityIcons/emoticon-cool'}
-                            size={30}
-                            color={theme.colors.communitySecondaryAlt}
-                          />
-                        </View>
-                      </Touchable>
-                    </View>
-                    {/* Flex Frame for Touchable */}
-                    <View
-                      style={StyleSheet.applyWidth(
-                        { alignItems: 'center', flexGrow: 1, flexShrink: 0 },
-                        dimensions.width,
-                      )}
-                    >
-                      <Touchable>
-                        {/* Flex Frame for Icons */}
-                        <View>
-                          <Icon
-                            name={'MaterialCommunityIcons/emoticon-cry'}
-                            size={30}
-                            color={theme.colors.communitySecondaryAlt}
-                          />
-                        </View>
-                      </Touchable>
-                    </View>
-                  </View>
+                  {renderEmoticons()}
                   {/* Keyboard Input Frame */}
                   <View
                     style={StyleSheet.applyWidth(
@@ -2677,13 +2598,7 @@ const MatchDaySingleScreen = (props) => {
                       style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0, paddingLeft: 20 }, dimensions.width)}
                     >
                       <TextInput
-                        onChangeText={(newTextInputValue) => {
-                          try {
-                            setTextInputValue(newTextInputValue)
-                          } catch (err) {
-                            console.error(err)
-                          }
-                        }}
+                        onChangeText={setTextInputValue}
                         style={StyleSheet.applyWidth(
                           {
                             borderBottomWidth: 1,
@@ -2711,6 +2626,7 @@ const MatchDaySingleScreen = (props) => {
                     {/* Flex Frame for Touchable */}
                     <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
                       <Touchable
+                        disabled={!textInputValue.trim()}
                         onPress={() => {
                           const handler = async () => {
                             try {
@@ -3142,5 +3058,18 @@ const MatchDaySingleScreen = (props) => {
     </ScreenContainer>
   )
 }
+
+const styles = RNStyleSheet.create({
+  emoticonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    height: 50,
+    marginTop: 20,
+  },
+  emoticon: {
+    fontSize: 25,
+  },
+})
 
 export default withTheme(MatchDaySingleScreen)

@@ -31,6 +31,8 @@ import { Image, ShimmerPlaceHolder } from '../components'
 import { FeedCard } from '../shared'
 import branch from 'react-native-branch'
 
+let nextPageFn = null
+
 const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
@@ -495,7 +497,20 @@ const HomeScreen = (props) => {
         </PagalFanBEApi.FetchFetchNextBakarrSessionGET>
       </View>
 
-      <ScrollView bounces={true} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={StyleSheet.applyWidth({ flexDirection: 'column' }, dimensions.width)}
+        bounces={true}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        onScroll={(e) => {
+          let paddingToBottom = 5
+          paddingToBottom += e.nativeEvent.layoutMeasurement.height
+
+          if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
+            if (nextPageFn) nextPageFn()
+          }
+        }}
+      >
         {/* AdView */}
         <View>
           {/* PF Banner */}
@@ -1023,46 +1038,40 @@ const HomeScreen = (props) => {
         />
         {/* Feed */}
         <View style={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}>
-          <ScrollView
-            contentContainerStyle={StyleSheet.applyWidth({ flexDirection: 'column' }, dimensions.width)}
-            bounces={true}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          >
-            <PagalFanBEApi.FetchFetchAllPostsGET>
-              {({ loading, error, data }) => {
-                const fetchData = data
-                if (!fetchData || loading) {
-                  return <FeedLoader />
-                }
+          <PagalFanBEApi.FetchFetchAllPostsGET>
+            {({ loading, error, data, nextPage }) => {
+              nextPageFn = nextPage
+              const fetchData = data
+              if (!fetchData || loading) {
+                return <FeedLoader />
+              }
 
-                if (error) {
-                  return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                }
+              if (error) {
+                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+              }
 
-                return (
-                  <FlatList
-                    data={fetchData}
-                    listKey={'IOYEaY2u'}
-                    keyExtractor={(listData) => listData?.id}
-                    renderItem={renderFeedItem}
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
-                      dimensions.width,
-                    )}
-                    contentContainerStyle={StyleSheet.applyWidth(
-                      GlobalStyles.FlatListStyles(theme)['List'],
-                      dimensions.width,
-                    )}
-                    onEndReachedThreshold={0.5}
-                    showsVerticalScrollIndicator={false}
-                    numColumns={2}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                )
-              }}
-            </PagalFanBEApi.FetchFetchAllPostsGET>
-          </ScrollView>
+              return (
+                <FlatList
+                  data={fetchData}
+                  listKey={'IOYEaY2u'}
+                  keyExtractor={(listData) => listData?.id}
+                  renderItem={renderFeedItem}
+                  style={StyleSheet.applyWidth(
+                    StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
+                    dimensions.width,
+                  )}
+                  contentContainerStyle={StyleSheet.applyWidth(
+                    GlobalStyles.FlatListStyles(theme)['List'],
+                    dimensions.width,
+                  )}
+                  onEndReachedThreshold={0.5}
+                  showsVerticalScrollIndicator={false}
+                  numColumns={2}
+                  showsHorizontalScrollIndicator={false}
+                />
+              )
+            }}
+          </PagalFanBEApi.FetchFetchAllPostsGET>
         </View>
       </ScrollView>
       {/* OPAddPostView */}

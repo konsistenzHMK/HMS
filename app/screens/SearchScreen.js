@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, Divider, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { ActivityIndicator, FlatList, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { FeedCard } from '../shared'
+import * as GlobalVariables from '../config/GlobalVariableContext'
 
 const SearchScreen = (props) => {
+  const Constants = GlobalVariables.useValues()
   const dimensions = useWindowDimensions()
 
   const FilterList = (list) => {
@@ -18,8 +20,23 @@ const SearchScreen = (props) => {
 
   const { theme } = props
   const { navigation } = props
+  const [posts, setPosts] = useState([])
 
   const [textInputValue, setTextInputValue] = React.useState('')
+
+  useEffect(() => {
+    fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?caption=ilike.*' + textInputValue + '*', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (textInputValue !== '') setPosts(data || [])
+      })
+  }, [textInputValue])
 
   return (
     <ScreenContainer
@@ -136,7 +153,7 @@ const SearchScreen = (props) => {
 
               return (
                 <FlatList
-                  data={FilterList(fetchData)}
+                  data={posts.length > 0 ? posts : FilterList(fetchData)}
                   listKey={'IZLOjasU'}
                   keyExtractor={(listData) => listData?.id}
                   renderItem={({ item }) => <FeedCard feed={item} />}

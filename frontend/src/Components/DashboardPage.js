@@ -34,7 +34,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex flex-col w-full '>
         {/* Header */}
         <div className='w-full flex justify-center h-1/2 mt-10' >
             <div className='flex flex-row w-11/12 h-1/2 bg-defaultBg rounded-lg drop-shadow-lg'>
@@ -61,8 +61,6 @@ const DashboardPage = () => {
                 </div>
             </div>
         </div>
-
-
         {/* 2 Layouts */}
         <div>
 
@@ -70,8 +68,46 @@ const DashboardPage = () => {
 
 
         {/* Quick Links */}
-        <div>
+        <div className='flex justify-center mt-10'>
+            <div className='w-11/12 flex flex-col'>
 
+            <div className='w-full'>
+                <p className='font-popins text-xl '>📌 Quick Clicks</p>
+            </div>
+
+            <div className='w-full mt-3 ml-6 flex justify-start'>
+                <a href='http://localhost:3000/hostel-Registration'>
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'>
+                    <p className='font-popins text-normal'>+ Add Hostel</p>
+                </button>
+                </a>
+
+                <a href='http://localhost:3000/student-Registration'>
+                <button className='bg-defaultBg w-36 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                    <p className='font-popins text-normal'>+ Add Student</p>
+                </button>
+                </a>
+
+                <a href='http://localhost:3000/tower-Registration'>
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                    <p className='font-popins text-normal'>+ Add Tower</p>
+                </button>
+                </a>
+
+                <a href='http://localhost:3000/wing-Registration'>
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                    <p className='font-popins text-normal'>+ Add Wing</p>
+                </button>
+                </a>
+
+                <a href='http://localhost:3000/room-Registration'>
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                    <p className='font-popins text-normal'>+ Add Room</p>
+                </button>
+                </a>
+            </div>
+
+            </div>
         </div>
     </div>
   )

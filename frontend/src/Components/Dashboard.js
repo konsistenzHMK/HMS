@@ -69,7 +69,7 @@ const Dashboard = () => {
             </button>
         </div>
 
-        <div className='w-5/6 m-5 h-1/2 mt-12'>
+        <div className='w-5/6 m-5 h-1/2 mt-12 '>
             <p className='w-full text-center font-popins text-xs text-slate-700'>Konsistenz Software LPP</p>
         </div>
       </div>

@@ -736,7 +736,7 @@ export const FetchAddPostSavePOST = ({ children, onData = () => {}, refetchInter
 
 export const createUserProfilePOSTStatusAndText = (
   Constants,
-  { age, firstName, lastName, sportsList, userId, userOnboarded },
+  { age, firstName, lastName, sportsList, userId, userOnboarded, imgUrl },
 ) =>
   fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/user_profiles', {
     body: JSON.stringify({
@@ -746,6 +746,7 @@ export const createUserProfilePOSTStatusAndText = (
       age: age,
       sports_preferences: sportsList,
       onboarded: userOnboarded,
+      profile_image: imgUrl,
     }),
     headers: {
       Accept: 'application/json',
@@ -761,7 +762,10 @@ export const createUserProfilePOSTStatusAndText = (
     text: await res.text(),
   }))
 
-export const createUserProfilePOST = (Constants, { age, firstName, lastName, sportsList, userId, userOnboarded }) =>
+export const createUserProfilePOST = (
+  Constants,
+  { age, firstName, lastName, sportsList, userId, userOnboarded, imgUrl },
+) =>
   createUserProfilePOSTStatusAndText(Constants, {
     age,
     firstName,
@@ -769,6 +773,7 @@ export const createUserProfilePOST = (Constants, { age, firstName, lastName, spo
     sportsList,
     userId,
     userOnboarded,
+    imgUrl,
   }).then(({ status, statusText, text }) => {
     try {
       return JSON.parse(text)

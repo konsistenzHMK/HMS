@@ -14,11 +14,15 @@ import {
   TouchableOpacity,
   View,
   useWindowDimensions,
+  StyleSheet as RNStyleSheet,
+  Pressable,
 } from 'react-native'
-import { useSnackbar } from '../components'
+import { Image, useSnackbar } from '../components'
 import messaging from '@react-native-firebase/messaging'
+import { getAvatar } from '../config/Images.js'
 
 const SWIPE_SCREENS = Array(4).fill()
+const AVATAR_LIST = Array(8).fill(0)
 
 const OnboardingScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -52,6 +56,7 @@ const OnboardingScreen = (props) => {
   const [sportsPref, setSportsPref] = React.useState([])
   const swiperRef = useRef(null)
   const [currentTabIndex, setCurrentTabIndex] = React.useState(0)
+  const [selectedAvatarIndex, setSelectedAvatarIndex] = React.useState(0)
 
   const snackbar = useSnackbar()
 
@@ -81,6 +86,12 @@ const OnboardingScreen = (props) => {
       }
 
       snackbar.show({ title: 'Saving user details …' })
+
+      // let imgUrl = ''
+      // if (selectedAvatarIndex >= 0) {
+      //   imgUrl = await uploadImage('user-bucket', RNImage.resolveAssetSource(getAvatar(selectedAvatarIndex)).uri)
+      // }
+
       await pagalFanBECreateUserProfilePOST.mutateAsync({
         age: age,
         firstName: firstName,
@@ -88,6 +99,7 @@ const OnboardingScreen = (props) => {
         sportsList: sportsPref,
         userId: Constants['LOGGED_IN_USER'],
         userOnboarded: true,
+        imgUrl: '',
       })
 
       const token = await messaging().getToken()
@@ -334,86 +346,69 @@ const OnboardingScreen = (props) => {
   const renderSwipeAgePage = () => {
     return (
       <View>
-        {/* Title View */}
-        <View style={StyleSheet.applyWidth({ alignItems: 'center', marginTop: 40 }, dimensions.width)}>
-          <Text
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                color: theme.colors['PF-Grey'],
-                fontFamily: 'Rubik_500Medium',
-                fontSize: 20,
-              }),
-              dimensions.width,
-            )}
-          >
-            {"what's your age?"}
-          </Text>
-        </View>
-        {/* Input View */}
-        <View
+        {/* Title */}
+        <Text style={[styles.title, { color: theme.colors['PF-Grey'] }]}>{"What's your age?"}</Text>
+        {/* Age Input View */}
+        <TextInput
+          onChangeText={setAge}
           style={StyleSheet.applyWidth(
-            {
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginLeft: 20,
-              marginRight: 20,
-              marginTop: 60,
-            },
+            StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
+              margin: 20,
+              alignSelf: 'center',
+              textAlign: 'center',
+              width: 140,
+            }),
             dimensions.width,
           )}
-        >
-          {/* Age */}
-          <TextInput
-            onChangeText={(newAgeValue) => {
-              try {
-                setAge(newAgeValue)
-              } catch (err) {
-                console.error(err)
-              }
-            }}
-            style={StyleSheet.applyWidth(
-              StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
-                marginRight: 20,
-                textAlign: 'center',
-                width: 140,
-              }),
-              dimensions.width,
-            )}
-            placeholder={'age'}
-            value={age}
-            autoCapitalize={'none'}
-            returnKeyType="next"
-            onSubmitEditing={handleSubmit}
-          />
-        </View>
+          placeholder={'age'}
+          value={age}
+          autoCapitalize={'none'}
+          returnKeyType="Done"
+        />
         {/* Notes View */}
-        <View
+        <Text
           style={StyleSheet.applyWidth(
-            {
-              alignItems: 'center',
+            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
               alignSelf: 'auto',
-              marginLeft: 20,
-              marginRight: 20,
-              marginTop: 40,
-            },
+              color: theme.colors['Studily_Slate_Gray'],
+              fontFamily: 'Rubik_300Light',
+              fontSize: 12,
+              textAlign: 'center',
+              marginBottom: 40,
+            }),
             dimensions.width,
           )}
         >
+          {'This is to personalise your experience and will not be visible on your profile.'}
+        </Text>
+        {/* Avatar Title */}
+        <Text style={[styles.title, { color: theme.colors['PF-Grey'] }]}>{'Pick your Avatar'}</Text>
+        <View style={styles.avatarContainer}>
+          {AVATAR_LIST.map((item, index) => (
+            <Pressable
+              key={index}
+              style={[styles.avatar, index === selectedAvatarIndex && styles.avatarSelected]}
+              onPress={() => setSelectedAvatarIndex(index)}
+            >
+              <Image style={styles.avatarIcon} source={getAvatar(index)} />
+            </Pressable>
+          ))}
+        </View>
+        <Pressable onPress={handleSubmit} style={styles.nextContainer}>
           <Text
             style={StyleSheet.applyWidth(
               StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                alignSelf: 'auto',
-                color: theme.colors['Studily_Slate_Gray'],
-                fontFamily: 'Rubik_300Light',
-                fontSize: 12,
+                color: theme.colors['Secondary'],
+                fontFamily: 'Rubik_500Medium',
+                fontSize: 15,
                 textAlign: 'center',
               }),
               dimensions.width,
             )}
           >
-            {'This is to personalise your experience and will not be visible on your profile.'}
+            {'Swipe next -->'}
           </Text>
-        </View>
+        </Pressable>
       </View>
     )
   }
@@ -682,5 +677,40 @@ const OnboardingScreen = (props) => {
     </ScreenContainer>
   )
 }
+
+const styles = RNStyleSheet.create({
+  title: {
+    fontFamily: 'Rubik_500Medium',
+    fontSize: 20,
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  avatarContainer: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    width: 324,
+    flexWrap: 'wrap',
+    marginHorizontal: 30,
+    marginTop: 30,
+  },
+  avatar: {
+    height: 70,
+    aspectRatio: 1,
+    margin: 5,
+  },
+  avatarSelected: {
+    borderColor: 'rgb(35, 197, 98)',
+    borderWidth: 3,
+    borderRadius: 40,
+  },
+  avatarIcon: {
+    width: '100%',
+    height: '100%',
+  },
+  nextContainer: {
+    alignSelf: 'center',
+    marginTop: 60,
+  },
+})
 
 export default withTheme(OnboardingScreen)

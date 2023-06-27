@@ -63,7 +63,7 @@ const OnboardingScreen = (props) => {
     } else if (isNaN(age)) {
       message = 'Please enter valid age'
     } else if (sportsPref.length < 3) {
-      message = 'Please selected atleast 3 sports'
+      message = 'Please select at least 3 sports'
     }
 
     if (message) {

@@ -76,7 +76,7 @@ const Dashboard = () => {
       {/* Main Pages for Registartion */}
       <div className="w-5/6">
       <Routes>
-      <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<DashboardPage />} />
         <Route path="/hostel-Registration" element={<HostelRegistration />} />
         <Route path="/tower-Registration" element={<TowerRegistartion />} />
         <Route path="/wing-Registration" element={<WingRegistration />} />

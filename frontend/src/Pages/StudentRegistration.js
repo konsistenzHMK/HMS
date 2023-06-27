@@ -123,13 +123,8 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
 
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form >
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -483,13 +478,8 @@ const Page2 = ({formData,setFormData,nextPage,previousPage}) =>{
   }
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -730,13 +720,8 @@ const Page3 = ({formData,setFormData,nextPage,previousPage}) =>{
 
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -1050,13 +1035,8 @@ const Page4 = ({formData,setFormData}) =>{
 
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form onSubmit={handleSubmit}>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>

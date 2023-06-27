@@ -15,7 +15,6 @@ const Dashboard = () => {
   return (
     <BrowserRouter>
     <div className="flex">
-
       {/* Side Navbar */}
       <div className="w-1/6 h-full bg-accent flex flex-col sticky top-0">
         {/* Image & Name*/}

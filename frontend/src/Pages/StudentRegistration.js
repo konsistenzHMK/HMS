@@ -123,13 +123,8 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
 
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form >
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -483,13 +478,8 @@ const Page2 = ({formData,setFormData,nextPage,previousPage}) =>{
   }
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -730,13 +720,8 @@ const Page3 = ({formData,setFormData,nextPage,previousPage}) =>{
 
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -1005,7 +990,7 @@ const Page4 = ({formData,setFormData}) =>{
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
-      axios.post('http://localhost:7000/hostel/registration', formData)
+      axios.post('http://localhost:7000/student/registration', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -1047,15 +1032,11 @@ const Page4 = ({formData,setFormData}) =>{
     }));
   };
 
+
   return (
     <div className="flex bg-defaultBg" >
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
       {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form onSubmit={handleSubmit}>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -1180,7 +1161,7 @@ const Page4 = ({formData,setFormData}) =>{
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Account Number**</div>
                     <input
-                      type="Number"
+                      type="number"
                       id="account_number"
                       name="account_number"
                       value={formData.account_number}

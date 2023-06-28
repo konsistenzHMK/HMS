@@ -6,19 +6,13 @@ import WingRegistration from './Pages/WingRegistration';
 import RoomRegistration from './Pages/RoomRegistration';
 import StudentRegistartion from './Pages/StudentRegistration';
 
+import Dashboard from './Components/Dashboard'
+
 import './index.css'
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-      <Routes>
-        <Route path="/hostel-Registration" element={<HostelRegistration />} />
-        <Route path="/tower-Registration" element={<TowerRegistartion />} />
-        <Route path="/wing-Registration" element={<WingRegistration />} />
-        <Route path="/room-Registration" element={<RoomRegistration />} />
-        <Route path="/student-Registration" element={<StudentRegistartion />} />
-      </Routes>
-  </BrowserRouter>
+  <Dashboard />
 );
 

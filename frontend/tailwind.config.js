@@ -13,7 +13,7 @@ module.exports = {
         defaultBg: '#F2F2F2', // Add your custom color here
         borderColor: '#1136BA',
         accent : '#94ABBF'
-      },
+      }
     },
   },
   plugins: [],

@@ -207,14 +207,7 @@ const App = () => {
   };
 
   return (
-    <div className="flex">
-      {/* Side Navbar */}
-      <div className="w-1/6 bg-accent">
-
-      </div>
-
-      {/* Main Content */}
-      <div className="w-5/6 h-full">
+      <div className="w-full h-full">
       <form onSubmit={handleSubmit}>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>
@@ -668,8 +661,6 @@ const App = () => {
         </div>
       </form>
       </div>
-    </div>
-
   );
 };
 

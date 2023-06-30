@@ -86,6 +86,7 @@ const App = () => {
       alert(err);
     }
   };
+  
   const handleDropdownCat1 = (event) => {
     setCategory1(event.target.value);
     setFormData((prevData) => ({
@@ -169,34 +170,34 @@ const App = () => {
       .catch((error) => {
         console.error('API request error:', error);
       });
-      // setFormData({
-      //   hostel_name: '',
-      //   description:'',
-      //   address1:'',
-      //   address2:'',
-      //   country:'',
-      //   state:'',
-      //   region:'',
-      //   district:'',
-      //   city:'',
-      //   pincode:'',
-      //   uuid:'',
-      //   rector_name:'',
-      //   categ1:'',
-      //   categ2:'',
-      //   categ3:'',
-      //   tower:'',
-      //   floor:'',
-      //   room:'',
-      //   scapacity:'',
-      //   bcapacity:'',
-      //   area:'',
-      //   mess:'',
-      //   other_facility:'',
-      //   status:'',
-      //   email_id:'',
-      //   website:'',
-      // });
+      setFormData({
+        hostel_name: '',
+        description:'',
+        address1:'',
+        address2:'',
+        country:'India',
+        state:'',
+        region:'',
+        district:'',
+        city:'',
+        pincode:'',
+        uuid:'',
+        rector_name:'',
+        categ1:'',
+        categ2:'',
+        categ3:'',
+        tower:'',
+        floor:'',
+        room:'',
+        scapacity:'',
+        bcapacity:'',
+        area:'',
+        mess:'',
+        other_facility:'',
+        status:'',
+        email_id:'',
+        website:'',
+      });
       setErrors({});
     } else {
       console.log("error");
@@ -204,10 +205,129 @@ const App = () => {
     }
   };
 
+
   const validateForm = () => {
     const errors = {};
-    return {};
+      // Validate hostel_name
+      if (!formData.hostel_name) {
+        errors.hostel_name = "Hostel name is required";
+      }
+
+      // Validate description
+      if (!formData.description) {
+        errors.description = "Description is required";
+      }
+
+      // Validate address1
+      if (!formData.address1) {
+        errors.address1 = "Address is required";
+      }
+
+      // Validate country
+      if (formData.country !== 'India') {
+        errors.country = "Country should be India";
+      }
+
+      // Validate state
+      if (!formData.state) {
+        errors.state = "State is required";
+      }
+
+      // Validate region
+      if (!formData.region) {
+        errors.region = "Region is required";
+      }
+
+      // Validate district
+      if (!formData.district) {
+        errors.district = "District is required";
+      }
+
+      // Validate city
+      if (!formData.city) {
+        errors.city = "City is required";
+      }
+
+      // Validate pincode
+      if (!formData.pincode) {
+        errors.pincode = "Pincode is required";
+      }
+
+      // Validate rector_name
+      if (!formData.rector_name) {
+        errors.rector_name = "Rector name is required";
+      }
+
+      // Validate categ1
+      if (!formData.categ1) {
+        errors.categ1 = "Category 1 is required";
+      }
+
+      // Validate categ2
+      if (!formData.categ2) {
+        errors.categ2 = "Category 2 is required";
+      }
+
+      // Validate categ3
+      if (!formData.categ3) {
+        errors.categ3 = "Category 3 is required";
+      }
+
+      // Validate tower
+      if (!formData.tower) {
+        errors.tower = "Tower is required";
+      }
+
+      // Validate floor
+      if (!formData.floor) {
+        errors.floor = "Floor is required";
+      }
+
+      // Validate room
+      if (!formData.room) {
+        errors.room = "Room is required";
+      }
+
+      // Validate scapacity
+      if (!formData.scapacity) {
+        errors.scapacity = "Capacity is required";
+      }
+      // Validate bcapacity
+      if (!formData.bcapacity) {
+        errors.bcapacity = "Capacity is required";
+      }
+
+      // Validate area
+      if (!formData.area) {
+        errors.area = "Area is required";
+      }
+
+      // Validate email_id
+      if (!isValidEmail(formData.email_id)) {
+        errors.email_id = "Invalid email address";
+      }
+
+      // Validate website
+      if (!isValidWebsite(formData.website)) {
+        errors.website = "Invalid website URL";
+      }
+      // Set the errors using setErrors
+      setErrors(errors);
+    return errors;
   };
+
+  function isValidEmail(email) {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  
+  // Helper function to validate website URL
+  function isValidWebsite(website) {
+    // Regular expression for website URL validation
+    const websiteRegex = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/.*)?$/i;
+    return websiteRegex.test(website);
+  }
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
@@ -288,7 +408,7 @@ const App = () => {
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></input>
-                {errors.hostel_name && <span className="error">{errors.hostel_name}</span>}
+                {errors.hostel_name && <span className="error text-red-500">{errors.hostel_name}</span>}
               </div>
 
               {/* 1.2 */}
@@ -301,7 +421,7 @@ const App = () => {
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></textarea>
-                {errors.description && <span className="error">{errors.description}</span>}
+                {errors.description && <span className="error text-red-500">{errors.description}</span>}
               </div>
 
             {/* 2 --> Address*/}
@@ -321,7 +441,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.address1 && <span className="error">{errors.address1}</span>}
+                    {errors.address1 && <span className="error  text-red-500">{errors.address1}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -335,7 +455,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 '
                     />
-                    {errors.address2 && <span className="error">{errors.address2}</span>}
+                    {errors.address2 && <span className="error  text-red-500">{errors.address2}</span>}
                 </div>
                 </div>
               </div>
@@ -351,7 +471,7 @@ const App = () => {
                       onChange={handleChange}
                       className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
-                    {errors.country && <span className="error">{errors.country}</span>}
+                    {errors.country && <span className="error  text-red-500">{errors.country}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -362,10 +482,10 @@ const App = () => {
                         value={State} 
                         onChange={handleChangeState}
                         >
-                        <option value="">Select an option</option>
+                        <option value="NA">Select an option</option>
                         <option value="Maharashtra">Maharashtra</option>
                     </select>
-                    {errors.state && <span className="error">{errors.state}</span>}
+                    {errors.state && <span className="error  text-red-500">{errors.state}</span>}
                 </div>
                 </div>
               </div>
@@ -386,7 +506,7 @@ const App = () => {
                             </option>
                           ))}
                       </select>
-                    {errors.region && <span className="error">{errors.region}</span>}
+                    {errors.region && <span className="error  text-red-500">{errors.region}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -404,7 +524,7 @@ const App = () => {
                             </option>
                           ))}
                       </select>
-                    {errors.district && <span className="error">{errors.district}</span>}
+                    {errors.district && <span className="error text-red-500">{errors.district}</span>}
                 </div>
                 </div>
 
@@ -426,7 +546,7 @@ const App = () => {
                             </option>
                           ))}
                       </select>
-                    {errors.city && <span className="error">{errors.city}</span>}
+                    {errors.city && <span className="error text-red-600">{errors.city}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -440,7 +560,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
-                    {errors.pincode && <span className="error">{errors.pincode}</span>}
+                    {errors.pincode && <span className="error text-red-600">{errors.pincode}</span>}
                 </div>
                 </div>
               </div>
@@ -462,7 +582,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.rector_name && <span className="error">{errors.rector_name}</span>}
+                    {errors.rector_name && <span className="error text-red-600">{errors.rector_name}</span>}
                 </div>
               </div>
 
@@ -481,7 +601,7 @@ const App = () => {
                         <option value="boys">Boys</option>
                         <option value="coed">Co-Ed</option>
                       </select>
-                      {errors.categ1 && <span className="error">{errors.categ1}</span>}
+                      {errors.categ1 && <span className="error text-red-600">{errors.categ1}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
@@ -497,7 +617,7 @@ const App = () => {
                         <option value="t-2">type-2</option>
                         <option value="t-3">type-3</option>
                       </select>
-                      {errors.categ2 && <span className="error">{errors.categ2}</span>}
+                      {errors.categ2 && <span className="error text-red-600">{errors.categ2}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
@@ -512,7 +632,7 @@ const App = () => {
                         <option value="rented">Rented</option>
                         <option value="government">Government</option>
                       </select>
-                      {errors.categ3 && <span className="error">{errors.categ3}</span>}
+                      {errors.categ3 && <span className="error text-red-600">{errors.categ3}</span>}
                   </div>
                   </div>
               </div>
@@ -530,7 +650,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.tower && <span className="error">{errors.tower}</span>}
+                      {errors.tower && <span className="error text-red-600">{errors.tower}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
@@ -544,7 +664,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.floor && <span className="error">{errors.floor}</span>}
+                      {errors.floor && <span className="error text-red-600">{errors.floor}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
@@ -558,7 +678,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.room && <span className="error">{errors.room}</span>}
+                      {errors.room && <span className="error text-red-600">{errors.room}</span>}
                   </div>
                   </div>
               </div>
@@ -576,7 +696,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.scapacity && <span className="error">{errors.scapacity}</span>}
+                      {errors.scapacity && <span className="error text-red-600">{errors.scapacity}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
@@ -590,7 +710,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.bcapacity && <span className="error">{errors.bcapacity}</span>}
+                      {errors.bcapacity && <span className="error text-red-600">{errors.bcapacity}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
@@ -604,7 +724,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.area && <span className="error">{errors.area}</span>}
+                      {errors.area && <span className="error text-red-600">{errors.area}</span>}
                   </div>
                   </div>
               </div>
@@ -624,7 +744,7 @@ const App = () => {
                         <option value="other">Other</option>
                         <option value="not">Not Applicable</option>
                       </select>
-                      {errors.mess && <span className="error">{errors.mess}</span>}
+                      {errors.mess && <span className="error text-red-600">{errors.mess}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
@@ -638,7 +758,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.other_facility && <span className="error">{errors.other_facility}</span>}
+                      {errors.other_facility && <span className="error text-red-600">{errors.other_facility}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
@@ -652,7 +772,7 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.status && <span className="error">{errors.status}</span>}
+                      {errors.status && <span className="error text-red-600">{errors.status}</span>}
                   </div>
                   </div>
               </div>
@@ -669,7 +789,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.email_id && <span className="error">{errors.email_id}</span>}
+                    {errors.email_id && <span className="error text-red-600">{errors.email_id}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -683,7 +803,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.website && <span className="error">{errors.website}</span>}
+                    {errors.website && <span className="error text-red-600">{errors.website}</span>}
                 </div>
                 </div>
               </div>

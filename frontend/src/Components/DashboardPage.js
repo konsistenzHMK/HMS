@@ -34,24 +34,24 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className='flex flex-col w-full '>
+    <div className='flex flex-col w-full  bg-defaultBg'>
         {/* Header */}
         <div className='w-full flex justify-center h-1/2 mt-10' >
-            <div className='flex flex-row w-11/12 h-1/2 bg-defaultBg rounded-lg drop-shadow-lg'>
+            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
                 {/* content */}
                 <div className='w-1/2 flex flex-col ml-5'>
                     <div className='w-full mt-5'>
-                        <p className='font-popins text-3xl font-semibold '>Hostel Management Software</p>
+                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                     </div>
                     <div className='w-full mt-1'> 
-                        <p className='font-popins text-xl font-medium text-orange-500 '>Rector Dashboard</p>
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
                     </div>
 
                     <div className='w-full mt-3'>
-                        <p className='font-popins text-lg '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
+                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
                     </div>
                     <div className='w-full mt-0.5 mb-5'>
-                        <p className='font-popins text-lg '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
+                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
                     </div>
                 </div>
 

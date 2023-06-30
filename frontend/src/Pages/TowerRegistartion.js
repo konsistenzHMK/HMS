@@ -73,7 +73,7 @@ const TowerRegistartion = () => {
     };
 
   return (
-    <div className="w-5/6 h-full">
+    <div className="w-full h-full">
       <form onSubmit={handleSubmit}>
         {/* Header */}
         <div className='w-full bg-defaultBg h-36 flex '>

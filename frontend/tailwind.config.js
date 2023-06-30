@@ -14,6 +14,10 @@ module.exports = {
         borderColor: '#1136BA',
         accent : '#94ABBF',
         accent2 : '#576DBC',
+      },
+      borderWidth: {
+        '1': '1px',
+        '1.5': '1.3px',
       }
     },
   },

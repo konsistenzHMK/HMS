@@ -240,25 +240,25 @@ const App = () => {
   };
 
   return (
-      <div className="w-full">
+      <div className="w-full bg-defaultBg top-0">
       <form onSubmit={handleSubmit}>
         {/* Header */}
-        <div className='w-full flex justify-center h-1/2 mt-10' >
-            <div className='flex flex-row w-11/12 h-1/2 bg-defaultBg rounded-lg drop-shadow-lg'>
+        <div className='w-full flex justify-center h-1/2 pt-10' >
+            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
                 {/* content */}
                 <div className='w-1/2 flex flex-col ml-5'>
                     <div className='w-full mt-5'>
-                        <p className='font-popins text-3xl font-semibold '>Hostel Management Software</p>
+                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                     </div>
                     <div className='w-full mt-1'> 
-                        <p className='font-popins text-xl font-medium text-orange-500 '>Hostel Registration Form</p>
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
                     </div>
 
                     <div className='w-full mt-3'>
-                        <p className='font-popins text-lg '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
+                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
                     </div>
                     <div className='w-full mt-0.5 mb-5'>
-                        <p className='font-popins text-lg '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
+                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
                     </div>
                 </div>
 
@@ -270,70 +270,70 @@ const App = () => {
         </div>
 
         {/* Form Data */}
-        <div className='w-full h-full bg-white flex justify-center font-popins'>
-          <div className=" bg-defaultBg w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
+        <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
+          <div className="bg-white  w-10/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
             <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
               {/* 1 --> Basic Details */}
-              <div className='font-semibold underline  underline-offset-1 text-sky-950 text-3xl pt-3 mb-3 font-popins'>
+              <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
                 <p className='font-popins'>Basic Details</p>
               </div>
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
-                <div className="mb-1 font-popins text-xl font-medium  " htmlFor="description">Hostel Name <p className='inline text-2xl text-red-600'>*</p></div>
+                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
                 <input
                   id="hostel_name"
                   name="hostel_name"
                   value={formData.hostel_name}
                   onChange={handleChange}
-                  className='w-full border-1 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-2 focus:border-orange-600'
+                  className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></input>
                 {errors.hostel_name && <span className="error">{errors.hostel_name}</span>}
               </div>
 
               {/* 1.2 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
-                <div className="mb-1 font-popins text-xl font-medium  " htmlFor="description">Hostel Description <p className='inline text-2xl text-red-600'>*</p></div>
+                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Description <p className='inline text-xl text-red-600'>*</p></div>
                 <textarea
                   id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  className='w-full border-1 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-2 focus:border-orange-600'
+                  className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></textarea>
                 {errors.description && <span className="error">{errors.description}</span>}
               </div>
 
             {/* 2 --> Address*/}
-            <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-7 mb-3 font-popins'>
+            <div className='underline  underline-offset-1 text-sky-950 text-2xl font-semibold pt-7 mb-3 font-popins'>
                 <p className=' font-popins'>Address </p>
             </div>
             {/* 2.1 */}
 
             <div className='w-full h-auto flex justify-between'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Address Line 1 <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1 <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="address1"
                       name="address1"
                       value={formData.address1}
                       onChange={handleChange}
-                      className='w-full border-1 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-2 focus:border-orange-600'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.address1 && <span className="error">{errors.address1}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="address2"
                       name="address2"
                       value={formData.address2}
                       onChange={handleChange}
-                      className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1 '
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 '
                     />
                     {errors.address2 && <span className="error">{errors.address2}</span>}
                 </div>
@@ -342,23 +342,23 @@ const App = () => {
               {/* 2.2 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Country <p className='inline text-2xl text-red-600'><p className='inline text-2xl text-red-600'>**</p></p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="state"
                       name="country"
                       value={'India'}
                       onChange={handleChange}
-                      className='w-11/12 border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md bg-slate-200 font-montserrat px-1 py-1'
+                      className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
                     {errors.country && <span className="error">{errors.country}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">State <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>**</p></div>
                     <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={State} 
                         onChange={handleChangeState}
                         >
@@ -373,9 +373,9 @@ const App = () => {
               {/* 2.3 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Region <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>**</p></div>
                       <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={region} 
                         onChange={handleChangeRegion}
                         >
@@ -391,9 +391,9 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">District <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>**</p></div>
                       <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={District} 
                         onChange={handleChangeDistrict}
                         >
@@ -413,9 +413,9 @@ const App = () => {
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">City <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City <p className='inline text-xl text-red-600'>**</p></div>
                     <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={City} 
                         onChange={handleChangeCity}
                         >
@@ -431,14 +431,14 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Pincode <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="pincode"
                       name="pincode"
                       value={formData.pincode}
                       onChange={handleChange}
-                      className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error">{errors.pincode}</span>}
                 </div>
@@ -446,21 +446,21 @@ const App = () => {
               </div>
 
               {/* 4 */}
-              <div className='underline underline-offset-1 text-sky-950 text-3xl font-semibold pt-7 mb-3 font-popins'>
+              <div className='underline underline-offset-1 text-sky-950 text-xl font-semibold pt-7 mb-3 font-popins'>
                 <p className=''>Advance Details</p>
             </div>
 
             {/* 4.1 --> 1*/}
             <div className='w-full h-auto flex justify-between'>
                 <div className='w-full'>
-                  <div className="w-full mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Hostel Rector <p className='inline text-2xl text-red-600'>*</p></div>
+                  <div className="w-full mb-1 font-popins text-lg font-medium" htmlFor="email_id">Hostel Rector <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="rector_name"
                       name="rector_name"
                       value={formData.rector_name}
                       onChange={handleChange}
-                      className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.rector_name && <span className="error">{errors.rector_name}</span>}
                 </div>
@@ -470,9 +470,9 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-5'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Category-1 <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category1} 
                         onChange={handleDropdownCat1}
                         >
@@ -486,9 +486,9 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Category-2 <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category2} 
                         onChange={handleDropdownCat2}
                         >
@@ -502,9 +502,9 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Category-3 <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-3 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category3} 
                         onChange={handleDropdownCat3}
                         >
@@ -521,42 +521,42 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-5'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">No of Towers <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Towers <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="number"
                         id="tower"
                         name="tower"
                         value={formData.tower}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.tower && <span className="error">{errors.tower}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">No of Floors <p className='inline text-2xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'>**</p></div>
                       <input
                         type="number"
                         id="floor"
                         name="floor"
                         value={formData.floor}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.floor && <span className="error">{errors.floor}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-2xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'>**</p></div>
                       <input
                         type="number"
                         id="room"
                         name="room"
                         value={formData.room}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.room && <span className="error">{errors.room}</span>}
                   </div>
@@ -567,42 +567,42 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-5'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Sanctioned Capacity <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Sanctioned Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="number"
                         id="scapacity"
                         name="scapacity"
                         value={formData.scapacity}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.scapacity && <span className="error">{errors.scapacity}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Building Capacity <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Building Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="number"
                         id="bcapacity"
                         name="bcapacity"
                         value={formData.bcapacity}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.bcapacity && <span className="error">{errors.bcapacity}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Total Area (sq.ft) <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Total Area (sq.ft) <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="number"
                         id="area"
                         name="area"
                         value={formData.area}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.area && <span className="error">{errors.area}</span>}
                   </div>
@@ -612,9 +612,9 @@ const App = () => {
               <div className='w-full h-auto flex justify-between mt-5'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Mess Type <p className='inline text-2xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>**</p></div>
                     <select 
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={messType} 
                         onChange={handleDropdownMessType}
                         >
@@ -629,28 +629,28 @@ const App = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Other Facility <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="other_facility"
                         name="other_facility"
                         value={formData.other_facility}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.other_facility && <span className="error">{errors.other_facility}</span>}
                   </div>
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Status <p className='inline text-2xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="status"
                         name="status"
                         value={formData.status}
                         onChange={handleChange}
-                        className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.status && <span className="error">{errors.status}</span>}
                   </div>
@@ -660,28 +660,28 @@ const App = () => {
               {/* 4.5 */}
               <div className='w-full h-auto flex justify-between mt-5 mb-7'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium " htmlFor="email_id">Hostel Email <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Hostel Email <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="email_id"
                       name="email_id"
                       value={formData.email_id}
                       onChange={handleChange}
-                      className='w-11/12 border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.email_id && <span className="error">{errors.email_id}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div htmlFor="email_id" className='mb-1 font-popins text-xl font-medium'>Hostel Website <p className='inline text-2xl text-red-600'>**</p></div>
+                  <div htmlFor="email_id" className='mb-1 font-popins text-lg font-medium'>Hostel Website <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="website"
                       name="website"
                       value={formData.website}
                       onChange={handleChange}
-                      className='w-full border-gray-400 focus:outline-none border-2 focus:border-orange-600 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.website && <span className="error">{errors.website}</span>}
                 </div>
@@ -692,20 +692,20 @@ const App = () => {
         </div>
 
         {/* Footer - Logo + Submit button*/}
-        <div className='w-full h-52 flex items-center justify-center bg-white'>
-          <div className='w-11/12 h-4/5 flex items-center justify-center bg-white'>
+        <div className='w-full h-52 flex items-center justify-center bg-defaultBg'>
+          <div className='w-11/12 h-4/5 flex items-center justify-center bg-defaultBg'>
             <div className='w-11/12  flex justify-between'>
               <div className='w-auto flex flex-col justify-center items-start relative'>
                 {/* Logo */}
-                <div className='text-sky-950 text-3xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-2xl font-semibold'>Hostel Registration Form ✨</div>
+                <div className='text-sky-950 text-2xl font-bold font-sans'>Hostel Management System 🎉</div>
+                <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
-              <div className='w-1/4 flex flex-col justify-center'>
-                <button className='h-11 bg-accent2 text-xl font-semibold text-white border-none rounded-2xl'>
+              <div className='w-52 flex flex-col justify-center'>
+                <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
                   Save
                 </button>
-                <button className='h-11 bg-accent2 text-xl font-semibold text-white border-none rounded-2xl mt-5'>
+                <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
                   Send for Approval
                 </button>
               </div>

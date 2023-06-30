@@ -3,8 +3,11 @@ import axios, { all } from 'axios';
 import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import DashboardImg from '../Components/DashboardImg.svg'
+import BgImg from './grid.svg'
 
-const Page1 = ({ formData, setFormData, nextPage }) =>{
+
+const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
   const [State,changeState]=useState('');
   const [allRegion,changeAllRegion]=useState([]);
   const [region,ChangeRegion]=useState('');
@@ -79,7 +82,36 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
       alert(err);
     }
   };
+  const [currentDate, setCurrentDate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const date = new Date();
+
+      const formattedDate = formatDate(date);
+      const formattedTime = formatTime(date);
+
+      setCurrentDate(formattedDate);
+      setCurrentTime(formattedTime);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  // Helper function to format the date
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
+  };
+
+  // Helper function to format the time
+  const formatTime = (date) => {
+    const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    return date.toLocaleTimeString(undefined, options);
+  };
   const [errors, setErrors] = useState({});
   
   const handleChange = (e) => {
@@ -126,47 +158,81 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
       {/* Main Content */}
       <div className="w-full h-full">
       <form >
+      <div className='w-full flex justify-center h-1/2 pt-10' >
+            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
+                {/* content */}
+                <div className='w-1/2 flex flex-col ml-5'>
+                    <div className='w-full mt-5'>
+                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
+                    </div>
+                    <div className='w-full mt-1'> 
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
+                    </div>
+
+                    <div className='w-full mt-3'>
+                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
+                    </div>
+                    <div className='w-full mt-0.5 mb-5'>
+                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
+                    </div>
+                </div>
+
+                {/* Image */}
+                <div className='w-1/2 flex justify-end mr-5 '>
+                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
+                </div>
+            </div>
+        </div>
         {/* Header */}
-        <div className='w-full bg-defaultBg h-36 flex '>
-          <div className='h-auto bg-white w-1/2 my-auto ml-10 drop-shadow-xl border-none rounded-lg'>
-            <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
-            <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Student Registration Form</p>
-          </div>
+
+        <div className="form-progress flex justify-around items-center mt-6">
+          <div
+            className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center align-middle'}`}
+          ><p className='text-center font-extrabold text-2xl align-middle'>1</p></div>
+          <div
+            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>2</p></div>
+          <div
+            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>3</p></div>
+          <div
+            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>4</p></div>
         </div>
 
         {/* Form Data */}
         <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
-          <div className="bg-white w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
+          <div className="bg-white  w-10/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
             <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
               {/* 1 --> Basic Details */}
-              <div className='font-bold underline  underline-offset-1 text-sky-950 text-xl mb-3'>
-                <p className='text-3xl font-semibold pt-4 mb-3 font-popins '>Basic Details</p>
+              <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
+                <p className='font-popins'>Basic Details</p>
               </div>
               {/* 1.1 -- Student Name*/}
               <div className='w-full h-auto flex justify-between'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Firstname **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Firstname <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="first_name"
                       name="first_name"
                       value={formData.first_name}
                       onChange={handleChange}
-                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.first_name && <span className="error">{errors.first_name}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Lastname **</div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Lastname <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="last_name"
                       name="last_name"
                       value={formData.last_name}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.last_name && <span className="error">{errors.last_name}</span>}
                 </div>
@@ -176,62 +242,62 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
               {/* 2 -- Parents Name  */}
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Father's Name **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Father's Name <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="father_name"
                       name="father_name"
                       value={formData.father_name}
                       onChange={handleChange}
-                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.father_name && <span className="error">{errors.father_name}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium" htmlFor="email_id">Mother's Name **</div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mother's Name <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="mother_name"
                       name="mother_name"
                       value={formData.mother_name}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.address2 && <span className="error">{errors.address2}</span>}
                 </div>
                 </div>
               </div>
 
-            <div className='underline  underline-offset-1 text-sky-950 text-3xl font-semibold pt-4 mb-3 font-popins'>
+            <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-4 mb-2 font-popins'>
                 <p className=' font-popins'>Address </p>
             </div>
             
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Address Line 1 **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1<p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="address1"
                       name="address1"
                       value={formData.address1}
                       onChange={handleChange}
-                      className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.address1 && <span className="error">{errors.address1}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Address Line 2 **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="address2"
                       name="address2"
                       value={formData.address2}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.address2 && <span className="error">{errors.address2}</span>}
                 </div>
@@ -240,23 +306,23 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
               {/* 2.2 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">Country **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="state"
                       name="country"
                       value={'India'}
                       onChange={handleChange}
-                      className='w-11/12 border-2 border-sky-500 rounded-md bg-slate-200 font-montserrat px-1 py-1'
+                      className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
                     {errors.country && <span className="error">{errors.country}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">State **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State **</div>
                     <select 
-                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={State} 
                         onChange={handleChangeState}
                         >
@@ -271,9 +337,9 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
               {/* 2.3 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Region **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region **</div>
                       <select 
-                        className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={region} 
                         onChange={handleChangeRegion}
                         >
@@ -289,9 +355,9 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">District **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">District **</div>
                       <select 
-                        className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={District} 
                         onChange={handleChangeDistrict}
                         >
@@ -311,9 +377,9 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium  " htmlFor="email_id">City **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City **</div>
                     <select 
-                        className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={City} 
                         onChange={handleChangeCity}
                         >
@@ -329,14 +395,14 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Pincode **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode **</div>
                     <input
                       type="text"
                       id="pincode"
                       name="pincode"
                       value={formData.pincode}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error">{errors.pincode}</span>}
                 </div>    
@@ -344,9 +410,9 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
             </div>
             <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Address Type **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Type **</div>
                     <select 
-                        className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.address_type} 
                         onChange={changeAddress}
                         >
@@ -360,14 +426,14 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
                 </div>
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Aadhar Number **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Aadhar Number **</div>
                     <input
                       type="Number"
                       id="aadhar_id"
                       name="aadhar_id"
                       value={formData.aadhar_id}
                       onChange={handleChange}
-                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error">{errors.pincode}</span>}
                 </div>
@@ -375,9 +441,9 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
               </div>
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Gender **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Gender **</div>
                     <select 
-                        className='w-11/12 border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.gender} 
                         onChange={changeGender}
                         >
@@ -391,12 +457,12 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
                 </div>
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-xl font-medium   " htmlFor="email_id">Date of Birth **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Date of Birth **</div>
                     <DatePicker
                       selected={formData.dob}
                       onChange={changeDate}
                       dateFormat="yyyy-MM-dd"
-                      className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
+                      className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error">{errors.pincode}</span>}
                 </div>
@@ -411,13 +477,14 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
         <div className='w-full h-52 flex items-center justify-center bg-defaultBg'>
           <div className='w-11/12 h-4/5 flex items-center justify-center bg-defaultBg'>
             <div className='w-11/12 h-1/2 flex justify-between'>
-              <div className='w-auto flex flex-col justify-center items-start'>
+              <div className='w-auto flex flex-col justify-center items-start relative'>
                 {/* Logo */}
-                <div className='text-sky-950 text-3xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-2xl font-semibold'>Student Registration Form ✨</div>
+                <div className='text-sky-950 text-2xl font-bold font-sans'>Hostel Management System 🎉</div>
+                <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
+                <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
-                <button onClick={handleNextPage} className='h-1/2 bg-sky-600 text-xl font-semibold text-white border-none rounded-xl mt-5'>
+                <button onClick={handleNextPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
                   Next Page
                 </button>
               </div>
@@ -430,7 +497,7 @@ const Page1 = ({ formData, setFormData, nextPage }) =>{
 
   );
 };
-const Page2 = ({formData,setFormData,nextPage,previousPage}) =>{
+const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   const [errors, setErrors] = useState({});
   
   const handleChange = (e) => {
@@ -488,7 +555,20 @@ const Page2 = ({formData,setFormData,nextPage,previousPage}) =>{
             <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Student Registration Form</p>
           </div>
         </div>
-
+        <div className="form-progress flex justify-around items-center">
+          <div
+            className={`step ${currentPage >= 1 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>1</p></div>
+          <div
+            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>2</p></div>
+          <div
+            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>3</p></div>
+          <div
+            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>4</p></div>
+        </div>
         {/* Form Data */}
         <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
           <div className="bg-white w-11/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
@@ -690,7 +770,7 @@ const Page2 = ({formData,setFormData,nextPage,previousPage}) =>{
   );
 };
 
-const Page3 = ({formData,setFormData,nextPage,previousPage}) =>{
+const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   const [errors, setErrors] = useState({});
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -729,6 +809,21 @@ const Page3 = ({formData,setFormData,nextPage,previousPage}) =>{
             <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
             <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Student Registration Form</p>
           </div>
+        </div>
+
+        <div className="form-progress flex justify-around items-center">
+          <div
+            className={`step ${currentPage >= 1 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>1</p></div>
+          <div
+            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>2</p></div>
+          <div
+            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>3</p></div>
+          <div
+            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>4</p></div>
         </div>
 
         {/* Form Data */}
@@ -973,7 +1068,7 @@ const Page3 = ({formData,setFormData,nextPage,previousPage}) =>{
   );
 };
 
-const Page4 = ({formData,setFormData}) =>{
+const Page4 = ({currentPage,formData,setFormData}) =>{
   const [errors, setErrors] = useState({});
   
   const handleChange = (e) => {
@@ -1012,26 +1107,61 @@ const Page4 = ({formData,setFormData}) =>{
     const errors = {};
     return {};
   };
-
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewURL, setPreviewURL] = useState('');
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
-    
+    setSelectedFile(file);
     setFormData((prevData) => ({
       ...prevData,
       photo_file: file
     }));
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewURL(reader.result);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
 
-
+  const [AselectedFile, AsetSelectedFile] = useState(null);
+  const [ApreviewURL, AsetPreviewURL] = useState('');
   const handleAadharChange = (e) => {
     const file = e.target.files[0];
-    
+    AsetSelectedFile(file);
     setFormData((prevData) => ({
       ...prevData,
       aadhar_file: file
     }));
+    const reader2 = new FileReader();
+    reader2.onloadend = () => {
+      AsetPreviewURL(reader2.result);
+    };
+    if (file) {
+      reader2.readAsDataURL(file);
+    }
   };
 
+  const [CselectedFile, CsetSelectedFile] = useState(null);
+  const handleCasteChange = (e) => {
+    const file = e.target.files[0];
+    CsetSelectedFile(file);
+    setFormData((prevData) => ({
+      ...prevData,
+      caste_file: file
+    }));
+  };
+
+  const [MselectedFile, MsetSelectedFile] = useState(null);
+  const handleMedicalChange = (e) => {
+    const file = e.target.files[0];
+    MsetSelectedFile(file);
+    setFormData((prevData) => ({
+      ...prevData,
+      medical_file: file
+    }));
+  };
 
   return (
     <div className="flex bg-defaultBg" >
@@ -1044,6 +1174,21 @@ const Page4 = ({formData,setFormData}) =>{
             <p className='pl-10 pt-4  text-sky-800 font-extrabold text-3xl font-popins'>Hostel Mangement System 🎉</p>
             <p className='pl-10 pb-4 text-orange-400 font-semibold text-2xl font-popins'>Student Registration Form</p>
           </div>
+        </div>
+
+        <div className="form-progress flex justify-around items-center">
+          <div
+            className={`step ${currentPage >= 1 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>1</p></div>
+          <div
+            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>2</p></div>
+          <div
+            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>3</p></div>
+          <div
+            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
+          ><p className='text-center font-extrabold text-2xl'>4</p></div>
         </div>
 
         {/* Form Data */}
@@ -1064,6 +1209,9 @@ const Page4 = ({formData,setFormData}) =>{
                       onChange={handlePhotoChange}
                       className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                     />
+                    {selectedFile && (
+                      <img src={previewURL} alt="Preview" className='w-32 h-32' />
+                    )}
                     {errors.photo_file && <span className="error">{errors.photo_file}</span>}
                 </div>
 
@@ -1077,6 +1225,13 @@ const Page4 = ({formData,setFormData}) =>{
                       onChange={handleAadharChange}
                       className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                     />
+                    {AselectedFile && (
+                        <iframe
+                        src={URL.createObjectURL(AselectedFile)}
+                        title="PDF Preview"
+                        className='w-32 h-32' 
+                      />
+                    )}
                     {errors.aadhar_file && <span className="error">{errors.aadhar_file}</span>}
                 </div>
                 </div>
@@ -1089,9 +1244,16 @@ const Page4 = ({formData,setFormData}) =>{
                       type="file" 
                       id="photo" 
                       accept=".pdf"
-                      onChange={handlePhotoChange}
+                      onChange={handleCasteChange}
                       className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                     />
+                    {CselectedFile && (
+                        <iframe
+                        src={URL.createObjectURL(CselectedFile)}
+                        title="PDF Preview"
+                        className='w-32 h-32' 
+                      />
+                    )}
                     {errors.photo_file && <span className="error">{errors.photo_file}</span>}
                 </div>
 
@@ -1102,9 +1264,16 @@ const Page4 = ({formData,setFormData}) =>{
                       type="file" 
                       id="photo" 
                       accept=".pdf"
-                      onChange={handlePhotoChange}
+                      onChange={handleMedicalChange}
                       className='w-full border-2 border-sky-500 rounded-md font-montserrat px-1 py-1' 
                     />
+                    {MselectedFile && (
+                        <iframe
+                        src={URL.createObjectURL(MselectedFile)}
+                        title="PDF Preview"
+                        className='w-32 h-32' 
+                      />
+                    )}
                     {errors.aadhar_file && <span className="error">{errors.aadhar_file}</span>}
                 </div>
                 </div>
@@ -1249,6 +1418,8 @@ const StudentRegistartion = () =>{
     quota:'',
     photo_file:null,
     aadhar_file:null,
+    caste_file:null,
+    medical_file:null,
     account_holder_name:'',
     bank_name:'',
     ifsc:'',
@@ -1268,16 +1439,16 @@ const StudentRegistartion = () =>{
   return (
     <>
       {currentPage === 1 && (
-        <Page1 formData={formData} setFormData={setFormData} nextPage={nextPage} />
+        <Page1 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} />
       )}
       {currentPage === 2 && (
-        <Page2 formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
+        <Page2 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
       )}
       {currentPage === 3 && (
-        <Page3 formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
+        <Page3  currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
       )}
       {currentPage === 4 && (
-        <Page4 formData={formData} setFormData={setFormData} />
+        <Page4  currentPage={currentPage} formData={formData} setFormData={setFormData} />
       )}
     </>
     

@@ -274,31 +274,31 @@ const App = () => {
       }
 
       // Validate tower
-      if (!formData.tower) {
+      if (!formData.tower || formData.tower<=0) {
         errors.tower = "Tower is required";
-      }
+      } 
 
       // Validate floor
-      if (!formData.floor) {
+      if (!formData.floor || formData.floor<=0) {
         errors.floor = "Floor is required";
       }
 
       // Validate room
-      if (!formData.room) {
+      if (!formData.room || formData.room<=0) {
         errors.room = "Room is required";
       }
 
       // Validate scapacity
-      if (!formData.scapacity) {
+      if (!formData.scapacity || formData.scapacity<=0) {
         errors.scapacity = "Capacity is required";
       }
       // Validate bcapacity
-      if (!formData.bcapacity) {
+      if (!formData.bcapacity || formData.bcapacity<=0) {
         errors.bcapacity = "Capacity is required";
       }
 
       // Validate area
-      if (!formData.area) {
+      if (!formData.area || formData.area<=0) {
         errors.area = "Area is required";
       }
 
@@ -328,6 +328,7 @@ const App = () => {
     const websiteRegex = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/.*)?$/i;
     return websiteRegex.test(website);
   }
+
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
@@ -400,7 +401,7 @@ const App = () => {
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
-                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
+                <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
                 <input
                   id="hostel_name"
                   name="hostel_name"

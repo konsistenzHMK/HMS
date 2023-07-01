@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import * as Notifications from 'expo-notifications'
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 import { Provider as ThemeProvider } from '@draftbit/ui'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -14,16 +13,7 @@ import messaging from '@react-native-firebase/messaging'
 import { PermissionsAndroid, LogBox } from 'react-native'
 import SplashScreen from './screens/SplashScreen'
 
-
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-})
 
 LogBox.ignoreLogs([/Warning/])
 

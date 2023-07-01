@@ -6,7 +6,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import theme from './themes/DraftbitTheme.js'
 import LinkingConfiguration from './LinkingConfiguration.js'
 
-import BakarrUIScreen from './screens/BakarrUIScreen'
 import CreatePostScreen from './screens/CreatePostScreen'
 import EditPostScreen from './screens/EditPostScreen'
 import EditProfileScreen from './screens/EditProfileScreen'
@@ -23,7 +22,6 @@ import PostDetailsScreen from './screens/PostDetailsScreen'
 import SearchScreen from './screens/SearchScreen'
 import SignupOTPScreen from './screens/SignupOTPScreen'
 import SignupStartScreen from './screens/SignupStartScreen'
-import TestuserdataScreen from './screens/TestuserdataScreen'
 import BakarRoomScreen from './bakar-room/BakarRoomScreen'
 import NotificationsScreen from './screens/NotificationsScreen.js'
 
@@ -191,24 +189,10 @@ export default function RootAppNavigator() {
           }}
         />
         <Stack.Screen
-          name="BakarrUIScreen"
-          component={BakarrUIScreen}
-          options={{
-            title: 'Bakarr-UI',
-          }}
-        />
-        <Stack.Screen
           name="BakarRoomScreen"
           component={BakarRoomScreen}
           options={{
             title: 'Bakarr-Room',
-          }}
-        />
-        <Stack.Screen
-          name="TestuserdataScreen"
-          component={TestuserdataScreen}
-          options={{
-            title: 'Test - user data',
           }}
         />
         <Stack.Screen

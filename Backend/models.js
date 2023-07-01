@@ -251,13 +251,10 @@ res.send("Data Inserted with id ");
 
 const hostel_tower_reg =  async(req,res)=>{
     const { 
-        hostel_id,
+        hostel_id ,
         tower_name,
-        // tower_no,
-        // no_floors,
         no_rooms,
         capacity,
-        // description,
         total_area, 
         other_facilities,
         no_wings,
@@ -269,14 +266,11 @@ const hostel_tower_reg =  async(req,res)=>{
 
     try{
         await setDoc(doc(db, "hostel_tower",uuidv4()), {
-            hostel_id,
+            hostel_id ,
             tower_name,
-            // tower_no,
-            // no_floors,
             no_rooms,
             capacity,
-            // description,
-            total_area,
+            total_area, 
             other_facilities,
             no_wings,
             type,

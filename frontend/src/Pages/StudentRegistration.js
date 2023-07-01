@@ -408,7 +408,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>**</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={State} 
@@ -425,7 +425,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               {/* 2.3 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>**</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={region} 
@@ -443,7 +443,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">District **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">District <p className='inline text-xl text-red-600'>**</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={District} 
@@ -465,7 +465,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City<p className='inline text-xl text-red-600'>**</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={City} 
@@ -483,7 +483,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="text"
                       id="pincode"
@@ -498,7 +498,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
             </div>
             <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Type **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Type <p className='inline text-xl text-red-600'>**</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.address_type} 
@@ -514,7 +514,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                 </div>
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Aadhar Number **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Aadhar Number <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="Number"
                       id="aadhar_id"
@@ -529,7 +529,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               </div>
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Gender **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Gender <p className='inline text-xl text-red-600'>**</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.gender} 
@@ -545,7 +545,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                 </div>
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Date of Birth **</div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Date of Birth <p className='inline text-xl text-red-600'>**</p></div>
                     <DatePicker
                       selected={formData.dob}
                       onChange={changeDate}

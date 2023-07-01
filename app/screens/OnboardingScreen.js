@@ -20,6 +20,7 @@ import {
 import { Image, useSnackbar } from '../components'
 import messaging from '@react-native-firebase/messaging'
 import { getAvatar } from '../config/Images.js'
+import { useNavigationContext } from '../navigation/NavigationContext.js'
 
 const SWIPE_SCREENS = Array(4).fill()
 const AVATAR_LIST = Array(8).fill(0)
@@ -28,6 +29,7 @@ const OnboardingScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const Variables = Constants
+  const { setStack } = useNavigationContext()
 
   // Adds to sports list if user toggles selection switch to Yes
   const addToSportsPrefs = (Variables, sportId) => {
@@ -109,7 +111,8 @@ const OnboardingScreen = (props) => {
         userId: Constants['LOGGED_IN_USER'],
       })
 
-      navigation.navigate('Tabs', { screen: 'HomeScreen' })
+      // navigate to home screen
+      setStack('app')
     } catch (err) {
       snackbar.show({ title: 'Error saving user details …', variant: 'negative' })
       console.error(err)

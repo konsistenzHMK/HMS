@@ -3,21 +3,18 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import uploadImage from '../global-functions/uploadImage'
-import * as StyleSheet from '../utils/StyleSheet'
 import openImagePickerUtil from '../utils/openImagePicker'
-import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
-import { Image, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { Button, Circle, Icon, ScreenContainer, Touchable } from '@draftbit/ui'
+import { Image, Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar } from '../components'
+import theme from '../themes/DraftbitTheme'
 
 const EditProfileScreen = (props) => {
-  const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
 
   const pagalFanBEUpdateUserProfilePATCH = PagalFanBEApi.useUpdateUserProfilePATCH()
-
-  const { theme } = props
   const { navigation } = props
 
   const [briefBio, setBriefBio] = React.useState('')
@@ -82,289 +79,82 @@ const EditProfileScreen = (props) => {
   }, [])
 
   return (
-    <ScreenContainer
-      style={StyleSheet.applyWidth({ marginLeft: 10, marginRight: 10 }, dimensions.width)}
-      scrollable={false}
-      hasSafeArea={true}
-    >
+    <ScreenContainer style={styles.conatiner} scrollable={false} hasSafeArea={true}>
       {/* PF-BackHeader */}
-      <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-BackHeader 5'], dimensions.width)}>
+      <View style={GlobalStyles.ViewStyles(theme)['PF-BackHeader 5']}>
         {/* Flex Frame for Touchable */}
-        <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0, justifyContent: 'center' }, dimensions.width)}>
-          <Touchable
-            onPress={() => {
-              try {
-                navigation.goBack()
-              } catch (err) {
-                console.error(err)
-              }
-            }}
-          >
-            <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
-              <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityIconFill} />
-            </Circle>
-          </Touchable>
-        </View>
+        <Touchable onPress={navigation.goBack}>
+          <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
+            <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityIconFill} />
+          </Circle>
+        </Touchable>
       </View>
       {/* Header */}
-      <View
-        style={StyleSheet.applyWidth(
-          {
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          },
-          dimensions.width,
-        )}
-      >
+      <View style={styles.header}>
         {/* Screen Heading */}
-        <Text
-          style={StyleSheet.applyWidth(
-            {
-              color: theme.colors.strong,
-              fontFamily: 'Inter_500Medium',
-              fontSize: 16,
-              marginLeft: 10,
-            },
-            dimensions.width,
-          )}
-        >
-          {'Edit Profile'}
-        </Text>
+        <Text style={styles.headerTitle}>{'Edit Profile'}</Text>
       </View>
 
       <KeyboardAwareScrollView
-        contentContainerStyle={StyleSheet.applyWidth(
-          {
-            flex: 1,
-            justifyContent: 'space-between',
-            paddingBottom: 20,
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 20,
-          },
-          dimensions.width,
-        )}
+        contentContainerStyle={styles.body}
         showsVerticalScrollIndicator={true}
         keyboardShouldPersistTaps={'never'}
       >
         <View>
           {/* Profile Pic */}
-          <View style={StyleSheet.applyWidth({ alignItems: 'center', alignSelf: 'auto' }, dimensions.width)}>
-            <Touchable onPress={handleImageSelect} activeOpacity={0.8} disabledOpacity={0.8}>
-              {userPic && (
-                <Image
-                  style={StyleSheet.applyWidth(
-                    StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                      borderRadius: 80,
-                      height: 100,
-                      width: 100,
-                    }),
-                    dimensions.width,
-                  )}
-                  resizeMode={'cover'}
-                  source={{ uri: `${userPic}` }}
-                />
-              )}
-              <Icon
-                style={StyleSheet.applyWidth({ bottom: 5, height: 20, marginLeft: 42, width: 20 }, dimensions.width)}
-                size={20}
-                name={'Feather/edit'}
-                color={theme.colors['Secondary']}
-              />
-            </Touchable>
-          </View>
+          <TouchableOpacity style={styles.profilePicContainer} onPress={handleImageSelect} activeOpacity={0.8}>
+            {userPic && <Image style={styles.profilePic} resizeMode={'cover'} source={{ uri: `${userPic}` }} />}
+            <Icon style={styles.profileEditIcon} size={20} name={'Feather/edit'} color={theme.colors['Secondary']} />
+          </TouchableOpacity>
           {/* Name */}
-          <View
-            style={StyleSheet.applyWidth(
-              {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 10,
-              },
-              dimensions.width,
-            )}
-          >
+          <View style={styles.nameContainer}>
             {/* First Name */}
-            <View style={StyleSheet.applyWidth({ width: 150 }, dimensions.width)}>
-              <Text
-                style={StyleSheet.applyWidth(
-                  {
-                    color: theme.colors.strong,
-                    fontFamily: 'Inter_400Regular',
-                    opacity: 0.85,
-                  },
-                  dimensions.width,
-                )}
-              >
-                {'First Name'}
-              </Text>
+            <View style={styles.firstNameContainer}>
+              <Text style={styles.inputTitle}>{'First Name'}</Text>
               <TextInput
-                onChangeText={(newTextInputValue) => {
-                  try {
-                    setFirstName(newTextInputValue)
-                  } catch (err) {
-                    console.error(err)
-                  }
-                }}
-                style={StyleSheet.applyWidth(
-                  {
-                    borderBottomWidth: 1,
-                    borderColor: theme.colors['Light'],
-                    borderLeftWidth: 1,
-                    borderRadius: 8,
-                    borderRightWidth: 1,
-                    borderTopWidth: 1,
-                    fontFamily: 'Inter_400Regular',
-                    height: 48,
-                    marginTop: 8,
-                    paddingBottom: 8,
-                    paddingLeft: 10,
-                    paddingRight: 10,
-                    paddingTop: 8,
-                  },
-                  dimensions.width,
-                )}
+                onChangeText={setFirstName}
+                style={styles.textInput}
                 value={firstName}
                 autoCapitalize={'none'}
-                placeholder={'Enter a value...'}
+                placeholder={'Enter first Name'}
               />
             </View>
             {/* Last Name */}
-            <View style={StyleSheet.applyWidth({ width: 150 }, dimensions.width)}>
-              <Text
-                style={StyleSheet.applyWidth(
-                  {
-                    color: theme.colors.strong,
-                    fontFamily: 'Inter_400Regular',
-                    opacity: 0.85,
-                  },
-                  dimensions.width,
-                )}
-              >
-                {'Last Name'}
-              </Text>
+            <View style={styles.lastNameContainer}>
+              <Text style={styles.inputTitle}>{'Last Name'}</Text>
               <TextInput
-                onChangeText={(newTextInputValue) => {
-                  try {
-                    setLastName(newTextInputValue)
-                  } catch (err) {
-                    console.error(err)
-                  }
-                }}
-                style={StyleSheet.applyWidth(
-                  {
-                    borderBottomWidth: 1,
-                    borderColor: theme.colors['Light'],
-                    borderLeftWidth: 1,
-                    borderRadius: 8,
-                    borderRightWidth: 1,
-                    borderTopWidth: 1,
-                    fontFamily: 'Inter_400Regular',
-                    height: 48,
-                    marginTop: 8,
-                    paddingBottom: 8,
-                    paddingLeft: 10,
-                    paddingRight: 10,
-                    paddingTop: 8,
-                  },
-                  dimensions.width,
-                )}
+                onChangeText={setLastName}
+                style={styles.textInput}
                 value={lastName}
                 autoCapitalize={'none'}
-                placeholder={'Enter a value...'}
+                placeholder={'Enter last name'}
               />
             </View>
           </View>
           {/* User Handle */}
-          <View style={StyleSheet.applyWidth({ marginTop: 20 }, dimensions.width)}>
-            <Text
-              style={StyleSheet.applyWidth(
-                {
-                  color: theme.colors.strong,
-                  fontFamily: 'Inter_400Regular',
-                  opacity: 0.85,
-                },
-                dimensions.width,
-              )}
-            >
-              {'User handle'}
-            </Text>
-            <TextInput
-              onChangeText={(newTextInputValue) => {
-                try {
-                  setUserHandle(newTextInputValue)
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
-              style={StyleSheet.applyWidth(
-                {
-                  borderBottomWidth: 1,
-                  borderColor: theme.colors['Light'],
-                  borderLeftWidth: 1,
-                  borderRadius: 8,
-                  borderRightWidth: 1,
-                  borderTopWidth: 1,
-                  fontFamily: 'Inter_400Regular',
-                  height: 48,
-                  marginTop: 8,
-                  paddingBottom: 8,
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  paddingTop: 8,
-                },
-                dimensions.width,
-              )}
-              value={userHandle}
-              autoCapitalize={'none'}
-              placeholder={'Enter a value...'}
-            />
+          <View style={styles.inputContainer}>
+            <Text style={styles.userHandle}>{'User handle'}</Text>
+            <View style={styles.userHandleInputContainer}>
+              <Text style={styles.userHandleInputPrefix}>@</Text>
+              <View style={{ flex: 1 }}>
+                <TextInput
+                  onChangeText={setUserHandle}
+                  style={styles.textInput}
+                  value={userHandle}
+                  autoCapitalize={'none'}
+                  placeholder="Enter your preferred user handle, e.g. eagle2023"
+                />
+              </View>
+            </View>
           </View>
           {/* Bio */}
-          <View style={StyleSheet.applyWidth({ marginTop: 20 }, dimensions.width)}>
-            <Text
-              style={StyleSheet.applyWidth(
-                {
-                  color: theme.colors.strong,
-                  fontFamily: 'Inter_400Regular',
-                  opacity: 0.85,
-                },
-                dimensions.width,
-              )}
-            >
-              {'Brief Bio'}
-            </Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputTitle}>{'Brief Bio'}</Text>
             <TextInput
-              onChangeText={(newTextAreaValue) => {
-                try {
-                  setBriefBio(newTextAreaValue)
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
-              style={StyleSheet.applyWidth(
-                {
-                  borderBottomWidth: 1,
-                  borderColor: theme.colors['Light'],
-                  borderLeftWidth: 1,
-                  borderRadius: 8,
-                  borderRightWidth: 1,
-                  borderTopWidth: 1,
-                  fontFamily: 'Inter_400Regular',
-                  height: 120,
-                  marginTop: 8,
-                  paddingBottom: 8,
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  paddingTop: 12,
-                },
-                dimensions.width,
-              )}
+              onChangeText={setBriefBio}
+              style={styles.textInput}
               value={briefBio}
-              placeholder={
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-              }
+              placeholder="Describe yourself"
               textAlignVertical={'top'}
               multiline={true}
               numberOfLines={4}
@@ -374,18 +164,7 @@ const EditProfileScreen = (props) => {
         {/* Update */}
         <Button
           onPress={handleProfileUpdate}
-          style={StyleSheet.applyWidth(
-            {
-              backgroundColor: theme.colors['Secondary'],
-              borderRadius: 12,
-              fontFamily: 'System',
-              fontWeight: '700',
-              height: 52,
-              marginTop: 20,
-              textAlign: 'center',
-            },
-            dimensions.width,
-          )}
+          style={styles.updateButton}
           activeOpacity={0.8}
           disabledOpacity={0.8}
           title={'Update '}
@@ -395,4 +174,93 @@ const EditProfileScreen = (props) => {
   )
 }
 
-export default withTheme(EditProfileScreen)
+const styles = StyleSheet.create({
+  conatiner: {
+    marginHorizontal: 10,
+  },
+  header: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    color: theme.colors.strong,
+    fontFamily: 'Inter_500Medium',
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  body: {
+    flex: 1,
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  profilePicContainer: {
+    alignSelf: 'center',
+  },
+  profilePic: {
+    ...GlobalStyles.ImageStyles(theme)['Image'],
+    borderRadius: 80,
+    height: 100,
+    width: 100,
+  },
+  profileEditIcon: {
+    bottom: 5,
+    height: 20,
+    marginLeft: 42,
+    width: 20,
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  firstNameContainer: {
+    flex: 1,
+    marginRight: 10,
+  },
+  lastNameContainer: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  inputContainer: {
+    marginVertical: 10,
+  },
+  inputTitle: {
+    color: theme.colors.strong,
+    fontFamily: 'Inter_400Regular',
+    opacity: 0.85,
+  },
+  textInput: {
+    fontFamily: 'Inter_400Regular',
+    borderColor: theme.colors['Light'],
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 48,
+    marginVertical: 8,
+    paddingHorizontal: 10,
+  },
+  userHandle: {
+    color: theme.colors.strong,
+    fontFamily: 'Inter_400Regular',
+    opacity: 0.85,
+  },
+  userHandleInputContainer: {
+    flexDirection: 'row',
+  },
+  userHandleInputPrefix: {
+    textAlignVertical: 'center',
+    marginRight: 10,
+  },
+  updateButton: {
+    backgroundColor: theme.colors['Secondary'],
+    borderRadius: 12,
+    fontFamily: 'System',
+    fontWeight: '700',
+    height: 52,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+})
+
+export default EditProfileScreen

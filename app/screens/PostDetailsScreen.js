@@ -137,17 +137,7 @@ const PostDetailsScreen = (props) => {
               dimensions.width,
             )}
           >
-            <Touchable
-              onPress={() => {
-                try {
-                  navigation.navigate('Tabs', {
-                    screen: 'HomeScreen',
-                  })
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
-            >
+            <Touchable onPress={navigation.goBack}>
               <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
                 <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityIconFill} />
               </Circle>
@@ -800,9 +790,7 @@ const PostDetailsScreen = (props) => {
                                     })
                                   }
                                   if (listData?.user_profiles?.user_id === Constants['LOGGED_IN_USER']) {
-                                    navigation.navigate('Tabs', {
-                                      screen: 'MyProfileScreen',
-                                    })
+                                    navigation.navigate('MyProfileScreen')
                                   }
                                 } catch (err) {
                                   console.error(err)

@@ -9,6 +9,7 @@ import { Image, Text, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import messaging from '@react-native-firebase/messaging'
 import { useSnackbar } from '../components/index.js'
+import { useNavigationContext } from '../navigation/NavigationContext.js'
 
 const SignupOTPScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -21,6 +22,51 @@ const SignupOTPScreen = (props) => {
   const { theme } = props
   const { navigation } = props
   const [signupOTP, setSignupOTP] = React.useState('')
+  const { setStack } = useNavigationContext()
+
+  const handleSignUpPress = async () => {
+    snackbar.show({ title: 'Checking OTP …' })
+    try {
+      const responseJson = await PagalFanBEApi.loginViaEmailOTPPOST(Constants, {
+        emailId: props.route?.params?.user_email,
+        otp: signupOTP,
+      })
+      const message = responseJson?.msg
+      setGlobalVariableValue({
+        key: 'ERROR_MESSAGE',
+        value: message,
+      })
+      if (message) {
+        snackbar.show({ title: message, variant: 'negative' })
+        return
+      }
+      const accessToken = responseJson?.access_token
+      setGlobalVariableValue({
+        key: 'AUTHORIZATION_HEADER',
+        value: 'Bearer ' + accessToken,
+      })
+      const userId = responseJson?.user.id
+      setGlobalVariableValue({
+        key: 'LOGGED_IN_USER',
+        value: userId,
+      })
+      const onboarded = await PagalFanBEApi.fetchUserOnboardingStatusGET(Constants, { id: userId })
+      if (onboarded?.[0]?.onboarded === true) {
+        const token = await messaging().getToken()
+        // expoToken -> notification_token
+        await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
+          expoToken: token,
+          userId: Constants['LOGGED_IN_USER'],
+        })
+        // Navigate to Home Screen
+        setStack('app')
+      } else {
+        navigation.navigate('OnboardingScreen')
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <ScreenContainer hasSafeArea={true}>
@@ -134,51 +180,7 @@ const SignupOTPScreen = (props) => {
           </View>
           {/* Continue Button */}
           <Button
-            onPress={() => {
-              const handler = async () => {
-                snackbar.show({ title: 'Checking OTP …' })
-                try {
-                  const responseJson = await PagalFanBEApi.loginViaEmailOTPPOST(Constants, {
-                    emailId: props.route?.params?.user_email ?? 'sg-ml1@yopmail.com',
-                    otp: signupOTP,
-                  })
-                  const message = responseJson?.msg
-                  setGlobalVariableValue({
-                    key: 'ERROR_MESSAGE',
-                    value: message,
-                  })
-                  if (message) {
-                    snackbar.show({ title: message, variant: 'negative' })
-                    return
-                  }
-                  const accessToken = responseJson?.access_token
-                  setGlobalVariableValue({
-                    key: 'AUTHORIZATION_HEADER',
-                    value: 'Bearer ' + accessToken,
-                  })
-                  const userId = responseJson?.user.id
-                  setGlobalVariableValue({
-                    key: 'LOGGED_IN_USER',
-                    value: userId,
-                  })
-                  const onboarded = await PagalFanBEApi.fetchUserOnboardingStatusGET(Constants, { id: userId })
-                  if (onboarded?.[0]?.onboarded === true) {
-                    const token = await messaging().getToken()
-                    // expoToken -> notification_token
-                    await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
-                      expoToken: token,
-                      userId: Constants['LOGGED_IN_USER'],
-                    })
-                    navigation.navigate('Tabs', { screen: 'HomeScreen' })
-                  } else {
-                    navigation.navigate('OnboardingScreen')
-                  }
-                } catch (err) {
-                  console.error(err)
-                }
-              }
-              handler()
-            }}
+            onPress={handleSignUpPress}
             style={StyleSheet.applyWidth(
               {
                 backgroundColor: theme.colors['Secondary'],

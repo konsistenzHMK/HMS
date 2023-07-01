@@ -21,7 +21,6 @@ import {
   Surface,
   withTheme,
 } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
 import { FlashList } from '@shopify/flash-list'
 import { FlatList, Modal, ScrollView, Text, View, useWindowDimensions, StyleSheet as RNStyleSheet } from 'react-native'
 import messaging from '@react-native-firebase/messaging'
@@ -42,22 +41,9 @@ const HomeScreen = (props) => {
   const { theme } = props
   const { navigation } = props
 
-  const navigateOnInvalidAuth = () => {
-    navigation.replace('SignupStartScreen')
-  }
-
-  const isFocused = useIsFocused()
-
   React.useEffect(() => {
     const handler = async () => {
       try {
-        if (!isFocused) {
-          return
-        }
-        if (!Constants['AUTHORIZATION_HEADER']) {
-          navigateOnInvalidAuth()
-          return
-        }
         const apiResponseResult = await PagalFanBEApi.fetchSingleUserGET(Constants, { id: Constants['LOGGED_IN_USER'] })
         setGlobalVariableValue({
           key: 'user_can_post',
@@ -83,7 +69,7 @@ const HomeScreen = (props) => {
       }
     }
     handler()
-  }, [isFocused])
+  }, [])
 
   const handleDeeplink = (data) => {
     if (data.post_id) {
@@ -143,7 +129,7 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     const unsubscribe = branch.subscribe({
-      onOpenComplete: ({ error, params, uri }) => {
+      onOpenComplete: ({ error, params }) => {
         if (!error) {
           handleDeeplink(params)
         }
@@ -262,7 +248,7 @@ const HomeScreen = (props) => {
             <Pressable
               onPress={() => {
                 try {
-                  navigation.navigate('Tabs', { screen: 'MyProfileScreen' })
+                  navigation.navigate('MyProfileScreen')
                 } catch (err) {
                   console.error(err)
                 }

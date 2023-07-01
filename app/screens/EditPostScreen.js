@@ -90,15 +90,7 @@ const EditPostScreen = (props) => {
           <View
             style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0, justifyContent: 'center' }, dimensions.width)}
           >
-            <Touchable
-              onPress={() => {
-                try {
-                  navigation.navigate('HomeScreen')
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
-            >
+            <Touchable onPress={navigation.goBack}>
               <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
                 <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityIconFill} />
               </Circle>

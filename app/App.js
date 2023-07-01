@@ -3,7 +3,6 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import { Provider as ThemeProvider } from '@draftbit/ui'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { AppFonts } from './themes/fonts'
-import AppNavigator from './AppNavigator'
 import DraftbitTheme from './themes/DraftbitTheme.js'
 import cacheAssetsAsync from './config/cacheAssetsAsync'
 import { GlobalVariableProvider } from './config/GlobalVariableContext'
@@ -12,6 +11,7 @@ import { SnackbarProvider } from './components'
 import messaging from '@react-native-firebase/messaging'
 import { PermissionsAndroid, LogBox } from 'react-native'
 import SplashScreen from './screens/SplashScreen'
+import { AppNavigator } from './navigation/AppNavigator'
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
 

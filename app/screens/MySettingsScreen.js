@@ -1,19 +1,30 @@
 import React from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
-import Breakpoints from '../utils/Breakpoints'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, Divider, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { Text, View, useWindowDimensions } from 'react-native'
+import { useNavigationContext } from '../navigation/NavigationContext.js'
 
 const MySettingsScreen = (props) => {
   const dimensions = useWindowDimensions()
-  const Constants = GlobalVariables.useValues()
-  const Variables = Constants
   const setGlobalVariableValue = GlobalVariables.useSetValue()
+  const { setStack } = useNavigationContext()
 
   const { theme } = props
   const { navigation } = props
+
+  const handleLogoutPress = () => {
+    setGlobalVariableValue({
+      key: 'AUTHORIZATION_HEADER',
+      value: '',
+    })
+    setGlobalVariableValue({
+      key: 'LOGGED_IN_USER',
+      value: '',
+    })
+    setStack('login')
+  }
 
   return (
     <ScreenContainer
@@ -28,7 +39,7 @@ const MySettingsScreen = (props) => {
           <Touchable
             onPress={() => {
               try {
-                navigation.navigate('Tabs', { screen: 'MySettingsScreen' })
+                navigation.goBack()
               } catch (err) {
                 console.error(err)
               }
@@ -222,23 +233,7 @@ const MySettingsScreen = (props) => {
       </View>
       {/* Footer Wrapper */}
       <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>
-        <Touchable
-          onPress={() => {
-            try {
-              const auth_token = setGlobalVariableValue({
-                key: 'AUTHORIZATION_HEADER',
-                value: '',
-              })
-              const logged_id = setGlobalVariableValue({
-                key: 'LOGGED_IN_USER',
-                value: '',
-              })
-              navigation.navigate('SignupStartScreen')
-            } catch (err) {
-              console.error(err)
-            }
-          }}
-        >
+        <Touchable onPress={handleLogoutPress}>
           {/* Button Wrapper */}
           <View
             style={StyleSheet.applyWidth(

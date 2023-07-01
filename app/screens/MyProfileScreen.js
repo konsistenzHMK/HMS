@@ -265,20 +265,22 @@ const MyProfileScreen = (props) => {
                     {(fetchData && fetchData[0])?.first_name} {(fetchData && fetchData[0])?.last_name}
                   </Text>
                   {/* User Handle */}
-                  <Text
-                    style={StyleSheet.applyWidth(
-                      {
-                        color: theme.colors.communityDarkUI,
-                        fontFamily: 'Rubik_400Regular',
-                        fontSize: 12,
-                        lineHeight: 18,
-                        marginBottom: 12,
-                      },
-                      dimensions.width,
-                    )}
-                  >
-                    {(fetchData && fetchData[0])?.handle}
-                  </Text>
+                  {fetchData?.[0]?.handle && (
+                    <Text
+                      style={StyleSheet.applyWidth(
+                        {
+                          color: theme.colors.communityDarkUI,
+                          fontFamily: 'Rubik_400Regular',
+                          fontSize: 12,
+                          lineHeight: 18,
+                          marginBottom: 12,
+                        },
+                        dimensions.width,
+                      )}
+                    >
+                      @{fetchData?.[0]?.handle}{' '}
+                    </Text>
+                  )}
                   {/* User Bio */}
                   <Text
                     style={StyleSheet.applyWidth(

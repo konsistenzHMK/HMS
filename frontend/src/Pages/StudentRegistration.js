@@ -254,7 +254,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                         <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                     </div>
                     <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
                     </div>
 
                     <div className='w-full mt-3'>
@@ -568,7 +568,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               <div className='w-auto flex flex-col justify-center items-start relative'>
                 {/* Logo */}
                 <div className='text-sky-950 text-2xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
+                <div className='text-orange-600 text-xl font-semibold'>Student Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
@@ -738,7 +738,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                         <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                     </div>
                     <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
                     </div>
 
                     <div className='w-full mt-3'>
@@ -950,7 +950,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
               <div className='w-auto flex flex-col justify-center items-start relative'>
                 {/* Logo */}
                 <div className='text-sky-950 text-2xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
+                <div className='text-orange-600 text-xl font-semibold'>Student Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
@@ -1119,7 +1119,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                         <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                     </div>
                     <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
                     </div>
 
                     <div className='w-full mt-3'>
@@ -1372,7 +1372,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
              <div className='w-auto flex flex-col justify-center items-start relative'>
                 {/* Logo */}
                 <div className='text-sky-950 text-2xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
+                <div className='text-orange-600 text-xl font-semibold'>Student Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
@@ -1548,7 +1548,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                         <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                     </div>
                     <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
                     </div>
 
                     <div className='w-full mt-3'>
@@ -1744,7 +1744,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
             <div className='w-auto flex flex-col justify-center items-start relative'>
                 {/* Logo */}
                 <div className='text-sky-950 text-2xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
+                <div className='text-orange-600 text-xl font-semibold'>Student Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>

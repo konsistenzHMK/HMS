@@ -290,12 +290,13 @@ const hostel_tower_reg =  async(req,res)=>{
 
 const hostel_tower_wing_reg =  async(req,res)=>{
     const {
-        tower_id,
-        wing_name,
+        hostel_id,
+        tower_name,
         no_rooms,
         capacity,
-        total_area,
+        total_area, 
         other_facilities,
+        no_wings,
         type,
         status,
     }=(req.body);
@@ -304,12 +305,13 @@ const hostel_tower_wing_reg =  async(req,res)=>{
 
     try{
         await setDoc(doc(db, "hostel_tower_wing",uuidv4()), {
-            tower_id,
-            wing_name,
+            hostel_id,
+            tower_name,
             no_rooms,
             capacity,
-            total_area,
+            total_area, 
             other_facilities,
+            no_wings,
             type,
             status,
             wing_id:ans3,

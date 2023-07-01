@@ -167,7 +167,7 @@ const TowerRegistartion = () => {
                         <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                     </div>
                     <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Rector Dashboard</p>
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Tower Registartion Form</p>
                     </div>
 
                     <div className='w-full mt-3'>
@@ -336,7 +336,7 @@ const TowerRegistartion = () => {
               <div className='w-auto flex flex-col justify-center items-start relative'>
                 {/* Logo */}
                 <div className='text-sky-950 text-2xl font-bold font-sans'>Hostel Management System 🎉</div>
-                <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
+                <div className='text-orange-600 text-xl font-semibold'>Tower Registartion Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-1/4 flex flex-col justify-center'>

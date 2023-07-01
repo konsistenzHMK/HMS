@@ -124,8 +124,90 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
   const validateForm = () => {
     const errors = {};
-    return {};
-  };
+    // Validate first_name
+  if (!formData.first_name) {
+    errors.first_name = "First name is required";
+  }
+
+  // Validate last_name
+  if (!formData.last_name) {
+    errors.last_name = "Last name is required";
+  }
+
+  // Validate father_name
+  if (!formData.father_name) {
+    errors.father_name = "Father's name is required";
+  }
+
+  // Validate mother_name
+  if (!formData.mother_name) {
+    errors.mother_name = "Mother's name is required";
+  }
+
+  // Validate address_type
+  if (!formData.address_type) {
+    errors.address_type = "Address type is required";
+  }
+
+  // Validate address1
+  if (!formData.address1) {
+    errors.address1 = "Address line 1 is required";
+  }
+
+  // Validate address2
+  if (!formData.address2) {
+    errors.address2 = "Address line 2 is required";
+  }
+
+  // Validate country
+  if (formData.country !== 'India') {
+    errors.country = "Country should be India";
+  }
+
+  // Validate state
+  if (!formData.state) {
+    errors.state = "State is required";
+  }
+
+  // Validate region
+  if (!formData.region) {
+    errors.region = "Region is required";
+  }
+
+  // Validate district
+  if (!formData.district) {
+    errors.district = "District is required";
+  }
+
+  // Validate city
+  if (!formData.city) {
+    errors.city = "City is required";
+  }
+
+  // Validate pincode
+  if (!formData.pincode) {
+    errors.pincode = "Pincode is required";
+  }
+
+  // Validate gender
+  if (!formData.gender) {
+    errors.gender = "Gender is required";
+  }
+
+  // Validate aadhar_id
+  if (!formData.aadhar_id) {
+    errors.aadhar_id = "Aadhar ID is required";
+  }
+
+  // Validate dob
+  if (!formData.dob) {
+    errors.dob = "Date of birth is required";
+  }
+
+  // Set the errors using setErrors
+  setErrors(errors);
+  return errors;
+};
 
   const changeDate = date  =>{
     setFormData((prevData) => ({
@@ -150,7 +232,13 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
   const handleNextPage =(e) =>{
     e.preventDefault();
-    nextPage();
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      nextPage();
+    }
+    else{
+      setErrors(formErrors);
+    }
   }
 
   return (
@@ -220,7 +308,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.first_name && <span className="error">{errors.first_name}</span>}
+                    {errors.first_name && <span className="error text-red-500">{errors.first_name}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -234,7 +322,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.last_name && <span className="error">{errors.last_name}</span>}
+                    {errors.last_name && <span className="error text-red-500">{errors.last_name}</span>}
                 </div>
                 </div>
               </div>
@@ -251,7 +339,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.father_name && <span className="error">{errors.father_name}</span>}
+                    {errors.father_name && <span className="error text-red-500">{errors.father_name}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -265,7 +353,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.address2 && <span className="error">{errors.address2}</span>}
+                    {errors.mother_name && <span className="error text-red-500">{errors.mother_name}</span>}
                 </div>
                 </div>
               </div>
@@ -285,7 +373,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.address1 && <span className="error">{errors.address1}</span>}
+                    {errors.address1 && <span className="error text-red-500">{errors.address1}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -299,7 +387,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.address2 && <span className="error">{errors.address2}</span>}
+                    {errors.address2 && <span className="error text-red-500">{errors.address2}</span>}
                 </div>
                 </div>
               </div>
@@ -315,7 +403,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
-                    {errors.country && <span className="error">{errors.country}</span>}
+                    {errors.country && <span className="error text-red-500">{errors.country}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -329,7 +417,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                         <option value="">Select an option</option>
                         <option value="Maharashtra">Maharashtra</option>
                     </select>
-                    {errors.state && <span className="error">{errors.state}</span>}
+                    {errors.state && <span className="error text-red-500">{errors.state}</span>}
                 </div>
                 </div>
               </div>
@@ -350,7 +438,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                             </option>
                           ))}
                       </select>
-                    {errors.region && <span className="error">{errors.region}</span>}
+                    {errors.region && <span className="error text-red-500">{errors.region}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -368,7 +456,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                             </option>
                           ))}
                       </select>
-                    {errors.district && <span className="error">{errors.district}</span>}
+                    {errors.district && <span className="error text-red-500">{errors.district}</span>}
                 </div>
                 </div>
 
@@ -390,7 +478,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                             </option>
                           ))}
                       </select>
-                    {errors.city && <span className="error">{errors.city}</span>}
+                    {errors.city && <span className="error text-red-500">{errors.city}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -404,7 +492,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
-                    {errors.pincode && <span className="error">{errors.pincode}</span>}
+                    {errors.pincode && <span className="error text-red-500">{errors.pincode}</span>}
                 </div>    
             </div>
             </div>
@@ -422,7 +510,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                         <option value="College Address">College Address</option>
                         <option value="School Address">School Address</option>
                       </select>
-                      {errors.mess && <span className="error">{errors.mess}</span>}
+                      {errors.address_type && <span className="error text-red-500">{errors.address_type}</span>}
                 </div>
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
@@ -435,7 +523,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
-                    {errors.pincode && <span className="error">{errors.pincode}</span>}
+                    {errors.aadhar_id && <span className="error text-red-500">{errors.aadhar_id}</span>}
                 </div>
                 </div> 
               </div>
@@ -453,7 +541,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                         <option value="non-binary">Non-Binary</option>
                       
                       </select>
-                      {errors.mess && <span className="error">{errors.mess}</span>}
+                      {errors.gender && <span className="error text-red-500">{errors.gender}</span>}
                 </div>
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
@@ -464,7 +552,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                       dateFormat="yyyy-MM-dd"
                       className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
-                    {errors.pincode && <span className="error">{errors.pincode}</span>}
+                    {errors.dob && <span className="error text-red-500">{errors.dob}</span>}
                 </div>
                 </div> 
               </div>
@@ -499,6 +587,10 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 };
 const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   const [errors, setErrors] = useState({});
+  
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page when the component mounts or renders
+  }, []);
   
   const handleChange = (e) => {
     const { name, value } = e.target;

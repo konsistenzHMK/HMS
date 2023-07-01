@@ -19,11 +19,10 @@ import {
 } from 'react-native'
 import { Image, useSnackbar } from '../components'
 import messaging from '@react-native-firebase/messaging'
-import { getAvatar } from '../config/Images.js'
+import { RemoteAvatars } from '../config/Images'
 import { useNavigationContext } from '../navigation/NavigationContext.js'
 
 const SWIPE_SCREENS = Array(4).fill()
-const AVATAR_LIST = Array(8).fill(0)
 
 const OnboardingScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -47,8 +46,6 @@ const OnboardingScreen = (props) => {
   }
 
   const { theme } = props
-  const { navigation } = props
-
   const pagalFanBECreateUserProfilePOST = PagalFanBEApi.useCreateUserProfilePOST()
   const pagalFanBEUpdateExpoTokenPATCH = PagalFanBEApi.useUpdateExpoTokenPATCH()
 
@@ -89,11 +86,6 @@ const OnboardingScreen = (props) => {
 
       snackbar.show({ title: 'Saving user details …' })
 
-      // let imgUrl = ''
-      // if (selectedAvatarIndex >= 0) {
-      //   imgUrl = await uploadImage('user-bucket', RNImage.resolveAssetSource(getAvatar(selectedAvatarIndex)).uri)
-      // }
-
       await pagalFanBECreateUserProfilePOST.mutateAsync({
         age: age,
         firstName: firstName,
@@ -101,7 +93,7 @@ const OnboardingScreen = (props) => {
         sportsList: sportsPref,
         userId: Constants['LOGGED_IN_USER'],
         userOnboarded: true,
-        imgUrl: '',
+        imgUrl: RemoteAvatars[selectedAvatarIndex],
       })
 
       const token = await messaging().getToken()
@@ -387,13 +379,13 @@ const OnboardingScreen = (props) => {
         {/* Avatar Title */}
         <Text style={[styles.title, { color: theme.colors['PF-Grey'] }]}>{'Pick your Avatar'}</Text>
         <View style={styles.avatarContainer}>
-          {AVATAR_LIST.map((item, index) => (
+          {RemoteAvatars.map((item, index) => (
             <Pressable
               key={index}
               style={[styles.avatar, index === selectedAvatarIndex && styles.avatarSelected]}
               onPress={() => setSelectedAvatarIndex(index)}
             >
-              <Image style={styles.avatarIcon} source={getAvatar(index)} />
+              <Image style={styles.avatarIcon} source={{ uri: item }} />
             </Pressable>
           ))}
         </View>
@@ -562,7 +554,6 @@ const OnboardingScreen = (props) => {
                                   if (switchVal === false) {
                                     removeFromSportsPrefs(Variables, flashListData?.id)
                                   }
-                                  console.log(sportsPref)
                                 } catch (err) {
                                   console.error(err)
                                 }

@@ -62,20 +62,18 @@ const Images = {
   _27iplChikas: require('../assets/images/27iplChikas.png'),
   ImgPlaceholder: require('../assets/images/ImgPlaceholder.png'),
   Mic1: require('../assets/images/Mic1.jpeg'),
-  Avatar0: require('../assets/avatars/avatar_0.png'),
-  Avatar1: require('../assets/avatars/avatar_1.png'),
-  Avatar2: require('../assets/avatars/avatar_2.png'),
-  Avatar3: require('../assets/avatars/avatar_3.png'),
-  Avatar4: require('../assets/avatars/avatar_4.png'),
-  Avatar5: require('../assets/avatars/avatar_5.png'),
-  Avatar6: require('../assets/avatars/avatar_6.png'),
-  Avatar7: require('../assets/avatars/avatar_7.png'),
-  Avatar8: require('../assets/avatars/avatar_8.png'),
 }
 
-export const getAvatar = (avatarId) => {
-  const key = `Avatar${avatarId}`
-  return Images[key] ?? Images.Avatar0
-}
+export const RemoteAvatars = [
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_0.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_1.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_2.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_3.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_4.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_5.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_6.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_7.png',
+  'https://pvbtcdjiibcaleqjdrih.supabase.co/storage/v1/object/public/user-bucket/avatars/avatar_8.png',
+]
 
 export default Images

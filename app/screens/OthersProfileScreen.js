@@ -118,15 +118,7 @@ const OthersProfileScreen = (props) => {
                       dimensions.width,
                     )}
                   >
-                    <Touchable
-                      onPress={() => {
-                        try {
-                          navigation.goBack()
-                        } catch (err) {
-                          console.error(err)
-                        }
-                      }}
-                    >
+                    <Touchable onPress={navigation.goBack}>
                       <Circle size={31} bgColor={theme.colors.communityModalOpacityOverlay}>
                         <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityWhite} />
                       </Circle>
@@ -267,20 +259,23 @@ const OthersProfileScreen = (props) => {
                   </Text>
 
                   {/* User Handle */}
-                  <Text
-                    style={StyleSheet.applyWidth(
-                      {
-                        color: theme.colors.communityDarkUI,
-                        fontFamily: 'Rubik_400Regular',
-                        fontSize: 12,
-                        lineHeight: 18,
-                        marginBottom: 12,
-                      },
-                      dimensions.width,
-                    )}
-                  >
-                    {(fetchData && fetchData[0])?.handle}
-                  </Text>
+                  {fetchData?.[0]?.handle && (
+                    <Text
+                      style={StyleSheet.applyWidth(
+                        {
+                          color: theme.colors.communityDarkUI,
+                          fontFamily: 'Rubik_400Regular',
+                          fontSize: 12,
+                          lineHeight: 18,
+                          marginBottom: 12,
+                        },
+                        dimensions.width,
+                      )}
+                    >
+                      @{fetchData[0].handle}
+                    </Text>
+                  )}
+
                   {/* User Bio */}
                   <Text
                     style={StyleSheet.applyWidth(

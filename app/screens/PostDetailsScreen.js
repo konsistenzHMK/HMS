@@ -234,7 +234,7 @@ const PostDetailsScreen = (props) => {
                       dimensions.width,
                     )}
                   >
-                    {listData.user_profiles.handle}
+                    @{listData.user_profiles.handle}
                   </Text>
                 ) : null}
               </View>

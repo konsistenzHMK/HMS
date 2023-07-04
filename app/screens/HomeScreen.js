@@ -1138,7 +1138,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {'Entering PagalFan's BAKARR room!'}
+                {"Entering PagalFan's BAKARR room!"}
               </Text>
               <Divider
                 style={StyleSheet.applyWidth(

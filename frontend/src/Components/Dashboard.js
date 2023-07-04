@@ -5,6 +5,7 @@ import TowerRegistartion from '../Pages/TowerRegistartion';
 import WingRegistration from '../Pages/WingRegistration';
 import RoomRegistration from '../Pages/RoomRegistration';
 import StudentRegistartion from '../Pages/StudentRegistration';
+import ExpenseForm from '../Pages/ExpenseForm';
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 import DashboardPage from '../Components/DashboardPage'
@@ -82,6 +83,7 @@ const Dashboard = () => {
         <Route path="/wing-Registration" element={<WingRegistration />} />
         <Route path="/room-Registration" element={<RoomRegistration />} />
         <Route path="/student-Registration" element={<StudentRegistartion />} />
+        <Route path="/expense-Allocation" element={<ExpenseForm />} />
       </Routes>
       </div>
     </div>

@@ -5,8 +5,8 @@ import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, CircleImage, Icon, ScreenContainer, TabView, TabViewItem, Touchable, withTheme } from '@draftbit/ui'
-import { ActivityIndicator, FlatList, ScrollView, Text, View, useWindowDimensions } from 'react-native'
-import { Image } from '../components'
+import { ActivityIndicator, FlatList, Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native'
+import { Image, useSnackbar } from '../components'
 import { FeedCard } from '../shared'
 import branch from 'react-native-branch'
 import openShareUtil from '../utils/openShare'
@@ -14,12 +14,14 @@ import openShareUtil from '../utils/openShare'
 const MyProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
+  const snackbar = useSnackbar()
 
   const { theme } = props
   const { navigation } = props
 
   const [Followers, setFollwers] = React.useState(0)
   const profileRef = useRef()
+  const pagalFanBEDeleteFollowDELETE = PagalFanBEApi.useDeleteFollowDELETE()
 
   const handSharePress = async () => {
     try {
@@ -38,6 +40,19 @@ const MyProfileScreen = (props) => {
     } catch (e) {
       console.log(e)
     }
+  }
+
+  const showUserProfile = (follower_id) => {
+    navigation.navigate('OthersProfileScreen', {
+      userid: follower_id,
+    })
+  }
+
+  const unfollowUser = (followedId, followerId) => {
+    return pagalFanBEDeleteFollowDELETE.mutateAsync({
+      followedId,
+      followerId,
+    })
   }
 
   return (
@@ -441,7 +456,7 @@ const MyProfileScreen = (props) => {
               showsHorizontalScrollIndicator={false}
             >
               <PagalFanBEApi.FetchFetchAllFollowersOfUserGET followeeId={Constants['LOGGED_IN_USER']}>
-                {({ loading, error, data }) => {
+                {({ loading, error, data, refetchFetchAllFollowersOfUser }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -455,7 +470,16 @@ const MyProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop: 20, marginLeft: 10 }}>
+                          <Pressable
+                            onPress={() => showUserProfile(item.user_profiles.user_id)}
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginTop: 20,
+                              marginLeft: 10,
+                            }}
+                          >
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                               <Circle
                                 size={70}
@@ -472,22 +496,68 @@ const MyProfileScreen = (props) => {
                                   />
                                 )}
                               </Circle>
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    color: theme.colors.Studily_Dark_UI,
-                                    fontFamily: 'Rubik_500Bold',
-                                    fontSize: 14,
-                                    paddingRight: 15,
-                                  },
-                                  dimensions.width,
+                              <View>
+                                <Text
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'flex-start',
+                                      color: theme.colors.Studily_Dark_UI,
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 14,
+                                      paddingRight: 15,
+                                    },
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                                </Text>
+                                {item.user_profiles?.handle && (
+                                  <Text
+                                    style={{
+                                      color: theme.colors['Studily Medium Blue UI'],
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 12,
+                                    }}
+                                  >
+                                    @{item.user_profiles.handle}
+                                  </Text>
                                 )}
-                              >
-                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
-                              </Text>
+                              </View>
                             </View>
-                          </View>
+                            <Pressable
+                              style={{
+                                height: 30,
+                                width: 80,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: theme.colors['Community_List_Divider_for_Gray_List'],
+                                borderRadius: 5,
+                              }}
+                              onPress={async () => {
+                                try {
+                                  await unfollowUser(item.followee_id, item.follower_id)
+                                  await refetchFetchAllFollowersOfUser()
+                                  snackbar.show({ title: 'User removed from followers list' })
+                                } catch (e) {
+                                  console.log(e)
+                                  snackbar.show({
+                                    title: 'Something went wrong. Please try again later',
+                                    variant: 'nagative',
+                                  })
+                                }
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: 12,
+                                  color: '#000',
+                                  fontWeight: '600',
+                                }}
+                              >
+                                Remove
+                              </Text>
+                            </Pressable>
+                          </Pressable>
                         )
                       }}
                     />
@@ -512,7 +582,7 @@ const MyProfileScreen = (props) => {
               showsHorizontalScrollIndicator={false}
             >
               <PagalFanBEApi.FetchFetchAllFollowedByUserGET followerId={Constants['LOGGED_IN_USER']}>
-                {({ loading, error, data }) => {
+                {({ loading, error, data, refetchFetchAllFollowedByUser }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -526,7 +596,16 @@ const MyProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop: 20, marginLeft: 10 }}>
+                          <Pressable
+                            onPress={() => showUserProfile(item.user_profiles.user_id)}
+                            style={{
+                              marginTop: 20,
+                              marginLeft: 10,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                               <Circle
                                 size={70}
@@ -543,22 +622,68 @@ const MyProfileScreen = (props) => {
                                   />
                                 )}
                               </Circle>
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    color: theme.colors.Studily_Dark_UI,
-                                    fontFamily: 'Rubik_500Bold',
-                                    fontSize: 14,
-                                    paddingRight: 15,
-                                  },
-                                  dimensions.width,
+                              <View>
+                                <Text
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'flex-start',
+                                      color: theme.colors.Studily_Dark_UI,
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 14,
+                                      paddingRight: 15,
+                                    },
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                                </Text>
+                                {item.user_profiles?.handle && (
+                                  <Text
+                                    style={{
+                                      color: theme.colors['Studily Medium Blue UI'],
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 12,
+                                    }}
+                                  >
+                                    @{item.user_profiles.handle}
+                                  </Text>
                                 )}
-                              >
-                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
-                              </Text>
+                              </View>
                             </View>
-                          </View>
+                            <Pressable
+                              style={{
+                                height: 30,
+                                width: 80,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: theme.colors['Community_List_Divider_for_Gray_List'],
+                                borderRadius: 5,
+                              }}
+                              onPress={async () => {
+                                try {
+                                  await unfollowUser(item.followee_id, item.follower_id)
+                                  await refetchFetchAllFollowedByUser()
+                                  snackbar.show({ title: 'User unfollowed successfully' })
+                                } catch (e) {
+                                  console.log(e)
+                                  snackbar.show({
+                                    title: 'Something went wrong. Please try again later',
+                                    variant: 'nagative',
+                                  })
+                                }
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: 12,
+                                  color: '#000',
+                                  fontWeight: '600',
+                                }}
+                              >
+                                Unfollow
+                              </Text>
+                            </Pressable>
+                          </Pressable>
                         )
                       }}
                     />

@@ -9,7 +9,7 @@ import { GlobalVariableProvider } from './config/GlobalVariableContext'
 import { useFonts } from 'expo-font'
 import { SnackbarProvider } from './components'
 import messaging from '@react-native-firebase/messaging'
-import { PermissionsAndroid, LogBox } from 'react-native'
+import { PermissionsAndroid, LogBox, StatusBar } from 'react-native'
 import SplashScreen from './screens/SplashScreen'
 import { AppNavigator } from './navigation/AppNavigator'
 
@@ -56,6 +56,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={DraftbitTheme}>
             <SnackbarProvider>
+              <StatusBar barStyle="dark-content" backgroundColor="#fff" />
               <AppNavigator />
             </SnackbarProvider>
           </ThemeProvider>

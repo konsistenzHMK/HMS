@@ -28,7 +28,7 @@ import {
   useWindowDimensions,
   StyleSheet as RNStyleSheet,
 } from 'react-native'
-import { useSnackbar, Modal } from '../components'
+import { useSnackbar, Modal, Image } from '../components'
 import branch from 'react-native-branch'
 
 const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
@@ -160,12 +160,13 @@ const PostDetailsScreen = (props) => {
         >
           <Pressable
             onPress={() => {
-              try {
+              const userid = listData?.posted_by_id
+              if (userid === Constants['LOGGED_IN_USER']) {
+                navigation.navigate('MyProfileScreen')
+              } else {
                 navigation.navigate('OthersProfileScreen', {
                   userid: listData?.posted_by_id,
                 })
-              } catch (err) {
-                console.error(err)
               }
             }}
           >
@@ -175,7 +176,14 @@ const PostDetailsScreen = (props) => {
                 {/* Circle Image Frame */}
                 <View>
                   {/* imgOP */}
-                  <CircleImage size={30} source={Images.IconProfile} />
+                  {listData.user_profiles.profile_image ? (
+                    <Image
+                      style={{ height: 30, width: 30, borderRadius: 15 }}
+                      source={{ uri: listData.user_profiles.profile_image }}
+                    />
+                  ) : (
+                    <CircleImage size={30} source={Images.IconProfile} />
+                  )}
                 </View>
               </View>
               {/* Right Side */}

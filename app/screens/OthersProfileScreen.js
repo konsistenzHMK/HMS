@@ -15,7 +15,6 @@ import {
   Touchable,
   withTheme,
 } from '@draftbit/ui'
-import { useIsFocused } from '@react-navigation/native'
 import { ActivityIndicator, FlatList, Image, ScrollView, Text, View, useWindowDimensions } from 'react-native'
 import { useSnackbar } from '../components'
 import { FeedCard } from '../shared'
@@ -32,18 +31,6 @@ const OthersProfileScreen = (props) => {
 
   const pagalFanBEAddNewFollowPOST = PagalFanBEApi.useAddNewFollowPOST()
   const pagalFanBEDeleteFollowDELETE = PagalFanBEApi.useDeleteFollowDELETE()
-
-  const isFocused = useIsFocused()
-  React.useEffect(() => {
-    try {
-      if (!isFocused) {
-        return
-      }
-      console.log(props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343')
-    } catch (err) {
-      console.error(err)
-    }
-  }, [isFocused])
 
   const [accountFriend, setAccountFriend] = React.useState(false)
 
@@ -66,6 +53,33 @@ const OthersProfileScreen = (props) => {
       openShareUtil(response.url)
     } catch (e) {
       console.log(e)
+    }
+  }
+
+  const showUserProfile = (follower_id) => {
+    // navigate to My profile screen if self user is selected
+    if (follower_id === Constants['LOGGED_IN_USER']) {
+      navigation.navigate('MyProfileScreen')
+    } else {
+      navigation.navigate('OthersProfileScreen', {
+        userid: follower_id,
+      })
+    }
+  }
+
+  const followUser = async (followee_id) => {
+    try {
+      await pagalFanBEAddNewFollowPOST.mutateAsync({
+        followee_id,
+        follower_id: Constants['LOGGED_IN_USER'],
+      })
+      snackbar.show({ title: 'User followed successfully' })
+    } catch (err) {
+      console.error(err)
+      snackbar.show({
+        title: 'Something went wrong. Please try again later',
+        variant: 'nagative',
+      })
     }
   }
 
@@ -340,7 +354,6 @@ const OthersProfileScreen = (props) => {
                         followerId={Constants['LOGGED_IN_USER']}
                         onData={(fetchData) => {
                           try {
-                            console.log(fetchData)
                             setFollwers(fetchData.length)
                             let ans = false
                             fetchData.map((item) => {
@@ -560,61 +573,6 @@ const OthersProfileScreen = (props) => {
             </ScrollView>
           </View>
         </TabViewItem>
-        {/* Saved */}
-        <TabViewItem
-          style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Saved'}
-        >
-          {/* Saved-Feed */}
-          <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
-            <ScrollView
-              contentContainerStyle={StyleSheet.applyWidth({ flexDirection: 'column' }, dimensions.width)}
-              bounces={true}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-            >
-              <PagalFanBEApi.FetchFetchAllPostsSavedByUserGET
-                userId={props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343'}
-              >
-                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
-                  const fetchData = data
-                  if (!fetchData || loading) {
-                    return <ActivityIndicator />
-                  }
-
-                  if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                  }
-
-                  return (
-                    <FlatList
-                      data={fetchData}
-                      listKey={'96XJJXKT'}
-                      keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                      renderItem={({ item }) => (
-                        <FeedCard
-                          feed={{ id: item.post_id, image_path: item.posts?.image_path, caption: item.posts?.caption }}
-                        />
-                      )}
-                      style={StyleSheet.applyWidth(
-                        StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
-                        dimensions.width,
-                      )}
-                      contentContainerStyle={StyleSheet.applyWidth(
-                        GlobalStyles.FlatListStyles(theme)['List'],
-                        dimensions.width,
-                      )}
-                      onEndReachedThreshold={0.5}
-                      showsVerticalScrollIndicator={false}
-                      numColumns={2}
-                      showsHorizontalScrollIndicator={false}
-                    />
-                  )
-                }}
-              </PagalFanBEApi.FetchFetchAllPostsSavedByUserGET>
-            </ScrollView>
-          </View>
-        </TabViewItem>
         {/* Followers */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
@@ -631,7 +589,7 @@ const OthersProfileScreen = (props) => {
               <PagalFanBEApi.FetchFetchAllFollowersOfUserGET
                 followeeId={props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343'}
               >
-                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
+                {({ loading, error, data }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -645,7 +603,16 @@ const OthersProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop: 20, marginLeft: 10 }}>
+                          <Pressable
+                            onPress={() => showUserProfile(item.user_profiles.user_id)}
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginTop: 20,
+                              marginLeft: 10,
+                            }}
+                          >
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                               <Circle
                                 size={70}
@@ -662,22 +629,58 @@ const OthersProfileScreen = (props) => {
                                   />
                                 )}
                               </Circle>
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    color: theme.colors.Studily_Dark_UI,
-                                    fontFamily: 'Rubik_500Bold',
-                                    fontSize: 14,
-                                    paddingRight: 15,
-                                  },
-                                  dimensions.width,
+                              <View>
+                                <Text
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'flex-start',
+                                      color: theme.colors.Studily_Dark_UI,
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 14,
+                                      paddingRight: 15,
+                                    },
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                                </Text>
+                                {item.user_profiles?.handle && (
+                                  <Text
+                                    style={{
+                                      color: theme.colors['Studily Medium Blue UI'],
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 12,
+                                    }}
+                                  >
+                                    @{item.user_profiles.handle}
+                                  </Text>
                                 )}
-                              >
-                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
-                              </Text>
+                              </View>
                             </View>
-                          </View>
+                            {item.user_profiles?.user_id !== Constants['LOGGED_IN_USER'] && (
+                              <Pressable
+                                style={{
+                                  height: 30,
+                                  width: 80,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  backgroundColor: theme.colors['Custom Color_29'],
+                                  borderRadius: 5,
+                                }}
+                                onPress={() => followUser(item.user_profiles.user_id)}
+                              >
+                                <Text
+                                  style={{
+                                    fontSize: 12,
+                                    color: '#fff',
+                                    fontWeight: '600',
+                                  }}
+                                >
+                                  Follow
+                                </Text>
+                              </Pressable>
+                            )}
+                          </Pressable>
                         )
                       }}
                     />
@@ -703,7 +706,7 @@ const OthersProfileScreen = (props) => {
               <PagalFanBEApi.FetchFetchAllFollowedByUserGET
                 followerId={props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343'}
               >
-                {({ loading, error, data, refetchFetchAllPostsSavedByUser }) => {
+                {({ loading, error, data }) => {
                   const fetchData = data
                   if (!fetchData || loading) {
                     return <ActivityIndicator />
@@ -717,7 +720,16 @@ const OthersProfileScreen = (props) => {
                       listKey={'96XJJXKTT'}
                       renderItem={({ item }) => {
                         return (
-                          <View style={{ marginTop: 20, marginLeft: 10 }}>
+                          <Pressable
+                            onPress={() => showUserProfile(item.user_profiles.user_id)}
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginTop: 20,
+                              marginLeft: 10,
+                            }}
+                          >
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                               <Circle
                                 size={70}
@@ -734,22 +746,58 @@ const OthersProfileScreen = (props) => {
                                   />
                                 )}
                               </Circle>
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'flex-start',
-                                    color: theme.colors.Studily_Dark_UI,
-                                    fontFamily: 'Rubik_500Bold',
-                                    fontSize: 14,
-                                    paddingRight: 15,
-                                  },
-                                  dimensions.width,
+                              <View>
+                                <Text
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'flex-start',
+                                      color: theme.colors.Studily_Dark_UI,
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 14,
+                                      paddingRight: 15,
+                                    },
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {item.user_profiles?.first_name} {item.user_profiles?.last_name}
+                                </Text>
+                                {item.user_profiles?.handle && (
+                                  <Text
+                                    style={{
+                                      color: theme.colors['Studily Medium Blue UI'],
+                                      fontFamily: 'Rubik_500Bold',
+                                      fontSize: 12,
+                                    }}
+                                  >
+                                    @{item.user_profiles.handle}
+                                  </Text>
                                 )}
-                              >
-                                {item.user_profiles?.first_name} {item.user_profiles?.last_name}
-                              </Text>
+                              </View>
                             </View>
-                          </View>
+                            {item.user_profiles?.user_id !== Constants['LOGGED_IN_USER'] && (
+                              <Pressable
+                                style={{
+                                  height: 30,
+                                  width: 80,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  backgroundColor: theme.colors['Custom Color_29'],
+                                  borderRadius: 5,
+                                }}
+                                onPress={() => followUser(item.user_profiles.user_id)}
+                              >
+                                <Text
+                                  style={{
+                                    fontSize: 12,
+                                    color: '#fff',
+                                    fontWeight: '600',
+                                  }}
+                                >
+                                  Follow
+                                </Text>
+                              </Pressable>
+                            )}
+                          </Pressable>
                         )
                       }}
                     />

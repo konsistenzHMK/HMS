@@ -1,10 +1,15 @@
 import React from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image, StatusBar, StyleSheet, View } from 'react-native'
 
 const SPLASH_SOURCE = require('../assets/app/splash.png')
 
 const SplashScreen = () => {
-  return <Image source={SPLASH_SOURCE} style={style.main} />
+  return (
+    <View>
+      <StatusBar hidden />
+      <Image source={SPLASH_SOURCE} style={style.main} />
+    </View>
+  )
 }
 
 const style = StyleSheet.create({

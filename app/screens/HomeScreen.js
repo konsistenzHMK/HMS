@@ -1112,7 +1112,7 @@ const HomeScreen = (props) => {
                   borderTopLeftRadius: 24,
                   borderTopRightRadius: 24,
                   bottom: 0,
-                  height: 254,
+                  height: 200,
                   left: 0,
                   paddingBottom: 15,
                   paddingLeft: 20,
@@ -1138,7 +1138,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {'Fan BAKARR - Event Details'}
+                {'Entering PagalFan's BAKARR room!'}
               </Text>
               <Divider
                 style={StyleSheet.applyWidth(
@@ -1147,65 +1147,11 @@ const HomeScreen = (props) => {
                 )}
                 color={theme.colors.divider}
               />
-              {/* Event */}
-              <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['AddaCard'], dimensions.width)}>
-                {/* DateBadgeView */}
-                <View
-                  style={StyleSheet.applyWidth(
-                    {
-                      alignContent: 'flex-start',
-                      alignItems: 'center',
-                      backgroundColor: '"rgba(0, 0, 0, 0)"',
-                      flexDirection: 'row',
-                      height: 20,
-                      justifyContent: 'space-between',
-                      marginBottom: 5,
-                    },
-                    dimensions.width,
-                  )}
-                >
-                  <Text
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], { fontFamily: 'Inter_600SemiBold' }),
-                      dimensions.width,
-                    )}
-                  >
-                    {'Today 7:30 pm'}
-                  </Text>
-                  <Icon size={24} name={'FontAwesome/calendar-plus-o'} />
-                </View>
-                {/* EventTitle */}
-                <Text
-                  style={StyleSheet.applyWidth(
-                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                      color: theme.colors['Strong'],
-                      fontFamily: 'Rubik_600SemiBold',
-                      fontSize: 14,
-                    }),
-                    dimensions.width,
-                  )}
-                >
-                  {'CSK v/s MI - Post match'}
-                </Text>
-
-                <Text
-                  style={StyleSheet.applyWidth(
-                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                      color: theme.colors['Strong'],
-                      fontFamily: 'Rubik_400Regular_Italic',
-                      fontSize: 12,
-                    }),
-                    dimensions.width,
-                  )}
-                >
-                  {'What could either team have done better?'}
-                </Text>
-              </View>
               {/* Join Bakarr room */}
               <Button
                 onPress={handleStartBakerRoomPress}
                 style={StyleSheet.applyWidth(GlobalStyles.ButtonStyles(theme)['Button'], dimensions.width)}
-                title={'START 🎙'}
+                title={'PROCEED 🎙'}
               />
               {/* SkipButton */}
               <Button

@@ -18,6 +18,13 @@ module.exports = {
       borderWidth: {
         '1': '1px',
         '1.5': '1.3px',
+        
+      },
+      width:{
+        '100': '500px'
+      },
+      marginTop:{
+        '100': '400px'
       }
     },
   },

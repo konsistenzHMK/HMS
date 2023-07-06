@@ -1,12 +1,19 @@
 // All the logics are written over here
 import  db from './config.js';
 import './config.js';
-import { addDoc, doc, setDoc,getDoc ,updateDoc} from "firebase/firestore";
+import {  query, where, getDocs } from "firebase/firestore";
+import {collection, addDoc, doc, setDoc , getDoc ,updateDoc} from "firebase/firestore";
 
-import {v4 as uuidv4} from 'uuid';
+const randon_doc_id_function = async ()=>{
+    var randomNumber = '';
+  for (var i = 0; i < 30; i++) {
+    randomNumber += Math.floor(Math.random() * 10);
+  }
+  return randomNumber;
+}
 
 
-const UUIDFunction= async (country,state,district)=>{       //by Shubham
+const UUIDFunction= async (country,state,district)=>{     
     let cs_id=country[0].toUpperCase() + country[1].toUpperCase();
     const stateCount=state.split(' ');
     if(stateCount.length==1){
@@ -17,7 +24,7 @@ const UUIDFunction= async (country,state,district)=>{       //by Shubham
     }
     cs_id=cs_id+district[0].toUpperCase() + district[1].toUpperCase();
     // console.log(cs_id);
-
+  
     const docRef = doc(db, "idMap", cs_id);
     const docSnap = await getDoc(docRef);
     
@@ -55,9 +62,7 @@ const UUIDFunction= async (country,state,district)=>{       //by Shubham
     return cs_id+GlobalCount.toString()
 }
 
-// const studentId= async ()=>{
 
-// }
 
 const studentIdFunction= async ()=>{
     const docRef = doc(db, "studentID", "IqhP1VdqqC0iz0kkj2WN");
@@ -68,7 +73,7 @@ const studentIdFunction= async ()=>{
     try{
         await updateDoc(docRef,{
             number:id+1
-        });
+        }); 
     }
     catch(e){
         console.log("error",e);
@@ -76,16 +81,16 @@ const studentIdFunction= async ()=>{
 
     const id_string = id.toString();
     
-    const no_of_zeros_to_append = 10 - id_string.length;
-    
+    const no_of_zeros_to_append = 10 - (id_string.length);
+    console.log(no_of_zeros_to_append);
     const zeros = "0".repeat(no_of_zeros_to_append);
+
+    const new_id = zeros + id_string;
     
-    id = zeros + id_string;
-
-
-    return id.toString();
+// console.log(new_id);
+    return new_id;
 }
-
+ 
 
 const tower_id_function= async (hostel_id)=>{
    const ht_id = hostel_id;
@@ -246,5 +251,63 @@ const expense_id_function= async ()=>{
     return id;
 }
 
+const booking_expense_header_function = async ()=>{
+    const docRef = doc(db, "booking_expense_header", "KdWo5gUgaeM0joclf9E1");
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap.data().number);
 
-export  { UUIDFunction, studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+    let id=docSnap.data().number;
+    try{
+        await updateDoc(docRef,{
+            number:id+1
+        });
+    }
+    catch(e){
+        console.log("error",e);
+    }
+
+    const id_string = id.toString();
+    if(id_string.length<4){
+
+    const no_of_zeros_to_append = 4 - id_string.length;
+
+    const zeros = "0".repeat(no_of_zeros_to_append);
+
+    id = zeros + id_string;
+    }
+    return id;
+
+}
+
+
+const hostel_id_to_studentname = async(req,res)=>{
+    const q = query(collection(db, "student_registration"), where("hostel_id", "==", "INMAMU00006"));
+    const documents = await getDocs(q);
+    const names = [];
+
+    documents.forEach((doc) => {
+        names.push(doc.data().first_name+" "+doc.data().last_name);
+     });
+
+    res.send(names);
+    
+}
+
+
+const rector_id_to_hostel_id = async(req,res)=>{
+
+    const q = query(collection(db, "hostel_registration"), where("rector_id", "==", "1234"));
+    const documents = await getDocs(q);
+    
+    documents.forEach((doc) => {
+        res.send(doc.data().uuid);
+      });
+
+    
+ 
+}
+
+
+
+
+export  {  rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

@@ -3563,7 +3563,7 @@ export const updateExpoTokenPATCHStatusAndText = (Constants, { expoToken, userId
 export const updateExpoTokenPATCH = (Constants, { expoToken, userId }) =>
   updateExpoTokenPATCHStatusAndText(Constants, { expoToken, userId }).then(({ status, statusText, text }) => {
     try {
-      return JSON.parse(text)
+      if (text) return JSON.parse(text)
     } catch (e) {
       console.error(
         ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),

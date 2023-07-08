@@ -56,7 +56,7 @@ const SignupOTPScreen = (props) => {
         // expoToken -> notification_token
         await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
           expoToken: token,
-          userId: Constants['LOGGED_IN_USER'],
+          userId,
         })
         // Navigate to Home Screen
         setStack('app')

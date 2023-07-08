@@ -207,7 +207,7 @@ const EditPostScreen = (props) => {
               },
               dimensions.width,
             )}
-            placeholder={'what more do you want to say?'}
+            placeholder={'What more do you want to say?'}
             value={textAreaValue}
             editable={true}
             textAlignVertical={'top'}

@@ -253,7 +253,7 @@ const OnboardingScreen = (props) => {
               dimensions.width,
             )}
           >
-            {"what's your full name?"}
+            {"What's your full name?"}
           </Text>
         </View>
         {/* Input View */}
@@ -424,7 +424,7 @@ const OnboardingScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'what are 3 sports you enjoy watching or playing?'}
+            {'What are 3 sports you enjoy watching or playing?'}
           </Text>
         </View>
         {/* Notes View */}

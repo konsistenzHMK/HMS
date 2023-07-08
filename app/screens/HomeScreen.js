@@ -550,7 +550,7 @@ const HomeScreen = (props) => {
             <Pressable
               onPress={() => {
                 try {
-                  navigation.navigate('Tabs', { screen: 'MatchDaysAllScreen' })
+                  navigation.navigate('MatchDaysAllScreen')
                 } catch (err) {
                   console.error(err)
                 }

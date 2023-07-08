@@ -18,7 +18,6 @@ import NotificationsScreen from '../screens/NotificationsScreen'
 import { navigationRef } from './NavigationRef'
 import NavigationContext from './NavigationContext'
 import * as GlobalVariables from '../config/GlobalVariableContext'
-import SplashScreen from '../screens/SplashScreen'
 
 export const AppNavigator = () => {
   const [stack, setStack] = useState('loading')
@@ -36,7 +35,7 @@ export const AppNavigator = () => {
   const getCurrentStack = () => {
     switch (stack) {
       case 'loading':
-        return <Stack.Screen options={{ headerShown: false }} name="Loading" component={SplashScreen} />
+        return <Stack.Screen options={{ headerShown: false }} name="Loading" component={React.Fragment} />
       case 'login':
         return (
           <React.Fragment>

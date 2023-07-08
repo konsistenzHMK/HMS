@@ -115,7 +115,6 @@ const SearchScreen = (props) => {
               autoCapitalize={'none'}
               placeholderTextColor={theme.colors['PF-Grey']}
             />
-            <Icon size={24} name={'Feather/filter'} color={theme.colors['PF-Grey']} />
           </View>
         </View>
       </View>

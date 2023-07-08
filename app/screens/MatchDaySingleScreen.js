@@ -355,6 +355,17 @@ const MatchDaySingleScreen = (props) => {
     )
   }
 
+  const handleStartBakerRoomPress = () => {
+    try {
+      setShowBakarrPopup(false)
+      const roomCode = Constants['HMS_ROOM_CODE']
+      const username = `${Constants['user_first_name']} ${Constants['user_last_name']}`
+      navigation.navigate('BakarRoomScreen', { roomCode, username })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth({ marginLeft: 10, marginRight: 10, marginTop: 10 }, dimensions.width)}
@@ -873,6 +884,284 @@ const MatchDaySingleScreen = (props) => {
             scrollEnabled={false}
             activeColor={theme.colors['Secondary']}
           >
+            {/* FanChat */}
+            <TabViewItem
+              style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
+              title={'FAN CHAT'}
+            >
+              {/* Comments Frame */}
+              <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1, marginTop: 10 }, dimensions.width)}>
+                {/* TitleView */}
+                <View
+                  style={StyleSheet.applyWidth(
+                    {
+                      backgroundColor: theme.colors['Secondary'],
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      height: 20,
+                      justifyContent: 'space-between',
+                      paddingLeft: 2,
+                      paddingRight: 2,
+                      width: 130,
+                    },
+                    dimensions.width,
+                  )}
+                >
+                  <Text
+                    style={StyleSheet.applyWidth(
+                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                        color: theme.colors['PF-BG'],
+                        fontFamily: 'Inter_600SemiBold',
+                      }),
+                      dimensions.width,
+                    )}
+                  >
+                    {'fan reactions'}
+                  </Text>
+                  <Icon color={theme.colors['PF-BG']} size={20} name={'MaterialCommunityIcons/wechat'} />
+                </View>
+                {/* InputComments */}
+                <View
+                  style={StyleSheet.applyWidth(
+                    GlobalStyles.ViewStyles(theme)['PF-InputCommentFrame'],
+                    dimensions.width,
+                  )}
+                >
+                  {/* Emoticons Frame */}
+                  {renderEmoticons()}
+                  {/* Keyboard Input Frame */}
+                  <View
+                    style={StyleSheet.applyWidth(
+                      {
+                        alignItems: 'center',
+                        backgroundColor: theme.colors.communityWhite,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginBottom: 10,
+                        paddingBottom: 4,
+                        paddingLeft: 12,
+                        paddingRight: 12,
+                        paddingTop: 4,
+                      },
+                      dimensions.width,
+                    )}
+                  >
+                    {/* Flex Input */}
+                    <View
+                      style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0, paddingLeft: 20 }, dimensions.width)}
+                    >
+                      <TextInput
+                        onChangeText={setTextInputValue}
+                        style={StyleSheet.applyWidth(
+                          {
+                            borderBottomWidth: 1,
+                            borderColor: theme.colors.communityIconFill,
+                            borderLeftWidth: 1,
+                            borderRadius: 60,
+                            borderRightWidth: 1,
+                            borderTopWidth: 1,
+                            marginLeft: 0,
+                            marginRight: 4,
+                            paddingBottom: 8,
+                            paddingLeft: 12,
+                            paddingRight: 12,
+                            paddingTop: 8,
+                          },
+                          dimensions.width,
+                        )}
+                        placeholder={'Type something...'}
+                        value={textInputValue}
+                        placeholderTextColor={theme.colors.communityLightBlack}
+                        multiline={false}
+                        scrollEnabled={false}
+                      />
+                    </View>
+                    {/* Flex Frame for Touchable */}
+                    <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
+                      <Touchable
+                        disabled={!textInputValue.trim()}
+                        onPress={() => {
+                          const handler = async () => {
+                            try {
+                              snackbar.show({ title: 'Uploading comment …' })
+                              await pagalFanBEAddNewMatchCommentPOST.mutateAsync({
+                                comment_text: textInputValue,
+                                match_id: props.route?.params?.match_id ?? 77,
+                                user_id: Constants['LOGGED_IN_USER'],
+                              })
+                              setTextInputValue('')
+                            } catch (err) {
+                              console.error(err)
+                            }
+                          }
+                          handler()
+                        }}
+                      >
+                        <Circle size={48} bgColor={theme.colors.communityTertiaryGreen}>
+                          {/* Flex Frame for Icons */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                flexGrow: 0,
+                                flexShrink: 0,
+                                justifyContent: 'center',
+                              },
+                              dimensions.width,
+                            )}
+                          >
+                            <Icon name={'FontAwesome/send'} size={24} color={theme.colors.communityWhite} />
+                          </View>
+                        </Circle>
+                      </Touchable>
+                    </View>
+                  </View>
+                </View>
+                {/* FetchComments */}
+                <PagalFanBEApi.FetchFetchAllCommentsForAMatchGET id={props.route?.params?.match_id ?? 77}>
+                  {({ loading, error, data, refetchFetchAllCommentsForAMatch }) => {
+                    const fetchCommentsData = data
+                    if (!fetchCommentsData || loading) {
+                      return <ActivityIndicator />
+                    }
+
+                    if (error) {
+                      return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    }
+
+                    return (
+                      <FlatList
+                        data={fetchCommentsData}
+                        listKey={'Z2C3fhw6'}
+                        keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
+                        renderItem={({ item }) => {
+                          const listData = item
+                          return (
+                            <>
+                              {/* Record Frame */}
+                              <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1 }, dimensions.width)}>
+                                {/* Message Frame */}
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      flexDirection: 'row',
+                                      flexGrow: 1,
+                                      flexShrink: 0,
+                                    },
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {/* Left Side Frame */}
+                                  <View>
+                                    {/* Flex Frame for Touchable */}
+                                    <View>
+                                      <Touchable>
+                                        {/* Circle Image Frame */}
+                                        <View
+                                          style={StyleSheet.applyWidth(
+                                            {
+                                              flexGrow: 1,
+                                              flexShrink: 0,
+                                              paddingBottom: 10,
+                                              paddingLeft: 12,
+                                              paddingRight: 6,
+                                              paddingTop: 10,
+                                            },
+                                            dimensions.width,
+                                          )}
+                                        >
+                                          <CircleImage
+                                            size={36}
+                                            source={{
+                                              uri: `${listData?.user_profiles?.profile_image}`,
+                                            }}
+                                          />
+                                        </View>
+                                      </Touchable>
+                                    </View>
+                                  </View>
+                                  {/* Right Side Frame */}
+                                  <View
+                                    style={StyleSheet.applyWidth(
+                                      {
+                                        flexGrow: 1,
+                                        flexShrink: 0,
+                                        justifyContent: 'center',
+                                        marginLeft: 12,
+                                      },
+                                      dimensions.width,
+                                    )}
+                                  >
+                                    {/* Data Frame */}
+                                    <View>
+                                      {/* NameandTimeAgo */}
+                                      <View
+                                        style={StyleSheet.applyWidth(
+                                          {
+                                            alignItems: 'center',
+                                            alignSelf: 'auto',
+                                            flexDirection: 'row',
+                                          },
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {/* Commenter Name */}
+                                        <Text
+                                          style={StyleSheet.applyWidth(
+                                            {
+                                              color: theme.colors.communityDarkUI,
+                                              fontFamily: 'Rubik_600SemiBold',
+                                              fontSize: 13,
+                                              lineHeight: 19,
+                                              marginRight: 10,
+                                            },
+                                            dimensions.width,
+                                          )}
+                                        >
+                                          {listData?.user_profiles?.first_name}
+                                        </Text>
+                                        {/* TimeAgo */}
+                                        <Text
+                                          style={StyleSheet.applyWidth(
+                                            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                              color: theme.colors['PF-Grey'],
+                                              fontFamily: 'System',
+                                              fontSize: 10,
+                                              fontWeight: '200',
+                                            }),
+                                            dimensions.width,
+                                          )}
+                                        >
+                                          {TimeAgo(listData?.created_at)}
+                                        </Text>
+                                      </View>
+                                      {/* Comment */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          {
+                                            color: theme.colors.communityTrueOption,
+                                            fontFamily: 'Rubik_400Regular',
+                                            fontSize: 11,
+                                            lineHeight: 17,
+                                          },
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {listData?.comment}
+                                      </Text>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>
+                            </>
+                          )
+                        }}
+                        numColumns={1}
+                      />
+                    )
+                  }}
+                </PagalFanBEApi.FetchFetchAllCommentsForAMatchGET>
+              </View>
+            </TabViewItem>
             {/* Scores */}
             <TabViewItem
               style={StyleSheet.applyWidth(
@@ -2531,284 +2820,6 @@ const MatchDaySingleScreen = (props) => {
                 }}
               </PagalFanBEApi.FetchFetchFeedForSingleMatchGET>
             </TabViewItem>
-            {/* FanChat */}
-            <TabViewItem
-              style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-              title={'FAN CHAT'}
-            >
-              {/* Comments Frame */}
-              <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1, marginTop: 10 }, dimensions.width)}>
-                {/* TitleView */}
-                <View
-                  style={StyleSheet.applyWidth(
-                    {
-                      backgroundColor: theme.colors['Secondary'],
-                      flexDirection: 'row',
-                      flexWrap: 'nowrap',
-                      height: 20,
-                      justifyContent: 'space-between',
-                      paddingLeft: 2,
-                      paddingRight: 2,
-                      width: 130,
-                    },
-                    dimensions.width,
-                  )}
-                >
-                  <Text
-                    style={StyleSheet.applyWidth(
-                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                        color: theme.colors['PF-BG'],
-                        fontFamily: 'Inter_600SemiBold',
-                      }),
-                      dimensions.width,
-                    )}
-                  >
-                    {'fan reactions'}
-                  </Text>
-                  <Icon color={theme.colors['PF-BG']} size={20} name={'MaterialCommunityIcons/wechat'} />
-                </View>
-                {/* InputComments */}
-                <View
-                  style={StyleSheet.applyWidth(
-                    GlobalStyles.ViewStyles(theme)['PF-InputCommentFrame'],
-                    dimensions.width,
-                  )}
-                >
-                  {/* Emoticons Frame */}
-                  {renderEmoticons()}
-                  {/* Keyboard Input Frame */}
-                  <View
-                    style={StyleSheet.applyWidth(
-                      {
-                        alignItems: 'center',
-                        backgroundColor: theme.colors.communityWhite,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginBottom: 10,
-                        paddingBottom: 4,
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        paddingTop: 4,
-                      },
-                      dimensions.width,
-                    )}
-                  >
-                    {/* Flex Input */}
-                    <View
-                      style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0, paddingLeft: 20 }, dimensions.width)}
-                    >
-                      <TextInput
-                        onChangeText={setTextInputValue}
-                        style={StyleSheet.applyWidth(
-                          {
-                            borderBottomWidth: 1,
-                            borderColor: theme.colors.communityIconFill,
-                            borderLeftWidth: 1,
-                            borderRadius: 60,
-                            borderRightWidth: 1,
-                            borderTopWidth: 1,
-                            marginLeft: 0,
-                            marginRight: 4,
-                            paddingBottom: 8,
-                            paddingLeft: 12,
-                            paddingRight: 12,
-                            paddingTop: 8,
-                          },
-                          dimensions.width,
-                        )}
-                        placeholder={'Type something...'}
-                        value={textInputValue}
-                        placeholderTextColor={theme.colors.communityLightBlack}
-                        multiline={false}
-                        scrollEnabled={false}
-                      />
-                    </View>
-                    {/* Flex Frame for Touchable */}
-                    <View style={StyleSheet.applyWidth({ flexGrow: 0, flexShrink: 0 }, dimensions.width)}>
-                      <Touchable
-                        disabled={!textInputValue.trim()}
-                        onPress={() => {
-                          const handler = async () => {
-                            try {
-                              snackbar.show({ title: 'Uploading comment …' })
-                              await pagalFanBEAddNewMatchCommentPOST.mutateAsync({
-                                comment_text: textInputValue,
-                                match_id: props.route?.params?.match_id ?? 77,
-                                user_id: Constants['LOGGED_IN_USER'],
-                              })
-                              setTextInputValue('')
-                            } catch (err) {
-                              console.error(err)
-                            }
-                          }
-                          handler()
-                        }}
-                      >
-                        <Circle size={48} bgColor={theme.colors.communityTertiaryGreen}>
-                          {/* Flex Frame for Icons */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                flexGrow: 0,
-                                flexShrink: 0,
-                                justifyContent: 'center',
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            <Icon name={'FontAwesome/send'} size={24} color={theme.colors.communityWhite} />
-                          </View>
-                        </Circle>
-                      </Touchable>
-                    </View>
-                  </View>
-                </View>
-                {/* FetchComments */}
-                <PagalFanBEApi.FetchFetchAllCommentsForAMatchGET id={props.route?.params?.match_id ?? 77}>
-                  {({ loading, error, data, refetchFetchAllCommentsForAMatch }) => {
-                    const fetchCommentsData = data
-                    if (!fetchCommentsData || loading) {
-                      return <ActivityIndicator />
-                    }
-
-                    if (error) {
-                      return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-                    }
-
-                    return (
-                      <FlatList
-                        data={fetchCommentsData}
-                        listKey={'Z2C3fhw6'}
-                        keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                        renderItem={({ item }) => {
-                          const listData = item
-                          return (
-                            <>
-                              {/* Record Frame */}
-                              <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1 }, dimensions.width)}>
-                                {/* Message Frame */}
-                                <View
-                                  style={StyleSheet.applyWidth(
-                                    {
-                                      flexDirection: 'row',
-                                      flexGrow: 1,
-                                      flexShrink: 0,
-                                    },
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {/* Left Side Frame */}
-                                  <View>
-                                    {/* Flex Frame for Touchable */}
-                                    <View>
-                                      <Touchable>
-                                        {/* Circle Image Frame */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              flexGrow: 1,
-                                              flexShrink: 0,
-                                              paddingBottom: 10,
-                                              paddingLeft: 12,
-                                              paddingRight: 6,
-                                              paddingTop: 10,
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          <CircleImage
-                                            size={36}
-                                            source={{
-                                              uri: `${listData?.user_profiles?.profile_image}`,
-                                            }}
-                                          />
-                                        </View>
-                                      </Touchable>
-                                    </View>
-                                  </View>
-                                  {/* Right Side Frame */}
-                                  <View
-                                    style={StyleSheet.applyWidth(
-                                      {
-                                        flexGrow: 1,
-                                        flexShrink: 0,
-                                        justifyContent: 'center',
-                                        marginLeft: 12,
-                                      },
-                                      dimensions.width,
-                                    )}
-                                  >
-                                    {/* Data Frame */}
-                                    <View>
-                                      {/* NameandTimeAgo */}
-                                      <View
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            alignItems: 'center',
-                                            alignSelf: 'auto',
-                                            flexDirection: 'row',
-                                          },
-                                          dimensions.width,
-                                        )}
-                                      >
-                                        {/* Commenter Name */}
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              color: theme.colors.communityDarkUI,
-                                              fontFamily: 'Rubik_600SemiBold',
-                                              fontSize: 13,
-                                              lineHeight: 19,
-                                              marginRight: 10,
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {listData?.user_profiles?.first_name}
-                                        </Text>
-                                        {/* TimeAgo */}
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                              color: theme.colors['PF-Grey'],
-                                              fontFamily: 'System',
-                                              fontSize: 10,
-                                              fontWeight: '200',
-                                            }),
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {TimeAgo(listData?.created_at)}
-                                        </Text>
-                                      </View>
-                                      {/* Comment */}
-                                      <Text
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            color: theme.colors.communityTrueOption,
-                                            fontFamily: 'Rubik_400Regular',
-                                            fontSize: 11,
-                                            lineHeight: 17,
-                                          },
-                                          dimensions.width,
-                                        )}
-                                      >
-                                        {listData?.comment}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                </View>
-                              </View>
-                            </>
-                          )
-                        }}
-                        numColumns={1}
-                      />
-                    )
-                  }}
-                </PagalFanBEApi.FetchFetchAllCommentsForAMatchGET>
-              </View>
-            </TabViewItem>
             {/* Moments */}
             <TabViewItem
               style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
@@ -2971,6 +2982,7 @@ const MatchDaySingleScreen = (props) => {
                 color={theme.colors.divider}
               />
               <Button
+                onPress={handleStartBakerRoomPress}
                 style={StyleSheet.applyWidth(GlobalStyles.ButtonStyles(theme)['Button'], dimensions.width)}
                 title={'PROCEED 🎙'}
               />

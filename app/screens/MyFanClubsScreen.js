@@ -252,6 +252,7 @@ const MyFanClubsScreen = (props) => {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}
+                  ListEmptyComponent={<View style={{ height: 120 }} />}
                 />
               )
             }}

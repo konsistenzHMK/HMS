@@ -95,71 +95,65 @@ const EditProfileScreen = (props) => {
         <Text style={styles.headerTitle}>{'Edit Profile'}</Text>
       </View>
 
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.body}
-        showsVerticalScrollIndicator={true}
-        keyboardShouldPersistTaps={'never'}
-      >
-        <View>
-          {/* Profile Pic */}
-          <TouchableOpacity style={styles.profilePicContainer} onPress={handleImageSelect} activeOpacity={0.8}>
-            {userPic && <Image style={styles.profilePic} resizeMode={'cover'} source={{ uri: `${userPic}` }} />}
-            <Icon style={styles.profileEditIcon} size={20} name={'Feather/edit'} color={theme.colors['Secondary']} />
-          </TouchableOpacity>
-          {/* Name */}
-          <View style={styles.nameContainer}>
-            {/* First Name */}
-            <View style={styles.firstNameContainer}>
-              <Text style={styles.inputTitle}>{'First Name'}</Text>
-              <TextInput
-                onChangeText={setFirstName}
-                style={styles.textInput}
-                value={firstName}
-                autoCapitalize={'none'}
-                placeholder={'Enter first Name'}
-              />
-            </View>
-            {/* Last Name */}
-            <View style={styles.lastNameContainer}>
-              <Text style={styles.inputTitle}>{'Last Name'}</Text>
-              <TextInput
-                onChangeText={setLastName}
-                style={styles.textInput}
-                value={lastName}
-                autoCapitalize={'none'}
-                placeholder={'Enter last name'}
-              />
-            </View>
-          </View>
-          {/* User Handle */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.userHandle}>{'User handle'}</Text>
-            <View style={styles.userHandleInputContainer}>
-              <Text style={styles.userHandleInputPrefix}>@</Text>
-              <View style={{ flex: 1 }}>
-                <TextInput
-                  onChangeText={setUserHandle}
-                  style={styles.textInput}
-                  value={userHandle}
-                  autoCapitalize={'none'}
-                  placeholder="Enter your preferred user handle, e.g. eagle2023"
-                />
-              </View>
-            </View>
-          </View>
-          {/* Bio */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputTitle}>{'Brief Bio'}</Text>
+      <KeyboardAwareScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
+        {/* Profile Pic */}
+        <TouchableOpacity style={styles.profilePicContainer} onPress={handleImageSelect} activeOpacity={0.8}>
+          {userPic && <Image style={styles.profilePic} resizeMode={'cover'} source={{ uri: `${userPic}` }} />}
+          <Icon style={styles.profileEditIcon} size={20} name={'Feather/edit'} color={theme.colors['Secondary']} />
+        </TouchableOpacity>
+        {/* Name */}
+        <View style={styles.nameContainer}>
+          {/* First Name */}
+          <View style={styles.firstNameContainer}>
+            <Text style={styles.inputTitle}>{'First Name'}</Text>
             <TextInput
-              onChangeText={setBriefBio}
+              onChangeText={setFirstName}
               style={styles.textInput}
-              value={briefBio}
-              placeholder="Describe yourself"
-              textAlignVertical={'top'}
-              multiline={true}
-              numberOfLines={4}
+              value={firstName}
+              autoCapitalize={'none'}
+              placeholder={'Enter first Name'}
             />
           </View>
+          {/* Last Name */}
+          <View style={styles.lastNameContainer}>
+            <Text style={styles.inputTitle}>{'Last Name'}</Text>
+            <TextInput
+              onChangeText={setLastName}
+              style={styles.textInput}
+              value={lastName}
+              autoCapitalize={'none'}
+              placeholder={'Enter last name'}
+            />
+          </View>
+        </View>
+        {/* User Handle */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.userHandle}>{'User handle'}</Text>
+          <View style={styles.userHandleInputContainer}>
+            <Text style={styles.userHandleInputPrefix}>@</Text>
+            <View style={{ flex: 1 }}>
+              <TextInput
+                onChangeText={setUserHandle}
+                style={styles.textInput}
+                value={userHandle}
+                autoCapitalize={'none'}
+                placeholder="Enter your preferred user handle, e.g. eagle2023"
+              />
+            </View>
+          </View>
+        </View>
+        {/* Bio */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputTitle}>{'Brief Bio'}</Text>
+          <TextInput
+            onChangeText={setBriefBio}
+            style={styles.textInputBio}
+            value={briefBio}
+            placeholder="Describe yourself"
+            textAlignVertical={'top'}
+            multiline={true}
+            numberOfLines={4}
+          />
         </View>
         {/* Update */}
         <Button
@@ -190,8 +184,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   body: {
-    flex: 1,
-    justifyContent: 'space-between',
     padding: 20,
   },
   profilePicContainer: {
@@ -237,6 +229,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     height: 48,
+    marginVertical: 8,
+    paddingHorizontal: 10,
+  },
+  textInputBio: {
+    fontFamily: 'Inter_400Regular',
+    borderColor: theme.colors['Light'],
+    borderWidth: 1,
+    borderRadius: 8,
+    maxHeight: 100,
     marginVertical: 8,
     paddingHorizontal: 10,
   },

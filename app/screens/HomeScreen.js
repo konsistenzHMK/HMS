@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -22,7 +22,16 @@ import {
   withTheme,
 } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
-import { FlatList, Modal, ScrollView, Text, View, useWindowDimensions, StyleSheet as RNStyleSheet } from 'react-native'
+import {
+  FlatList,
+  Modal,
+  ScrollView,
+  Text,
+  View,
+  useWindowDimensions,
+  StyleSheet as RNStyleSheet,
+  RefreshControl,
+} from 'react-native'
 import messaging from '@react-native-firebase/messaging'
 import { notificationStore } from '../store/notification.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -37,11 +46,12 @@ const HomeScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
   const notifications = [] || notificationStore.useState((s) => s.notifications)
+  const [feedLoadTimestamp, setFeedLoadTimestamp] = useState(Date.now())
 
   const { theme } = props
   const { navigation } = props
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handler = async () => {
       try {
         const apiResponseResult = await PagalFanBEApi.fetchSingleUserGET(Constants, { id: Constants['LOGGED_IN_USER'] })
@@ -496,6 +506,7 @@ const HomeScreen = (props) => {
             if (nextPageFn) nextPageFn()
           }
         }}
+        refreshControl={<RefreshControl refreshing={false} onRefresh={() => setFeedLoadTimestamp(Date.now())} />}
       >
         {/* AdView */}
         <View>
@@ -1024,7 +1035,7 @@ const HomeScreen = (props) => {
         />
         {/* Feed */}
         <View style={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}>
-          <PagalFanBEApi.FetchFetchAllPostsGET>
+          <PagalFanBEApi.FetchFetchAllPostsGET key={`${feedLoadTimestamp}`}>
             {({ loading, error, data, nextPage }) => {
               nextPageFn = nextPage
               const fetchData = data

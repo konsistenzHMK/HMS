@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
-import Images from '../config/Images'
-import uploadImage from '../global-functions/uploadImage'
+import uploadFile from '../global-functions/uploadFile'
 import * as StyleSheet from '../utils/StyleSheet'
 import openImagePickerUtil from '../utils/openImagePicker'
-import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
-import { Image, Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
-import { useSnackbar } from '../components'
+import openCamera from '../utils/openCamera.js'
+import { Button, Circle, Icon, ScreenContainer, withTheme } from '@draftbit/ui'
+import { Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions, Pressable, Alert } from 'react-native'
+import { Modal, useSnackbar, VideoPlayer, Image, Loader } from '../components'
 
 const CreatePostScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -19,19 +19,26 @@ const CreatePostScreen = (props) => {
   const { navigation } = props
 
   const pagalFanBEAddNewPostPOST = PagalFanBEApi.useAddNewPostPOST()
-  const [pickedImage, setPickedImage] = React.useState('')
+  const [mediaTypeSelectModalVisible, setMediaTypeSelectModalVisible] = useState(false)
+  const [pickedMedia, setPickedMedia] = React.useState('')
   const [textAreaValue, setTextAreaValue] = React.useState('')
+  const [loadingPostUpload, setLoadingPostUpload] = React.useState(false)
+  const pickerTypeRef = useRef()
+  const pickerMediaTypeRef = useRef()
 
   const handlePostNowPress = async () => {
     Keyboard.dismiss()
     try {
-      if (!pickedImage || !textAreaValue) {
+      if (!pickedMedia || !textAreaValue) {
         snackbar.show({ title: "Post can't be empty" })
         return
       }
-      snackbar.show({ title: 'Uploading post …' })
-      const remoteUrl = await uploadImage('post-bucket', pickedImage)
-      setPickedImage(remoteUrl)
+      setLoadingPostUpload(true)
+      // snackbar.show({ title: 'Uploading post …' })
+
+      const subDir = pickerMediaTypeRef.current === 'photo' ? 'images' : 'videos'
+      const remoteUrl = await uploadFile('post-bucket', pickedMedia, subDir)
+      setPickedMedia(remoteUrl)
       await pagalFanBEAddNewPostPOST.mutateAsync({
         caption: textAreaValue,
         image_url: remoteUrl,
@@ -42,14 +49,41 @@ const CreatePostScreen = (props) => {
       snackbar.show({ title: 'Error uploading post', variant: 'negative' })
       console.error(err)
     }
+    setLoadingPostUpload(false)
+  }
+
+  const handleSelectMediaPress = async (type) => {
+    pickerTypeRef.current = type
+    setMediaTypeSelectModalVisible(true)
+  }
+
+  const handleMediaTypePress = async (mediaType) => {
+    hideMediaTypeSelectModal()
+
+    try {
+      const asset = await (pickerTypeRef.current === 'camera'
+        ? openCamera({ mediaType, durationLimit: 15 })
+        : openImagePickerUtil({ mediaType }))
+
+      if (asset) {
+        if (mediaType === 'video' && asset.duration > 15) {
+          Alert.alert('Please select media not more than 15 seconds')
+          return
+        }
+        pickerMediaTypeRef.current = mediaType
+        setPickedMedia(asset.uri)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const hideMediaTypeSelectModal = () => {
+    setMediaTypeSelectModalVisible(false)
   }
 
   return (
-    <ScreenContainer
-      style={StyleSheet.applyWidth({ marginLeft: 10, marginRight: 10, marginTop: 10 }, dimensions.width)}
-      hasSafeArea={true}
-      scrollable={false}
-    >
+    <ScreenContainer hasSafeArea={true} scrollable={false}>
       {/* Header */}
       <View
         style={StyleSheet.applyWidth(
@@ -57,6 +91,7 @@ const CreatePostScreen = (props) => {
             alignItems: 'center',
             flexDirection: 'row',
             height: 48,
+            marginHorizontal: 10,
             justifyContent: 'space-between',
           },
           dimensions.width,
@@ -64,11 +99,11 @@ const CreatePostScreen = (props) => {
       >
         {/* PF-BackHeader */}
         <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-BackHeader 6'], dimensions.width)}>
-          {/* Flex Frame for Touchable */}
+          {/* Flex Frame for Pressable */}
           <View
             style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0, justifyContent: 'center' }, dimensions.width)}
           >
-            <Touchable
+            <Pressable
               onPress={() => {
                 try {
                   navigation.navigate('HomeScreen')
@@ -80,7 +115,7 @@ const CreatePostScreen = (props) => {
               <Circle size={31} bgColor={theme.colors.communityIconBGColor}>
                 <Icon name={'Ionicons/caret-back'} size={18} color={theme.colors.communityIconFill} />
               </Circle>
-            </Touchable>
+            </Pressable>
           </View>
         </View>
         {/* Title */}
@@ -110,114 +145,76 @@ const CreatePostScreen = (props) => {
         />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={true} bounces={true} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{ marginHorizontal: 10 }} keyboardShouldPersistTaps="handled">
         {/* Post Content */}
-        <View style={StyleSheet.applyWidth({ marginTop: 10, paddingLeft: 10, paddingRight: 10 }, dimensions.width)}>
-          {/* ImageView */}
-          <View
-            style={StyleSheet.applyWidth(
-              {
+        <View style={{ margin: 10 }}>
+          {pickedMedia ? (
+            pickerMediaTypeRef.current === 'photo' ? (
+              <Image
+                style={StyleSheet.applyWidth({ borderRadius: 5, height: 250, width: '100%' }, dimensions.width)}
+                resizeMode="contain"
+                source={{ uri: pickedMedia }}
+              />
+            ) : (
+              <VideoPlayer playing uri={pickedMedia} style={{ borderRadius: 5, height: 250, width: '100%' }} />
+            )
+          ) : (
+            <View
+              style={{
+                borderRadius: 5,
+                height: 250,
+                width: '100%',
+                justifyContent: 'center',
                 alignItems: 'center',
-                flexDirection: 'column',
-                height: 200,
-                justifyContent: 'flex-start',
-                width: 350,
-              },
-              dimensions.width,
-            )}
-          >
-            {/* Picked */}
-            <>
-              {!pickedImage ? null : (
-                <Image
-                  style={StyleSheet.applyWidth({ borderRadius: 5, height: 180, width: '100%' }, dimensions.width)}
-                  resizeMode={'cover'}
-                  source={{ uri: `${pickedImage}` }}
-                />
-              )}
-            </>
-            {/* Placeholder */}
-            <>
-              {pickedImage ? null : (
-                <Image
-                  style={StyleSheet.applyWidth({ borderRadius: 5, height: 180, width: '100%' }, dimensions.width)}
-                  resizeMode={'cover'}
-                  source={Images.ImgPlaceholder}
-                />
-              )}
-            </>
-            {/* EditView */}
-            <View style={StyleSheet.applyWidth({ flexDirection: 'row', left: 70 }, dimensions.width)}>
-              {/* UploadImg */}
-              <Touchable
-                onPress={() => {
-                  const handler = async () => {
-                    try {
-                      const imgPicked = await openImagePickerUtil({
-                        allowsEditing: true,
-                      })
-                      setPickedImage(imgPicked)
-                    } catch (err) {
-                      console.error(err)
-                    }
-                  }
-                  handler()
-                }}
-              >
-                <View
-                  style={StyleSheet.applyWidth(
-                    {
-                      alignItems: 'center',
-                      borderBottomWidth: 1,
-                      borderColor: theme.colors['BG Gray'],
-                      borderLeftWidth: 1,
-                      borderRadius: 5,
-                      borderRightWidth: 1,
-                      borderTopWidth: 1,
-                      height: 50,
-                      justifyContent: 'center',
-                      width: 50,
-                    },
-                    dimensions.width,
-                  )}
-                >
-                  <Circle bgColor={theme.colors['Social Orange']} size={36}>
-                    <Icon color={theme.colors['Background']} name={'AntDesign/edit'} size={24} />
-                  </Circle>
-                </View>
-              </Touchable>
-
-              <View style={StyleSheet.applyWidth({ justifyContent: 'center', paddingLeft: 2 }, dimensions.width)}>
-                {/* Min */}
-                <Text
-                  style={StyleSheet.applyWidth(
-                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                      color: theme.colors['PF-Grey'],
-                      fontFamily: 'Rubik_300Light_Italic',
-                      fontSize: 9,
-                      marginTop: 2,
-                    }),
-                    dimensions.width,
-                  )}
-                >
-                  {'Minimum: 500 x 300px'}
-                </Text>
-                {/* Reco */}
-                <Text
-                  style={StyleSheet.applyWidth(
-                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                      color: theme.colors['PF-Grey'],
-                      fontFamily: 'Rubik_300Light_Italic',
-                      fontSize: 9,
-                      marginTop: 2,
-                    }),
-                    dimensions.width,
-                  )}
-                >
-                  {'Recommended: 1080 x 566px'}
-                </Text>
-              </View>
+                backgroundColor: theme.colors['Border Color'],
+              }}
+            >
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>No Media Selected</Text>
             </View>
+          )}
+          {/* EditView */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}
+          >
+            <Pressable
+              onPress={() => handleSelectMediaPress('camera')}
+              style={StyleSheet.applyWidth(
+                {
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: theme.colors['Social Orange'],
+                  borderRadius: 25,
+                  height: 40,
+                  width: 40,
+                  marginHorizontal: 20,
+                },
+                dimensions.width,
+              )}
+            >
+              <Icon color={theme.colors['Background']} name={'AntDesign/camera'} size={18} />
+            </Pressable>
+            <Pressable
+              onPress={() => handleSelectMediaPress('gallery')}
+              style={StyleSheet.applyWidth(
+                {
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: theme.colors['Community_Highlight_Blue'],
+                  borderRadius: 25,
+                  height: 40,
+                  width: 40,
+                  marginHorizontal: 20,
+                },
+                dimensions.width,
+              )}
+            >
+              <Icon color={theme.colors['Background']} name={'AntDesign/picture'} size={18} />
+            </Pressable>
           </View>
           {/* Caption */}
           <TextInput
@@ -289,6 +286,34 @@ const CreatePostScreen = (props) => {
           title={'Post Now'}
         />
       </ScrollView>
+      <Modal visible={mediaTypeSelectModalVisible} onDismiss={hideMediaTypeSelectModal}>
+        <View style={{ padding: 30, backgroundColor: '#fff' }}>
+          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Choose media type</Text>
+          <Button
+            title="Image"
+            onPress={() => handleMediaTypePress('photo')}
+            style={{ marginVertical: 20, fontSize: 16, fontWeight: '600', backgroundColor: theme.colors['Secondary'] }}
+          />
+          <Button
+            title="Video"
+            onPress={() => handleMediaTypePress('video')}
+            style={{ fontSize: 16, fontWeight: '600', backgroundColor: theme.colors['Secondary'] }}
+          />
+          <Text
+            style={{
+              color: theme.colors['PF-Grey'],
+              fontFamily: 'Rubik_300Light_Italic',
+              fontSize: 9,
+              textAlign: 'center',
+              marginTop: 3,
+            }}
+            numberOfLines={4}
+          >
+            {'*Video should not be more than 15s'}
+          </Text>
+        </View>
+      </Modal>
+      {loadingPostUpload && <Loader size={30} title={'Uploading post...'} />}
     </ScreenContainer>
   )
 }

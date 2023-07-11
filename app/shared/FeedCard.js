@@ -3,9 +3,14 @@ import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { BlurImage, Image } from '../components'
 import { theme } from '../themes'
+import { getMimeTypeFromFilename } from '@shopify/mime-types'
+import { Icon } from '@draftbit/ui'
 
 export const FeedCard = ({ feed }) => {
   const navigation = useNavigation()
+  const uri = feed?.image_path
+  const type = getMimeTypeFromFilename(uri)
+  const isVideo = type && type.includes('video')
 
   const handlePress = () => {
     navigation.navigate('PostDetailsScreen', {
@@ -15,13 +20,9 @@ export const FeedCard = ({ feed }) => {
 
   return (
     <Pressable onPress={handlePress} style={styles.main}>
-      <BlurImage
-        style={styles.blurContainer}
-        resizeMode="cover"
-        blurRadius={50}
-        source={{ uri: `${feed?.image_path}` }}
-      >
-        <Image resizeMode="contain" style={styles.image} source={{ uri: `${feed?.image_path}` }} />
+      <BlurImage style={styles.blurContainer} resizeMode="cover" blurRadius={50} source={{ uri }}>
+        <Image resizeMode="contain" style={styles.image} source={{ uri }} />
+        {isVideo && <Icon style={styles.videoIcon} name="FontAwesome/video-camera" size={12} color="#fff" />}
         {/* Details */}
         <View style={styles.captionContainer}>
           {/* Title */}
@@ -65,5 +66,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     fontSize: 10,
     padding: 2,
+  },
+  videoIcon: {
+    position: 'absolute',
+    right: 5,
+    top: 5,
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    height: 22,
+    width: 22,
+    borderRadius: 11,
   },
 })

@@ -60,7 +60,6 @@ const Images = {
   Insta: require('../assets/images/Insta.png'),
   Twitter: require('../assets/images/Twitter.png'),
   _27iplChikas: require('../assets/images/27iplChikas.png'),
-  ImgPlaceholder: require('../assets/images/ImgPlaceholder.png'),
   Mic1: require('../assets/images/Mic1.jpeg'),
 }
 

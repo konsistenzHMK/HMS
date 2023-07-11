@@ -6,7 +6,8 @@ import * as StyleSheet from '../utils/StyleSheet'
 import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
 import { Image, Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
-import { useSnackbar } from '../components'
+import { VideoPlayer, useSnackbar } from '../components'
+import { getMimeTypeFromFilename } from '@shopify/mime-types'
 
 const EditPostScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -65,6 +66,9 @@ const EditPostScreen = (props) => {
       console.error(err)
     }
   }
+
+  const type = getMimeTypeFromFilename(pickedImage)
+  const isVideo = type && type.includes('video')
 
   return (
     <ScreenContainer
@@ -148,25 +152,31 @@ const EditPostScreen = (props) => {
           <View
             style={StyleSheet.applyWidth(
               {
-                alignItems: 'center',
-                flexDirection: 'column',
-                height: 200,
-                justifyContent: 'center',
-                width: 350,
+                borderColor: theme.colors.background,
+                borderRadius: 12,
+                height: 300,
+                overflow: 'hidden',
+                marginVertical: 10,
               },
               dimensions.width,
             )}
           >
-            {/* Picked */}
-            <>
-              {!pickedImage ? null : (
-                <Image
-                  style={StyleSheet.applyWidth({ borderRadius: 5, height: 180, width: '100%' }, dimensions.width)}
-                  source={{ uri: `${pickedImage}` }}
-                  resizeMode={'center'}
-                />
-              )}
-            </>
+            {isVideo ? (
+              <VideoPlayer uri={pickedImage} playing />
+            ) : (
+              <Image
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.ImageBackgroundStyles(theme)['Image Background'], {
+                    flexBasis: 0,
+                    flexGrow: 1,
+                    flexShrink: 0,
+                  }),
+                  dimensions.width,
+                )}
+                source={{ uri: pickedImage }}
+                resizeMode={'contain'}
+              />
+            )}
           </View>
           {/* OriginalCaption */}
           <Text

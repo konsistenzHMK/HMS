@@ -6,21 +6,10 @@ import Images from '../config/Images'
 import TimeAgo from '../global-functions/TimeAgo'
 import * as StyleSheet from '../utils/StyleSheet'
 import openShareUtil from '../utils/openShare'
-import {
-  Circle,
-  CircleImage,
-  Divider,
-  Icon,
-  LinearGradient,
-  Pressable,
-  ScreenContainer,
-  Touchable,
-  withTheme,
-} from '@draftbit/ui'
+import { Circle, CircleImage, Divider, Icon, Pressable, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import {
   ActivityIndicator,
   FlatList,
-  ImageBackground,
   Keyboard,
   Text,
   TextInput,
@@ -28,8 +17,9 @@ import {
   useWindowDimensions,
   StyleSheet as RNStyleSheet,
 } from 'react-native'
-import { useSnackbar, Modal, Image } from '../components'
+import { useSnackbar, Modal, Image, VideoPlayer } from '../components'
 import branch from 'react-native-branch'
+import { getMimeTypeFromFilename } from '@shopify/mime-types'
 
 const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
 const SECTIONS = ['POST', 'COMMENTS']
@@ -288,35 +278,28 @@ const PostDetailsScreen = (props) => {
   }
 
   const renderPost = (listData) => {
+    const type = getMimeTypeFromFilename(listData?.image_path)
+    const isVideo = type && type.includes('video')
+
     return (
       <View>
         {/* Image Frame */}
         <View
           style={StyleSheet.applyWidth(
             {
-              alignItems: 'center',
-              flexGrow: 0,
-              flexShrink: 0,
-              paddingTop: 12,
+              borderColor: theme.colors.background,
+              borderRadius: 12,
+              height: 300,
+              overflow: 'hidden',
+              marginTop: 10,
             },
             dimensions.width,
           )}
         >
-          {/* Flex for Image */}
-          <View
-            style={StyleSheet.applyWidth(
-              {
-                borderColor: theme.colors.background,
-                borderRadius: 12,
-                flexShrink: 0,
-                height: 300,
-                overflow: 'hidden',
-                width: 350,
-              },
-              dimensions.width,
-            )}
-          >
-            <ImageBackground
+          {isVideo ? (
+            <VideoPlayer uri={listData?.image_path} playing />
+          ) : (
+            <Image
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(GlobalStyles.ImageBackgroundStyles(theme)['Image Background'], {
                   flexBasis: 0,
@@ -327,8 +310,8 @@ const PostDetailsScreen = (props) => {
               )}
               source={{ uri: `${listData?.image_path}` }}
               resizeMode={'contain'}
-            ></ImageBackground>
-          </View>
+            />
+          )}
         </View>
         {/* Actions Frame */}
         <View
@@ -337,16 +320,11 @@ const PostDetailsScreen = (props) => {
               backgroundColor: theme.colors.communityWhite,
               borderRadius: 64,
               flexDirection: 'row',
-              flexGrow: 0,
-              flexShrink: 0,
-              marginLeft: 36,
-              marginRight: 36,
+              marginHorizontal: 36,
               marginTop: -30,
-              paddingBottom: 6,
-              paddingLeft: 12,
-              paddingRight: 12,
-              paddingTop: 6,
-              zIndex: 50,
+              paddingVertical: 6,
+              paddingHorizontal: 12,
+              elevation: 2,
             },
             dimensions.width,
           )}
@@ -613,37 +591,6 @@ const PostDetailsScreen = (props) => {
               </View>
             </Pressable>
           </View>
-        </View>
-        {/* Three Tabs Gradient for Aesthetic */}
-        <View
-          style={StyleSheet.applyWidth(
-            {
-              borderBottomLeftRadius: 24,
-              borderBottomRightRadius: 24,
-              flexGrow: 0,
-              flexShrink: 0,
-              height: 36,
-              marginLeft: 36,
-              marginRight: 36,
-              marginTop: -30,
-            },
-            dimensions.width,
-          )}
-        >
-          <LinearGradient
-            style={StyleSheet.applyWidth(
-              {
-                borderBottomLeftRadius: 24,
-                borderBottomRightRadius: 24,
-                height: '100%',
-                width: '100%',
-              },
-              dimensions.width,
-            )}
-            startY={0}
-            color1={theme.colors.communityWhite}
-            color2={theme.colors.communityStoneGray}
-          />
         </View>
         {/* Post Frame */}
         <View

@@ -68,15 +68,17 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
         }
     }
     const changeDateExpense = date => {
+        const newDate = date.target.value;
         setFormData((prevData) => ({
             ...prevData,
-            doe: date
+            doe: newDate
         }));
     }
     const changeDateBooking = date => {
+        const newDate = date.target.value;
         setFormData((prevData) => ({
             ...prevData,
-            dob: date
+            dob: newDate
         }));
     }
 
@@ -228,7 +230,8 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                             <p className='mb-1 font-popins text-medium '>Date of Expense <p className='inline text-xl text-red-600'>**</p></p>
                                         </div>
                                         <div className='mt-1 w-full'>
-                                            <DatePicker
+                                            <input
+                                                type='date'
                                                 selected={formData.doe}
                                                 onChange={changeDateExpense}
                                                 dateFormat="yyyy-MM-dd"
@@ -243,11 +246,10 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                             <p className='mb-1 font-popins text-medium '>Date of Booking  <p className='inline text-xl text-red-600'>**</p></p>
                                         </div>
                                         <div className='mt-1 w-full'>
-                                            <DatePicker
-                                                selected={formData.doe}
+                                            <input
+                                                type='date'
+                                                value={formData.dob}
                                                 onChange={changeDateBooking}
-                                                dateFormat="yyyy-MM-dd"
-                                                placeholderText='dd/mm/yyyy'
                                                 className='text-sm w-100 h-9 pl-3 text-gray-500 border-blue-300 bg-defaultBg rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                                             />
                                             {errors.dob && <span className="error text-red-500">{errors.dob}</span>}
@@ -618,7 +620,6 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
 
     const validateForm = () => {
         const errors = {};
-
         setErrors(errors);
         return errors;
     };
@@ -792,14 +793,15 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
                                 </div>
                             </div>
                             {/* The Table */}
+
                             <div className='w-full flex justify-center mb-10'>
                             <div className='w-11/12 bg-gray-200 mt-3'>
                                 <table className='w-full '>
                                     <thead>
                                         <tr className='w-full'>
                                             <th className='w-1/3 text-left text-orange-500 ml-5 font-popins text-lg'><p className='ml-20'>Name</p></th>
-                                            <th className='w-1/3 text-center text-orange-500 font-popins text-lg'><p className=''>Student </p></th>
-                                            <th className='w-1/3 text-center text-orange-500 font-popins text-lg'><p className=''>Hostel </p></th>
+                                            <th className='w-1/3 text-center text-orange-500 font-popins text-lg' ><p className=''>Student Hostel Name </p></th>
+                                            <th className='w-1/3 text-center text-orange-500 font-popins text-lg'><p className=''>Select Student </p></th>
                                         </tr>
                                     </thead>
                                     <tbody className='w-full'>
@@ -810,9 +812,9 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
                                                 >
                                                     <p className='ml-20 text-sm'>{row.name}</p>  </td>
                                                 <td
-                                                    className='w-1/3 text-center'
+                                                    className='w-1/3 text-left'
                                                 >
-                                                   <p className='ml-20 text-sm text-left'>{row.hostel}</p>  </td>
+                                                   <p className='ml-20 text-sm '>{row.hostel}</p>  </td>
                                                 <td
                                                     className='w-1/3 text-center'
                                                 >
@@ -821,6 +823,7 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
                                                         value={row.id}
                                                         checked={selectedValues.some((value) => value.id === row.id)}
                                                         onClick={() => handleRadioSelect(row.id, row.name, row.hostel)}
+                                                        disabled={formData.selection_option=='All' ? true : false}
                                                     />
                                                 </td>
                                             </tr>
@@ -829,12 +832,299 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
                                 </table>
                             </div>
                             </div>
+
+                            <div className='w-full flex justify-end' >
+                                <div className='w-96 flex flex-col justify-center mr-10'>
+                                    <button onClick={handleNextPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
+                                        Save selected student and Continue
+                                    </button>
+                                 </div>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
+    );
+};
+
+const Page4 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage }) => {
+    const [currentDate, setCurrentDate] = useState('');
+    const [currentTime, setCurrentTime] = useState('');
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const date = new Date();
+
+            const formattedDate = formatDate(date);
+            const formattedTime = formatTime(date);
+
+            setCurrentDate(formattedDate);
+            setCurrentTime(formattedTime);
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
+
+    // Helper function to format the date
+    const formatDate = (date) => {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+    };
+
+    // Helper function to format the time
+    const formatTime = (date) => {
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        return date.toLocaleTimeString(undefined, options);
+    };
+
+    const [errors, setErrors] = useState({});
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const validateForm = () => {
+        const errors = {};
+
+        setErrors(errors);
+        return errors;
+    };
+
+
+    const handleNextPage = (e) => {
+        e.preventDefault();
+        const formErrors = validateForm();
+        if (Object.keys(formErrors).length === 0) {
+            nextPage();
+        }
+        else {
+            setErrors(formErrors);
+        }
+    }
+    const changeDateExpense = date => {
+        setFormData((prevData) => ({
+            ...prevData,
+            doe: date
+        }));
+    }
+    const changeDateBooking = date => {
+        setFormData((prevData) => ({
+            ...prevData,
+            dob: date
+        }));
+    }
+
+    const CalculatePerStudent = () => {
+        if (formData.total_amount && formData.total_student > 0) {
+            var ans = parseInt(formData.total_amount) / parseInt(formData.total_student)
+            return parseInt(ans);
+        }
+        return "Please Enter Total Expense and No of Students"
+    }
+
+    return (
+        <div className="flex bg-defaultBg" >
+            {/* Main Content */}
+            <div className="w-full h-full">
+                <form >
+                    <div className='w-full flex justify-center h-1/2 pt-10' >
+                        <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
+                            {/* content */}
+                            <div className='w-1/2 flex flex-col ml-5'>
+                                <div className='w-full mt-5'>
+                                    <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
+                                </div>
+                                <div className='w-full mt-1'>
+                                    <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
+                                </div>
+                                <div className='w-full mt-3'>
+                                    <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
+                                </div>
+                                <div className='w-full mt-0.5 mb-5'>
+                                    <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
+                                </div>
+                            </div>
+                            {/* Image */}
+                            <div className='w-1/2 flex justify-end mr-5 '>
+                                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4' />
+                            </div>
+                        </div>
+                    </div>
+                    {/* Header */}
+
+                    <div className="form-progress flex justify-center items-center mt-5">
+                        <div className='pl-2 pr-2 flex-col justify-center mr-16'>
+                            <div className='flex justify-center'>
+                                <button onClick={() => { setCurrentPage(1) }}>
+                                    <div
+                                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                                    >
+                                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
+                                    </div>
+                                </button>
+                            </div>
+                            <div><p className='font-popins font-sm text-sm text-gray-500'>Student Details</p></div>
+                        </div>
+                        <div className='pl-2 pr-2 flex-col justify-center  mr-16'>
+                            <div className='flex justify-center'>
+                                <button onClick={() => { setCurrentPage(2) }}>
+                                    <div
+                                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                                    >
+                                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <div><p className='font-popins font-sm text-sm text-gray-500'>Send for approval</p></div>
+                        </div>
+                        <div className='pl-2 pr-2 flex-col justify-center'>
+                            <div className='flex justify-center'>
+                                <button onClick={() => { setCurrentPage(4) }}>
+                                    <div
+                                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                                    >
+                                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
+                                    </div>
+                                </button>
+                            </div>
+                            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic & Amount Details</p></div>
+                        </div>
+                    </div>
+
+                    {/* Form Data */}
+                    <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
+                        <div className="bg-white w-11/12 h-auto mt-5 border-none rounded-lg flex justify-center font-popins mb-10">
+                            <div className='w-7/12 flex-col pl-5 mb-10'>
+                                <div className='w-full mt-5'>
+                                    <p className='font-popins text-2xl font-bold '>Student Expenses</p>
+                                </div>
+                                <div className='w-full'>
+                                    <p className='font-popins text-lg font-medium text-orange-500 '>Book your expenses for student.</p>
+                                </div>
+
+                                {/* Complete Form */}
+                                    <div className='w-full h-auto flex mt-4 ml-2'>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Expense Code:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.exp_code}
+                                            </div>
+                                        </div>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Expense Name:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.exp_name}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='w-full h-auto flex mt-4 ml-2'>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Expense Type:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.exp_type}
+                                            </div>
+                                        </div>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Date of Expense:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.doe}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='w-full h-auto flex mt-4 ml-2'>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Date of Booking:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.dob}
+                                            </div>
+                                        </div>
+
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Total Expense Amount:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.total_amount}
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div className='w-full h-auto flex mt-4 ml-2'>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Voucher Number:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.vn}
+                                            </div>
+                                        </div>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>Voucher Amount:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.va}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='w-full h-auto flex mt-4 ml-2'>
+                                        <div className='w-1/2'>
+                                            <div className=''>
+                                                <p className='mb-1 font-popins text-medium '>No. of Student:</p>
+                                            </div>
+                                            <div className='mb-1 font-popins text-medium text-blue-500 font-medium'>
+                                                {formData.total_student}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div className='w-5/12 bg-blue-100 flex-col justify-end rounded-r-lg'>
+                                <div className='flex-col mt-10'>
+                                    {/* image */}
+                                    <div className='flex justify-center'>
+                                        <img src={ExpenseImage} className='h-44 w-44' />
+                                    </div>
+
+                                    {/* text */}
+                                    <div className='flex justify-center mt-2'>
+                                        <p className='font-popins text-2xl font-bold text-gray-600'>Student Expenses</p>
+                                    </div>
+                                </div>
+
+                                {/* Continue Button */}
+                                <div className='flex justify-center mt-10'>
+                                    <div className='w-60 flex flex-col justify-center mt-10 mb-10'>
+                                        <button onClick={handleNextPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
+                                            Send for Approval
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 
@@ -865,6 +1155,9 @@ const ExpenseForm = () => {
             )}
             {currentPage === 3 && (
                 <Page3 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} setCurrentPage={setCurrentPage} />
+            )}
+            {currentPage === 4 && (
+                <Page4 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} setCurrentPage={setCurrentPage} />
             )}
         </>
     )

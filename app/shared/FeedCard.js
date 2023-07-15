@@ -1,16 +1,32 @@
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { BlurImage, Image } from '../components'
 import { theme } from '../themes'
 import { getMimeTypeFromFilename } from '@shopify/mime-types'
 import { Icon } from '@draftbit/ui'
+import * as VideoThumbnails from 'expo-video-thumbnails'
 
 export const FeedCard = ({ feed }) => {
   const navigation = useNavigation()
-  const uri = feed?.image_path
-  const type = getMimeTypeFromFilename(uri)
+  const type = getMimeTypeFromFilename(feed?.image_path)
   const isVideo = type && type.includes('video')
+  const [uri, setUri] = useState(isVideo ? null : feed?.image_path)
+
+  const loadVideoThumbnail = async () => {
+    try {
+      const data = await VideoThumbnails.getThumbnailAsync(feed?.image_path)
+      setUri(data.uri)
+    } catch (e) {
+      // do nothing
+    }
+  }
+
+  useEffect(() => {
+    if (isVideo) {
+      loadVideoThumbnail()
+    }
+  }, [])
 
   const handlePress = () => {
     navigation.navigate('PostDetailsScreen', {
@@ -20,18 +36,20 @@ export const FeedCard = ({ feed }) => {
 
   return (
     <Pressable onPress={handlePress} style={styles.main}>
-      <BlurImage style={styles.blurContainer} resizeMode="cover" blurRadius={50} source={{ uri }}>
-        <Image resizeMode="contain" style={styles.image} source={{ uri }} />
-        {isVideo && <Icon style={styles.videoIcon} name="FontAwesome/video-camera" size={12} color="#fff" />}
-        {/* Details */}
-        <View style={styles.captionContainer}>
-          {/* Title */}
-          <Text style={styles.captionText} ellipsizeMode={'tail'} numberOfLines={2}>
-            {'🖖 '}
-            {feed?.caption}
-          </Text>
-        </View>
-      </BlurImage>
+      {uri && (
+        <BlurImage style={styles.blurContainer} resizeMode="cover" blurRadius={50} source={{ uri }}>
+          <Image resizeMode="contain" style={styles.image} source={{ uri }} />
+        </BlurImage>
+      )}
+      {isVideo && <Icon style={styles.videoIcon} name="FontAwesome/video-camera" size={12} color="#fff" />}
+      {/* Details */}
+      <View style={styles.captionContainer}>
+        {/* Title */}
+        <Text style={styles.captionText} ellipsizeMode={'tail'} numberOfLines={2}>
+          {'🖖 '}
+          {feed?.caption}
+        </Text>
+      </View>
     </Pressable>
   )
 }
@@ -60,6 +78,8 @@ const styles = StyleSheet.create({
     height: 40,
     position: 'absolute',
     width: '100%',
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
   captionText: {
     color: theme.colors.custom_rgb255_255_255,

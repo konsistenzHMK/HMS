@@ -27,6 +27,7 @@ const SECTIONS = ['POST', 'COMMENTS']
 const PostDetailsScreen = (props) => {
   const [likeCount, setLikesCount] = useState(0)
   const [commentsCount, setCommentsCount] = useState(0)
+  const [viewsCount,setViewsCount]=useState(0)
 
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
@@ -558,7 +559,7 @@ const PostDetailsScreen = (props) => {
                     dimensions.width,
                   )}
                 >
-                  {'104k'}
+                  {viewsCount}
                 </Text>
               </View>
             </View>
@@ -860,6 +861,44 @@ const PostDetailsScreen = (props) => {
       </PagalFanBEApi.FetchFetchAllCommentsForAPostGET>
     )
   }
+
+  const pagalFanBEUpdatePostPATCH = PagalFanBEApi.useUpdatePostPATCHViews();
+
+  const handlePostUpdatePress = async (newviews) => {
+    try {
+      console.log(newviews);
+      await pagalFanBEUpdatePostPATCH.mutateAsync({
+        postId: props.route?.params?.post_id ?? 1,
+        views: newviews,
+      })
+      console.log("updated");
+    } catch (err) {
+      snackbar.show({ title: 'Error updating post', variant: 'negative' })
+      console.error(err)
+    }
+  }
+
+  React.useEffect(() => {
+    const handler = async () => {
+      console.log(props.route?.params?.post_id );
+      try {
+        const postDetails = await PagalFanBEApi.fetchSinglePostGET(Constants, {
+          id: props.route?.params?.post_id ?? 1,
+        })
+
+        const fetchData = postDetails?.[0];
+        let views=(fetchData?.count_views);
+        if(views==null) views=0;
+        views+=1;
+
+        setViewsCount(views);
+        await handlePostUpdatePress(views);
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    handler()
+  }, [])
 
   return (
     <>

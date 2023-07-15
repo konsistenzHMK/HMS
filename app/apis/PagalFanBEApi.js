@@ -6,6 +6,53 @@ import usePrevious from '../utils/usePrevious'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import { useMemo } from 'react'
 
+
+export const updatePostPATCHviewsStatusAndText = (Constants, { postId, views }) =>
+  fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?id=eq.${postId ?? ''}`, {
+    body: JSON.stringify({ count_views: views }),
+    headers: {
+      Accept: 'application/json',
+      Authorization: Constants['AUTHORIZATION_HEADER'],
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+      apiKey: Constants['API_KEY_HEADER'],
+    },
+    method: 'PATCH',
+  }).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const updatePostPATCHViews = (Constants, { postId, views }) =>
+  updatePostPATCHviewsStatusAndText(Constants, { postId, views }).then(({ status, statusText, text }) => {
+    try {
+      return text
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useUpdatePostPATCHViews = (initialArgs) => {
+  const queryClient = useQueryClient()
+  const Constants = GlobalVariables.useValues()
+
+  return useMutation((args) => updatePostPATCHViews(Constants, { ...initialArgs, ...args }), {
+    onError: (err, variables, { previousValue }) => {
+      if (previousValue) {
+        return queryClient.setQueryData('posts', previousValue)
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries('post')
+      queryClient.invalidateQueries('posts')
+    },
+  })
+}
+
+
 export const fetchAllFollowedByUserGETStatusAndText = (Constants, { followerId }) =>
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/follows?follower_id=eq.${

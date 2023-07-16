@@ -2983,6 +2983,97 @@ export const FetchFetchSinglePostGET = ({ children, onData = () => {}, refetchIn
   return children({ loading, data, error, refetchFetchSinglePost: refetch })
 }
 
+export const fetchSinglePostWithNext10PostsGETStatusAndText = (
+  Constants,
+  { id }
+) =>
+  fetch(
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?id=lte.${
+      id ?? ''
+    }&limit=10&order=id.desc&select=*,user_profiles!posts_posted_by_id_fkey(*)`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+    }
+  ).then(async res => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }));
+
+export const fetchSinglePostWithNext10PostsGET = (Constants, { id }) =>
+  fetchSinglePostWithNext10PostsGETStatusAndText(Constants, { id }).then(
+    ({ status, statusText, text }) => {
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error(
+          [
+            'Failed to parse response text as JSON.',
+            `Error: ${e.message}`,
+            `Text: ${JSON.stringify(text)}`,
+          ].join('\n\n')
+        );
+      }
+    }
+  );
+
+export const useFetchSinglePostWithNext10PostsGET = (
+  args,
+  { refetchInterval } = {}
+) => {
+  const Constants = GlobalVariables.useValues();
+  return useQuery(
+    ['posts', args],
+    () => fetchSinglePostWithNext10PostsGET(Constants, args),
+    {
+      refetchInterval,
+    }
+  );
+};
+
+export const FetchFetchSinglePostWithNext10PostsGET = ({
+  children,
+  onData = () => {},
+  refetchInterval,
+  id,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const { loading, data, error, refetch } =
+    useFetchSinglePostWithNext10PostsGET({ id }, { refetchInterval });
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+  React.useEffect(() => {
+    if (data) {
+      onData(data);
+    }
+  }, [data]);
+
+  return children({
+    loading,
+    data,
+    error,
+    refetchFetchSinglePostWithNext10Posts: refetch,
+  });
+};
+
 export const fetchSingleUserGETStatusAndText = (Constants, { id }) =>
   fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/user_profiles?user_id=eq.${id ?? ''}`, {
     headers: {

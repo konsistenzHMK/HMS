@@ -47,6 +47,7 @@ const HomeScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
   const notifications = [] || notificationStore.useState((s) => s.notifications)
+  const [unread, setUnread] = useState(false)
   const [feedLoadTimestamp, setFeedLoadTimestamp] = useState(Date.now())
 
   const { theme } = props
@@ -113,6 +114,7 @@ const HomeScreen = (props) => {
       })
 
     const u1 = messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      setUnread(true)
       notificationStore.update((s) => {
         s.notifications.push({ ...remoteMessage.notification, time: Date.now(), unread: true })
         AsyncStorage.setItem('@notification', JSON.stringify(s.notifications)).then(() => {
@@ -122,6 +124,7 @@ const HomeScreen = (props) => {
     })
 
     const u2 = messaging().onMessage(async (remoteMessage) => {
+      setUnread(true)
       notificationStore.update((s) => {
         s.notifications.push({
           ...remoteMessage.notification,
@@ -230,6 +233,7 @@ const HomeScreen = (props) => {
         {/* TopRight */}
         <Pressable
           onPress={() => {
+            setUnread(false)
             navigation.navigate('NotificationsScreen')
           }}
         >
@@ -256,7 +260,7 @@ const HomeScreen = (props) => {
                 )}
                 name={'Entypo/dot-single'}
                 color={theme.colors['PF-Primary']}
-                size={isUnreadNotif ? 32 : 0}
+                size={unread ? 32 : 0}
               />
             </View>
 
@@ -1040,7 +1044,8 @@ const HomeScreen = (props) => {
         />
         {/* Feed */}
         <View style={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}>
-          <PagalFanBEApi.FetchFetchAllPostsGET key={`${feedLoadTimestamp}`}>
+          <PagalFanBEApi.FetchFetchAllPostsGET key={`${
+          }`}>
             {({ loading, error, data, nextPage }) => {
               nextPageFn = nextPage
               const fetchData = data

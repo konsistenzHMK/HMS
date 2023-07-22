@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const DeviceVariables = {
   AUTHORIZATION_HEADER: '',
   LOGGED_IN_USER: '',
-  Language: 'English',
+  Language: 'en',
 }
 const AppVariables = {
   API_KEY_HEADER:

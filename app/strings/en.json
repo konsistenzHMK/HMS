@@ -1,0 +1,191 @@
+{
+  "translation": {
+    "CreatePostScreen": {
+      "Text.new": "New Post",
+      "Toast.NotEmpty": "Post can't be empty",
+      "Toast.ErrorUpload": "Error uploading post",
+      "Alert.MediaSize": "Please select media not more than 15 seconds",
+      "Text.InputPlaceholder": "What do you want to say?",
+      "Text.AddHashtags": "Add hashtags at the end for sports, matches, fanclubs etc that you want to tag. e.g. Smashing innings #ViratKohli #Cricket #IPL2023 #RCB",
+      "Text.Post": "Post Now",
+      "Text.VideoSize": "Video should not be more than 15s",
+      "Text.Uploading": "Uploading post...",
+      "Error.NoMedia": "No Media Selected"
+    },
+
+    "EditPostScreen": {
+      "Toast.AddPost": "Please add post details",
+      "Toast.UpdatePost": "Updating post …",
+      "Toast.ErrorUpdate": "Error updating post",
+      "Text.EditPostTitle": "Edit Post",
+      "Text.SubHeading": "Original image and caption cannot be changed",
+      "Text.Add": "You can only add additional text below",
+      "Text.InputPlaceholder": "What more do you want to say?",
+      "Text.AddHashtags": "Add hashtags at the end for sports, matches, fanclubs etc that you want to tag. e.g. Smashing innings #ViratKohli #Cricket #IPL2023 #RCB",
+      "Text.Button": "Update",
+      "Error.ProblemFetchData": "There was a problem fetching this data"
+    },
+
+    "EditProfileScreen": {
+      "Toast.Update": "Updating user details …",
+      "Error.ImageUpload": "Image upload error",
+      "Text.EditProfile": "Edit Profile",
+      "Text.FirstName": "First Name",
+      "Text.FirstNamePlaceholder": "Enter first Name",
+      "Text.LastName": "Last Name",
+      "Text.LastNamePlaceholder": "Enter Last Name",
+      "Text.UserHandle": "User handle",
+      "Text.UserHandlePlaceholder": "Enter your preferred user handle, e.g. eagle2023",
+      "Text.Bio": "Brief Bio",
+      "BioPlaceholder": "Describe yourself",
+      "Button.Update": "Update",
+      "Text.MediaType": "Choose media type",
+      "Error.ProblemFetchData": "There was a problem fetching this data"
+    },
+
+    "FanClubSingleScreen": {
+      "Text.Followers": "Followers",
+      "Text.Cricket": "Cricket",
+      "Text.Follow": "Follow",
+      "Toast.FanClubFollowed": "Fanclub followed successfully",
+      "Toast.FanClubUnfollowed": "Fanclub unfollowed successfully",
+      "Error.ProblemFetchData": "There was a problem fetching this data",
+      "Text.Following": "Following"
+    },
+
+    "HomeScreen": {
+      "Text.NotificationSaved": "notification saved",
+      "Text.Yo": "Yo",
+      "Text.PagalFan": "PagalFan 🤟",
+      "Text.ProblemFetchData": "There was a problem fetching this data",
+      "Text.Live Now": "LIVE NOW",
+      "Text.Live": "LIVE",
+      "Text.Bakarr": "Match BAKARR",
+      "Text.BakarrRoom": "Hear celebrities and fans speak, and assert your \nviews - in the PagalFan audio chatroom!!",
+      "Text.DiveIn": "DIVE IN 👋",
+      "Text.MatchesHeader": "Live / Upcoming Matches",
+      "Text.ViewAll": "View All",
+      "Text.vs": "v/s",
+      "Text.IST": "IST",
+      "Text.FindFanClub": "Find Your PagalFan Club",
+      "Text.EnteringBakarrRoom": "Entering PagalFan's BAKARR room!",
+      "Button.Proceed": "PROCEED 🎙",
+      "Text.Skip": "Skip for now"
+    },
+
+    "BakarRoomScreen": {
+      "Toast.MicrophonePermission": "Microphone permission not granted. Please go to settings and allow mic permission",
+      "Toast.ConnectionError": "Connection error",
+      "Toast.ExitRoom": "Exiting room",
+      "Toast.MicrophoneMuted": "Microphone muted",
+      "Toast.PostingComment": "Posting comment",
+      "Text.Title": "PagalFan - Bakarr Room",
+      "Text.Welcome": "Welcome!",
+      "Text.TextSubheading2": "You’re the first one here.",
+      "Text.TextSubHeading3": "Sit back and relax till the others join.",
+      "Text.NoChat": "No Chat",
+      "Text.BakarrChat": "Bakarr Chat",
+      "Text.CloseChat": "Close Chat",
+      "Text.participants": "participants"
+    },
+
+    "MatchDaysAllScreen": {
+      "Text.ProblemFetchData": "There was a problem fetching this data",
+      "Text.Title": "Matches ... all of 'em",
+      "Text.Live": "LIVE / UPCOMING",
+      "Text.Past": "PAST",
+      "Text.SearchPlaceholder": "Search by team..."
+    },
+
+    "MatchDaySingleScreen": {
+      "Text.ProblemFetchData": "There was a problem fetching this data",
+      "Text.Live": "LIVE",
+      "Text.vs": "v/s",
+      "Text.IST": "IST",
+      "Text.LiveBakarr": "live bakarr",
+      "Text.Join": "Join Now",
+      "Text.BakarrSession": "BAKARR session",
+      "Text.BakarrRoom": "Hear celebrities and fans speak, and assert your \nviews - in the PagalFan audio chatroom!!",
+      "Text.FanChat": "FAN CHAT",
+      "Text.Scores": "SCORES",
+      "Text.Moments": "MOMENTS",
+      "Text.FanReaction": "fan reactions",
+      "Text.InputPlaceholder": "Type something...",
+      "Toast.Upload": "Uploading comment …"
+    },
+
+    "MyFanClubsScreen": {
+      "Text.FollowedTitle": "Followed PagalFan Clubs",
+      "Text.ProblemFetchData": "There was a problem fetching this data",
+      "Text.Text.RecommendedTitle": "Recommended FanClubs For You",
+      "Text.Cricket": "Cricket",
+      "Text.SearchPlaceholder": "Search by name...",
+      "Text.Follow": "Follow"
+    },
+
+    "MyProfileScreen": {
+      "Text.ProblemFetchData": "There was a problem fetching this data",
+      "Text.Followers": "Followers",
+      "Text.Posted": "Posted",
+      "Text.Saved": "Saved",
+      "Text.Following": "Following",
+      "Text.Remove": "Remove",
+      "Text.Unfollow": "Unfollow",
+      "Toast.UserRemoved": "User removed from followers list",
+      "Toast.UserRemovedError": "Something went wrong. Please try again later"
+    },
+
+    "OthersProfileScreen": {
+      "Text.ProblemFetchData": "There was a problem fetching this data",
+      "Text.Followers": "Followers",
+      "Text.Posted": "Posted",
+      "Text.Saved": "Saved",
+      "Text.Following": "Following",
+      "Text.Remove": "Remove",
+      "Text.Unfollow": "Unfollow",
+      "Toast.UserRemoved": "User unfollowed successfully",
+      "Toast.UserFollowed": "User followed successfully",
+      "Toast.Error": "Something went wrong. Please try again later",
+      "Text.Follow": "Follow"
+    },
+
+    "PostDetailsScreen": {
+      "Text.ProblemFetchData": "There was a problem fetching this data",
+      "Toast.UploadingComment": "Uploading comment …",
+      "Toast.PostLike": "Saving post like…",
+      "Toast.UpdateError": "Error updating post",
+      "Toast.SavePost": "Saving post …",
+      "Text.InputPlaceholder": "Type something...",
+      "Text.Share": "Share",
+      "Text.ReportText": "Reporting post to admin…",
+      "Text.Unsave": "Unsave",
+      "Text.Save": "Save",
+      "Text.Report": "Report"
+    },
+
+    "SearchScreen": {
+      "Text.SearchBarPlaceholder": "Search anything...",
+      "Toast.ProblemFetchData": "There was a problem fetching this data"
+    },
+
+    "SignupOTPScreen": {
+      "Toast.CheckOTPText": "Checking OTP …",
+      "Text.EnterOTPText": "Enter the 6 digit OTP",
+      "Text.SentText": "Sent to your email:",
+      "Text.Text": "In case you don't find it, check your spam folder",
+      "Text.OTPPlaceholder": "Enter OTP",
+      "Text.Continue": "CONTINUE",
+      "Button.SignUp": "Sign Up"
+    },
+
+    "SignupStartScreen": {
+      "Text.Welcome": "Welcome!",
+      "Text.LoginText": "Login / Register",
+      "Text.OTPSentText": "We will send an OTP to your mail id",
+      "Text.TermsCondition": "I agree with the Terms of Use and Privacy Policy of PagalFan",
+      "Toast.SentOTP": "Sending OTP …",
+      "Button.GetOTP": "Get OTP by Email",
+      "Text.SignUp": "Sign Up"
+    }
+  }
+}

@@ -39,6 +39,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Image, ShimmerPlaceHolder } from '../components'
 import { FeedCard } from '../shared'
 import branch from 'react-native-branch'
+import { useTranslation } from 'react-i18next'
 
 let nextPageFn = null
 
@@ -46,10 +47,10 @@ const HomeScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
-  const notifications = [] || notificationStore.useState((s) => s.notifications)
   const [unread, setUnread] = useState(false)
   const [feedLoadTimestamp, setFeedLoadTimestamp] = useState(Date.now())
 
+  const { t: translate } = useTranslation()
   const { theme } = props
   const { navigation } = props
 
@@ -85,7 +86,7 @@ const HomeScreen = (props) => {
 
   const handleDeeplink = (data) => {
     if (data.post_id) {
-      navigation.navigate('PostDetailsScreen', {
+      navigation.navigate('PostListScreen', {
         post_id: data.post_id,
       })
     }
@@ -170,8 +171,6 @@ const HomeScreen = (props) => {
     }
   }
 
-  const isUnreadNotif = notifications?.some((notif) => notif.unread)
-
   const renderFeedItem = ({ item }) => {
     return <FeedCard feed={item} />
   }
@@ -214,7 +213,7 @@ const HomeScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'Yo'}
+            {translate('HomeScreen.Text.Yo')}
           </Text>
 
           <Text
@@ -227,7 +226,7 @@ const HomeScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'PagalFan 🤟'}
+            {translate('HomeScreen.Text.PagalFan')}
           </Text>
         </View>
         {/* TopRight */}
@@ -834,8 +833,12 @@ const HomeScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {checkMatchDates(flashListData?.match_date,flashListData?.end_date) ? getCorrectDateFormat(flashListData?.match_date):getCorrectDateFormat(flashListData?.match_date)}
-                              {checkMatchDates(flashListData?.match_date,flashListData?.end_date) ? null:endDate(flashListData?.end_date)}
+                              {checkMatchDates(flashListData?.match_date, flashListData?.end_date)
+                                ? getCorrectDateFormat(flashListData?.match_date)
+                                : getCorrectDateFormat(flashListData?.match_date)}
+                              {checkMatchDates(flashListData?.match_date, flashListData?.end_date)
+                                ? null
+                                : endDate(flashListData?.end_date)}
                             </Text>
                             {/* StartTime */}
                             <Text
@@ -1044,8 +1047,7 @@ const HomeScreen = (props) => {
         />
         {/* Feed */}
         <View style={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}>
-          <PagalFanBEApi.FetchFetchAllPostsGET key={`${
-          }`}>
+          <PagalFanBEApi.FetchFetchAllPostsGET key={`${feedLoadTimestamp}`}>
             {({ loading, error, data, nextPage }) => {
               nextPageFn = nextPage
               const fetchData = data

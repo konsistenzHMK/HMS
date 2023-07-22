@@ -20,7 +20,7 @@ function NotificationItem({ title = '', body = '', time, data = {} }) {
           })
         }
         if (data.post_id) {
-          navigation.navigate('PostDetailsScreen', {
+          navigation.navigate('PostListScreen', {
             post_id: data.post_id,
           })
         }

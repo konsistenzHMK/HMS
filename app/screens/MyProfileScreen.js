@@ -55,6 +55,12 @@ const MyProfileScreen = (props) => {
     })
   }
 
+  const handleFeedPress = (item) => {
+    navigation.navigate('PostDetailsScreen', {
+      post_id: item?.id,
+    })
+  }
+
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
@@ -370,7 +376,7 @@ const MyProfileScreen = (props) => {
                       data={fetchData}
                       listKey={'l9BdpIAA'}
                       keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
-                      renderItem={({ item }) => <FeedCard feed={item} />}
+                      renderItem={({ item }) => <FeedCard feed={item} onPress={() => handleFeedPress(item)} />}
                       style={StyleSheet.applyWidth(
                         StyleSheet.compose(GlobalStyles.FlatListStyles(theme)['List'], { width: '100%' }),
                         dimensions.width,

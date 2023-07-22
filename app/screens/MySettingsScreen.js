@@ -9,6 +9,7 @@ import { useNavigationContext } from '../navigation/NavigationContext.js'
 const MySettingsScreen = (props) => {
   const dimensions = useWindowDimensions()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
+  const Constants = GlobalVariables.useValues()
   const { setStack } = useNavigationContext()
 
   const { theme } = props
@@ -25,6 +26,13 @@ const MySettingsScreen = (props) => {
     })
     setStack('login')
   }
+
+  const toggleAppLanguage = () => {
+    const value = Constants['Language'] === 'en' ? 'hi' : 'en'
+    setGlobalVariableValue({ key: 'Language', value })
+  }
+
+  const currentLanguage = Constants['Language'] == 'en' ? 'English' : 'Hindi'
 
   return (
     <ScreenContainer
@@ -230,6 +238,29 @@ const MySettingsScreen = (props) => {
             color={theme.colors.divider}
           />
         </Touchable>
+        {/* Language */}
+        <Touchable style={{ height: 60, justifyContent: 'center', alignItems: 'center' }} onPress={toggleAppLanguage}>
+          <Text
+            style={StyleSheet.applyWidth(
+              {
+                color: theme.colors.strong,
+                fontFamily: 'System',
+                fontWeight: '600',
+                fontSize: 15,
+              },
+              dimensions.width,
+            )}
+          >
+            {'Current language is '}
+            <Text style={{ fontWeight: '800' }}>{currentLanguage}</Text>
+            {' click to change'}
+          </Text>
+        </Touchable>
+        <Divider
+          style={StyleSheet.applyWidth({ height: 1 }, dimensions.width)}
+          height={1}
+          color={theme.colors.divider}
+        />
       </View>
       {/* Footer Wrapper */}
       <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 0 }, dimensions.width)}>

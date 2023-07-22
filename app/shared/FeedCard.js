@@ -5,9 +5,9 @@ import { BlurImage, Image } from '../components'
 import { theme } from '../themes'
 import { getMimeTypeFromFilename } from '@shopify/mime-types'
 import { Icon } from '@draftbit/ui'
-import * as VideoThumbnails from 'expo-video-thumbnails'
+import { createThumbnail } from 'react-native-create-thumbnail'
 
-export const FeedCard = ({ feed }) => {
+export const FeedCard = ({ feed, onPress }) => {
   const navigation = useNavigation()
   const type = getMimeTypeFromFilename(feed?.image_path)
   const isVideo = type && type.includes('video')
@@ -15,8 +15,10 @@ export const FeedCard = ({ feed }) => {
 
   const loadVideoThumbnail = async () => {
     try {
-      const data = await VideoThumbnails.getThumbnailAsync(feed?.image_path)
-      setUri(data.uri)
+      const imageUri = feed?.image_path
+      let cacheName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.length)
+      const data = await createThumbnail({ url: imageUri, cacheName })
+      setUri(data.path)
     } catch (e) {
       // do nothing
     }
@@ -29,7 +31,12 @@ export const FeedCard = ({ feed }) => {
   }, [])
 
   const handlePress = () => {
-    navigation.navigate('PostDetailsScreen', {
+    if (onPress) {
+      onPress()
+      return
+    }
+
+    navigation.navigate('PostListScreen', {
       post_id: feed?.id,
     })
   }

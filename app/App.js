@@ -12,6 +12,7 @@ import messaging from '@react-native-firebase/messaging'
 import { PermissionsAndroid, LogBox, StatusBar } from 'react-native'
 import SplashScreen from './screens/SplashScreen'
 import { AppNavigator } from './navigation/AppNavigator'
+import InternationalisationProvider from './strings/InternationalisationProvider'
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
 
@@ -53,14 +54,16 @@ const App = () => {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <GlobalVariableProvider>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={DraftbitTheme}>
-            <SnackbarProvider>
-              <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-              <AppNavigator />
-            </SnackbarProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
+        <InternationalisationProvider>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={DraftbitTheme}>
+              <SnackbarProvider>
+                <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+                <AppNavigator />
+              </SnackbarProvider>
+            </ThemeProvider>
+          </QueryClientProvider>
+        </InternationalisationProvider>
       </GlobalVariableProvider>
     </SafeAreaProvider>
   )

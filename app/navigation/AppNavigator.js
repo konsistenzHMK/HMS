@@ -18,6 +18,7 @@ import NotificationsScreen from '../screens/NotificationsScreen'
 import { navigationRef } from './NavigationRef'
 import NavigationContext from './NavigationContext'
 import * as GlobalVariables from '../config/GlobalVariableContext'
+import PostListScreen from '../screens/PostListScreen'
 
 export const AppNavigator = () => {
   const [stack, setStack] = useState('loading')
@@ -136,6 +137,14 @@ export const AppNavigator = () => {
               component={NotificationsScreen}
               options={{
                 title: 'Notifications',
+              }}
+            />
+
+            <Stack.Screen
+              name="PostListScreen"
+              component={PostListScreen}
+              options={{
+                title: 'Posts',
               }}
             />
           </React.Fragment>

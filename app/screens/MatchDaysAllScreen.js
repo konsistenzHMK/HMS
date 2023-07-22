@@ -154,7 +154,7 @@ const MatchDaysAllScreen = (props) => {
           {/* MatchesView */}
           <ScrollView bounces={true} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
             <PagalFanBEApi.FetchFetchAllUpcomingMatchesGET>
-              {({ loading, error, data, refetchFetchAllUpcomingMatches }) => {
+              {({ loading, error, data }) => {
                 const fetchData = data
                 if (!fetchData || loading) {
                   return <ActivityIndicator />
@@ -371,7 +371,7 @@ const MatchDaysAllScreen = (props) => {
           {/* MatchesViewPast */}
 
           <PagalFanBEApi.FetchFetchAllPastMatchesGET>
-            {({ loading, error, data, refetchFetchAllPastMatches, nextPage }) => {
+            {({ loading, error, data }) => {
               const fetchData = data
               if (!fetchData || loading) {
                 return <ActivityIndicator />
@@ -384,18 +384,10 @@ const MatchDaysAllScreen = (props) => {
               return (
                 <ScrollView
                   style={{ flex: 1 }}
-                  onScroll={(e) => {
-                    let paddingToBottom = 10
-                    paddingToBottom += e.nativeEvent.layoutMeasurement.height
-                    if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
-                      // make something...
-                      nextPage()
-                    }
-                  }}
-                  // bounces={true}
-                  // showsHorizontalScrollIndicator={false}
-                  // showsVerticalScrollIndicator={false}
-                  // nestedScrollEnabled
+                  bounces={true}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  nestedScrollEnabled
                 >
                   <FlatList
                     nestedScrollEnabled

@@ -122,8 +122,12 @@ const HomeScreen = (props) => {
 
     const u2 = messaging().onMessage(async (remoteMessage) => {
       notificationStore.update((s) => {
-        s.notifications.push({ ...remoteMessage.notification, time: Date.now(), unread: true })
-        console.log(s.notifications)
+        s.notifications.push({
+          ...remoteMessage.notification,
+          data: remoteMessage.data,
+          time: Date.now(),
+          unread: true,
+        })
         AsyncStorage.setItem('@notification', JSON.stringify(s.notifications)).then(() => {
           console.log('notification saved')
         })

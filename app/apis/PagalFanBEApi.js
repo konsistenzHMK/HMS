@@ -1955,7 +1955,7 @@ export const FetchFetchAllSportsGET = ({ children, onData = () => {}, refetchInt
 
 export const fetchAllUpcomingMatchesGETStatusAndText = (Constants) =>
   fetch(
-    'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/matches?match_date=gte.now()&order=match_date&select=*,team_1(*),team_2(*)',
+    'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/matches?end_date=gte.now()&order=match_date&select=*,team_1(*),team_2(*)',
     {
       headers: {
         Accept: 'application/json',

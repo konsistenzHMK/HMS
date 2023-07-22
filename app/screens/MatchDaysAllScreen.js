@@ -7,6 +7,7 @@ import convertNullToTBD from '../global-functions/convertNullToTBD'
 import endDate from '../global-functions/endDate'
 import getCorrectDateFormat from '../global-functions/getCorrectDateFormat'
 import * as StyleSheet from '../utils/StyleSheet'
+import checkMatchDates from '../global-functions/matchType.js'
 import { Circle, CircleImage, Icon, ScreenContainer, TabView, TabViewItem, Touchable, withTheme } from '@draftbit/ui'
 import { ActivityIndicator, FlatList, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 
@@ -283,8 +284,8 @@ const MatchDaysAllScreen = (props) => {
                                 >
                                   {listData?.venue_city}
                                   {', '}
-                                  {getCorrectDateFormat(listData?.match_date)}
-                                  {endDate(listData?.end_date)}
+                                  {checkMatchDates(listData?.match_date,listData?.end_date) ? getCorrectDateFormat(listData?.match_date):getCorrectDateFormat(listData?.match_date)}
+                                  {checkMatchDates(listData?.match_date,listData?.end_date) ? null:endDate(listData?.end_date)}
                                 </Text>
                               </View>
                             </View>

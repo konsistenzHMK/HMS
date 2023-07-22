@@ -7,6 +7,7 @@ import convertNullToTBD from '../global-functions/convertNullToTBD'
 import convertUTCtoIST from '../global-functions/convertUTCtoIST'
 import endDate from '../global-functions/endDate'
 import getCorrectDateFormat from '../global-functions/getCorrectDateFormat'
+import checkMatchDates from '../global-functions/matchType.js'
 import getCorrectTimeFormat from '../global-functions/getCorrectTimeFormat'
 import isDatetimeInRange from '../global-functions/isDatetimeInRange'
 import * as StyleSheet from '../utils/StyleSheet'
@@ -829,8 +830,8 @@ const HomeScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {getCorrectDateFormat(flashListData?.match_date)}
-                              {endDate(flashListData?.end_date)}
+                              {checkMatchDates(flashListData?.match_date,flashListData?.end_date) ? getCorrectDateFormat(flashListData?.match_date):getCorrectDateFormat(flashListData?.match_date)}
+                              {checkMatchDates(flashListData?.match_date,flashListData?.end_date) ? null:endDate(flashListData?.end_date)}
                             </Text>
                             {/* StartTime */}
                             <Text

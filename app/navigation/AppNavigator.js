@@ -18,7 +18,7 @@ import NotificationsScreen from '../screens/NotificationsScreen'
 import { navigationRef } from './NavigationRef'
 import NavigationContext from './NavigationContext'
 import * as GlobalVariables from '../config/GlobalVariableContext'
-import PostListScreen from '../screens/PostListScreen'
+import PostListScreen from '../screens/post-list/PostListScreen'
 
 export const AppNavigator = () => {
   const [stack, setStack] = useState('loading')

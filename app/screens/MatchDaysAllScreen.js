@@ -509,8 +509,8 @@ const MatchDaysAllScreen = (props) => {
                                 >
                                   {listData?.venue_city}
                                   {', '}
-                                  {getCorrectDateFormat(listData?.match_date)}
-                                  {endDate(listData?.end_date)}
+                                  {checkMatchDates(listData?.match_date,listData?.end_date) ? getCorrectDateFormat(listData?.match_date):getCorrectDateFormat(listData?.match_date)}
+                                  {checkMatchDates(listData?.match_date,listData?.end_date) ? null:endDate(listData?.end_date)}
                                 </Text>
                               </View>
                             </View>

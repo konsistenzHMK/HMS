@@ -179,24 +179,19 @@ const MatchDaySingleScreen = (props) => {
     var team2
 
     team1 = jsonfeed?.data?.play?.first_batting
-    if (team1 == undefined) team1 = 'a'
 
-    if (team2 == 'a') team1 = 'b'
-    else team1 = 'a'
-
-    var st
-    console.log(team1, team2)
-    var st, st2
-    if (team2 == 'a') {
-      st = 'a_1'
-      st2 = 'a_2'
-    } else {
-      st = 'b_1'
-      st2 = 'b_2'
+    var st,str2;
+    if(team1=='a'){
+      st='b_1'
+      str2='b_2'
+    }
+    else{
+      st='a_1'
+      str2='a_2'
     }
 
     var ans1 = jsonfeed?.data?.play?.innings?.[st]?.score_str
-    var ans2 = jsonfeed?.data?.play?.innings?.[st2]?.score_str
+    var ans2 = jsonfeed?.data?.play?.innings?.[str2]?.score_str
     if (ans2 == undefined) ans2 = ''
     else ans2 = ' & ' + ans2
     return ans1 + ans2

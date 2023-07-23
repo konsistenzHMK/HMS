@@ -1496,7 +1496,7 @@ export const FetchFetchAllMatchesGET = ({ children, onData = () => {}, refetchIn
 
 export const fetchAllPastMatchesGETStatusAndText = (Constants, args) =>
   fetch(
-    'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/matches?match_date=lt.now()&order=match_date.desc&select=*,team_1(*),team_2(*)',
+    'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/matches?end_date=lt.now()&order=match_date.desc&select=*,team_1(*),team_2(*)',
     {
       headers: {
         Accept: 'application/json',

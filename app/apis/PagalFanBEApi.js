@@ -2253,6 +2253,82 @@ export const FetchFetchFeedForSingleMatchGET = ({ children, onData = () => {}, r
   })
 }
 
+export const fetchAllBakarrRecordingsGETStatusAndText = (
+  Constants,
+  _args,
+  handlers = {}
+) =>
+  fetch(
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_talks?order=created_at.desc&session_recorded_link=neq.{null}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+    }
+  ).then(res => handleResponse(res, handlers));
+
+export const fetchAllBakarrRecordingsGET = (Constants, _args, handlers = {}) =>
+  fetchAllBakarrRecordingsGETStatusAndText(Constants, {}, handlers).then(res =>
+    !isOkStatus(res.status) ? Promise.reject(res) : res.json
+  );
+
+export const useFetchAllBakarrRecordingsGET = (
+  args,
+  { refetchInterval, handlers = {} } = {}
+) => {
+  const Constants = GlobalVariables.useValues();
+  return useQuery(
+    ['bakarrs', args],
+    () => fetchAllBakarrRecordingsGET(Constants, args, handlers),
+    {
+      refetchInterval,
+    }
+  );
+};
+
+export const FetchFetchAllBakarrRecordingsGET = ({
+  children,
+  onData = () => {},
+  handlers = {},
+  refetchInterval,
+}) => {
+  const Constants = GlobalVariables.useValues();
+  const isFocused = useIsFocused();
+  const prevIsFocused = usePrevious(isFocused);
+
+  const {
+    isLoading: loading,
+    data,
+    error,
+    refetch,
+  } = useFetchAllBakarrRecordingsGET(
+    {},
+    { refetchInterval, handlers: { onData, ...handlers } }
+  );
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch();
+    }
+  }, [isFocused, prevIsFocused]);
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
+      console.error(error);
+    }
+  }, [error]);
+
+  return children({
+    loading,
+    data,
+    error,
+    refetchFetchAllBakarrRecordings: refetch,
+  });
+};
+
 export const fetchNextBakarrSessionGETStatusAndText = (Constants) =>
   fetch(
     'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_talks?limit=1&order=session_start.asc&session_end=gte.now()',

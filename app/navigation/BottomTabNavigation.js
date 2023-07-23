@@ -7,6 +7,7 @@ import MyProfileScreen from '../screens/MyProfileScreen'
 import SearchScreen from '../screens/SearchScreen'
 import { Icon } from '@draftbit/ui'
 import theme from '../themes/DraftbitTheme'
+import BakarrRecordingsScreen from '../screens/BakarrRecordingsScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -61,7 +62,7 @@ export const BottomTabNavigation = () => {
           tabBarLabel: 'My Matches',
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="MyFanClubsScreen"
         component={MyFanClubsScreen}
         options={{
@@ -74,6 +75,21 @@ export const BottomTabNavigation = () => {
             />
           ),
           tabBarLabel: 'My Clubs',
+        }}
+      /> */}
+      <Tab.Screen
+        name="BakarrRecordingsScreen"
+        component={BakarrRecordingsScreen}
+        options={{
+          title: 'BakkarRecordings',
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              name="FontAwesome/podcast"
+              size={25}
+              color={focused ? theme.colors['PF-Primary'] : theme.colors['PF-Grey']}
+            />
+          ),
+          tabBarLabel: 'Bakarr Recordings',
         }}
       />
       <Tab.Screen

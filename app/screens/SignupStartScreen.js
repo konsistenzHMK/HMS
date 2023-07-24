@@ -8,6 +8,7 @@ import { Button, Checkbox, Icon, ScreenContainer, withTheme } from '@draftbit/ui
 import { Image, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useSnackbar } from '../components'
+import { useTranslation } from 'react-i18next'
 
 const SignupStartScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -15,6 +16,7 @@ const SignupStartScreen = (props) => {
   const snackbar = useSnackbar()
   const { theme } = props
   const { navigation } = props
+  const { t: translate } = useTranslation()
 
   const [checkboxValue, setCheckboxValue] = React.useState(false)
   const [signupEmail, setSignupEmail] = React.useState('')
@@ -52,7 +54,7 @@ const SignupStartScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'Welcome!'}
+              {translate('SignupStartScreen.Text.Welcome')}
             </Text>
           </View>
         </View>
@@ -86,7 +88,7 @@ const SignupStartScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'Login / Register'}
+            {translate('SignupStartScreen.Text.LoginText')}
           </Text>
           {/* Note */}
           <Text
@@ -102,7 +104,7 @@ const SignupStartScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'We will send an OTP to your mail id'}
+           {translate('SignupStartScreen.Text.OTPSentText')}
           </Text>
           {/* Mail row */}
           <View
@@ -173,7 +175,7 @@ const SignupStartScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'I agree with the Terms of Use and Privacy Policy of PagalFan'}
+              {translate('SignupStartScreen.Text.TermsCondition')}
             </Text>
           </View>
           {/* Proceed Button */}
@@ -181,7 +183,7 @@ const SignupStartScreen = (props) => {
             onPress={() => {
               const handler = async () => {
                 try {
-                  snackbar.show({ title: 'Sending OTP …' })
+                  snackbar.show({ title: translate('SignupStartScreen.Toast.SentOTP') })
                   await PagalFanBEApi.signupWithMailOTPPOST(Constants, { emailId: signupEmail })
                   navigation.navigate('SignupOTPScreen', {
                     user_email: signupEmail,
@@ -206,9 +208,9 @@ const SignupStartScreen = (props) => {
               dimensions.width,
             )}
             disabled={!checkboxValue}
-            title={'Get OTP by Email'}
+            title={translate('SignupStartScreen.Button.GetOTP')}
           >
-            {'Sign Up'}
+            {translate('SignupStartScreen.Text.SignUp')}
           </Button>
         </View>
       </KeyboardAwareScrollView>

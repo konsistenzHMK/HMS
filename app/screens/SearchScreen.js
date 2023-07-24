@@ -6,6 +6,7 @@ import { Circle, Divider, Icon, ScreenContainer, Touchable, withTheme } from '@d
 import { ActivityIndicator, FlatList, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { FeedCard } from '../shared'
 import * as GlobalVariables from '../config/GlobalVariableContext'
+import { useTranslation } from 'react-i18next'
 
 const SearchScreen = (props) => {
   const Constants = GlobalVariables.useValues()
@@ -17,7 +18,7 @@ const SearchScreen = (props) => {
     }
     return list
   }
-
+  const { t: translate } = useTranslation()
   const { theme } = props
   const { navigation } = props
   const [posts, setPosts] = useState([])
@@ -110,7 +111,7 @@ const SearchScreen = (props) => {
                 }),
                 dimensions.width,
               )}
-              placeholder={'Search anything...'}
+              placeholder={translate('SearchScreen.Text.SearchBarPlaceholder')}
               value={textInputValue}
               autoCapitalize={'none'}
               placeholderTextColor={theme.colors['PF-Grey']}
@@ -147,7 +148,7 @@ const SearchScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('SearchScreen.Toast.ProblemFetchData')}</Text>
               }
 
               return (

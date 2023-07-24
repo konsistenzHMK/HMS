@@ -340,7 +340,7 @@ const HomeScreen = (props) => {
                           flexDirection: 'row',
                           paddingLeft: 2,
                           paddingRight: 2,
-                          width: 80,
+                          width: 100,
                         },
                         dimensions.width,
                       )}
@@ -355,7 +355,8 @@ const HomeScreen = (props) => {
                           dimensions.width,
                         )}
                       >
-                        {'LIVE NOW'}
+                        {translate('HomeScreen.Text.LiveNow')}
+                        {/* {"LIVE NOW"} */}
                       </Text>
                       <Icon
                         style={StyleSheet.applyWidth({ marginLeft: 4 }, dimensions.width)}
@@ -407,7 +408,7 @@ const HomeScreen = (props) => {
                           dimensions.width,
                         )}
                       >
-                        {'Match BAKARR'}
+                        {translate('HomeScreen.Text.Bakarr')}
                       </Text>
                       {/* Time */}
                       <Text
@@ -449,7 +450,7 @@ const HomeScreen = (props) => {
                         dimensions.width,
                       )}
                     >
-                      {'Hear celebrities and fans speak, and assert your \nviews - in the PagalFan audio chatroom!!'}
+                      {translate('HomeScreen.Text.BakarrRoom')}
                     </Text>
 
                     {isSessionLive ? (
@@ -488,7 +489,7 @@ const HomeScreen = (props) => {
                               dimensions.width,
                             )}
                           >
-                            {'DIVE IN 👋'}
+                           {translate('HomeScreen.Text.DiveIn')}
                           </Text>
                         </View>
                       </Pressable>
@@ -562,7 +563,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {'Live / Upcoming Matches'}
+                {translate('HomeScreen.Text.MatchesHeader')}
               </Text>
             </View>
 
@@ -586,7 +587,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {'View All'}
+               {translate('HomeScreen.Text.ViewAll')}
               </Text>
             </Pressable>
           </View>
@@ -599,7 +600,7 @@ const HomeScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('HomeScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (
@@ -666,7 +667,7 @@ const HomeScreen = (props) => {
                                     dimensions.width,
                                   )}
                                 >
-                                  {'LIVE'}
+                                  {translate('HomeScreen.Text.Live')}
                                 </Text>
                               </View>
                             )}
@@ -764,7 +765,7 @@ const HomeScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {'v/s'}
+                             {translate('HomeScreen.Text.vs')}
                             </Text>
                             {/* Team-2 */}
                             <View
@@ -852,7 +853,7 @@ const HomeScreen = (props) => {
                               )}
                             >
                               {getCorrectTimeFormat(flashListData?.start_time)}
-                              {' IST'}
+                              {translate('HomeScreen.Text.IST')}
                             </Text>
                           </View>
                           {/* venue */}
@@ -914,7 +915,7 @@ const HomeScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'Find Your PagalFan Club'}
+              {translate('HomeScreen.Text.FindFanClub')}
             </Text>
 
             <Pressable
@@ -937,7 +938,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {'View All'}
+                {translate('HomeScreen.Text.ViewAll')}
               </Text>
             </Pressable>
           </View>
@@ -950,7 +951,7 @@ const HomeScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('HomeScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (
@@ -1056,7 +1057,7 @@ const HomeScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('HomeScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (
@@ -1161,7 +1162,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {"Entering PagalFan's BAKARR room!"}
+               {translate('HomeScreen.Text.EnteringBakarrRoom')}
               </Text>
               <Divider
                 style={StyleSheet.applyWidth(
@@ -1174,7 +1175,7 @@ const HomeScreen = (props) => {
               <Button
                 onPress={handleStartBakerRoomPress}
                 style={StyleSheet.applyWidth(GlobalStyles.ButtonStyles(theme)['Button'], dimensions.width)}
-                title={'PROCEED 🎙'}
+                title={translate('HomeScreen.Button.Proceed')}
               />
               {/* SkipButton */}
               <Button
@@ -1195,7 +1196,7 @@ const HomeScreen = (props) => {
                   }),
                   dimensions.width,
                 )}
-                title={'Skip for now'}
+                title={translate('HomeScreen.Text.Skip')}
               />
             </View>
           </Modal>

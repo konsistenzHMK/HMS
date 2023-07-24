@@ -8,11 +8,13 @@ import { useIsFocused } from '@react-navigation/native'
 import { Image, Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { VideoPlayer, useSnackbar } from '../components'
 import { getMimeTypeFromFilename } from '@shopify/mime-types'
+import { useTranslation } from 'react-i18next'
 
 const EditPostScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
+  const { t: translate } = useTranslation()
 
   const concatStrings = (text1, text2) => {
     return text1 + ' ' + text2
@@ -51,18 +53,18 @@ const EditPostScreen = (props) => {
       Keyboard.dismiss()
 
       if (!textAreaValue) {
-        snackbar.show({ title: 'Please add post details' })
+        snackbar.show({ title: translate('EditPostScreen.Toast.AddPost') })
         return
       }
 
-      snackbar.show({ title: 'Updating post …' })
+      snackbar.show({ title: translate('EditPostScreen.Toast.UpdatePost') })
       const newCaption = concatStrings(originalCaption, textAreaValue)
       await pagalFanBEUpdatePostPATCH.mutateAsync({
         postId: props.route?.params?.post_id ?? 1,
         updatedCaption: newCaption,
       })
     } catch (err) {
-      snackbar.show({ title: 'Error updating post', variant: 'negative' })
+      snackbar.show({ title: translate('EditPostScreen.Toast.ErrorUpdate'), variant: 'negative' })
       console.error(err)
     }
   }
@@ -115,7 +117,7 @@ const EditPostScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'Edit Post'}
+            {translate('EditPostScreen.Text.EditPostTitle')}
           </Text>
           {/* Note1 */}
           <Text
@@ -128,7 +130,7 @@ const EditPostScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'Original image and caption cannot be changed.'}
+           {translate('EditPostScreen.Text.SubHeading')}
           </Text>
           {/* Note2 */}
           <Text
@@ -140,7 +142,7 @@ const EditPostScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'You can only add additional text below. '}
+            {translate('EditPostScreen.Text.Add')}
           </Text>
         </View>
       </View>
@@ -217,7 +219,7 @@ const EditPostScreen = (props) => {
               },
               dimensions.width,
             )}
-            placeholder={'What more do you want to say?'}
+            placeholder={translate('EditPostScreen.Text.InputPlaceholder')}
             value={textAreaValue}
             editable={true}
             textAlignVertical={'top'}
@@ -237,9 +239,7 @@ const EditPostScreen = (props) => {
               dimensions.width,
             )}
           >
-            {
-              'Add hashtags at the end for sports, matches, fanclubs etc that you want to tag. e.g. Smashing innings #ViratKohli #Cricket #IPL2023 #RCB'
-            }
+            {translate('EditPostScreen.Text.AddHashtags')}
           </Text>
         </View>
         {/* Update */}
@@ -260,7 +260,7 @@ const EditPostScreen = (props) => {
             },
             dimensions.width,
           )}
-          title={'Update'}
+          title={translate('EditPostScreen.Text.Button')}
         />
       </ScrollView>
     </ScreenContainer>

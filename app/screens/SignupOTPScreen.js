@@ -10,12 +10,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import messaging from '@react-native-firebase/messaging'
 import { useSnackbar } from '../components/index.js'
 import { useNavigationContext } from '../navigation/NavigationContext.js'
+import { useTranslation } from 'react-i18next'
 
 const SignupOTPScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
   const pagalFanBEUpdateExpoTokenPATCH = PagalFanBEApi.useUpdateExpoTokenPATCH()
+  const { t: translate } = useTranslation()
 
   const snackbar = useSnackbar()
 
@@ -25,7 +27,7 @@ const SignupOTPScreen = (props) => {
   const { setStack } = useNavigationContext()
 
   const handleSignUpPress = async () => {
-    snackbar.show({ title: 'Checking OTP …' })
+    snackbar.show({ title: translate('SignupOTPScreen.Toast.CheckOTPText')})
     try {
       const responseJson = await PagalFanBEApi.loginViaEmailOTPPOST(Constants, {
         emailId: props.route?.params?.user_email,
@@ -102,7 +104,7 @@ const SignupOTPScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'Enter the 6 digit OTP'}
+              {translate('SignupOTPScreen.Text.EnterOTPText')}
             </Text>
           </View>
         </View>
@@ -122,7 +124,7 @@ const SignupOTPScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'Sent to your email: '}
+            {translate('SignupOTPScreen.Text.SentText')}
             {props.route?.params?.user_email ?? 'sg-ml1@yopmail.com'}
           </Text>
           {/* Note 2 */}
@@ -139,7 +141,7 @@ const SignupOTPScreen = (props) => {
               dimensions.width,
             )}
           >
-            {"In case you don't find it, check your spam folder"}
+            {translate('SignupOTPScreen.Text.Text')}
           </Text>
           {/* OTP row */}
           <View
@@ -173,7 +175,7 @@ const SignupOTPScreen = (props) => {
                 }),
                 dimensions.width,
               )}
-              placeholder={'Enter OTP'}
+              placeholder={translate('SignupOTPScreen.Text.OTPPlaceholder')}
               value={signupOTP}
               autoCapitalize={'none'}
             />
@@ -195,9 +197,9 @@ const SignupOTPScreen = (props) => {
               },
               dimensions.width,
             )}
-            title={'CONTINUE'}
+            title={translate('SignupOTPScreen.Text.Continue')}
           >
-            {'Sign Up'}
+           {translate('SignupOTPScreen.Button.SignUp')}
           </Button>
         </View>
       </KeyboardAwareScrollView>

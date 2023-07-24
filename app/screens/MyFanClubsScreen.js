@@ -6,6 +6,7 @@ import Images from '../config/Images'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, Divider, Icon, Pressable, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
+import { useTranslation } from 'react-i18next'
 import {
   FlatList,
   ScrollView,
@@ -21,6 +22,7 @@ import { FeedCard } from '../shared'
 let nextPage2 = null
 
 const MyFanClubsScreen = (props) => {
+  const { t: translate } = useTranslation()
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
@@ -120,7 +122,7 @@ const MyFanClubsScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'Followed PagalFan Clubs'}
+              {translate('MyFanClubsScreen.Text.FollowedTitle')}
             </Text>
           </View>
           {/* FollowedClubs */}
@@ -133,7 +135,7 @@ const MyFanClubsScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('MyFanClubsScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (
@@ -323,7 +325,7 @@ const MyFanClubsScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'Recommended FanClubs For You'}
+              {translate('MyFanClubsScreen.Text.Text.RecommendedTitle')}
             </Text>
           </View>
           {/* Search Filter */}
@@ -343,7 +345,7 @@ const MyFanClubsScreen = (props) => {
                 }),
                 dimensions.width,
               )}
-              placeholder={'Search by name...'}
+              placeholder={translate('MyFanClubsScreen.Text.SearchPlaceholder')}
               value={textInputValue}
               autoCapitalize={'none'}
               placeholderTextColor={theme.colors['PF-Grey']}
@@ -358,7 +360,7 @@ const MyFanClubsScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('MyFanClubsScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (
@@ -481,7 +483,7 @@ const MyFanClubsScreen = (props) => {
                                   dimensions.width,
                                 )}
                               >
-                                {'Cricket'}
+                               {translate('MyFanClubsScreen.Text.Cricket')}
                               </Text>
                             </View>
                             {/* Followers */}
@@ -561,7 +563,7 @@ const MyFanClubsScreen = (props) => {
                                     dimensions.width,
                                   )}
                                 >
-                                  {'Follow'}
+                                 {translate('MyFanClubsScreen.Text.Follow')}
                                 </Text>
                               </View>
                             </Pressable>
@@ -603,7 +605,7 @@ const MyFanClubsScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('MyFanClubsScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (

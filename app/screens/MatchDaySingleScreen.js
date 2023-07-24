@@ -10,6 +10,8 @@ import getCorrectDateFormat from '../global-functions/getCorrectDateFormat'
 import getCorrectTimeFormat from '../global-functions/getCorrectTimeFormat'
 import isDatetimeInRange from '../global-functions/isDatetimeInRange'
 import * as StyleSheet from '../utils/StyleSheet'
+import { useTranslation } from 'react-i18next'
+
 import {
   Button,
   Circle,
@@ -41,6 +43,7 @@ import { useSnackbar, Image } from '../components'
 const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
 
 const MatchDaySingleScreen = (props) => {
+  const { t: translate } = useTranslation()
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
 
@@ -699,7 +702,7 @@ const MatchDaySingleScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (
@@ -759,7 +762,7 @@ const MatchDaySingleScreen = (props) => {
                                       dimensions.width,
                                     )}
                                   >
-                                    {'LIVE'}
+                                   {translate('MatchDaySingleScreen.Text.Live')}
                                   </Text>
                                 </View>
                               )}
@@ -832,7 +835,7 @@ const MatchDaySingleScreen = (props) => {
                                   dimensions.width,
                                 )}
                               >
-                                {'v/s'}
+                                {translate('MatchDaySingleScreen.Text.vs')}
                               </Text>
                               {/* Team-2 */}
                               <View
@@ -947,7 +950,7 @@ const MatchDaySingleScreen = (props) => {
                               )}
                             >
                               {getCorrectTimeFormat(listData?.start_time)}
-                              {' IST'}
+                              {translate('MatchDaySingleScreen.Text.IST')}
                             </Text>
                           </View>
                         </View>
@@ -986,7 +989,7 @@ const MatchDaySingleScreen = (props) => {
 
                               if (error) {
                                 return (
-                                  <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                                  <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
                                 )
                               }
 
@@ -1032,8 +1035,7 @@ const MatchDaySingleScreen = (props) => {
                                               }),
                                               dimensions.width,
                                             )}
-                                          >
-                                            {'live bakarr'}
+                                          >{translate('MatchDaySingleScreen.Text.LiveBakarr')}
                                           </Text>
                                           <Icon
                                             size={24}
@@ -1061,7 +1063,7 @@ const MatchDaySingleScreen = (props) => {
                                               dimensions.width,
                                             )}
                                           >
-                                            {'Join Now'}
+                                            {translate('MatchDaySingleScreen.Text.Join')}
                                           </Text>
                                         </Pressable>
                                       </View>
@@ -1091,7 +1093,7 @@ const MatchDaySingleScreen = (props) => {
                                           dimensions.width,
                                         )}
                                       >
-                                        {'BAKARR session'}
+                                       {translate('MatchDaySingleScreen.Text.BakarrSession')}
                                       </Text>
                                       {/* Time */}
                                       <Text
@@ -1134,9 +1136,7 @@ const MatchDaySingleScreen = (props) => {
                                       dimensions.width,
                                     )}
                                   >
-                                    {
-                                      'Hear celebrities and fans speak, and put forward \nyour own POV - in the PagalFan audio chatroom!!'
-                                    }
+                                    {translate('MatchDaySingleScreen.Text.BakarrRoom')}
                                   </Text>
                                 </>
                               )
@@ -1176,7 +1176,7 @@ const MatchDaySingleScreen = (props) => {
                 StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width),
                 { marginHorizontal: 10 },
               ]}
-              title={'FAN CHAT'}
+              title={translate('MatchDaySingleScreen.Text.FanChat')}
             >
               {/* Comments Frame */}
               <View style={StyleSheet.applyWidth({ flexGrow: 1, flexShrink: 1, marginTop: 10 }, dimensions.width)}>
@@ -1205,7 +1205,7 @@ const MatchDaySingleScreen = (props) => {
                       dimensions.width,
                     )}
                   >
-                    {'fan reactions'}
+                    {translate('MatchDaySingleScreen.Text.FanReaction')}
                   </Text>
                   <Icon color={theme.colors['PF-BG']} size={20} name={'MaterialCommunityIcons/wechat'} />
                 </View>
@@ -1258,7 +1258,7 @@ const MatchDaySingleScreen = (props) => {
                           },
                           dimensions.width,
                         )}
-                        placeholder={'Type something...'}
+                        placeholder={translate('MatchDaySingleScreen.Text.InputPlaceholder')}
                         value={textInputValue}
                         placeholderTextColor={theme.colors.communityLightBlack}
                         multiline={false}
@@ -1272,7 +1272,7 @@ const MatchDaySingleScreen = (props) => {
                         onPress={() => {
                           const handler = async () => {
                             try {
-                              snackbar.show({ title: 'Uploading comment …' })
+                              snackbar.show({ title: translate('MatchDaySingleScreen.Toast.Upload') })
                               await pagalFanBEAddNewMatchCommentPOST.mutateAsync({
                                 comment_text: textInputValue,
                                 match_id: props.route?.params?.match_id ?? 77,
@@ -1314,7 +1314,7 @@ const MatchDaySingleScreen = (props) => {
                     }
 
                     if (error) {
-                      return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                      return <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
                     }
 
                     return (
@@ -1460,7 +1460,7 @@ const MatchDaySingleScreen = (props) => {
                 }),
                 dimensions.width,
               )}
-              title={'SCORES'}
+              title={translate('MatchDaySingleScreen.Text.Scores')}
             >
               <PagalFanBEApi.FetchFetchFeedForSingleMatchGET
                 refetchInterval={30000}
@@ -1483,7 +1483,7 @@ const MatchDaySingleScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
                   }
 
                   return (
@@ -4507,7 +4507,7 @@ const MatchDaySingleScreen = (props) => {
             {/* Moments */}
             <TabViewItem
               style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-              title={'MOMENTS'}
+              title={translate('MatchDaySingleScreen.Text.Moments')}
             >
               <PagalFanBEApi.FetchFetchMatchMomentsGET matchId={props.route?.params?.match_id ?? 77}>
                 {({ loading, error, data, refetchFetchMatchMoments }) => {
@@ -4517,7 +4517,7 @@ const MatchDaySingleScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
                   }
 
                   return (

@@ -9,11 +9,13 @@ import openCamera from '../utils/openCamera.js'
 import { Button, Circle, Icon, ScreenContainer, withTheme } from '@draftbit/ui'
 import { Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions, Pressable, Alert } from 'react-native'
 import { Modal, useSnackbar, VideoPlayer, Image, Loader } from '../components'
+import { useTranslation } from 'react-i18next'
 
 const CreatePostScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
+  const { t: translate } = useTranslation()
 
   const { theme } = props
   const { navigation } = props
@@ -30,7 +32,7 @@ const CreatePostScreen = (props) => {
     Keyboard.dismiss()
     try {
       if (!pickedMedia || !textAreaValue) {
-        snackbar.show({ title: "Post can't be empty" })
+        snackbar.show({ title: translate('CreatePostScreen.Toast.NotEmpty') })
         return
       }
       setLoadingPostUpload(true)
@@ -46,7 +48,7 @@ const CreatePostScreen = (props) => {
       })
       navigation.goBack()
     } catch (err) {
-      snackbar.show({ title: 'Error uploading post', variant: 'negative' })
+      snackbar.show({ title: translate('CreatePostScreen.Toast.ErrorUpload'), variant: 'negative' })
       console.error(err)
     }
     setLoadingPostUpload(false)
@@ -67,7 +69,7 @@ const CreatePostScreen = (props) => {
 
       if (asset) {
         if (mediaType === 'video' && asset.duration > 15) {
-          Alert.alert('Please select media not more than 15 seconds')
+          Alert.alert(translate('CreatePostScreen.Alert.MediaSize'))
           return
         }
         pickerMediaTypeRef.current = mediaType
@@ -130,7 +132,7 @@ const CreatePostScreen = (props) => {
             dimensions.width,
           )}
         >
-          {'New Post'}
+          {translate('CreatePostScreen.Text.new')}
         </Text>
         <View
           style={StyleSheet.applyWidth(
@@ -169,7 +171,7 @@ const CreatePostScreen = (props) => {
                 backgroundColor: theme.colors['Border Color'],
               }}
             >
-              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>No Media Selected</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{translate('CreatePostScreen.Error.NoMedia')}</Text>
             </View>
           )}
           {/* EditView */}
@@ -241,7 +243,7 @@ const CreatePostScreen = (props) => {
               },
               dimensions.width,
             )}
-            placeholder={'what do you want to say?'}
+            placeholder={translate('CreatePostScreen.Text.InputPlaceholder')}
             value={textAreaValue}
             editable={true}
             textAlignVertical={'top'}
@@ -260,9 +262,7 @@ const CreatePostScreen = (props) => {
               dimensions.width,
             )}
           >
-            {
-              'Add hashtags at the end for sports, matches, fanclubs etc that you want to tag. e.g. Smashing innings #ViratKohli #Cricket #IPL2023 #RCB'
-            }
+            {translate('CreatePostScreen.Text.AddHashtags')}
           </Text>
         </View>
         {/* Post Now */}
@@ -283,7 +283,7 @@ const CreatePostScreen = (props) => {
             },
             dimensions.width,
           )}
-          title={'Post Now'}
+          title={translate('CreatePostScreen.Text.Post')}
         />
       </ScrollView>
       <Modal visible={mediaTypeSelectModalVisible} onDismiss={hideMediaTypeSelectModal}>
@@ -309,11 +309,11 @@ const CreatePostScreen = (props) => {
             }}
             numberOfLines={4}
           >
-            {'*Video should not be more than 15s'}
+           {translate('CreatePostScreen.Text.VideoSize')}
           </Text>
         </View>
       </Modal>
-      {loadingPostUpload && <Loader size={30} title={'Uploading post...'} />}
+      {loadingPostUpload && <Loader size={30} title={translate('CreatePostScreen.Text.Uploading')} />}
     </ScreenContainer>
   )
 }

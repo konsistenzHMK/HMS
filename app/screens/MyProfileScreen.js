@@ -10,8 +10,10 @@ import { Image, useSnackbar } from '../components'
 import { FeedCard } from '../shared'
 import branch from 'react-native-branch'
 import openShareUtil from '../utils/openShare'
+import { useTranslation } from 'react-i18next'
 
 const MyProfileScreen = (props) => {
+  const { t: translate } = useTranslation()
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
@@ -82,7 +84,7 @@ const MyProfileScreen = (props) => {
           }
 
           if (error) {
-            return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+            return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
           }
           profileRef.current = fetchData?.[0]
           return (
@@ -249,7 +251,7 @@ const MyProfileScreen = (props) => {
                     dimensions.width,
                   )}
                 >
-                  {Followers} Followers
+                  {Followers} {translate('MyProfileScreen.Text.Followers')}
                 </Text>
               </View>
               {/* Profile Detail Frame */}
@@ -350,7 +352,7 @@ const MyProfileScreen = (props) => {
         {/* Posted */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Posted'}
+          title={translate('MyProfileScreen.Text.Posted')}
         >
           {/* Posted-Feed */}
           <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
@@ -368,7 +370,7 @@ const MyProfileScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
                   }
 
                   return (
@@ -399,7 +401,7 @@ const MyProfileScreen = (props) => {
         {/* Saved */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Saved'}
+          title={translate('MyProfileScreen.Text.Saved')}
         >
           {/* Saved-Feed */}
           <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
@@ -417,7 +419,7 @@ const MyProfileScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
                   }
 
                   return (
@@ -451,7 +453,7 @@ const MyProfileScreen = (props) => {
         </TabViewItem>
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Followers'}
+          title={translate('MyProfileScreen.Text.Followers')}
         >
           {/* Followers-Feed */}
           <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
@@ -468,7 +470,7 @@ const MyProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
                   }
                   return (
                     <FlatList
@@ -543,7 +545,7 @@ const MyProfileScreen = (props) => {
                                 try {
                                   await unfollowUser(item.followee_id, item.follower_id)
                                   await refetchFetchAllFollowersOfUser()
-                                  snackbar.show({ title: 'User removed from followers list' })
+                                  snackbar.show({ title: translate('MyProfileScreen.Toast.UserRemoved') })
                                 } catch (e) {
                                   console.log(e)
                                   snackbar.show({
@@ -560,7 +562,7 @@ const MyProfileScreen = (props) => {
                                   fontWeight: '600',
                                 }}
                               >
-                                Remove
+                                {translate('MyProfileScreen.Text.Remove')}
                               </Text>
                             </Pressable>
                           </Pressable>
@@ -577,7 +579,7 @@ const MyProfileScreen = (props) => {
         {/* Following */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Following'}
+          title={translate('MyProfileScreen.Text.Following')}
         >
           {/* Following-Feed */}
           <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
@@ -594,7 +596,7 @@ const MyProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
                   }
                   return (
                     <FlatList
@@ -673,7 +675,7 @@ const MyProfileScreen = (props) => {
                                 } catch (e) {
                                   console.log(e)
                                   snackbar.show({
-                                    title: 'Something went wrong. Please try again later',
+                                    title: translate('MyProfileScreen.Toast.UserRemovedError'),
                                     variant: 'nagative',
                                   })
                                 }
@@ -686,7 +688,7 @@ const MyProfileScreen = (props) => {
                                   fontWeight: '600',
                                 }}
                               >
-                                Unfollow
+                                {translate('MyProfileScreen.Text.Unfollow')}
                               </Text>
                             </Pressable>
                           </Pressable>

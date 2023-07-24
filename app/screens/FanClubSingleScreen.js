@@ -7,6 +7,7 @@ import { Circle, Divider, Icon, Pressable, ScreenContainer, Touchable, withTheme
 import { ActivityIndicator, FlatList, ScrollView, Text, View, useWindowDimensions } from 'react-native'
 import { useSnackbar, Image } from '../components'
 import { FeedCard } from '../shared'
+import { useTranslation } from 'react-i18next'
 
 const FanClubSingleScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -14,6 +15,7 @@ const FanClubSingleScreen = (props) => {
   const snackbar = useSnackbar()
 
   const [follwersCount, setFollowersCount] = useState(0)
+  const { t: translate } = useTranslation()
 
   const { theme } = props
   const { navigation } = props
@@ -165,7 +167,7 @@ const FanClubSingleScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {follwersCount} Followers
+                              {follwersCount} {translate('FanClubSingleScreen.Text.Followers')}
                             </Text>
 
                             <View
@@ -198,7 +200,7 @@ const FanClubSingleScreen = (props) => {
                                   dimensions.width,
                                 )}
                               >
-                                {'Cricket'}
+                                {translate('FanClubSingleScreen.Text.Cricket')}
                               </Text>
                             </View>
                           </View>
@@ -222,14 +224,14 @@ const FanClubSingleScreen = (props) => {
                                 fanclubId: props.route?.params?.id ?? 1,
                                 userId: Constants['LOGGED_IN_USER'],
                               })
-                              snackbar.show({ title: 'Fanclub followed successfully' })
+                              snackbar.show({ title: translate('FanClubSingleScreen.Toast.FanClubFollowed') })
                             }
                             if (!newfollowstatus) {
                               await pagalFanBEDeleteFanClubFollowsDELETE.mutateAsync({
                                 fanclubId: props.route?.params?.id ?? 1,
                                 userId: Constants['LOGGED_IN_USER'],
                               })
-                              snackbar.show({ title: 'Fanclub unfollowed successfully' })
+                              snackbar.show({ title: translate('FanClubSingleScreen.Toast.FanClubUnfollowed') })
                             }
                           } catch (err) {
                             console.error(err)
@@ -307,7 +309,7 @@ const FanClubSingleScreen = (props) => {
                                           dimensions.width,
                                         )}
                                       >
-                                        {'Following'}
+                                        {translate('FanClubSingleScreen.Text.Following')}
                                       </Text>
                                       {/* Flex Frame for Icons */}
                                       <View
@@ -361,7 +363,7 @@ const FanClubSingleScreen = (props) => {
                                           dimensions.width,
                                         )}
                                       >
-                                        {'Follow'}
+                                      {translate('FanClubSingleScreen.Text.Follow')}
                                       </Text>
                                       {/* Flex Frame for Icons */}
                                       <View

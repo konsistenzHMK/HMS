@@ -10,10 +10,10 @@ import * as StyleSheet from '../utils/StyleSheet'
 import checkMatchDates from '../global-functions/matchType.js'
 import { Circle, CircleImage, Icon, ScreenContainer, TabView, TabViewItem, Touchable, withTheme } from '@draftbit/ui'
 import { ActivityIndicator, FlatList, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
-
+import { useTranslation } from 'react-i18next'
 const MatchDaysAllScreen = (props) => {
   const dimensions = useWindowDimensions()
-
+  const { t: translate } = useTranslation()
   const FilterList = (list) => {
     //if (item.team_1?.team_name.length == 0) item.team_1.team_name = TBD
     //if (item.team_2?.team_name.length == 0) item.team_2.team_name = TBD
@@ -90,7 +90,7 @@ const MatchDaysAllScreen = (props) => {
               )}
               numberOfLines={2}
             >
-              {`Matches ... all of 'em`}
+             {translate('MatchDaysAllScreen.Text.Title')}
             </Text>
           </View>
         </View>
@@ -126,7 +126,7 @@ const MatchDaysAllScreen = (props) => {
         {/* Upcoming */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'LIVE / UPCOMING'}
+          title={translate('MatchDaysAllScreen.Text.Live')}
         >
           {/* Search Filter */}
           <View>
@@ -162,7 +162,7 @@ const MatchDaysAllScreen = (props) => {
                 }
 
                 if (error) {
-                  return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                  return <Text style={{ textAlign: 'center' }}>{translate('MatchDaysAllScreen.Text.ProblemFetchData')}</Text>
                 }
 
                 return (
@@ -343,7 +343,7 @@ const MatchDaysAllScreen = (props) => {
         {/* Past */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'PAST'}
+          title={translate('MatchDaysAllScreen.Text.Past')}
         >
           {/* Search Filter */}
           <View>
@@ -363,7 +363,7 @@ const MatchDaysAllScreen = (props) => {
                 }),
                 dimensions.width,
               )}
-              placeholder={'Search by team...'}
+              placeholder={translate('MatchDaysAllScreen.Text.SearchPlaceholder')}
               autoCapitalize={'none'}
               value={textInputValue}
               placeholderTextColor={theme.colors['PF-Grey']}
@@ -379,7 +379,7 @@ const MatchDaysAllScreen = (props) => {
               }
 
               if (error) {
-                return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                return <Text style={{ textAlign: 'center' }}>{translate('MatchDaysAllScreen.Text.ProblemFetchData')}</Text>
               }
 
               return (

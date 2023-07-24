@@ -24,6 +24,7 @@ import * as GlobalStyles from '../GlobalStyles.js'
 
 import { useSnackbar, Image } from '../components/index.js'
 import { Icon, IconButton, ScreenContainer, withTheme } from '@draftbit/ui'
+import { useTranslation } from 'react-i18next'
 
 /**
  * using `ROOM_CODE` is recommended over `AUTH_TOKEN` approach
@@ -46,13 +47,14 @@ const BakarRoomScreen = (props) => {
   const { route, navigation } = props
   const { roomCode, username } = route.params
   const { theme } = props
+  const { t: translate } = useTranslation()
 
   useEffect(() => {
     // check for permission and go back with toast message if not granted
     checkPermissions([PERMISSIONS.ANDROID.RECORD_AUDIO]).then((permissionsGranted) => {
       if (!permissionsGranted) {
         snackbar.show({
-          title: 'Microphone permission not granted. Please go to settings and allow mic permission',
+          title: translate('BakarRoomScreen.Toast.MicrophonePermission'),
           variant: 'negative',
           delay: 6000,
         })
@@ -63,7 +65,7 @@ const BakarRoomScreen = (props) => {
 
   const onConnectionError = (error) => {
     navigation.goBack()
-    snackbar.show({ title: 'Connection error' })
+    snackbar.show({ title: translate('BakarRoomScreen.Toast.ConnectionError') })
     console.log(error)
   }
 
@@ -186,7 +188,7 @@ const BakarRoomScreen = (props) => {
   }
 
   const handleRoomEnd = () => {
-    snackbar.show({ title: 'Exiting room' })
+    snackbar.show({ title: translate('BakarRoomScreen.Toast.ExitRoom') })
     setTimeout(() => {
       navigation.goBack()
     }, 500)
@@ -218,7 +220,7 @@ const BakarRoomScreen = (props) => {
   async function handleBrodcast() {
     if (text == '') return
     try {
-      snackbar.show({ title: 'Posting comment' })
+      snackbar.show({ title: translate('BakarRoomScreen.Toast.PostingComment')})
       const result = await hmsInstanceRef.current.sendBroadcastMessage(text)
       const ob = {
         message: text,
@@ -345,7 +347,7 @@ const BakarRoomScreen = (props) => {
             dimensions.width,
           )}
         >
-          {`+ ${peerTrackNodes.length} participants`}
+          {`+ ${peerTrackNodes.length}`} {translate('BakarRoomScreen.Text.participants')}
         </Text>
       </View>
     )
@@ -389,7 +391,7 @@ const BakarRoomScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {'PagalFan - Bakarr Room'}
+              {translate('BakarRoomScreen.Text.Title')}
             </Text>
             <Icon size={24} name={'Entypo/mic'} color={theme.colors['Custom Color_13']} />
           </View>
@@ -412,9 +414,9 @@ const BakarRoomScreen = (props) => {
                 justifyContent: 'center',
               }}
             >
-              <Text style={{ fontSize: 28, marginBottom: 32 }}>Welcome!</Text>
-              <Text style={{ fontSize: 16 }}>You’re the first one here.</Text>
-              <Text style={{ fontSize: 16 }}>Sit back and relax till the others join.</Text>
+              <Text style={{ fontSize: 28, marginBottom: 32 }}>{translate('BakarRoomScreen.Text.Welcome')}</Text>
+              <Text style={{ fontSize: 16 }}>{translate('BakarRoomScreen.Text.TextSubheading2')}</Text>
+              <Text style={{ fontSize: 16 }}>{translate('BakarRoomScreen.Text.TextSubHeading3')}</Text>
             </View>
           )}
           {/* All Participants */}
@@ -490,7 +492,7 @@ const BakarRoomScreen = (props) => {
                         marginBottom: 2,
                       }}
                     >
-                      Bakarr Chat
+                      {translate('BakarRoomScreen.Text.BakarrChat')}
                     </Text>
                     <View
                       style={{
@@ -520,7 +522,7 @@ const BakarRoomScreen = (props) => {
                           justifyContent: 'center',
                         }}
                       >
-                        <Text style={{ fontSize: 16 }}>No Chat</Text>
+                        <Text style={{ fontSize: 16 }}>{translate('BakarRoomScreen.Text.NoChat')}</Text>
                       </View>
                     )}
                   </View>
@@ -577,7 +579,7 @@ const BakarRoomScreen = (props) => {
                           fontWeight: 'bold',
                         }}
                       >
-                        Close Chat
+                       {translate('BakarRoomScreen.Text.CloseChat')}
                       </Text>
                     </TouchableHighlight>
                   </View>

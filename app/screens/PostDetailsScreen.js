@@ -20,11 +20,13 @@ import {
 import { useSnackbar, Modal, Image, VideoPlayer } from '../components'
 import branch from 'react-native-branch'
 import { getMimeTypeFromFilename } from '@shopify/mime-types'
+import { useTranslation } from 'react-i18next'
 
 const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
 const SECTIONS = ['POST', 'COMMENTS']
 
 const PostDetailsScreen = (props) => {
+  const { t: translate } = useTranslation()
   const [likeCount, setLikesCount] = useState(0)
   const [commentsCount, setCommentsCount] = useState(0)
   const [viewsCount, setViewsCount] = useState(0)
@@ -75,7 +77,7 @@ const PostDetailsScreen = (props) => {
         return
       }
 
-      snackbar.show({ title: 'Uploading comment …' })
+      snackbar.show(translate('PostDetailsScreen.Toast.UploadingComment'))
       await pagalFanBEAddNewCommentPOST.mutateAsync({
         comment_text: comment,
         post_id: props.route?.params?.post_id ?? 1,
@@ -349,7 +351,7 @@ const PostDetailsScreen = (props) => {
                     setIsLiked(valueQwbJ5IFg)
                     const newlike = valueQwbJ5IFg
                     if (newlike) {
-                      snackbar.show({ title: 'Saving post like…' })
+                      snackbar.show({ title: translate('PostDetailsScreen.Toast.PostLike')})
                       await pagalFanBEAddPostLikePOST.mutateAsync({
                         post_id: props.route?.params?.post_id ?? 1,
                         user_id: Constants['LOGGED_IN_USER'],
@@ -415,7 +417,7 @@ const PostDetailsScreen = (props) => {
                       }
 
                       if (error) {
-                        return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                        return <Text style={{ textAlign: 'center' }}>{translate('PostDetailsScreen.Text.ProblemFetchData')}</Text>
                       }
 
                       return (
@@ -666,7 +668,7 @@ const PostDetailsScreen = (props) => {
                   },
                   dimensions.width,
                 )}
-                placeholder={'Type something...'}
+                placeholder={translate('PostDetailsScreen.Text.InputPlaceholder')}
                 value={textInputValue}
                 placeholderTextColor={theme.colors.communityLightBlack}
               />
@@ -707,7 +709,7 @@ const PostDetailsScreen = (props) => {
           }
 
           if (error) {
-            return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+            return <Text style={{ textAlign: 'center' }}>{translate('PostDetailsScreen.Text.ProblemFetchData')}</Text>
           }
 
           return (
@@ -873,7 +875,7 @@ const PostDetailsScreen = (props) => {
       })
       console.log('updated')
     } catch (err) {
-      snackbar.show({ title: 'Error updating post', variant: 'negative' })
+      snackbar.show({ title: translate('PostDetailsScreen.Toast.UpdateError'), variant: 'negative' })
       console.error(err)
     }
   }
@@ -911,7 +913,7 @@ const PostDetailsScreen = (props) => {
             }
 
             if (error) {
-              return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+              return <Text style={{ textAlign: 'center' }}>{translate('PostDetailsScreen.Text.ProblemFetchData')}</Text>
             }
 
             postDetailsRef.current = fetchData
@@ -1023,7 +1025,7 @@ const PostDetailsScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {'Share'}
+                {translate('PostDetailsScreen.Text.Share')}
               </Text>
             </Pressable>
             {/* PressableSave */}
@@ -1034,7 +1036,7 @@ const PostDetailsScreen = (props) => {
                     const valueWbd6vXTs = !isSaved
                     const newsaved = valueWbd6vXTs
                     if (newsaved) {
-                      snackbar.show({ title: 'Saving post …' })
+                      snackbar.show({ title: translate('PostDetailsScreen.Toast.SavePost') })
                       await pagalFanBEAddPostSavePOST.mutateAsync({
                         post_id: props.route?.params?.post_id ?? 1,
                         user_id: Constants['LOGGED_IN_USER'],
@@ -1074,7 +1076,7 @@ const PostDetailsScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('PostDetailsScreen.Text.ProblemFetchData')}</Text>
                   }
 
                   return (
@@ -1136,7 +1138,7 @@ const PostDetailsScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {'Save'}
+                              {translate('PostDetailsScreen.Text.Save')}
                             </Text>
                           )}
                         </>
@@ -1155,7 +1157,7 @@ const PostDetailsScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {'Unsave'}
+                              {translate('PostDetailsScreen.Text.Unsave')}
                             </Text>
                           )}
                         </>
@@ -1168,7 +1170,7 @@ const PostDetailsScreen = (props) => {
             {/* PressableReport */}
             <Pressable
               onPress={() => {
-                snackbar.show({ title: 'Reporting post to admin…' })
+                snackbar.show({ title: translate('PostDetailsScreen.Text.ReportText')})
               }}
             >
               <View
@@ -1203,7 +1205,7 @@ const PostDetailsScreen = (props) => {
                   dimensions.width,
                 )}
               >
-                {'Report...'}
+                {translate('PostDetailsScreen.Text.Report')}
               </Text>
             </Pressable>
           </View>

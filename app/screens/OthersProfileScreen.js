@@ -4,6 +4,7 @@ import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import Images from '../config/Images'
 import * as StyleSheet from '../utils/StyleSheet'
+import { useTranslation } from 'react-i18next'
 import {
   Circle,
   CircleImage,
@@ -25,7 +26,7 @@ const OthersProfileScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
-
+  const { t: translate } = useTranslation()
   const { theme } = props
   const { navigation } = props
 
@@ -73,11 +74,11 @@ const OthersProfileScreen = (props) => {
         followee_id,
         follower_id: Constants['LOGGED_IN_USER'],
       })
-      snackbar.show({ title: 'User followed successfully' })
+      snackbar.show({ title: translate('OthersProfileScreen.Toast.UserFollowed')})
     } catch (err) {
       console.error(err)
       snackbar.show({
-        title: 'Something went wrong. Please try again later',
+        title: translate('OthersProfileScreen.Toast.Error'),
         variant: 'nagative',
       })
     }
@@ -104,7 +105,7 @@ const OthersProfileScreen = (props) => {
           }
 
           if (error) {
-            return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+            return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
           }
           profileRef.current = fetchData?.[0]
           return (
@@ -235,7 +236,7 @@ const OthersProfileScreen = (props) => {
                     dimensions.width,
                   )}
                 >
-                  {Followers} Followers
+                  {Followers} { translate('OthersProfileScreen.Text.Followers')}
                 </Text>
               </View>
               {/* Profile Detail Frame */}
@@ -333,14 +334,14 @@ const OthersProfileScreen = (props) => {
                                 followee_id: props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343',
                                 follower_id: Constants['LOGGED_IN_USER'],
                               })
-                              snackbar.show({ title: 'User followed successfully' })
+                              snackbar.show(translate('OthersProfileScreen.Toast.UserFollowed'))
                             }
                             if (!newfollowstatus) {
                               await pagalFanBEDeleteFollowDELETE.mutateAsync({
                                 followedId: props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343',
                                 followerId: Constants['LOGGED_IN_USER'],
                               })
-                              snackbar.show({ title: 'User unfollowed successfully' })
+                              snackbar.show({ title: translate('OthersProfileScreen.Toast.UserRemoved')})
                             }
                           } catch (err) {
                             console.error(err)
@@ -372,7 +373,7 @@ const OthersProfileScreen = (props) => {
                           }
 
                           if (error) {
-                            return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                            return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
                           }
 
                           return (
@@ -416,7 +417,7 @@ const OthersProfileScreen = (props) => {
                                               dimensions.width,
                                             )}
                                           >
-                                            {'Following'}
+                                            {translate('OthersProfileScreen.Text.Following')}
                                           </Text>
                                           {/* Flex Frame for Icons */}
                                           <View
@@ -474,7 +475,7 @@ const OthersProfileScreen = (props) => {
                                               dimensions.width,
                                             )}
                                           >
-                                            {'Follow'}
+                                            {translate('OthersProfileScreen.Text.Follow')}
                                           </Text>
                                           {/* Flex Frame for Icons */}
                                           <View
@@ -525,7 +526,7 @@ const OthersProfileScreen = (props) => {
         {/* Posted */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Posted'}
+          title={translate('OthersProfileScreen.Text.Posted')}
         >
           {/* Posted-Feed */}
           <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
@@ -545,7 +546,7 @@ const OthersProfileScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
                   }
 
                   return (
@@ -576,7 +577,7 @@ const OthersProfileScreen = (props) => {
         {/* Followers */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Followers'}
+          title={translate('OthersProfileScreen.Text.Followers')}
         >
           {/* Followers-Feed */}
           <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
@@ -595,7 +596,7 @@ const OthersProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
                   }
                   return (
                     <FlatList
@@ -693,7 +694,7 @@ const OthersProfileScreen = (props) => {
         {/* Following */}
         <TabViewItem
           style={StyleSheet.applyWidth(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], dimensions.width)}
-          title={'Following'}
+          title={translate('OthersProfileScreen.Text.Following')}
         >
           {/* Following-Feed */}
           <View style={StyleSheet.applyWidth(GlobalStyles.ViewStyles(theme)['PF-Feed 2'], dimensions.width)}>
@@ -712,7 +713,7 @@ const OthersProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
+                    return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
                   }
                   return (
                     <FlatList

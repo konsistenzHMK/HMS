@@ -10,10 +10,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Modal, useSnackbar } from '../components'
 import theme from '../themes/DraftbitTheme'
 import openCamera from '../utils/openCamera.js'
+import { useTranslation } from 'react-i18next'
 
 const EditProfileScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
+  const { t: translate } = useTranslation()
 
   const pagalFanBEUpdateUserProfilePATCH = PagalFanBEApi.useUpdateUserProfilePATCH()
   const { navigation } = props
@@ -43,7 +45,7 @@ const EditProfileScreen = (props) => {
 
   const handleProfileUpdate = async () => {
     try {
-      snackbar.show({ title: 'Updating user details …' })
+      snackbar.show({ title: translate('EditProfileScreen.Toast.Update') })
 
       let imgUrl = userPic
       if (profilePicUpdated.current) {
@@ -60,7 +62,7 @@ const EditProfileScreen = (props) => {
       })
       navigation.navigate('MySettingsScreen')
     } catch (err) {
-      console.error('Image upload error ', err)
+      console.error(translate('EditProfileScreen.Error.ImageUpload'), err)
     }
   }
 
@@ -102,7 +104,7 @@ const EditProfileScreen = (props) => {
         {/* Header */}
         <View style={styles.header}>
           {/* Screen Heading */}
-          <Text style={styles.headerTitle}>{'Edit Profile'}</Text>
+          <Text style={styles.headerTitle}>{translate('EditProfileScreen.Text.EditProfile')}</Text>
         </View>
 
         <KeyboardAwareScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
@@ -115,30 +117,30 @@ const EditProfileScreen = (props) => {
           <View style={styles.nameContainer}>
             {/* First Name */}
             <View style={styles.firstNameContainer}>
-              <Text style={styles.inputTitle}>{'First Name'}</Text>
+              <Text style={styles.inputTitle}>{translate('EditProfileScreen.Text.FirstName')}</Text>
               <TextInput
                 onChangeText={setFirstName}
                 style={styles.textInput}
                 value={firstName}
                 autoCapitalize={'none'}
-                placeholder={'Enter first Name'}
+                placeholder={translate('EditProfileScreen.Text.FirstNamePlaceholder')}
               />
             </View>
             {/* Last Name */}
             <View style={styles.lastNameContainer}>
-              <Text style={styles.inputTitle}>{'Last Name'}</Text>
+              <Text style={styles.inputTitle}>{translate('EditProfileScreen.Text.LastName')}</Text>
               <TextInput
                 onChangeText={setLastName}
                 style={styles.textInput}
                 value={lastName}
                 autoCapitalize={'none'}
-                placeholder={'Enter last name'}
+                placeholder={translate('EditProfileScreen.Text.LastNamePlaceholder')}
               />
             </View>
           </View>
           {/* User Handle */}
           <View style={styles.inputContainer}>
-            <Text style={styles.userHandle}>{'User handle'}</Text>
+            <Text style={styles.userHandle}>{translate('EditProfileScreen.Text.UserHandle')}</Text>
             <View style={styles.userHandleInputContainer}>
               <Text style={styles.userHandleInputPrefix}>@</Text>
               <View style={{ flex: 1 }}>
@@ -147,19 +149,19 @@ const EditProfileScreen = (props) => {
                   style={styles.textInput}
                   value={userHandle}
                   autoCapitalize={'none'}
-                  placeholder="Enter your preferred user handle, e.g. eagle2023"
+                  placeholder={translate('EditProfileScreen.Text.UserHandlePlaceholder')}
                 />
               </View>
             </View>
           </View>
           {/* Bio */}
           <View style={styles.inputContainer}>
-            <Text style={styles.inputTitle}>{'Brief Bio'}</Text>
+            <Text style={styles.inputTitle}>{translate('EditProfileScreen.Text.Bio')}</Text>
             <TextInput
               onChangeText={setBriefBio}
               style={styles.textInputBio}
               value={briefBio}
-              placeholder="Describe yourself"
+              placeholder={translate('EditProfileScreen.BioPlaceholder')}
               textAlignVertical={'top'}
               multiline={true}
               numberOfLines={4}
@@ -171,13 +173,13 @@ const EditProfileScreen = (props) => {
             style={styles.updateButton}
             activeOpacity={0.8}
             disabledOpacity={0.8}
-            title={'Update '}
+            title={translate('EditProfileScreen.Button.Update')}
           />
         </KeyboardAwareScrollView>
       </ScreenContainer>
       <Modal visible={pickerTypeModalVisible} onDismiss={hidePickerTypeModal}>
         <View style={{ padding: 30, backgroundColor: '#fff' }}>
-          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Choose media type</Text>
+          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>{translate('EditProfileScreen.Text.MediaType')}</Text>
           <Button
             title="Camera"
             onPress={() => handlePickerTypeSelect('camera')}

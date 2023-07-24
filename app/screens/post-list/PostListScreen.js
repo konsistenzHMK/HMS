@@ -7,14 +7,12 @@ import * as PagalFanBEApi from '../../apis/PagalFanBEApi'
 import * as GlobalVariables from '../../config/GlobalVariableContext'
 import PostShareModal from './PostShareModal'
 import PostCard, { PostHeight } from './PostCard'
-import PostCommentModal from './PostCommentModal'
 
 const PostListScreen = ({ navigation, route }) => {
   const Constants = GlobalVariables.useValues()
 
   const [posts, setPosts] = useState([])
   const [showShareModal, setShowShareModal] = useState(false)
-  const [showCommentModal, setShowCommentModal] = useState(false)
   const selectedPost = useRef(null)
   const [focusedPostIndex, setFocusedPostIndex] = useState(0)
 
@@ -44,11 +42,6 @@ const PostListScreen = ({ navigation, route }) => {
     fetchNextPosts(true)
   }, [])
 
-  const handleCommentPress = (post) => {
-    selectedPost.current = post
-    setShowCommentModal(true)
-  }
-
   const handleSharePress = (post) => {
     selectedPost.current = post
     setShowShareModal(true)
@@ -57,11 +50,6 @@ const PostListScreen = ({ navigation, route }) => {
   const hideShareModal = () => {
     selectedPost.current = null
     setShowShareModal(false)
-  }
-
-  const hideCommentModal = () => {
-    selectedPost.current = null
-    setShowCommentModal(false)
   }
 
   const showProfileScreen = (userid) => {
@@ -82,7 +70,6 @@ const PostListScreen = ({ navigation, route }) => {
       <PostCard
         key={`${item.id}`}
         post={item}
-        onCommentPress={handleCommentPress}
         onSharePress={handleSharePress}
         onHeaderPress={showProfileScreen}
         visible={visible}
@@ -126,14 +113,6 @@ const PostListScreen = ({ navigation, route }) => {
       {/* ShareModal */}
       {showShareModal && (
         <PostShareModal visible={showShareModal} onDismiss={hideShareModal} post={selectedPost.current} />
-      )}
-      {showCommentModal && (
-        <PostCommentModal
-          visible={showCommentModal}
-          onDismiss={hideCommentModal}
-          post={selectedPost.current}
-          onAuthorPress={showProfileScreen}
-        />
       )}
     </ScreenContainer>
   )

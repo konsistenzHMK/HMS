@@ -4,13 +4,14 @@ import { getMimeTypeFromFilename } from '@shopify/mime-types'
 import * as GlobalVariables from '../../config/GlobalVariableContext'
 import { BlurImage, Image, VideoPlayer, useSnackbar } from '../../components'
 import * as PagalFanBEApi from '../../apis/PagalFanBEApi'
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
 import { Icon } from '@draftbit/ui'
+import PostCommentModal from './PostCommentModal'
 
 const ScreenHeight = Dimensions.get('screen').height
 export const PostHeight = ScreenHeight * 0.6
 
-const PostCard = ({ post, onCommentPress, visible, focused, onSharePress, onHeaderPress }) => {
+const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
   const { user_profiles, count_views, id, caption } = post
 
   const username = `${user_profiles?.first_name} ${user_profiles?.last_name}`
@@ -23,8 +24,9 @@ const PostCard = ({ post, onCommentPress, visible, focused, onSharePress, onHead
 
   const [liked, setLiked] = useState(false)
   const [likesCount, setLikesCount] = useState(0)
-  const [commentsCount, setCommentsCount] = useState(0)
+  const [comments, setComments] = useState([])
   const [viewsCount, setViewsCount] = useState(count_views ?? 0)
+  const [showCommentModal, setShowCommentModal] = useState(false)
 
   const Constants = GlobalVariables.useValues()
   const userId = Constants['LOGGED_IN_USER']
@@ -63,10 +65,10 @@ const PostCard = ({ post, onCommentPress, visible, focused, onSharePress, onHead
     setLikesCount(response.length)
   }
 
-  const fetchCommentsCount = async () => {
+  const fetchComments = async () => {
     try {
       const response = await PagalFanBEApi.fetchAllCommentsForAPostGET(Constants, { id })
-      setCommentsCount(response.length)
+      setComments(response)
     } catch (e) {
       // do nothing
     }
@@ -87,69 +89,98 @@ const PostCard = ({ post, onCommentPress, visible, focused, onSharePress, onHead
 
   useEffect(() => {
     fetchLikesCount()
-    fetchCommentsCount()
+    fetchComments()
   }, [])
 
   if (!post) {
     return <React.Fragment />
   }
 
-  return (
-    <View style={styles.postContainer}>
-      <Pressable onPress={() => onHeaderPress(post.posted_by_id)} style={styles.postTitleContainer}>
-        {profileImage ? (
-          <Image style={styles.postUserAvatar} source={{ uri: profileImage }} />
-        ) : (
-          <Icon name="FontAwesome/user" style={styles.postUserAvatar} size={20} color="#000" />
-        )}
-        <View>
-          <Text style={styles.postUserName}>{username}</Text>
-          {handle && <Text style={styles.postUserHandle}>@{handle}</Text>}
-        </View>
-      </Pressable>
-      {visible ? (
-        isVideo ? (
-          <VideoPlayer style={styles.postMediaContainer} uri={uri} playing={focused} />
-        ) : (
-          <BlurImage style={styles.postMediaContainer} resizeMode="cover" blurRadius={50} source={{ uri }}>
-            <Image style={styles.postMediaImage} source={{ uri }} resizeMode={'contain'} />
-          </BlurImage>
-        )
-      ) : (
-        <></>
-      )}
+  const handleSendComment = async (comment) => {
+    try {
+      await PagalFanBEApi.addNewCommentPOST(Constants, {
+        comment_text: comment,
+        post_id: post.id,
+        user_id: Constants['LOGGED_IN_USER'],
+      })
+      Keyboard.dismiss()
+      fetchComments()
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
-      <View style={styles.postActionsContainer}>
-        {/* Like */}
-        <Pressable onPress={handleLikePress} style={styles.subActionContainer}>
-          <Icon size={18} color={theme.colors.communityDarkRed} name={`${liked ? 'FontAwesome' : 'Feather'}/heart`} />
-          <Text style={styles.actionCount}>{likesCount}</Text>
+  const handleCommentPress = () => {
+    setShowCommentModal(true)
+  }
+
+  const hideCommentModal = () => {
+    setShowCommentModal(false)
+  }
+
+  return (
+    <>
+      <View style={styles.postContainer}>
+        <Pressable onPress={() => onHeaderPress(post.posted_by_id)} style={styles.postTitleContainer}>
+          {profileImage ? (
+            <Image style={styles.postUserAvatar} source={{ uri: profileImage }} />
+          ) : (
+            <Icon name="FontAwesome/user" style={styles.postUserAvatar} size={20} color="#000" />
+          )}
+          <View>
+            <Text style={styles.postUserName}>{username}</Text>
+            {handle && <Text style={styles.postUserHandle}>@{handle}</Text>}
+          </View>
         </Pressable>
-        {/* comments */}
-        <Pressable onPress={() => onCommentPress(post)} style={styles.subActionContainer}>
-          <Icon
-            name={'MaterialCommunityIcons/message-bulleted'}
-            size={18}
-            color={theme.colors.communityHighlightBlue}
-          />
-          <Text style={styles.actionCount}>{commentsCount}</Text>
-        </Pressable>
-        {/* views */}
-        <View style={styles.subActionContainer}>
-          <Icon name={'AntDesign/eye'} size={18} color={theme.colors.communityYellow} />
-          <Text style={styles.actionCount}>{viewsCount}</Text>
+        {visible &&
+          (isVideo ? (
+            <VideoPlayer style={styles.postMediaContainer} uri={uri} playing={focused} />
+          ) : (
+            <BlurImage style={styles.postMediaContainer} resizeMode="cover" blurRadius={50} source={{ uri }}>
+              <Image style={styles.postMediaImage} source={{ uri }} resizeMode={'contain'} />
+            </BlurImage>
+          ))}
+        <View style={styles.postActionsContainer}>
+          {/* Like */}
+          <Pressable onPress={handleLikePress} style={styles.subActionContainer}>
+            <Icon size={18} color={theme.colors.communityDarkRed} name={`${liked ? 'FontAwesome' : 'Feather'}/heart`} />
+            <Text style={styles.actionCount}>{likesCount}</Text>
+          </Pressable>
+          {/* comments */}
+          <Pressable onPress={handleCommentPress} style={styles.subActionContainer}>
+            <Icon
+              name={'MaterialCommunityIcons/message-bulleted'}
+              size={18}
+              color={theme.colors.communityHighlightBlue}
+            />
+            <Text style={styles.actionCount}>{comments.length}</Text>
+          </Pressable>
+          {/* views */}
+          <View style={styles.subActionContainer}>
+            <Icon name={'AntDesign/eye'} size={18} color={theme.colors.communityYellow} />
+            <Text style={styles.actionCount}>{viewsCount}</Text>
+          </View>
+          {/* Share */}
+          <Pressable onPress={() => onSharePress(post)}>
+            <Icon name={'Ionicons/share'} size={18} color={theme.colors.communityIconFill} />
+          </Pressable>
         </View>
-        {/* Share */}
-        <Pressable onPress={() => onSharePress(post)}>
-          <Icon name={'Ionicons/share'} size={18} color={theme.colors.communityIconFill} />
-        </Pressable>
+        <View style={styles.postCaptionContainer}>
+          <Text style={styles.captionText} numberOfLines={3}>
+            {caption}
+          </Text>
+        </View>
       </View>
-      <View style={styles.postCaptionContainer}>
-        <Text style={styles.captionText} numberOfLines={3}>
-          {caption}
-        </Text>
-      </View>
-    </View>
+      {showCommentModal && (
+        <PostCommentModal
+          visible={showCommentModal}
+          onDismiss={hideCommentModal}
+          onSendComment={handleSendComment}
+          comments={comments}
+          onAuthorPress={onHeaderPress}
+        />
+      )}
+    </>
   )
 }
 

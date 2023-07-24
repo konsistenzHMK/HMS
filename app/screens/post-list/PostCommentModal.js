@@ -1,44 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { Image, Modal } from '../../components'
-import { Dimensions, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import React from 'react'
+import { Image } from '../../components'
+import { Dimensions, Pressable, StyleSheet, Text, TextInput, View, Modal, TouchableOpacity } from 'react-native'
 import { theme } from '../../themes'
 import { Icon } from '@draftbit/ui'
-import * as PagalFanBEApi from '../../apis/PagalFanBEApi'
-import * as GlobalVariables from '../../config/GlobalVariableContext'
 import { FlashList } from '@shopify/flash-list'
 import TimeAgo from '../../global-functions/TimeAgo'
 
 const ScreenHeight = Dimensions.get('screen').height
 const EMOTICONS = ['😀', '😠', '😭', '😳', '😎', '👍', '👎', '🙏']
 
-const PostCommentModal = ({ visible, onDismiss, post, onAuthorPress }) => {
+const PostCommentModal = ({ visible, onDismiss, comments, onAuthorPress, onSendComment }) => {
   const [textInputValue, setTextInputValue] = React.useState('')
-  const [comments, setComments] = useState([])
-  const Constants = GlobalVariables.useValues()
-
-  useEffect(() => {
-    if (visible) {
-      fetchComments()
-    }
-  }, [visible])
-
-  const fetchComments = async () => {
-    try {
-      const response = await PagalFanBEApi.fetchAllCommentsForAPostGET(Constants, { id: post.id })
-      if (response?.length) {
-        setComments(response)
-      }
-    } catch (e) {
-      console.error(e)
-    }
-  }
 
   if (!visible) {
     return <></>
   }
 
-  const handleSendCommentPress = () => {
-    // Todo: add send comment api
+  const onSendCommentPress = () => {
+    const comment = textInputValue.trim()
+    if (comment) {
+      onSendComment(comment)
+      setTextInputValue('')
+    }
   }
 
   const handleEmoticonPress = (item) => {
@@ -47,7 +30,6 @@ const PostCommentModal = ({ visible, onDismiss, post, onAuthorPress }) => {
 
   const handleDismiss = () => {
     setTextInputValue('')
-    setComments([])
     onDismiss()
   }
 
@@ -85,7 +67,8 @@ const PostCommentModal = ({ visible, onDismiss, post, onAuthorPress }) => {
   }
 
   return (
-    <Modal visible={visible} onDismiss={handleDismiss}>
+    <Modal visible={visible} onDismiss={handleDismiss} transparent animationType="slide">
+      <TouchableOpacity onPress={handleDismiss} style={styles.modal} activeOpacity={1} />
       <View style={styles.container}>
         <View style={styles.emoticonsContainer}>
           {EMOTICONS.map((item, index) => (
@@ -102,19 +85,21 @@ const PostCommentModal = ({ visible, onDismiss, post, onAuthorPress }) => {
             value={textInputValue}
             placeholderTextColor={theme.colors.communityLightBlack}
           />
-          <Pressable style={styles.sendButton} disabled={!textInputValue.trim()} onPress={handleSendCommentPress}>
+          <Pressable style={styles.sendButton} disabled={!textInputValue.trim()} onPress={onSendCommentPress}>
             <Icon name={'FontAwesome/send'} size={24} color={theme.colors.communityWhite} />
           </Pressable>
         </View>
-        <View style={styles.commentListContainer}>
-          <FlashList data={comments} renderItem={renderCommentItem} estimatedItemSize={50} />
-        </View>
+        <FlashList data={comments} renderItem={renderCommentItem} estimatedItemSize={50} scrollEnabled />
       </View>
     </Modal>
   )
 }
 
 const styles = StyleSheet.create({
+  modal: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+  },
   container: {
     backgroundColor: theme.colors['Background'],
     borderTopLeftRadius: 24,
@@ -123,6 +108,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: 20,
     position: 'absolute',
+    height: ScreenHeight * 0.55,
   },
   emoticonsContainer: {
     flexDirection: 'row',
@@ -154,10 +140,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.communityTertiaryGreen,
-  },
-  commentListContainer: {
-    maxHeight: ScreenHeight * 0.6,
-    minHeight: ScreenHeight * 0.4,
   },
   commentContainer: {
     flexDirection: 'row',

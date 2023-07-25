@@ -795,20 +795,20 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
                             {/* The Table */}
 
                             <div className='w-full flex justify-center mb-10'>
-                            <div className='w-11/12 bg-gray-200 mt-3'>
-                                <table className='w-full '>
+                            <div className='w-11/12 bg-grey2 mt-3 border-none rounded-lg'>
+                                <table className='w-full'>
                                     <thead>
                                         <tr className='w-full'>
-                                            <th className='w-1/3 text-left text-orange-500 ml-5 font-popins text-lg'><p className='ml-20'>Name</p></th>
+                                            <th className='w-1/3 text-left text-orange-500 ml-5 font-popins text-lg h-12 '><p className='ml-20'>Name</p></th>
                                             <th className='w-1/3 text-center text-orange-500 font-popins text-lg' ><p className=''>Student Hostel Name </p></th>
                                             <th className='w-1/3 text-center text-orange-500 font-popins text-lg'><p className=''>Select Student </p></th>
                                         </tr>
                                     </thead>
-                                    <tbody className='w-full'>
+                                    <tbody className='w-full '>
                                         {tableData.map((row) => (
                                             <tr key={row.id} className={`step ${row.id%2 ? 'w-full bg-gray-200 justify-center' : 'w-full bg-gray-100'}`}>
                                                 <td
-                                                    className='w-1/3 text-left'
+                                                    className='w-1/3 text-left h-10'
                                                 >
                                                     <p className='ml-20 text-sm'>{row.name}</p>  </td>
                                                 <td
@@ -893,7 +893,6 @@ const Page4 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
 
     const validateForm = () => {
         const errors = {};
-
         setErrors(errors);
         return errors;
     };
@@ -929,6 +928,37 @@ const Page4 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
         }
         return "Please Enter Total Expense and No of Students"
     }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formErrors = validateForm();
+        if (Object.keys(formErrors).length === 0) {
+          console.log('Form submitted successfully!');
+          axios.post('http://localhost:3000/expense/header', formData)
+          .then((response) => {
+            // alert
+            console.log('API response:', response.data);
+            alert(response.data);
+          })
+          .catch((error) => {
+            console.error('API request error:', error);
+          });
+        //   setFormData({
+        //     exp_code: '',
+        //     exp_name:'',
+        //     exp_type:'',
+        //     doe: '',
+        //     dob:'',
+        //     total_amount:'',
+        //     vn: '',
+        //     va:'',
+        //     total_student:'',
+        //   });
+          setErrors({});
+        } else {
+          console.log("error");
+          setErrors(formErrors);
+        }
+    };
 
     return (
         <div className="flex bg-defaultBg" >
@@ -1114,7 +1144,7 @@ const Page4 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                 {/* Continue Button */}
                                 <div className='flex justify-center mt-10'>
                                     <div className='w-60 flex flex-col justify-center mt-10 mb-10'>
-                                        <button onClick={handleNextPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
+                                        <button onClick={handleSubmit} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
                                             Send for Approval
                                         </button>
                                     </div>
@@ -1133,6 +1163,15 @@ const Page4 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
 
 const ExpenseForm = () => {
     const [formData, setFormData] = useState({
+        exp_code: '',
+        exp_name:'',
+        exp_type:'',
+        doe: '',
+        dob:'',
+        total_amount:'',
+        vn: '',
+        va:'',
+        total_student:'',
     });
 
     const [currentPage, setCurrentPage] = useState(1);

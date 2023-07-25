@@ -14,6 +14,7 @@ module.exports = {
         borderColor: '#1136BA',
         accent : '#94ABBF',
         accent2 : '#576DBC',
+        grey2: '#f0f0f0'
       },
       borderWidth: {
         '1': '1px',

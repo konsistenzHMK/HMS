@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import DashboardPage from '../Components/DashboardPage'
 
 import circularImage from './Ellipse 93.png';
+import RoomAllocation from '../Pages/RoomAllocation';
 
 const Dashboard = () => {
   return (
@@ -84,6 +85,7 @@ const Dashboard = () => {
         <Route path="/room-Registration" element={<RoomRegistration />} />
         <Route path="/student-Registration" element={<StudentRegistartion />} />
         <Route path="/expense-Allocation" element={<ExpenseForm />} />
+        <Route path="/room-Allocation" element={<RoomAllocation />} />
       </Routes>
       </div>
     </div>

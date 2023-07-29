@@ -123,85 +123,72 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors = [];
     // Validate first_name
   if (!formData.first_name) {
-    errors.first_name = "First name is required";
+    errors.push(1);
   }
 
   // Validate last_name
   if (!formData.last_name) {
-    errors.last_name = "Last name is required";
+    errors.push(1);
   }
 
   // Validate father_name
   if (!formData.father_name) {
-    errors.father_name = "Father's name is required";
+    errors.push(1);
   }
 
   // Validate mother_name
   if (!formData.mother_name) {
-    errors.mother_name = "Mother's name is required";
+    errors.push(1);
   }
 
-  // Validate address_type
-  if (!formData.address_type) {
-    errors.address_type = "Address type is required";
-  }
 
   // Validate address1
   if (!formData.address1) {
-    errors.address1 = "Address line 1 is required";
+    errors.push(1);
   }
 
-  // Validate address2
-  if (!formData.address2) {
-    errors.address2 = "Address line 2 is required";
-  }
-
-  // Validate country
-  if (formData.country !== 'India') {
-    errors.country = "Country should be India";
-  }
 
   // Validate state
   if (!formData.state) {
-    errors.state = "State is required";
+    errors.push(1);
   }
 
   // Validate region
   if (!formData.region) {
-    errors.region = "Region is required";
+    errors.push(1);
   }
 
   // Validate district
   if (!formData.district) {
-    errors.district = "District is required";
+    errors.push(1);
   }
 
   // Validate city
   if (!formData.city) {
-    errors.city = "City is required";
+    errors.push(1);
   }
 
   // Validate pincode
   if (!formData.pincode) {
-    errors.pincode = "Pincode is required";
+    errors.push(1);
   }
 
   // Validate gender
   if (!formData.gender) {
-    errors.gender = "Gender is required";
+    errors.push(1);
   }
 
   // Validate aadhar_id
   if (!formData.aadhar_id) {
-    errors.aadhar_id = "Aadhar ID is required";
+    errors.push(1);
   }
 
   // Validate dob
   if (!formData.dob) {
-    errors.dob = "Date of birth is required";
+    errors.push(1);
   }
 
   // Set the errors using setErrors
@@ -240,6 +227,34 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
       setErrors(formErrors);
     }
   }
+  const changeOrphan =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      orphan: event.target.value
+    }));
+  }
+
+const changeHandicappStatus =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      handicapped: event.target.value
+    }));
+  }
+
+  const changeHandicappType =(event) =>{
+    setFormData((prevData) => ({
+      ...prevData,
+      handicapped_type: event.target.value
+    }));
+  }
+  const [sendForm,setSendForm]=useState(false);
+
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length==0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors.length);
+  },[formData])
 
   return (
     <div className="flex bg-defaultBg" >
@@ -299,7 +314,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               {/* 1.1 -- Student Name*/}
               <div className='w-full h-auto flex justify-between'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Firstname <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Firstname <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="first_name"
@@ -313,7 +328,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Lastname <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Lastname <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="last_name"
@@ -330,7 +345,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               {/* 2 -- Parents Name  */}
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Father's Name <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Father's Name <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="father_name"
@@ -344,7 +359,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mother's Name <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mother's Name <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="mother_name"
@@ -357,6 +372,161 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                 </div>
                 </div>
               </div>
+              <div className='w-full h-auto flex justify-between mt-3'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Gender <p className='inline text-xl text-red-600'>*</p></div>
+                    <select 
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                        value={formData.gender} 
+                        onChange={changeGender}
+                        >
+                        <option value="none">Select an option</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="non-binary">Non-Binary</option>
+                      
+                      </select>
+                      {errors.gender && <span className="error text-red-500">{errors.gender}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium w-full">Date of Birth <p className='inline text-xl text-red-600'>*</p></div>
+                    <DatePicker
+                      selected={formData.dob}
+                      onChange={changeDate}
+                      dateFormat="yyyy-MM-dd"
+                      className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                    />
+                    {errors.dob && <span className="error text-red-500">{errors.dob}</span>}
+                </div>
+                </div> 
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Religon<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="religon"
+                      name="religon"
+                      value={formData.religon}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.religon && <span className="error text-red-600">{errors.religon}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Category<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="category"
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.category && <span className="error text-red-600">{errors.category}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-4'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Height (in cm)<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="Number"
+                      id="height"
+                      name="height"
+                      value={formData.height}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.height && <span className="error text-red-500">{errors.height}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Weight (in kg) <p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="Number"
+                      id="weight"
+                      name="weight"
+                      value={formData.weight}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.weight && <span className="error text-red-500">{errors.weight}</span>}
+                  </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-4'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Handicapped <p className='inline text-xl text-red-600'></p></div>
+                    <select
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 ' 
+                        value={formData.handicapped} 
+                        onChange={changeHandicappStatus}
+                        >
+                        <option value="none">Handicapped Status</option>
+                        <option value='true'>Yes</option>
+                        <option value='partial'>Partially</option>
+                        <option value='false'>No</option>
+                      </select>
+                      {errors.mess && <span className="error text-red-500">{errors.mess}</span>}
+                </div>
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="medical_history">Handicapped Percentage<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="number"
+                      id="handicapped_per"
+                      name="handicapped_per"
+                      value={formData.handicapped_per}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.handicapped_per && <span className="error text-red-500">{errors.handicapped_per}</span>}
+                </div>
+                </div> 
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-4'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Handicapped Type <p className='inline text-xl text-red-600'></p></div>
+                    <select
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                        value={formData.handicapped_type} 
+                        onChange={changeHandicappType}
+                        >
+                        <option value="">Select Handicap Type</option>
+                        <option value="Physical">Physical</option>
+                        <option value="Visual">Visual</option>
+                        <option value="Hearing">Hearing</option>
+                        <option value="Intellectual">Intellectual</option>
+                        <option value="Developmental">Developmental</option>
+                      </select>
+                      {errors.handicapped_type && <span className="error text-red-500">{errors.handicapped_type}</span>}
+                </div>
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="medical_history">Orphan<p className='inline text-xl text-red-600'></p></div>
+                    <select
+                          className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                          value={formData.orphan} 
+                          onChange={changeOrphan}
+                          >
+                          <option value="">Select status </option>
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                        {errors.orphan && <span className="error text-red-500">{errors.orphan}</span>}
+                </div>
+                </div> 
+              </div>
 
             <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-4 mb-2 font-popins'>
                 <p className=' font-popins'>Address </p>
@@ -364,7 +534,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
             
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="address1"
@@ -378,7 +548,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="address2"
@@ -394,7 +564,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               {/* 2.2 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="state"
@@ -408,15 +578,15 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>**</p></div>
-                    <select 
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={State} 
-                        onChange={handleChangeState}
-                        >
-                        <option value="">Select an option</option>
-                        <option value="Maharashtra">Maharashtra</option>
-                    </select>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>*</p></div>
+                    <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                      />
                     {errors.state && <span className="error text-red-500">{errors.state}</span>}
                 </div>
                 </div>
@@ -425,37 +595,29 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               {/* 2.3 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>**</p></div>
-                      <select 
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={region} 
-                        onChange={handleChangeRegion}
-                        >
-                        <option value="">Select an option</option>
-                          {allRegion.map((region) => (
-                            <option key={region.value} value={region.value}>
-                              {region.label}
-                            </option>
-                          ))}
-                      </select>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>*</p></div>
+                    <input
+                        type="text"
+                        id="region"
+                        name="region"
+                        value={formData.region}
+                        onChange={handleChange}
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                      />
                     {errors.region && <span className="error text-red-500">{errors.region}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">District <p className='inline text-xl text-red-600'>**</p></div>
-                      <select 
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={District} 
-                        onChange={handleChangeDistrict}
-                        >
-                        <option value="">Select an option</option>
-                          {allDistrict.map((region) => (
-                            <option key={region.value} value={region.value}>
-                              {region.label}
-                            </option>
-                          ))}
-                      </select>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>*</p></div>
+                    <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        value={formData.district}
+                        onChange={handleChange}
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                      />
                     {errors.district && <span className="error text-red-500">{errors.district}</span>}
                 </div>
                 </div>
@@ -465,25 +627,21 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City<p className='inline text-xl text-red-600'>**</p></div>
-                    <select 
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={City} 
-                        onChange={handleChangeCity}
-                        >
-                        <option value="">Select an option</option>
-                          {allDistrict.map((region) => (
-                            <option key={region.value} value={region.value}>
-                              {region.label}
-                            </option>
-                          ))}
-                      </select>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City<p className='inline text-xl text-red-600'>*</p></div>
+                  <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                      />
                     {errors.city && <span className="error text-red-500">{errors.city}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="pincode"
@@ -497,24 +655,9 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
             </div>
             </div>
             <div className='w-full h-auto flex justify-between mt-3'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Type <p className='inline text-xl text-red-600'>**</p></div>
-                    <select 
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={formData.address_type} 
-                        onChange={changeAddress}
-                        >
-                        <option value="none">Select an option</option>
-                        <option value="Permanent Address">Permanent Address</option>
-                        <option value="Relative Address">Relative Address</option>
-                        <option value="College Address">College Address</option>
-                        <option value="School Address">School Address</option>
-                      </select>
-                      {errors.address_type && <span className="error text-red-500">{errors.address_type}</span>}
-                </div>
-                <div className='w-1/2 flex flex-col items-end'>
+                <div className='w-1/2 flex flex-col items-start'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Aadhar Number <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Aadhar Number <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="Number"
                       id="aadhar_id"
@@ -527,35 +670,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                 </div>
                 </div> 
               </div>
-              <div className='w-full h-auto flex justify-between mt-3'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Gender <p className='inline text-xl text-red-600'>**</p></div>
-                    <select 
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={formData.gender} 
-                        onChange={changeGender}
-                        >
-                        <option value="none">Select an option</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="non-binary">Non-Binary</option>
-                      
-                      </select>
-                      {errors.gender && <span className="error text-red-500">{errors.gender}</span>}
-                </div>
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Date of Birth <p className='inline text-xl text-red-600'>**</p></div>
-                    <DatePicker
-                      selected={formData.dob}
-                      onChange={changeDate}
-                      dateFormat="yyyy-MM-dd"
-                      className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                    />
-                    {errors.dob && <span className="error text-red-500">{errors.dob}</span>}
-                </div>
-                </div> 
-              </div>
+              
             {/* end */}
             </div>
           </div>
@@ -572,7 +687,9 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
-                <button onClick={handleNextPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
+                <button onClick={handleNextPage} 
+                 disabled={sendForm}
+                  className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'} text-lg font-semibold text-white border-none rounded-2xl`}>
                   Next Page
                 </button>
               </div>
@@ -607,24 +724,8 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
       blood_group: event.target.value
     }));
   }
-  const changeHandicappStatus =(event) =>{
-    setFormData((prevData) => ({
-      ...prevData,
-      handicapped: event.target.value
-    }));
-  }
-  const changeHandicappType =(event) =>{
-    setFormData((prevData) => ({
-      ...prevData,
-      handicapped_type: event.target.value
-    }));
-  }
-  const changeOrphan =(event) =>{
-    setFormData((prevData) => ({
-      ...prevData,
-      orphan: event.target.value
-    }));
-  }
+  
+
 
   function validateForm() {
     let errors = {};
@@ -675,7 +776,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   
   
     // Set the errors using setErrors
-    setErrors(errors);
+    // setErrors(errors);
     return errors;
   }
 
@@ -725,6 +826,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
     const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
     return date.toLocaleTimeString(undefined, options);
   };
+  
   return (
     <div className="flex bg-defaultBg" >
       {/* Main Content */}
@@ -777,37 +879,6 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
             <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
                 <p className=' font-popins'>Medical History </p>
             </div>
-
-            <div className='w-full h-auto flex justify-between mt-4'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Height (in cm)<p className='inline text-xl text-red-600'>**</p></div>
-                    <input
-                      type="Number"
-                      id="height"
-                      name="height"
-                      value={formData.height}
-                      onChange={handleChange}
-                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.height && <span className="error text-red-500">{errors.height}</span>}
-                </div>
-
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Weight (in kg) <p className='inline text-xl text-red-600'>**</p></div>
-                    <input
-                      type="Number"
-                      id="weight"
-                      name="weight"
-                      value={formData.weight}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.weight && <span className="error text-red-500">{errors.weight}</span>}
-                </div>
-                </div>
-              </div>
-
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Blood Group <p className='inline text-xl text-red-600'>**</p></div>
@@ -872,71 +943,6 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                     {errors.birth_mark && <span className="error text-red-500">{errors.birth_mark}</span>}
                 </div>
                 </div>
-              </div>
-
-              <div className='w-full h-auto flex justify-between mt-4'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Handicapped <p className='inline text-xl text-red-600'>**</p></div>
-                    <select
-                        className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 ' 
-                        value={formData.handicapped} 
-                        onChange={changeHandicappStatus}
-                        >
-                        <option value="none">Handicapped Status</option>
-                        <option value='true'>Yes</option>
-                        <option value='partial'>Partially</option>
-                        <option value='false'>No</option>
-                      </select>
-                      {errors.mess && <span className="error text-red-500">{errors.mess}</span>}
-                </div>
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="medical_history">Handicapped Percentage<p className='inline text-xl text-red-600'>*</p></div>
-                    <input
-                      type="number"
-                      id="handicapped_per"
-                      name="handicapped_per"
-                      value={formData.handicapped_per}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.handicapped_per && <span className="error text-red-500">{errors.handicapped_per}</span>}
-                </div>
-                </div> 
-              </div>
-
-              <div className='w-full h-auto flex justify-between mt-4'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Handicapped Type <p className='inline text-xl text-red-600'>*</p></div>
-                    <select
-                        className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={formData.handicapped_type} 
-                        onChange={changeHandicappType}
-                        >
-                        <option value="">Select Handicap Type</option>
-                        <option value="Physical">Physical</option>
-                        <option value="Visual">Visual</option>
-                        <option value="Hearing">Hearing</option>
-                        <option value="Intellectual">Intellectual</option>
-                        <option value="Developmental">Developmental</option>
-                      </select>
-                      {errors.handicapped_type && <span className="error text-red-500">{errors.handicapped_type}</span>}
-                </div>
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="medical_history">Orphan<p className='inline text-xl text-red-600'>**</p></div>
-                    <select
-                          className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                          value={formData.orphan} 
-                          onChange={changeOrphan}
-                          >
-                          <option value="">Select status </option>
-                          <option value="yes">Yes</option>
-                          <option value="no">No</option>
-                        </select>
-                        {errors.orphan && <span className="error text-red-500">{errors.orphan}</span>}
-                </div>
-                </div> 
               </div>
             {/* end */}
             </div>
@@ -1301,35 +1307,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 </div>
               </div>
 
-              <div className='w-full h-auto flex justify-between mt-2'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Religon<p className='inline text-xl text-red-600'>**</p></div>
-                    <input
-                      type="text"
-                      id="religon"
-                      name="religon"
-                      value={formData.religon}
-                      onChange={handleChange}
-                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.religon && <span className="error text-red-600">{errors.religon}</span>}
-                </div>
-
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Category<p className='inline text-xl text-red-600'>**</p></div>
-                    <input
-                      type="text"
-                      id="category"
-                      name="category"
-                      value={formData.category}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.category && <span className="error text-red-600">{errors.category}</span>}
-                </div>
-                </div>
-              </div>
+              
 
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>

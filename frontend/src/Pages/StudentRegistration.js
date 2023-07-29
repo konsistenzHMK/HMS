@@ -962,75 +962,55 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
 
 
   const validateForm = () => {
-    let errors = {};
+    let errors = [];
     // Validate personal_mobile
     if (!formData.personal_mobile) {
-      errors.personal_mobile = "Personal mobile number is required";
+      errors.push(1);
     }
   
     // Validate parent_mobile
     if (!formData.parent_mobile) {
-      errors.parent_mobile = "Parent mobile number is required";
+      errors.push(1);
     }
   
-    // Validate teacher_mobile
+    // // Validate teacher_mobile
     if (!formData.teacher_mobile) {
-      errors.teacher_mobile = "Teacher mobile number is required";
+      errors.push(1);
     }
   
-    // Validate emergency_number
-    if (!formData.emergency_number) {
-      errors.emergency_number = "Emergency contact number is required";
-    }
+    // // Validate emergency_number
+    // if (!formData.emergency_number) {
+    //   errors.emergency_number = "Emergency contact number is required";
+    // }
   
-    // Validate personal_email
+    // // Validate personal_email
     if (!formData.personal_email) {
-      errors.personal_email = "Personal email is required";
+      errors.push(1);
     }
   
     // Validate parent_email
-    if (!formData.parent_email) {
-      errors.parent_email = "Parent email is required";
-    }
+    // if (!formData.parent_email) {
+    //   errors.push(1);
+    // }
   
-    // Validate teacher_email
-    if (!formData.teacher_email) {
-      errors.teacher_email = "Teacher email is required";
-    }
+    // // Validate teacher_email
+    // if (!formData.teacher_email) {
+    //   errors.teacher_email = "Teacher email is required";
+    // }
   
     // Validate collage_name
     if (!formData.collage_name) {
-      errors.collage_name = "College name is required";
+      errors.push(1);
     }
   
     // Validate principle_name
     if (!formData.principle_name) {
-      errors.principle_name = "Principal's name is required";
+      errors.push(1);
     }
-  
-  
-    // Validate religon
-    if (!formData.religon) {
-      errors.religon = "Religion is required";
-    }
-  
-    // Validate category
-    if (!formData.category) {
-      errors.category = "Category is required";
-    }
-  
-    // Validate subCategory
-    if (!formData.subCategory) {
-      errors.subCategory = "Sub-category is required";
-    }
-  
-    // Validate income
-    if (!formData.income) {
-      errors.income = "Income is required";
-    }
+
   
     // Set the errors using setErrors
-    setErrors(errors);
+    // setErrors(errors);
     return errors;
   };
 
@@ -1075,6 +1055,15 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
     const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
     return date.toLocaleTimeString(undefined, options);
   };
+
+  const [sendForm,setSendForm]=useState(false);
+
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length==0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors.length);
+  },[formData])
 
 
   return (
@@ -1131,12 +1120,12 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
               {/* 1 --> Basic Details */}
 
               <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
-                <p className=' font-popins'>Contact details </p>
+                <p className=' font-popins'>Parent details </p>
               </div>
 
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Personal Mobile no <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Personal Mobile no <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="Number"
                       id="personal_mobile"
@@ -1150,7 +1139,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Parents Mobile no <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Parents Mobile no <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="Number"
                       id="parent_mobile"
@@ -1164,39 +1153,11 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 </div>
               </div>
 
-              <div className='w-full h-auto flex justify-between mt-3'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Teacher Mobile no<p className='inline text-xl text-red-600'>*</p></div>
-                    <input
-                      type="Number"
-                      id="teacher_mobile"
-                      name="teacher_mobile"
-                      value={formData.teacher_mobile}
-                      onChange={handleChange}
-                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.teacher_mobile && <span className="error text-red-600">{errors.teacher_mobile}</span>}
-                </div>
-
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Emergency Contact no<p className='inline text-xl text-red-600'>**</p></div>
-                    <input
-                      type="Number"
-                      id="emergency_number"
-                      name="emergency_number"
-                      value={formData.emergency_number}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.emergency_number && <span className="error text-red-600">{errors.emergency_number}</span>}
-                </div>
-                </div>
-              </div>
+              
 
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Personal Email ID<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Personal Email ID<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="personal_email"
@@ -1210,7 +1171,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Parents Email ID<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Parents Email ID<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="parent_email"
@@ -1224,28 +1185,30 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 </div>
               </div>
 
-              <div className='w-full h-auto flex justify-between mt-3'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Teacher Email ID<p className='inline text-xl text-red-600'>*</p></div>
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2 flex flex-col items-start'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Family Income (lakh per annum)<p className='inline text-xl text-red-600'></p></div>
                     <input
-                      type="text"
-                      id="teacher_email"
-                      name="teacher_email"
-                      value={formData.teacher_email}
+                      type="number"
+                      id="income"
+                      name="income"
+                      value={formData.income}
                       onChange={handleChange}
-                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.teacher_email && <span className="error text-red-600">{errors.teacher_email}</span>}
+                    {errors.income && <span className="error text-red-600">{errors.income}</span>}
+                </div>
                 </div>
               </div>
 
               <div className='underline  underline-offset-1 text-sky-950 text-2xl font-semibold pt-4 mt-1 mb-3 font-popins'>
-                <p className=' font-popins'>Other details </p>
+                <p className=' font-popins'>College details </p>
               </div>
 
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">College Name<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">College Name<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="collage_name"
@@ -1259,7 +1222,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Principle Name<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Principle Name<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="principle_name"
@@ -1272,36 +1235,19 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 </div>
                 </div>
               </div>
-
               
-
-              <div className='w-full h-auto flex justify-between mt-2'>
+              <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Sub Category<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Teacher Mobile no<p className='inline text-xl text-red-600'>*</p></div>
                     <input
-                      type="text"
-                      id="subCategory"
-                      name="subCategory"
-                      value={formData.subCategory}
+                      type="Number"
+                      id="teacher_mobile"
+                      name="teacher_mobile"
+                      value={formData.teacher_mobile}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.subCategory && <span className="error text-red-600">{errors.subCategory}</span>}
-                </div>
-
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Family Income (lakh per annum)<p className='inline text-xl text-red-600'>**</p></div>
-                    <input
-                      type="number"
-                      id="income"
-                      name="income"
-                      value={formData.income}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.income && <span className="error text-red-600">{errors.income}</span>}
-                </div>
+                    {errors.teacher_mobile && <span className="error text-red-600">{errors.teacher_mobile}</span>}
                 </div>
               </div>
             {/* end */}
@@ -1320,7 +1266,9 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
-                <button onClick={handleNextPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
+                <button onClick={handleNextPage} 
+                disabled={sendForm}
+                className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}>
                   Next Page
                 </button>
                 <button onClick={handlePrevPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
@@ -1352,7 +1300,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formErrors = validateForm();
+    const formErrors = [];
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
       axios.post('http://localhost:7000/student/registration', formData)
@@ -1374,49 +1322,26 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors = [];
     // Validate photo_file
   if (!formData.photo_file) {
-    errors.photo_file = "Photo file is required";
+    errors.push(1);
   }
 
   // Validate aadhar_file
   if (!formData.aadhar_file) {
-    errors.aadhar_file = "Aadhar file is required";
+    errors.push(1);
   }
 
   // Validate caste_file
   if (!formData.caste_file) {
-    errors.caste_file = "Caste file is required";
+    errors.push(1);
   }
 
   // Validate medical_file
-  if (!formData.medical_file) {
-    errors.medical_file = "Medical file is required";
-  }
-
-  // Validate account_holder_name
-  if (!formData.account_holder_name) {
-    errors.account_holder_name = "Account holder name is required";
-  }
-
-  // Validate bank_name
-  if (!formData.bank_name) {
-    errors.bank_name = "Bank name is required";
-  }
-
-  // Validate ifsc
-  if (!formData.ifsc) {
-    errors.ifsc = "IFSC code is required";
-  }
-
-  // Validate account_number
-  if (!formData.account_number) {
-    errors.account_number = "Account number is required";
-  }
-
-  // Set the errors using setErrors
-  setErrors(errors);
+  // if (!formData.medical_file) {
+  //   errors.medical_file = "Medical file is required";
+  // }
     return errors;
   };
   const [selectedFile, setSelectedFile] = useState(null);
@@ -1479,6 +1404,15 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
     previousPage();
   }
 
+  const [sendForm,setSendForm]=useState(false);
+
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length==0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors.length);
+  },[formData])
+
   return (
     <div className="flex bg-defaultBg" >
       {/* Main Content */}
@@ -1535,7 +1469,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Photo Attachment <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Photo Attachment <p className='inline text-xl text-red-600'>*</p></div>
                     <input 
                       type="file" 
                       id="photo" 
@@ -1551,7 +1485,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Upload Aadhar<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Upload Aadhar<p className='inline text-xl text-red-600'>*</p></div>
                   <input 
                       type="file" 
                       id="photo" 
@@ -1573,7 +1507,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Caste Certificate  <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Caste Certificate  <p className='inline text-xl text-red-600'>*</p></div>
                     <input 
                       type="file" 
                       id="photo" 
@@ -1593,7 +1527,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Medical Certificates<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Medical Certificates<p className='inline text-xl text-red-600'></p></div>
                   <input 
                       type="file" 
                       id="photo" 
@@ -1619,7 +1553,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Account Holder Name<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Account Holder Name<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="account_holder_name"
@@ -1633,7 +1567,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Bank name<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Bank name<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="bank_name"
@@ -1648,7 +1582,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
               </div>
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">IFSC<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">IFSC<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="ifsc"
@@ -1662,7 +1596,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Account Number<p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Account Number<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="number"
                       id="account_number"
@@ -1692,7 +1626,9 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
-                <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`} 
+                disabled={sendForm}
+                >
                   Submit 
                 </button>
                 <button onClick={handlePrevPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>

@@ -470,37 +470,35 @@ const expense = async(req,res)=>{
 
 const expense_header = async(req,res)=>{
     const{
-        expense_code,
-        date_of_expense,
-        date_of_booking,
-        total_expense_amount,
-        voucher_no,
-        voucher_amount,
-        expense_name,
-        expense_type,
-        hostel_id,
+        exp_code,
+        exp_name,
+        exp_type,
+        doe,
+        dob,
+        total_amount,
+        vn,
+        va,
+        total_student,
     } = (req.body);
 
-    const ans6=await booking_expense_header_function(null);
+    // const ans6=await booking_expense_header_function(null);
 
     try{
         await setDoc(doc(db, "expense_header",await randon_doc_id_function()), {
-            expense_code,
-            date_of_expense,
-            date_of_booking,
-            total_expense_amount,
-            voucher_no,
-            voucher_amount,
-            expense_name,
-            expense_type,
-            hostel_id,
-            booking_id:ans6,
+            exp_code,
+            exp_name,
+            exp_type,
+            doe,
+            dob,
+            total_amount,
+            vn,
+            va,
+            total_student,
         });
     }
     
     catch(e){
         res.send("Data not inserted");
-        
     }
     res.send("Data Inserted with booking id "+ booking_id);
 }

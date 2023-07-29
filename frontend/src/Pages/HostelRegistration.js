@@ -3,7 +3,7 @@ import axios, { all } from 'axios';
 import Dropdown from 'react-dropdown';
 import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
-
+import Select from 'react-select';
 
 const App = () => {
   const [category1, setCategory1] = useState('');
@@ -115,6 +115,13 @@ const App = () => {
       mess: event.target.value
     }));
   };
+  const handleDropdownStatusType = (event) => {
+    setMessType(event.target.value);
+    setFormData((prevData) => ({
+      ...prevData,
+      status: event.target.value
+    }));
+  };
 
 
   const [formData, setFormData] = useState({
@@ -140,7 +147,7 @@ const App = () => {
     bcapacity:'',
     area:'',
     mess:'',
-    other_facility:'',
+    other_facility:[],
     status:'',
     email_id:'',
     website:'',
@@ -207,112 +214,93 @@ const App = () => {
 
 
   const validateForm = () => {
-    const errors = {};
+    const errors = [];
       // Validate hostel_name
       if (!formData.hostel_name) {
-        errors.hostel_name = "Hostel name is required";
+        errors.push(1);
       }
 
       // Validate description
-      if (!formData.description) {
-        errors.description = "Description is required";
-      }
+      // if (!formData.description) {
+      //   errors.description = "Description is required";
+      // }
 
       // Validate address1
       if (!formData.address1) {
-        errors.address1 = "Address is required";
+        errors.push(1);
       }
 
       // Validate country
       if (formData.country !== 'India') {
-        errors.country = "Country should be India";
+        errors.push(1);
       }
 
       // Validate state
       if (!formData.state) {
-        errors.state = "State is required";
+        errors.push(1);
       }
 
       // Validate region
       if (!formData.region) {
-        errors.region = "Region is required";
+        errors.push(1);
       }
 
       // Validate district
       if (!formData.district) {
-        errors.district = "District is required";
+        errors.push(1);
       }
 
       // Validate city
       if (!formData.city) {
-        errors.city = "City is required";
+        errors.push(1);
       }
 
       // Validate pincode
       if (!formData.pincode) {
-        errors.pincode = "Pincode is required";
+        errors.push(1);
       }
 
       // Validate rector_name
       if (!formData.rector_name) {
-        errors.rector_name = "Rector name is required";
+        errors.push(1);
       }
 
       // Validate categ1
       if (!formData.categ1) {
-        errors.categ1 = "Category 1 is required";
+        errors.push(1);
       }
 
       // Validate categ2
       if (!formData.categ2) {
-        errors.categ2 = "Category 2 is required";
+        errors.push(1);
       }
 
       // Validate categ3
       if (!formData.categ3) {
-        errors.categ3 = "Category 3 is required";
+        errors.push(1);
       }
-
-      // Validate tower
-      if (!formData.tower || formData.tower<=0) {
-        errors.tower = "Tower is required";
-      } 
-
-      // Validate floor
-      if (!formData.floor || formData.floor<=0) {
-        errors.floor = "Floor is required";
-      }
-
-      // Validate room
-      if (!formData.room || formData.room<=0) {
-        errors.room = "Room is required";
-      }
-
       // Validate scapacity
       if (!formData.scapacity || formData.scapacity<=0) {
-        errors.scapacity = "Capacity is required";
+        errors.push(1);;
       }
       // Validate bcapacity
       if (!formData.bcapacity || formData.bcapacity<=0) {
-        errors.bcapacity = "Capacity is required";
+        errors.push(1);
+      }
+
+      if (!formData.mess) {
+        errors.push(1);
       }
 
       // Validate area
-      if (!formData.area || formData.area<=0) {
-        errors.area = "Area is required";
-      }
+      // if (!formData.area || formData.area<=0) {
+      //   errors.area = "Area is required";
+      // }
 
       // Validate email_id
       if (!isValidEmail(formData.email_id)) {
-        errors.email_id = "Invalid email address";
+        errors.push(1);
       }
-
-      // Validate website
-      if (!isValidWebsite(formData.website)) {
-        errors.website = "Invalid website URL";
-      }
-      // Set the errors using setErrors
-      setErrors(errors);
     return errors;
   };
 
@@ -360,9 +348,42 @@ const App = () => {
     return date.toLocaleTimeString(undefined, options);
   };
 
+  const options = [
+    { value: 'StudyRoom', label: 'Study Room' },
+    { value: 'Computer_Room', label: 'Computer Room' },
+    { value: 'Library', label: 'Library' },
+    { value: 'Games', label: 'Indoor/Outdoor Games' },
+    { value: 'HotWater', label: 'Hot Water' },
+    { value: 'AC', label: 'Air Conditioner' },
+    { value: 'Parking', label: 'Parking' },
+    { value: 'Solar', label: 'Solar Energy' },
+    { value: 'GuestRoom', label: 'Guest Room' },
+  ];
+  
+  const handleChange2 = (selectedOptions) => {
+    console.log(selectedOptions);
+    let ans=[]
+    for(let i=0;i<selectedOptions.length;i++){
+      ans[i]=selectedOptions[i].value;
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      other_facility: ans
+    }));
+  };
+
+  const [sendForm,setSendForm]=useState(false);
+
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length==0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors.length);
+  },[formData])
+
   return (
       <div className="w-full bg-defaultBg top-0">
-      <form onSubmit={handleSubmit}>
+      <form>
         {/* Header */}
         <div className='w-full flex justify-center h-1/2 pt-10' >
             <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
@@ -414,7 +435,7 @@ const App = () => {
 
               {/* 1.2 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
-                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Description <p className='inline text-xl text-red-600'>*</p></div>
+                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Description <p className='inline text-xl text-red-600'></p></div>
                 <textarea
                   id="description"
                   name="description"
@@ -433,7 +454,7 @@ const App = () => {
 
             <div className='w-full h-auto flex justify-between'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1 <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1 <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="address1"
@@ -447,7 +468,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="address2"
@@ -463,7 +484,7 @@ const App = () => {
               {/* 2.2 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="state"
@@ -477,7 +498,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={State} 
@@ -494,13 +515,13 @@ const App = () => {
               {/* 2.3 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={region} 
                         onChange={handleChangeRegion}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                           {allRegion.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
@@ -512,13 +533,13 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={District} 
                         onChange={handleChangeDistrict}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                           {allDistrict.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
@@ -534,13 +555,13 @@ const App = () => {
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={City} 
                         onChange={handleChangeCity}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                           {allDistrict.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
@@ -552,7 +573,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="pincode"
@@ -589,15 +610,15 @@ const App = () => {
 
               {/* 4.2 -->3 */}
               <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category1} 
                         onChange={handleDropdownCat1}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="girls">Girls</option>
                         <option value="boys">Boys</option>
                         <option value="coed">Co-Ed</option>
@@ -605,15 +626,15 @@ const App = () => {
                       {errors.categ1 && <span className="error text-red-600">{errors.categ1}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category2} 
                         onChange={handleDropdownCat2}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="t-1">type-1</option>
                         <option value="t-2">type-2</option>
                         <option value="t-3">type-3</option>
@@ -621,7 +642,12 @@ const App = () => {
                       {errors.categ2 && <span className="error text-red-600">{errors.categ2}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  
+              </div>
+
+              {/* 4.3 -> 3*/}
+              <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-3 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
@@ -629,20 +655,16 @@ const App = () => {
                         value={category3} 
                         onChange={handleDropdownCat3}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="rented">Rented</option>
                         <option value="government">Government</option>
                       </select>
                       {errors.categ3 && <span className="error text-red-600">{errors.categ3}</span>}
                   </div>
                   </div>
-              </div>
-
-              {/* 4.3 -> 3*/}
-              <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Towers <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Towers <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="tower"
@@ -654,9 +676,12 @@ const App = () => {
                       {errors.tower && <span className="error text-red-600">{errors.tower}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                  <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="floor"
@@ -668,9 +693,9 @@ const App = () => {
                       {errors.floor && <span className="error text-red-600">{errors.floor}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="room"
@@ -686,7 +711,7 @@ const App = () => {
 
               {/* 4.4 -->3 */}
               <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Sanctioned Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -700,7 +725,7 @@ const App = () => {
                       {errors.scapacity && <span className="error text-red-600">{errors.scapacity}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Building Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -714,9 +739,13 @@ const App = () => {
                       {errors.bcapacity && <span className="error text-red-600">{errors.bcapacity}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Total Area (sq.ft) <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Total Area (sq.ft) <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="area"
@@ -728,18 +757,15 @@ const App = () => {
                       {errors.area && <span className="error text-red-600">{errors.area}</span>}
                   </div>
                   </div>
-              </div>
-
-              <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={messType} 
                         onChange={handleDropdownMessType}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="government">Government</option>
                         <option value="contract">Contract</option>
                         <option value="other">Other</option>
@@ -748,31 +774,38 @@ const App = () => {
                       {errors.mess && <span className="error text-red-600">{errors.mess}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                  <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'>*</p></div>
-                      <input
-                        type="text"
-                        id="other_facility"
-                        name="other_facility"
-                        value={formData.other_facility}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'></p></div>
+                    <Select
+                        isMulti
+                        options={options}
+                        onChange={handleChange2}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
                       />
+                      {console.log(formData.other_facility)}
                       {errors.other_facility && <span className="error text-red-600">{errors.other_facility}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'>*</p></div>
-                      <input
-                        type="text"
-                        id="status"
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                      />
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'></p></div>
+                      <select 
+                          className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                          value={State} 
+                          onChange={handleDropdownStatusType}
+                          >
+                          <option value="NA">Select an option</option>
+                          <option value="Draft">Draft</option>
+                          <option value="Saved">Saved</option>
+                          <option value="Pending">Pending for Approval</option>
+                          <option value="Active">Active</option>
+                          <option value="Block">Block</option>
+                      </select>
                       {errors.status && <span className="error text-red-600">{errors.status}</span>}
                   </div>
                   </div>
@@ -781,7 +814,7 @@ const App = () => {
               {/* 4.5 */}
               <div className='w-full h-auto flex justify-between mt-5 mb-7'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Hostel Email <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Hostel Email <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="email_id"
@@ -795,7 +828,7 @@ const App = () => {
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div htmlFor="email_id" className='mb-1 font-popins text-lg font-medium'>Hostel Website <p className='inline text-xl text-red-600'>**</p></div>
+                  <div htmlFor="email_id" className='mb-1 font-popins text-lg font-medium'>Hostel Website <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="website"
@@ -826,7 +859,10 @@ const App = () => {
                 <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
                   Save
                 </button>
-                <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
+                  disabled={sendForm}
+                  onClick={handleSubmit}
+                >
                   Send for Approval
                 </button>
               </div>

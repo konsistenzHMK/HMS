@@ -5,7 +5,8 @@ import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, Divider, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { Text, View, useWindowDimensions } from 'react-native'
 import { useNavigationContext } from '../navigation/NavigationContext.js'
-
+import { useTranslation } from 'react-i18next'
+// {translate('HomeScreen.Text.Yo')}
 const MySettingsScreen = (props) => {
   const dimensions = useWindowDimensions()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
@@ -14,6 +15,7 @@ const MySettingsScreen = (props) => {
 
   const { theme } = props
   const { navigation } = props
+  const { t: translate } = useTranslation()
 
   const handleLogoutPress = () => {
     setGlobalVariableValue({
@@ -131,7 +133,7 @@ const MySettingsScreen = (props) => {
                 ellipsizeMode={'tail'}
                 textBreakStrategy={'highQuality'}
               >
-                {'Account Settings'}
+                {translate('MySettingsScreen.Text.AccountSetting')}
               </Text>
             </View>
             {/* Right Aligned */}
@@ -178,7 +180,7 @@ const MySettingsScreen = (props) => {
                 ellipsizeMode={'tail'}
                 textBreakStrategy={'highQuality'}
               >
-                {'Support'}
+               {translate('MySettingsScreen.Text.Support')}
               </Text>
             </View>
             {/* Right Aligned */}
@@ -224,7 +226,7 @@ const MySettingsScreen = (props) => {
                 ellipsizeMode={'tail'}
                 textBreakStrategy={'highQuality'}
               >
-                {'About'}
+                {translate('MySettingsScreen.Text.About')}
               </Text>
             </View>
             {/* Right Aligned */}
@@ -251,9 +253,9 @@ const MySettingsScreen = (props) => {
               dimensions.width,
             )}
           >
-            {'Current language is '}
-            <Text style={{ fontWeight: '800' }}>{currentLanguage}</Text>
-            {' click to change'}
+            {translate('MySettingsScreen.Text.Lan1')}
+            <Text style={{ fontWeight: '800' }}>{currentLanguage } </Text>
+            {translate('MySettingsScreen.Text.Lan2')}
           </Text>
         </Touchable>
         <Divider

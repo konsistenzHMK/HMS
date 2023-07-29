@@ -185,6 +185,17 @@
       "Toast.SentOTP": "OTP भेजा जा रहा है…",
       "Button.GetOTP": "ईमेल द्वारा OTP प्राप्त करें",
       "Text.SignUp": "साइन अप"
+    },
+    "MySettingsScreen":{
+      "Text.Setting":"इस डेटा को लाने में समस्या हुई है",
+      "Text.AccountSetting":"अकाउंट सेटिंग",
+      "Text.Support":"सहायता केंद्र",
+      "Text.About":"विवरण",
+      "Text.Lan1":"वर्तमान की भाषा ",
+      "Text.Lan2":"बदलने के लिए क्लिक करें"
+    },
+    "BakarrRecordingsScreen":{
+      "Text.Bakarr":"पुराने बकर सत्र"
     }
   }
 }

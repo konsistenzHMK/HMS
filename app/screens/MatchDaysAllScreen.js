@@ -146,7 +146,7 @@ const MatchDaysAllScreen = (props) => {
                 }),
                 dimensions.width,
               )}
-              placeholder={'Search by team...'}
+              placeholder={translate('MatchDaysAllScreen.Text.SearchPlaceholder')}
               value={textInputValue}
               autoCapitalize={'none'}
               placeholderTextColor={theme.colors['PF-Grey']}

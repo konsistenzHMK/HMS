@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { SafeAreaView, StyleSheet, View, Button, ActivityIndicator, Text } from 'react-native'
-import TrackPlayer, { AppKilledPlaybackBehavior, Capability, useProgress } from 'react-native-track-player'
+import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
+import TrackPlayer from 'react-native-track-player'
 import BakarrCard from '../components/bakarr-card/BakarrCard'
 import { setupPlayer, addTracks, playbackService } from '../utils/TrackPlayerService'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useTranslation } from 'react-i18next'
 
 import * as PagalFanBEApi from '../apis/PagalFanBEApi'
 
@@ -11,6 +12,8 @@ function BakarrRecordingsScreen(props) {
   const [isPlayerReady, setIsPlayerReady] = useState(false)
   const [currentPlayingId, setCurrentPlayingId] = useState(null)
   const [isPaused, setIsPaused] = useState(true)
+  //const { position, duration, buffered } = useProgress(200)
+  const { t: translate } = useTranslation()
   const [podcast, setPodcast] = useState([])
   const [yCoordinates, setYCoordinates] = useState(null)
   const [highlight, setHighlight] = useState(false)
@@ -81,9 +84,9 @@ function BakarrRecordingsScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.mainHeading}>Past Bakarr Sessions</Text>
+      <Text style={styles.mainHeading}> {translate('BakarrRecordingsScreen.Text.Bakarr')}</Text>
       <PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
-        {({ loading, error, data, refetchFetchAllBakarrRecordings }) => {
+        {({ loading, error, data }) => {
           const fetchData = data
           setPodcast(fetchData)
           if (!fetchData || loading) {

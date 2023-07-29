@@ -626,6 +626,7 @@ const MatchDaySingleScreen = (props) => {
   const [team1_name, setTeam1_name] = React.useState('')
   const [team2_name, setTeam2_name] = React.useState('')
   const [textInputValue, setTextInputValue] = React.useState('')
+  const [matchCommentary,setMatchCommentary]=React.useState(null);
 
   const handleEmoticonPress = (item) => {
     setTextInputValue(textInputValue + item)
@@ -4472,31 +4473,93 @@ const MatchDaySingleScreen = (props) => {
                       {/* Before match */}
                       <>
                         {showScorecard(jsonfeed) ? null : (
-                          <View
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Before match'], {
-                                alignContent: 'center',
-                                marginTop: 200,
-                              }),
-                              dimensions.width,
-                            )}
+                          // API call to get match dommentary for this match id , if match commentary is present show that else show Match Commentary not availabe
+                            <PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET
+                            refetchInterval={30000}
+                            matchid={props.route?.params?.match_id ?? 77}
                           >
-                            <Text
-                              style={StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                  alignSelf: 'center',
-                                  fontSize: 20,
-                                  textAlign: 'center',
-                                  color: '#fff',
-                                }),
-                                dimensions.width,
-                              )}
-                            >
-                              {MatchText()}
-                              {'\n'}
-                            </Text>
-                          </View>
-                        )}
+                            {({ loading, error, data, refetchFetchFeedForSingleMatch }) => {
+                              console.log(data.length);
+                              return(
+                                <>
+                                {!data[0]?.match_update ?
+                                   <View
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Before match'], {
+                                          alignContent: 'center',
+                                          marginTop: 200,
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontSize: 20,
+                                            textAlign: 'center',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {MatchText()}
+                                        {'\n'}
+                                      </Text>
+                                 </View>
+                                  :
+                                  <FlatList
+                                  data={data[0].match_update}
+                                  listKey={'o1Om4XPf'}
+                                  renderItem={({ item }) => { 
+                                    return (
+                                    <View
+                                    style={{
+                                      maxWidth: 800,
+                                      marginHorizontal: 'auto',
+                                      padding: 10,
+                                      shadowColor: '#000',
+                                      shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                      },
+                                      shadowOpacity: 0.1,
+                                      shadowRadius: 4,
+                                      elevation: 5,
+                                    }}
+                                  >
+                                    <Text
+                                      style={{
+                                        fontSize: 16,
+                                        fontWeight: 'bold',
+                                        color: '#FFFFFF',
+                                        marginBottom: 10,
+                                      }}
+                                    >
+                                      {item.title}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 12,
+                                        color: '#F5FFFA',
+                                      }}
+                                    >
+                                      {/* Place your commentary content here */}
+                                      {item.desc}
+                                    </Text>
+                                </View>
+                                  )}}
+                                  ></FlatList>
+                                  }
+                                </>
+                                
+                              )
+                              
+                            }}
+                          </PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET>
+                        
+                        )} 
+                        
                       </>
                     </>
                   )
@@ -4711,5 +4774,6 @@ const styles = RNStyleSheet.create({
     fontSize: 25,
   },
 })
+
 
 export default withTheme(MatchDaySingleScreen)

@@ -2253,6 +2253,70 @@ export const FetchFetchFeedForSingleMatchGET = ({ children, onData = () => {}, r
   })
 }
 
+export const fetchCommentaryForSingleMatchGETStatusAndText = (Constants, { matchid }) =>
+  fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_commentary?match_id=eq.${matchid ?? ''}`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      apiKey: Constants['API_KEY_HEADER'],
+    },
+  }).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const fetchCommentaryForSingleMatchGET = (Constants, { matchid }) =>
+  fetchCommentaryForSingleMatchGETStatusAndText(Constants, { matchid }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useFetchCommentaryForSingleMatchGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  return useQuery(['scores', args], () => fetchCommentaryForSingleMatchGET(Constants, args), {
+    refetchInterval,
+  })
+}
+
+export const FetchFetchCommentrayForSingleMatchGET = ({ children, onData = () => {}, refetchInterval, matchid }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
+
+  const { loading, data, error, refetch } = useFetchCommentaryForSingleMatchGET({ matchid }, { refetchInterval })
+
+  React.useEffect(() => {
+    if (!prevIsFocused && isFocused) {
+      refetch()
+    }
+  }, [isFocused, prevIsFocused])
+
+  React.useEffect(() => {
+    if (error) {
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
+    }
+  }, [error])
+  React.useEffect(() => {
+    if (data) {
+      onData(data)
+    }
+  }, [data])
+
+  return children({
+    loading,
+    data,
+    error,
+    refetchFetchFeedForSingleMatch: refetch,
+  })
+}
+
 // export const fetchAllBakarrRecordingsGETStatusAndText = (
 //   Constants,
 //   _args,

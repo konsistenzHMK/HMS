@@ -187,6 +187,20 @@
       "Toast.SentOTP": "Sending OTP …",
       "Button.GetOTP": "Get OTP by Email",
       "Text.SignUp": "Sign Up"
+    },
+
+    "MySettingsScreen":{
+      "Text.Setting":"There was a problem fetching this data",
+      "Text.AccountSetting":"Account Settings",
+      "Text.Support":"Support",
+      "Text.About":"About",
+      "Text.Lan1":"Current language is ",
+      "Text.Lan2":"click to change"
+    },
+
+    "BakarrRecordingsScreen":{
+      "Text.Bakarr":"Past Bakarr Sessions"
     }
+
   }
 }

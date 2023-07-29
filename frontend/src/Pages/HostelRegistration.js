@@ -3,7 +3,7 @@ import axios, { all } from 'axios';
 import Dropdown from 'react-dropdown';
 import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
-
+import Select from 'react-select';
 
 const App = () => {
   const [category1, setCategory1] = useState('');
@@ -140,7 +140,7 @@ const App = () => {
     bcapacity:'',
     area:'',
     mess:'',
-    other_facility:'',
+    other_facility:[],
     status:'',
     email_id:'',
     website:'',
@@ -362,6 +362,30 @@ const App = () => {
   const formatTime = (date) => {
     const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
     return date.toLocaleTimeString(undefined, options);
+  };
+
+  const options = [
+    { value: 'StudyRoom', label: 'Study Room' },
+    { value: 'Computer_Room', label: 'Computer Room' },
+    { value: 'Library', label: 'Library' },
+    { value: 'Games', label: 'Indoor/Outdoor Games' },
+    { value: 'HotWater', label: 'Hot Water' },
+    { value: 'AC', label: 'Air Conditioner' },
+    { value: 'Parking', label: 'Parking' },
+    { value: 'Solar', label: 'Solar Energy' },
+    { value: 'GuestRoom', label: 'Guest Room' },
+  ];
+  
+  const handleChange2 = (selectedOptions) => {
+    console.log(selectedOptions);
+    let ans=[]
+    for(let i=0;i<selectedOptions.length;i++){
+      ans[i]=selectedOptions[i].value;
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      other_facility: ans
+    }));
   };
 
   return (
@@ -763,14 +787,14 @@ const App = () => {
                   <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'>*</p></div>
-                      <input
-                        type="text"
-                        id="other_facility"
-                        name="other_facility"
-                        value={formData.other_facility}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    <Select
+                        isMulti
+                        options={options}
+                        onChange={handleChange2}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
                       />
+                      {console.log(formData.other_facility)}
                       {errors.other_facility && <span className="error text-red-600">{errors.other_facility}</span>}
                   </div>
                   </div>

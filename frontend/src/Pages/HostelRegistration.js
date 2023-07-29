@@ -214,9 +214,9 @@ const App = () => {
       }
 
       // Validate description
-      if (!formData.description) {
-        errors.description = "Description is required";
-      }
+      // if (!formData.description) {
+      //   errors.description = "Description is required";
+      // }
 
       // Validate address1
       if (!formData.address1) {
@@ -274,43 +274,47 @@ const App = () => {
       }
 
       // Validate tower
-      if (!formData.tower || formData.tower<=0) {
-        errors.tower = "Tower is required";
-      } 
+      // if (!formData.tower || formData.tower<=0) {
+      //   errors.tower = "Tower is required";
+      // } 
 
       // Validate floor
-      if (!formData.floor || formData.floor<=0) {
-        errors.floor = "Floor is required";
-      }
+      // if (!formData.floor || formData.floor<=0) {
+      //   errors.floor = "Floor is required";
+      // }
 
       // Validate room
-      if (!formData.room || formData.room<=0) {
-        errors.room = "Room is required";
-      }
+      // if (!formData.room || formData.room<=0) {
+      //   errors.room = "Room is required";
+      // }
 
       // Validate scapacity
       if (!formData.scapacity || formData.scapacity<=0) {
-        errors.scapacity = "Capacity is required";
+        errors.scapacity = "Sanctioned Capacity is required";
       }
       // Validate bcapacity
       if (!formData.bcapacity || formData.bcapacity<=0) {
         errors.bcapacity = "Capacity is required";
       }
 
-      // Validate area
-      if (!formData.area || formData.area<=0) {
-        errors.area = "Area is required";
+      if (!formData.mess) {
+        errors.mess = "Mess Type is required";
       }
+
+      // Validate area
+      // if (!formData.area || formData.area<=0) {
+      //   errors.area = "Area is required";
+      // }
 
       // Validate email_id
-      if (!isValidEmail(formData.email_id)) {
-        errors.email_id = "Invalid email address";
-      }
+      // if (!isValidEmail(formData.email_id)) {
+      //   errors.email_id = "Invalid email address";
+      // }
 
       // Validate website
-      if (!isValidWebsite(formData.website)) {
-        errors.website = "Invalid website URL";
-      }
+      // if (!isValidWebsite(formData.website)) {
+      //   errors.website = "Invalid website URL";
+      // }
       // Set the errors using setErrors
       setErrors(errors);
     return errors;
@@ -589,9 +593,9 @@ const App = () => {
 
               {/* 4.2 -->3 */}
               <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category1} 
@@ -605,9 +609,9 @@ const App = () => {
                       {errors.categ1 && <span className="error text-red-600">{errors.categ1}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category2} 
@@ -621,7 +625,12 @@ const App = () => {
                       {errors.categ2 && <span className="error text-red-600">{errors.categ2}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  
+              </div>
+
+              {/* 4.3 -> 3*/}
+              <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-3 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
@@ -636,11 +645,7 @@ const App = () => {
                       {errors.categ3 && <span className="error text-red-600">{errors.categ3}</span>}
                   </div>
                   </div>
-              </div>
-
-              {/* 4.3 -> 3*/}
-              <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Towers <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -654,7 +659,10 @@ const App = () => {
                       {errors.tower && <span className="error text-red-600">{errors.tower}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                  <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'>**</p></div>
                       <input
@@ -668,7 +676,7 @@ const App = () => {
                       {errors.floor && <span className="error text-red-600">{errors.floor}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'>**</p></div>
                       <input
@@ -686,7 +694,7 @@ const App = () => {
 
               {/* 4.4 -->3 */}
               <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Sanctioned Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -700,7 +708,7 @@ const App = () => {
                       {errors.scapacity && <span className="error text-red-600">{errors.scapacity}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Building Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -714,7 +722,11 @@ const App = () => {
                       {errors.bcapacity && <span className="error text-red-600">{errors.bcapacity}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Total Area (sq.ft) <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -728,10 +740,7 @@ const App = () => {
                       {errors.area && <span className="error text-red-600">{errors.area}</span>}
                   </div>
                   </div>
-              </div>
-
-              <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>**</p></div>
                     <select 
@@ -748,7 +757,10 @@ const App = () => {
                       {errors.mess && <span className="error text-red-600">{errors.mess}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                  <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -762,7 +774,7 @@ const App = () => {
                       {errors.other_facility && <span className="error text-red-600">{errors.other_facility}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'>*</p></div>
                       <input

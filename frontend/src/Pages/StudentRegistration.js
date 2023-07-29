@@ -403,6 +403,23 @@ const changeHandicappStatus =(event) =>{
                 </div> 
               </div>
 
+              <div className='w-full h-auto flex justify-between mt-3'>
+                <div className='w-full flex flex-col items-start'>
+                  <div className='w-full'>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Aadhar Number <p className='inline text-xl text-red-600'>*</p></div>
+                    <input
+                      type="Number"
+                      id="aadhar_id"
+                      name="aadhar_id"
+                      value={formData.aadhar_id}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-2 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                    />
+                    {errors.aadhar_id && <span className="error text-red-500">{errors.aadhar_id}</span>}
+                </div>
+                </div> 
+              </div>
+
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Religon<p className='inline text-xl text-red-600'></p></div>
@@ -446,7 +463,6 @@ const changeHandicappStatus =(event) =>{
                     />
                     {errors.height && <span className="error text-red-500">{errors.height}</span>}
                 </div>
-
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Weight (in kg) <p className='inline text-xl text-red-600'></p></div>
@@ -519,9 +535,9 @@ const changeHandicappStatus =(event) =>{
                           value={formData.orphan} 
                           onChange={changeOrphan}
                           >
-                          <option value="">Select status </option>
-                          <option value="yes">Yes</option>
                           <option value="no">No</option>
+                          <option value="yes">Yes</option>
+                          
                         </select>
                         {errors.orphan && <span className="error text-red-500">{errors.orphan}</span>}
                 </div>
@@ -621,7 +637,6 @@ const changeHandicappStatus =(event) =>{
                     {errors.district && <span className="error text-red-500">{errors.district}</span>}
                 </div>
                 </div>
-
               </div>
 
               {/* 2.4 */}
@@ -654,23 +669,6 @@ const changeHandicappStatus =(event) =>{
                 </div>    
             </div>
             </div>
-            <div className='w-full h-auto flex justify-between mt-3'>
-                <div className='w-1/2 flex flex-col items-start'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Aadhar Number <p className='inline text-xl text-red-600'>*</p></div>
-                    <input
-                      type="Number"
-                      id="aadhar_id"
-                      name="aadhar_id"
-                      value={formData.aadhar_id}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                    />
-                    {errors.aadhar_id && <span className="error text-red-500">{errors.aadhar_id}</span>}
-                </div>
-                </div> 
-              </div>
-              
             {/* end */}
             </div>
           </div>
@@ -728,55 +726,13 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
 
 
   function validateForm() {
-    let errors = {};
-    // Validate height
-    if (!formData.height || formData.height<0) {
-      errors.height = "Height is required";
-    }
-    
-    // Validate weight
-    if (!formData.weight || formData.weight<0) {
-      errors.weight = "Weight is required";
-    }
-  
+    let errors = []
+
     // Validate blood_group
     if (!formData.blood_group) {
-      errors.blood_group = "Blood group is required";
+      errors.push(1);
     }
   
-    // Validate medical_history
-    if (!formData.medical_history) {
-      errors.medical_history = "Medical history is required";
-    }
-  
-    // Validate medicine_taken
-    if (!formData.medicine_taken) {
-      errors.medicine_taken = "Medicine taken is required";
-    }
-  
-    // Validate birth_mark
-    if (!formData.birth_mark) {
-      errors.birth_mark = "Birthmark is required";
-    }
-  
-    // Validate handicapped
-    if (!formData.handicapped) {
-      errors.handicapped = "Handicapped status is required";
-    }
-  
-    // Validate handicapped_per
-    if (!formData.handicapped_per) {
-      errors.handicapped_per = "Percentage of handicap is required";
-    }
-  
-    // Validate handicapped_type
-    if (!formData.handicapped_type) {
-      errors.handicapped_type = "Type of handicap is required";
-    }
-  
-  
-    // Set the errors using setErrors
-    // setErrors(errors);
     return errors;
   }
 
@@ -826,7 +782,15 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
     const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
     return date.toLocaleTimeString(undefined, options);
   };
-  
+  const [sendForm,setSendForm]=useState(false);
+
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length==0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors.length);
+  },[formData])
+
   return (
     <div className="flex bg-defaultBg" >
       {/* Main Content */}
@@ -881,13 +845,13 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
             </div>
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Blood Group <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Blood Group <p className='inline text-xl text-red-600'>*</p></div>
                     <select
                         className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 ' 
                         value={formData.blood_group} 
                         onChange={changeBloodGroup}
                         >
-                        <option value="none">Select Blood Group</option>
+                        <option value=''>Select Blood Group</option>
                         <option value="A+">A+</option>
                         <option value="A-">A-</option>
                         <option value="B+">B+</option>
@@ -960,7 +924,9 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
-                <button onClick={handleNextPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
+                <button onClick={handleNextPage} 
+                  disabled={sendForm}
+                  className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'} text-lg font-semibold text-white border-none rounded-2xl`}>
                   Next Page
                 </button>
                 <button onClick={handlePrevPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>

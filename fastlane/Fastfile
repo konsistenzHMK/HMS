@@ -1,0 +1,30 @@
+project_root = File.expand_path("..", Dir.pwd)
+
+appBuildNumber = ''
+appVersionNumber = ''
+
+platform :android do
+
+    private_lane :androidVersionUpdate do |options|
+        gradlePath = "./android/app/build.gradle"
+        
+        # Update version code
+        android_set_version_code(
+            version_code: options[:build],
+            gradle_file: gradlePath,
+        )
+
+        # Update version number
+        android_set_version_name(
+            version_name: options[:version],
+            gradle_file: gradlePath,
+        )
+    end
+
+    desc "Android build"
+    lane :build do |options|
+        androidVersionUpdate options
+        gradle(task: "app:assembleRelease", project_dir:"./android")
+    end
+
+end

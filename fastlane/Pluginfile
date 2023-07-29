@@ -1,0 +1,6 @@
+gem 'fastlane-plugin-load_json'
+gem 'fastlane-plugin-versioning_android'
+gem 'fastlane-plugin-npm'
+gem 'cocoapods', '~> 1.11', '>= 1.11.3'
+gem 'dotenv'
+gem 'xcode-install'

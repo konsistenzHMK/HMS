@@ -489,7 +489,7 @@ const HomeScreen = (props) => {
                               dimensions.width,
                             )}
                           >
-                           {translate('HomeScreen.Text.DiveIn')}
+                            {translate('HomeScreen.Text.DiveIn')}
                           </Text>
                         </View>
                       </Pressable>
@@ -517,6 +517,143 @@ const HomeScreen = (props) => {
         }}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => setFeedLoadTimestamp(Date.now())} />}
       >
+                {/* Bakarr Recordings */}
+                <View>
+          {/* Title */}
+          <View
+            style={StyleSheet.applyWidth({ flexDirection: 'row', justifyContent: 'space-between' }, dimensions.width)}
+          >
+            <Text
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: theme.colors['Community_Medium_Black'],
+                  fontFamily: 'Inter_600SemiBold',
+                  fontSize: 14,
+                  marginBottom: 10,
+                }),
+                dimensions.width,
+              )}
+            >
+              {translate('HomeScreen.Text.BakarrRecordings')}
+            </Text>
+
+            <Pressable
+              onPress={() => {
+                try {
+                  navigation.navigate('BakarrRecordingsScreen')
+                } catch (err) {
+                  console.error(err)
+                }
+              }}
+            >
+              <Text
+                style={StyleSheet.applyWidth(
+                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                    color: theme.colors['Secondary'],
+                    fontFamily: 'Inter_300Light',
+                    fontSize: 10,
+                    marginBottom: 10,
+                  }),
+                  dimensions.width,
+                )}
+              >
+                {translate('HomeScreen.Text.ViewAll')}
+              </Text>
+            </Pressable>
+          </View>
+
+          <PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
+            {({ loading, error, data }) => {
+              const fetchData = data
+              if (!fetchData || loading) {
+                return <FanClubLoader />
+              }
+
+              if (error) {
+                return <Text style={{ textAlign: 'center' }}>{translate('HomeScreen.Text.ProblemFetchData')}</Text>
+              }
+
+              return (
+                <>
+                  <FlashList
+                    data={fetchData}
+                    listKey={'b48x7awR'}
+                    keyExtractor={(flashListData) =>
+                      flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
+                    }
+                    renderItem={({ item }) => {
+                      const flashListData = item
+                      return (
+                        <Pressable
+                          onPress={() => {
+                            try {
+                              navigation.navigate('BakarrRecordingsScreen', {
+                                id: flashListData?.id,
+                              })
+                            } catch (err) {
+                              console.error(err)
+                            }
+                          }}
+                        >
+                          {/* BakarrCard */}
+                          <View
+                            style={StyleSheet.applyWidth(
+                              {
+                                alignItems: 'center',
+                                marginRight: 10,
+                                width: 70,
+                              },
+                              dimensions.width,
+                            )}
+                          >
+                            <Image
+                              style={StyleSheet.applyWidth(
+                                StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                                  // borderBottomWidth: 3,
+                                  borderColor: theme.colors['App Green'],
+                                  borderRadius: 50,
+                                  borderWidth: 2,
+                                  // borderTopWidth: 1,
+                                  height: 60,
+                                  width: 60,
+                                }),
+                                dimensions.width,
+                              )}
+                              resizeMode={'stretch'}
+                              source={{
+                                uri: `${flashListData?.image_url}`,
+                              }}
+                            />
+                            <Text
+                              style={StyleSheet.applyWidth(
+                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                  fontFamily: 'Inter_400Regular',
+                                  fontSize: 8,
+                                  marginBottom: 4
+                                }),
+                                dimensions.width,
+                              )}
+                              numberOfLines={1}
+                              ellipsizeMode={'tail'}
+                            >
+                              {flashListData?.session_title}
+                            </Text>
+                          </View>
+                        </Pressable>
+                      )
+                    }}
+                    estimatedItemSize={50}
+                    numColumns={1}
+                    onEndReachedThreshold={0.5}
+                    horizontal={true}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                </>
+              )
+            }}
+          </PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
+        </View>
         {/* AdView */}
         <View>
           {/* PF Banner */}
@@ -587,7 +724,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-               {translate('HomeScreen.Text.ViewAll')}
+                {translate('HomeScreen.Text.ViewAll')}
               </Text>
             </Pressable>
           </View>
@@ -765,7 +902,7 @@ const HomeScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                             {translate('HomeScreen.Text.vs')}
+                              {translate('HomeScreen.Text.vs')}
                             </Text>
                             {/* Team-2 */}
                             <View
@@ -899,8 +1036,7 @@ const HomeScreen = (props) => {
           color={theme.colors['PF-Primary']}
         />
         {/* ClubScroll */}
-        <View>
-          {/* Title */}
+        {/* <View>
           <View
             style={StyleSheet.applyWidth({ flexDirection: 'row', justifyContent: 'space-between' }, dimensions.width)}
           >
@@ -976,7 +1112,6 @@ const HomeScreen = (props) => {
                             }
                           }}
                         >
-                          {/* ClubCard */}
                           <View
                             style={StyleSheet.applyWidth(
                               {
@@ -1032,7 +1167,8 @@ const HomeScreen = (props) => {
               )
             }}
           </PagalFanBEApi.FetchFetchAllFanClubsGET>
-        </View>
+        </View> */}
+
         <Divider
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.DividerStyles(theme)['Divider'], {
@@ -1162,7 +1298,7 @@ const HomeScreen = (props) => {
                   dimensions.width,
                 )}
               >
-               {translate('HomeScreen.Text.EnteringBakarrRoom')}
+                {translate('HomeScreen.Text.EnteringBakarrRoom')}
               </Text>
               <Divider
                 style={StyleSheet.applyWidth(

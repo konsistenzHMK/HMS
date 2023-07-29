@@ -1,6 +1,7 @@
 import { Icon } from '@draftbit/ui'
 import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
+import convertUTCtoIST from '../../global-functions/convertUTCtoIST'
 
 const BakarrCard = ({
   imageSource,
@@ -12,14 +13,18 @@ const BakarrCard = ({
   podcastUrl,
   onPressPause,
   isPaused,
+  highlight,
+  createdAt
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, highlight && styles.highlight]}>
       <View style={styles.thumbnailContainer}>
         <Image source={{ uri: imageSource }} style={styles.thumbnail} />
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>{heading}</Text>
+          <View>
           <Text style={styles.subheading}>{subheading}</Text>
+          </View>
         </View>
       </View>
       <View>
@@ -31,7 +36,7 @@ const BakarrCard = ({
             style={styles.playIcon}
             name="FontAwesome/play"
             size={25}
-            color="black"
+            color= {`${highlight ? "#f2aaa5": "black"}`}
             onPress={() => {
               onPressPlay(podcastUrl, id, heading, subheading)
             }}
@@ -39,7 +44,7 @@ const BakarrCard = ({
         ) : (
           <Icon style={styles.playIcon} name="FontAwesome/pause" size={25} color="black" onPress={onPressPause} />
         )}
-        <Text style={styles.date}>20th Jul 2023</Text>
+        <Text style={styles.date}>{convertUTCtoIST(createdAt)}</Text>
       </View>
     </View>
   )
@@ -111,7 +116,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     color: 'gray',
     justifyContent: 'center',
+    marginLeft: 5,
+    marginTop:2
   },
+  highlight: {
+    borderWidth: 1,
+    borderColor: "gray"
+  }
 })
 
 export default BakarrCard

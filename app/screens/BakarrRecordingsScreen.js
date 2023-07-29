@@ -1,35 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView, StyleSheet, View, Button, ActivityIndicator, Text } from 'react-native'
-import TrackPlayer, { useProgress } from 'react-native-track-player'
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability, useProgress } from 'react-native-track-player'
 import BakarrCard from '../components/bakarr-card/BakarrCard'
-import { setupPlayer, addTracks } from '../utils/TrackPlayerService'
+import { setupPlayer, addTracks, playbackService } from '../utils/TrackPlayerService'
 import { ScrollView } from 'react-native-gesture-handler'
 
 import * as PagalFanBEApi from '../apis/PagalFanBEApi'
 
-function BakarrRecordingsScreen() {
+function BakarrRecordingsScreen(props) {
   const [isPlayerReady, setIsPlayerReady] = useState(false)
   const [currentPlayingId, setCurrentPlayingId] = useState(null)
   const [isPaused, setIsPaused] = useState(true)
-  //const { position, duration, buffered } = useProgress(200)
+  const [podcast, setPodcast] = useState([])
+  const [yCoordinates, setYCoordinates] = useState(null)
+  const [highlight, setHighlight] = useState(false)
+  const scrollRef = useRef(null)
+  let scrollToId = props.route?.params?.id ?? null
 
-  function TrackProgress() {
-    function format(seconds) {
-      let mins = parseInt(seconds / 60)
-        .toString()
-        .padStart(2, '0')
-      let secs = (Math.trunc(seconds) % 60).toString().padStart(2, '0')
-      return `${mins}:${secs}`
+  useEffect(() => {
+    TrackPlayer.registerPlaybackService(() => {
+      playbackService
+    })
+  }, [])
+
+  useEffect(() => {
+    let scrollToId = props.route?.params?.id ?? null
+    if (podcast.length > 0 && scrollToId && yCoordinates) {
+      scrollRef.current.scrollTo({
+        y: yCoordinates,
+        animated: true,
+      })
     }
-
-    return (
-      <View>
-        <Text style={styles.trackProgress}>
-          {format(position)} / {format(duration)}
-        </Text>
-      </View>
-    )
-  }
+    if (scrollToId) {
+      setHighlight(true)
+      setTimeout(() => {
+        setHighlight(false)
+      }, 3000)
+    }
+  }, [yCoordinates])
 
   //Start the player when play button is clicked
   const onPressPlay = async (trackUrl, id, heading, subheading) => {
@@ -39,15 +47,14 @@ function BakarrRecordingsScreen() {
     }
     //if a new podcast is being played
     else {
-      async function setup(trackUrl) {
+      const setup = async (trackUrl) => {
         let isSetup = await setupPlayer(trackUrl)
 
         const queue = await TrackPlayer.getQueue()
         if (isSetup && queue.length <= 0) {
-          await TrackPlayer.reset()
-          await addTracks(trackUrl)
+          await addTracks(trackUrl, id, heading, subheading)
+          await TrackPlayer.skipToNext()
         }
-
         setIsPlayerReady(isSetup)
         TrackPlayer.play()
       }
@@ -57,8 +64,9 @@ function BakarrRecordingsScreen() {
       }
       // reset the track player so as to remove the last podcast and start playing the new one
       else {
-        await TrackPlayer.reset()
+        await TrackPlayer.pause()
         await addTracks(trackUrl, id, heading, subheading)
+        await TrackPlayer.skipToNext()
         TrackPlayer.play()
       }
       setCurrentPlayingId(id)
@@ -72,12 +80,12 @@ function BakarrRecordingsScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.mainHeading}>Past Bakarr Sessions</Text>
-
       <PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
         {({ loading, error, data, refetchFetchAllBakarrRecordings }) => {
           const fetchData = data
+          setPodcast(fetchData)
           if (!fetchData || loading) {
             return <ActivityIndicator />
           }
@@ -85,35 +93,51 @@ function BakarrRecordingsScreen() {
             return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
           }
           return (
-            <ScrollView bounces={true} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+            <ScrollView
+              bounces={true}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              ref={scrollRef}
+            >
               {fetchData.map((podcast) => {
                 return (
-                  <BakarrCard
-                    id={podcast.id}
-                    imageSource={podcast.image_url}
-                    heading={podcast.session_title}
-                    subheading={podcast.sub_title}
-                    description={podcast.description}
+                  <View
+                    onLayout={(event) => {
+                      const layout = event.nativeEvent.layout
+                      if (podcast.id === scrollToId) {
+                        setYCoordinates(layout.y)
+                      }
+                    }}
                     key={podcast.id}
-                    onPressPlay={onPressPlay}
-                    onPressPause={onPressPause}
-                    podcastUrl={podcast.session_recorded_link}
-                    isPaused={podcast.id !== currentPlayingId || isPaused}
-                  />
+                  >
+                    <BakarrCard
+                      id={podcast.id}
+                      imageSource={podcast.image_url}
+                      heading={podcast.session_title}
+                      subheading={podcast.sub_title}
+                      description={podcast.description}
+                      onPressPlay={onPressPlay}
+                      onPressPause={onPressPause}
+                      podcastUrl={podcast.session_recorded_link}
+                      isPaused={podcast.id !== currentPlayingId || isPaused}
+                      highlight={podcast.id === scrollToId && highlight}
+                      createdAt={podcast.created_at}
+                    />
+                  </View>
                 )
               })}
             </ScrollView>
           )
         }}
       </PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
-    </SafeAreaView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: 'white',
+    paddingBottom: 30,
   },
   trackProgress: {
     marginTop: 40,

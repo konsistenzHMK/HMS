@@ -37,9 +37,17 @@ export async function addTracks(trackUrl, id, heading, subheading) {
       artist: subheading,
     },
   ])
-  await TrackPlayer.setRepeatMode(RepeatMode.Queue)
+  await TrackPlayer.setRepeatMode(RepeatMode.Off)
 }
 
 export async function playbackService() {
-  // TODO: Attach remote event handlers
+  TrackPlayer.addEventListener(Event.RemotePause, () => {
+    console.log('Event.RemotePause');
+    TrackPlayer.pause();
+  });
+
+  TrackPlayer.addEventListener(Event.RemotePlay, () => {
+    console.log('Event.RemotePlay');
+    TrackPlayer.play();
+  });
 }

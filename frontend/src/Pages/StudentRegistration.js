@@ -487,7 +487,7 @@ const changeHandicappStatus =(event) =>{
                         value={formData.handicapped} 
                         onChange={changeHandicappStatus}
                         >
-                        <option value="none">Handicapped Status</option>
+                        <option value=''>Handicapped Status</option>
                         <option value='true'>Yes</option>
                         <option value='partial'>Partially</option>
                         <option value='false'>No</option>
@@ -498,6 +498,7 @@ const changeHandicappStatus =(event) =>{
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="medical_history">Handicapped Percentage<p className='inline text-xl text-red-600'></p></div>
                     <input
+                      disabled={formData.handicapped=='false' ? true:false}
                       type="number"
                       id="handicapped_per"
                       name="handicapped_per"
@@ -514,6 +515,7 @@ const changeHandicappStatus =(event) =>{
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Handicapped Type <p className='inline text-xl text-red-600'></p></div>
                     <select
+                        disabled={formData.handicapped=='false' ? true:false}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.handicapped_type} 
                         onChange={changeHandicappType}

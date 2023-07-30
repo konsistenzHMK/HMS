@@ -3,7 +3,7 @@ import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as StyleSheet from '../utils/StyleSheet'
-import { Button, Icon, ScreenContainer, Switch, withTheme } from '@draftbit/ui'
+import { Button, Icon, ScreenContainer, Switch, withTheme, Touchable } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
 import {
   ActivityIndicator,
@@ -21,14 +21,19 @@ import { Image, useSnackbar } from '../components'
 import messaging from '@react-native-firebase/messaging'
 import { RemoteAvatars } from '../config/Images'
 import { useNavigationContext } from '../navigation/NavigationContext.js'
+import { useTranslation } from 'react-i18next'
 
 const SWIPE_SCREENS = Array(4).fill()
 
 const OnboardingScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
+  const setGlobalVariableValue = GlobalVariables.useSetValue()
   const Variables = Constants
   const { setStack } = useNavigationContext()
+  const { t: translate } = useTranslation()
+
+  const currentLanguage = Constants['Language'] == 'en' ? 'English' : 'Hindi'
 
   // Adds to sports list if user toggles selection switch to Yes
   const addToSportsPrefs = (Variables, sportId) => {
@@ -58,6 +63,11 @@ const OnboardingScreen = (props) => {
   const [selectedAvatarIndex, setSelectedAvatarIndex] = React.useState(0)
 
   const snackbar = useSnackbar()
+
+  const toggleAppLanguage = () => {
+    const value = Constants['Language'] === 'en' ? 'hi' : 'en'
+    setGlobalVariableValue({ key: 'Language', value })
+  }
 
   const validatUserDetails = () => {
     let message = null
@@ -208,7 +218,25 @@ const OnboardingScreen = (props) => {
             {"We'll ask you a couple of questions to personalise the app for you. It will take 30 secs of your time."}
           </Text>
         </View>
-        {/* Instructions2 */}
+        {/* Language */}
+        <Touchable style={{ height: 60, justifyContent: 'center', alignItems: 'center' }} onPress={toggleAppLanguage}>
+          <Text
+            style={StyleSheet.applyWidth(
+              {
+                color: theme.colors.strong,
+                fontFamily: 'System',
+                fontWeight: '600',
+                fontSize: 15,
+              },
+              dimensions.width,
+            )}
+          >
+            {translate('MySettingsScreen.Text.Lan1')}
+            <Text style={{ fontWeight: '800' }}>{currentLanguage} </Text>
+            {translate('MySettingsScreen.Text.Lan2')}
+          </Text>
+        </Touchable>
+        {/* Swipe next */}
         <View
           style={StyleSheet.applyWidth(
             {

@@ -10,6 +10,7 @@ import { Button, Circle, Icon, ScreenContainer, withTheme } from '@draftbit/ui'
 import { Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions, Pressable, Alert } from 'react-native'
 import { Modal, useSnackbar, VideoPlayer, Image, Loader } from '../components'
 import { useTranslation } from 'react-i18next'
+import { createThumbnail } from 'react-native-create-thumbnail'
 
 const CreatePostScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -36,14 +37,22 @@ const CreatePostScreen = (props) => {
         return
       }
       setLoadingPostUpload(true)
-      // snackbar.show({ title: 'Uploading post …' })
 
-      const subDir = pickerMediaTypeRef.current === 'photo' ? 'images' : 'videos'
-      const remoteUrl = await uploadFile('post-bucket', pickedMedia, subDir)
-      setPickedMedia(remoteUrl)
+      let videoUrl, imageUrl
+
+      if (pickerMediaTypeRef.current === 'video') {
+        videoUrl = await uploadFile('post-bucket', pickedMedia, 'videos')
+        const data = await createThumbnail({ url: pickedMedia })
+        imageUrl = await uploadFile('post-bucket', data.path, 'images', data.mime)
+      } else {
+        imageUrl = await uploadFile('post-bucket', pickedMedia, 'images')
+      }
+
+      setPickedMedia(imageUrl)
       await pagalFanBEAddNewPostPOST.mutateAsync({
         caption: textAreaValue,
-        image_url: remoteUrl,
+        image_url: imageUrl,
+        video_url: videoUrl,
         posted_by: Constants['LOGGED_IN_USER'],
       })
       navigation.goBack()
@@ -309,7 +318,7 @@ const CreatePostScreen = (props) => {
             }}
             numberOfLines={4}
           >
-           {translate('CreatePostScreen.Text.VideoSize')}
+            {translate('CreatePostScreen.Text.VideoSize')}
           </Text>
         </View>
       </Modal>

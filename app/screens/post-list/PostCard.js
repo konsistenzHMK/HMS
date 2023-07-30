@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { theme } from '../../themes'
-import { getMimeTypeFromFilename } from '@shopify/mime-types'
 import * as GlobalVariables from '../../config/GlobalVariableContext'
 import { BlurImage, Image, VideoPlayer, useSnackbar } from '../../components'
 import * as PagalFanBEApi from '../../apis/PagalFanBEApi'
@@ -18,9 +17,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
   const profileImage = user_profiles?.profile_image
   const handle = user_profiles?.handle
   const uri = post?.image_path
-
-  const type = getMimeTypeFromFilename(post?.image_path)
-  const isVideo = type && type.includes('video')
+  const videoUrl = post?.video_url
 
   const [liked, setLiked] = useState(false)
   const [likesCount, setLikesCount] = useState(0)
@@ -133,8 +130,8 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
           </View>
         </Pressable>
         {visible &&
-          (isVideo ? (
-            <VideoPlayer style={styles.postMediaContainer} uri={uri} playing={focused} />
+          (videoUrl ? (
+            <VideoPlayer style={styles.postMediaContainer} uri={videoUrl} playing={focused} />
           ) : (
             <BlurImage style={styles.postMediaContainer} resizeMode="cover" blurRadius={50} source={{ uri }}>
               <Image style={styles.postMediaImage} source={{ uri }} resizeMode={'contain'} />

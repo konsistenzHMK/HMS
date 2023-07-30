@@ -29,7 +29,7 @@ const MyProfileScreen = (props) => {
     try {
       let buo = await branch.createBranchUniversalObject(`profile/${profileRef.current.user_id}`, {
         title: profileRef.current.first_name,
-        contentImageUrl: profileRef.current.profile_image,
+        contentImageUrl: profileRef.current?.profile_image,
         contentMetadata: {
           customMetadata: {
             follower_id: String(profileRef.current.user_id),
@@ -370,7 +370,9 @@ const MyProfileScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    )
                   }
 
                   return (
@@ -419,7 +421,9 @@ const MyProfileScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    )
                   }
 
                   return (
@@ -470,7 +474,9 @@ const MyProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    )
                   }
                   return (
                     <FlatList
@@ -596,7 +602,9 @@ const MyProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>{translate('MyProfileScreen.Text.ProblemFetchData')}</Text>
+                    )
                   }
                   return (
                     <FlatList

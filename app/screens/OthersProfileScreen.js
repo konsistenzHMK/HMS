@@ -42,7 +42,7 @@ const OthersProfileScreen = (props) => {
     try {
       let buo = await branch.createBranchUniversalObject(`profile/${profileRef.current.user_id}`, {
         title: profileRef.current.first_name,
-        contentImageUrl: profileRef.current.profile_image,
+        contentImageUrl: profileRef.current?.profile_image,
         contentMetadata: {
           customMetadata: {
             follower_id: String(profileRef.current.user_id),
@@ -74,7 +74,7 @@ const OthersProfileScreen = (props) => {
         followee_id,
         follower_id: Constants['LOGGED_IN_USER'],
       })
-      snackbar.show({ title: translate('OthersProfileScreen.Toast.UserFollowed')})
+      snackbar.show({ title: translate('OthersProfileScreen.Toast.UserFollowed') })
     } catch (err) {
       console.error(err)
       snackbar.show({
@@ -236,7 +236,7 @@ const OthersProfileScreen = (props) => {
                     dimensions.width,
                   )}
                 >
-                  {Followers} { translate('OthersProfileScreen.Text.Followers')}
+                  {Followers} {translate('OthersProfileScreen.Text.Followers')}
                 </Text>
               </View>
               {/* Profile Detail Frame */}
@@ -341,7 +341,7 @@ const OthersProfileScreen = (props) => {
                                 followedId: props.route?.params?.userid ?? '69b2e418-7e82-4117-9e92-03129418a343',
                                 followerId: Constants['LOGGED_IN_USER'],
                               })
-                              snackbar.show({ title: translate('OthersProfileScreen.Toast.UserRemoved')})
+                              snackbar.show({ title: translate('OthersProfileScreen.Toast.UserRemoved') })
                             }
                           } catch (err) {
                             console.error(err)
@@ -373,7 +373,11 @@ const OthersProfileScreen = (props) => {
                           }
 
                           if (error) {
-                            return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
+                            return (
+                              <Text style={{ textAlign: 'center' }}>
+                                {translate('OthersProfileScreen.Text.ProblemFetchData')}
+                              </Text>
+                            )
                           }
 
                           return (
@@ -546,7 +550,11 @@ const OthersProfileScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>
+                        {translate('OthersProfileScreen.Text.ProblemFetchData')}
+                      </Text>
+                    )
                   }
 
                   return (
@@ -596,7 +604,11 @@ const OthersProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>
+                        {translate('OthersProfileScreen.Text.ProblemFetchData')}
+                      </Text>
+                    )
                   }
                   return (
                     <FlatList
@@ -713,7 +725,11 @@ const OthersProfileScreen = (props) => {
                     return <ActivityIndicator />
                   }
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('OthersProfileScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>
+                        {translate('OthersProfileScreen.Text.ProblemFetchData')}
+                      </Text>
+                    )
                   }
                   return (
                     <FlatList

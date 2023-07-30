@@ -21,11 +21,9 @@ export async function setupPlayer() {
       compactCapabilities: [Capability.Play, Capability.Pause, Capability.SkipToNext],
       progressUpdateEventInterval: 2,
     })
-
     isSetup = true
-  } finally {
-    return isSetup
   }
+  return isSetup
 }
 
 export async function addTracks(trackUrl, id, heading, subheading) {
@@ -42,12 +40,16 @@ export async function addTracks(trackUrl, id, heading, subheading) {
 
 export async function playbackService() {
   TrackPlayer.addEventListener(Event.RemotePause, () => {
-    console.log('Event.RemotePause');
-    TrackPlayer.pause();
-  });
+    console.log('Event.RemotePause')
+    TrackPlayer.pause()
+  })
 
   TrackPlayer.addEventListener(Event.RemotePlay, () => {
-    console.log('Event.RemotePlay');
-    TrackPlayer.play();
-  });
+    console.log('Event.RemotePlay')
+    TrackPlayer.play()
+  })
+
+  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, () => {
+    console.log('Event.PlaybackProgressUpdated')
+  })
 }

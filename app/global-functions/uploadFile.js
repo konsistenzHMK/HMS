@@ -2,8 +2,8 @@ import * as CustomPackages from '../custom-files/CustomPackages'
 import RNFS from 'react-native-fs'
 import { getMimeTypeFromFilename } from '@shopify/mime-types'
 
-const uploadFile = async (folder, uri, subDir = 'images') => {
-  const type = getMimeTypeFromFilename(uri)
+const uploadFile = async (folder, uri, subDir = 'images', mimeType) => {
+  const type = mimeType || getMimeTypeFromFilename(uri)
 
   function _base64ToArrayBuffer(base64) {
     var binary_string = CustomPackages.decode(base64)

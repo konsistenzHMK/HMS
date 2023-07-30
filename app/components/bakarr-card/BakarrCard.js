@@ -1,6 +1,6 @@
 import { Icon } from '@draftbit/ui'
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import convertUTCtoIST from '../../global-functions/convertUTCtoIST'
 
 const BakarrCard = ({
@@ -8,13 +8,12 @@ const BakarrCard = ({
   heading,
   subheading,
   description,
-  onPressPlay,
   id,
   podcastUrl,
-  onPressPause,
+  onTogglePlayPress,
   isPaused,
   highlight,
-  createdAt
+  createdAt,
 }) => {
   return (
     <View style={[styles.container, highlight && styles.highlight]}>
@@ -23,27 +22,24 @@ const BakarrCard = ({
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>{heading}</Text>
           <View>
-          <Text style={styles.subheading}>{subheading}</Text>
+            <Text style={styles.subheading}>{subheading}</Text>
           </View>
         </View>
       </View>
-      <View>
-        <Text style={styles.description}>{description}</Text>
-      </View>
+      <Text style={styles.description}>{description}</Text>
       <View style={styles.bottomContainer}>
-        {isPaused ? (
+        <Pressable
+          onPress={() => {
+            onTogglePlayPress(podcastUrl, id, heading, subheading)
+          }}
+        >
           <Icon
             style={styles.playIcon}
-            name="FontAwesome/play"
             size={25}
-            color= {`${highlight ? "#f2aaa5": "black"}`}
-            onPress={() => {
-              onPressPlay(podcastUrl, id, heading, subheading)
-            }}
+            name={`FontAwesome/${isPaused ? 'play' : 'pause'}`}
+            color={highlight ? '#f2aaa5' : 'black'}
           />
-        ) : (
-          <Icon style={styles.playIcon} name="FontAwesome/pause" size={25} color="black" onPress={onPressPause} />
-        )}
+        </Pressable>
         <Text style={styles.date}>{convertUTCtoIST(createdAt)}</Text>
       </View>
     </View>
@@ -117,12 +113,12 @@ const styles = StyleSheet.create({
     color: 'gray',
     justifyContent: 'center',
     marginLeft: 5,
-    marginTop:2
+    marginTop: 2,
   },
   highlight: {
     borderWidth: 1,
-    borderColor: "gray"
-  }
+    borderColor: 'gray',
+  },
 })
 
 export default BakarrCard

@@ -169,7 +169,7 @@ const PostDetailsScreen = (props) => {
                 {/* Circle Image Frame */}
                 <View>
                   {/* imgOP */}
-                  {listData.user_profiles.profile_image ? (
+                  {listData.user_profiles?.profile_image ? (
                     <Image
                       style={{ height: 30, width: 30, borderRadius: 15 }}
                       source={{ uri: listData.user_profiles.profile_image }}
@@ -281,9 +281,6 @@ const PostDetailsScreen = (props) => {
   }
 
   const renderPost = (listData) => {
-    const type = getMimeTypeFromFilename(listData?.image_path)
-    const isVideo = type && type.includes('video')
-
     return (
       <View>
         {/* Image Frame */}
@@ -299,8 +296,8 @@ const PostDetailsScreen = (props) => {
             dimensions.width,
           )}
         >
-          {isVideo ? (
-            <VideoPlayer uri={listData?.image_path} playing />
+          {listData?.video_url ? (
+            <VideoPlayer uri={listData?.video_url} playing />
           ) : (
             <Image
               style={StyleSheet.applyWidth(
@@ -351,7 +348,7 @@ const PostDetailsScreen = (props) => {
                     setIsLiked(valueQwbJ5IFg)
                     const newlike = valueQwbJ5IFg
                     if (newlike) {
-                      snackbar.show({ title: translate('PostDetailsScreen.Toast.PostLike')})
+                      snackbar.show({ title: translate('PostDetailsScreen.Toast.PostLike') })
                       await pagalFanBEAddPostLikePOST.mutateAsync({
                         post_id: props.route?.params?.post_id ?? 1,
                         user_id: Constants['LOGGED_IN_USER'],
@@ -417,7 +414,11 @@ const PostDetailsScreen = (props) => {
                       }
 
                       if (error) {
-                        return <Text style={{ textAlign: 'center' }}>{translate('PostDetailsScreen.Text.ProblemFetchData')}</Text>
+                        return (
+                          <Text style={{ textAlign: 'center' }}>
+                            {translate('PostDetailsScreen.Text.ProblemFetchData')}
+                          </Text>
+                        )
                       }
 
                       return (
@@ -1076,7 +1077,11 @@ const PostDetailsScreen = (props) => {
                   }
 
                   if (error) {
-                    return <Text style={{ textAlign: 'center' }}>{translate('PostDetailsScreen.Text.ProblemFetchData')}</Text>
+                    return (
+                      <Text style={{ textAlign: 'center' }}>
+                        {translate('PostDetailsScreen.Text.ProblemFetchData')}
+                      </Text>
+                    )
                   }
 
                   return (
@@ -1170,7 +1175,7 @@ const PostDetailsScreen = (props) => {
             {/* PressableReport */}
             <Pressable
               onPress={() => {
-                snackbar.show({ title: translate('PostDetailsScreen.Text.ReportText')})
+                snackbar.show({ title: translate('PostDetailsScreen.Text.ReportText') })
               }}
             >
               <View

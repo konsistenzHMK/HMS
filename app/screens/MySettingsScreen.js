@@ -6,7 +6,7 @@ import { Circle, Divider, Icon, ScreenContainer, Touchable, withTheme } from '@d
 import { Text, View, useWindowDimensions } from 'react-native'
 import { useNavigationContext } from '../navigation/NavigationContext.js'
 import { useTranslation } from 'react-i18next'
-// {translate('HomeScreen.Text.Yo')}
+
 const MySettingsScreen = (props) => {
   const dimensions = useWindowDimensions()
   const setGlobalVariableValue = GlobalVariables.useSetValue()
@@ -180,7 +180,7 @@ const MySettingsScreen = (props) => {
                 ellipsizeMode={'tail'}
                 textBreakStrategy={'highQuality'}
               >
-               {translate('MySettingsScreen.Text.Support')}
+                {translate('MySettingsScreen.Text.Support')}
               </Text>
             </View>
             {/* Right Aligned */}
@@ -254,7 +254,7 @@ const MySettingsScreen = (props) => {
             )}
           >
             {translate('MySettingsScreen.Text.Lan1')}
-            <Text style={{ fontWeight: '800' }}>{currentLanguage } </Text>
+            <Text style={{ fontWeight: '800' }}>{currentLanguage} </Text>
             {translate('MySettingsScreen.Text.Lan2')}
           </Text>
         </Touchable>

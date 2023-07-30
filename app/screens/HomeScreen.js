@@ -63,10 +63,10 @@ const HomeScreen = (props) => {
           value: apiResponseResult && apiResponseResult[0]?.can_post,
         })
 
-        if ((apiResponseResult && apiResponseResult[0].profile_image)?.length > 0) {
+        if ((apiResponseResult && apiResponseResult?.[0]?.profile_image)?.length > 0) {
           setGlobalVariableValue({
             key: 'user_profile_pic_url',
-            value: apiResponseResult && apiResponseResult[0].profile_image,
+            value: apiResponseResult && apiResponseResult?.[0]?.profile_image,
           })
         }
         setGlobalVariableValue({
@@ -517,8 +517,8 @@ const HomeScreen = (props) => {
         }}
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => setFeedLoadTimestamp(Date.now())} />}
       >
-                {/* Bakarr Recordings */}
-                <View>
+        {/* Bakarr Recordings */}
+        <View>
           {/* Title */}
           <View
             style={StyleSheet.applyWidth({ flexDirection: 'row', justifyContent: 'space-between' }, dimensions.width)}
@@ -589,6 +589,7 @@ const HomeScreen = (props) => {
                             try {
                               navigation.navigate('BakarrRecordingsScreen', {
                                 id: flashListData?.id,
+                                timestamp: Date.now(),
                               })
                             } catch (err) {
                               console.error(err)
@@ -629,7 +630,7 @@ const HomeScreen = (props) => {
                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                   fontFamily: 'Inter_400Regular',
                                   fontSize: 8,
-                                  marginBottom: 4
+                                  marginBottom: 4,
                                 }),
                                 dimensions.width,
                               )}

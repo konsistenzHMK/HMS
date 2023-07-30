@@ -6,7 +6,6 @@ import usePrevious from '../utils/usePrevious'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import { useMemo } from 'react'
 
-
 export const updatePostPATCHviewsStatusAndText = (Constants, { postId, views }) =>
   fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?id=eq.${postId ?? ''}`, {
     body: JSON.stringify({ count_views: views }),
@@ -51,7 +50,6 @@ export const useUpdatePostPATCHViews = (initialArgs) => {
     },
   })
 }
-
 
 export const fetchAllFollowedByUserGETStatusAndText = (Constants, { followerId }) =>
   fetch(
@@ -542,12 +540,13 @@ export const FetchAddNewMatchCommentPOST = ({
   return children({ loading, data, error, refetchAddNewMatchComment: refetch })
 }
 
-export const addNewPostPOSTStatusAndText = (Constants, { caption, image_url, posted_by }) =>
+export const addNewPostPOSTStatusAndText = (Constants, { caption, image_url, posted_by, video_url }) =>
   fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?select=id', {
     body: JSON.stringify({
       posted_by_id: posted_by,
       image_path: image_url,
-      caption: caption,
+      caption,
+      video_url,
     }),
     headers: {
       Accept: 'application/json',
@@ -563,11 +562,12 @@ export const addNewPostPOSTStatusAndText = (Constants, { caption, image_url, pos
     text: await res.text(),
   }))
 
-export const addNewPostPOST = (Constants, { caption, image_url, posted_by }) =>
+export const addNewPostPOST = (Constants, { caption, image_url, posted_by, video_url }) =>
   addNewPostPOSTStatusAndText(Constants, {
     caption,
     image_url,
     posted_by,
+    video_url,
   }).then(({ status, statusText, text }) => {
     try {
       return JSON.parse(text)
@@ -3127,10 +3127,7 @@ export const FetchFetchSinglePostGET = ({ children, onData = () => {}, refetchIn
   return children({ loading, data, error, refetchFetchSinglePost: refetch })
 }
 
-export const fetchSinglePostWithNext10PostsGETStatusAndText = (
-  Constants,
-  { id }
-) =>
+export const fetchSinglePostWithNext10PostsGETStatusAndText = (Constants, { id }) =>
   fetch(
     `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?id=lte.${
       id ?? ''
@@ -3141,82 +3138,63 @@ export const fetchSinglePostWithNext10PostsGETStatusAndText = (
         'Content-Type': 'application/json',
         apiKey: Constants['API_KEY_HEADER'],
       },
-    }
-  ).then(async res => ({
+    },
+  ).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),
-  }));
+  }))
 
 export const fetchSinglePostWithNext10PostsGET = (Constants, { id }) =>
-  fetchSinglePostWithNext10PostsGETStatusAndText(Constants, { id }).then(
-    ({ status, statusText, text }) => {
-      try {
-        return JSON.parse(text);
-      } catch (e) {
-        console.error(
-          [
-            'Failed to parse response text as JSON.',
-            `Error: ${e.message}`,
-            `Text: ${JSON.stringify(text)}`,
-          ].join('\n\n')
-        );
-      }
+  fetchSinglePostWithNext10PostsGETStatusAndText(Constants, { id }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
     }
-  );
+  })
 
-export const useFetchSinglePostWithNext10PostsGET = (
-  args,
-  { refetchInterval } = {}
-) => {
-  const Constants = GlobalVariables.useValues();
-  return useQuery(
-    ['posts', args],
-    () => fetchSinglePostWithNext10PostsGET(Constants, args),
-    {
-      refetchInterval,
-    }
-  );
-};
+export const useFetchSinglePostWithNext10PostsGET = (args, { refetchInterval } = {}) => {
+  const Constants = GlobalVariables.useValues()
+  return useQuery(['posts', args], () => fetchSinglePostWithNext10PostsGET(Constants, args), {
+    refetchInterval,
+  })
+}
 
-export const FetchFetchSinglePostWithNext10PostsGET = ({
-  children,
-  onData = () => {},
-  refetchInterval,
-  id,
-}) => {
-  const Constants = GlobalVariables.useValues();
-  const isFocused = useIsFocused();
-  const prevIsFocused = usePrevious(isFocused);
+export const FetchFetchSinglePostWithNext10PostsGET = ({ children, onData = () => {}, refetchInterval, id }) => {
+  const Constants = GlobalVariables.useValues()
+  const isFocused = useIsFocused()
+  const prevIsFocused = usePrevious(isFocused)
 
-  const { loading, data, error, refetch } =
-    useFetchSinglePostWithNext10PostsGET({ id }, { refetchInterval });
+  const { loading, data, error, refetch } = useFetchSinglePostWithNext10PostsGET({ id }, { refetchInterval })
 
   React.useEffect(() => {
     if (!prevIsFocused && isFocused) {
-      refetch();
+      refetch()
     }
-  }, [isFocused, prevIsFocused]);
+  }, [isFocused, prevIsFocused])
 
   React.useEffect(() => {
     if (error) {
-      console.error('Fetch error: ' + error.status + ' ' + error.statusText);
-      console.error(error);
+      console.error('Fetch error: ' + error.status + ' ' + error.statusText)
+      console.error(error)
     }
-  }, [error]);
+  }, [error])
   React.useEffect(() => {
     if (data) {
-      onData(data);
+      onData(data)
     }
-  }, [data]);
+  }, [data])
 
   return children({
     loading,
     data,
     error,
     refetchFetchSinglePostWithNext10Posts: refetch,
-  });
-};
+  })
+}
 
 export const fetchSingleUserGETStatusAndText = (Constants, { id }) =>
   fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/user_profiles?user_id=eq.${id ?? ''}`, {
@@ -3976,15 +3954,17 @@ export const useUpdateUserProfilePATCH = (initialArgs) => {
   })
 }
 
-
 export const fetchAllBakarrRecordingsGETStatusAndText = (Constants) =>
-  fetch('https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_talks?order=created_at.desc&session_recorded_link=neq.{null}', {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      apiKey: Constants['API_KEY_HEADER'],
+  fetch(
+    'https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/match_talks?order=created_at.desc&session_recorded_link=neq.{null}',
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
     },
-  }).then(async (res) => ({
+  ).then(async (res) => ({
     status: res.status,
     statusText: res.statusText,
     text: await res.text(),

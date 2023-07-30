@@ -1,34 +1,14 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { BlurImage, Image } from '../components'
 import { theme } from '../themes'
-import { getMimeTypeFromFilename } from '@shopify/mime-types'
 import { Icon } from '@draftbit/ui'
-import { createThumbnail } from 'react-native-create-thumbnail'
 
 export const FeedCard = ({ feed, onPress }) => {
   const navigation = useNavigation()
-  const type = getMimeTypeFromFilename(feed?.image_path)
-  const isVideo = type && type.includes('video')
-  const [uri, setUri] = useState(isVideo ? null : feed?.image_path)
 
-  const loadVideoThumbnail = async () => {
-    try {
-      const imageUri = feed?.image_path
-      let cacheName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.length)
-      const data = await createThumbnail({ url: imageUri, cacheName })
-      setUri(data.path)
-    } catch (e) {
-      // do nothing
-    }
-  }
-
-  useEffect(() => {
-    if (isVideo) {
-      loadVideoThumbnail()
-    }
-  }, [])
+  const { image_path: uri, video_url } = feed
 
   const handlePress = () => {
     if (onPress) {
@@ -48,7 +28,7 @@ export const FeedCard = ({ feed, onPress }) => {
           <Image resizeMode="contain" style={styles.image} source={{ uri }} />
         </BlurImage>
       )}
-      {isVideo && <Icon style={styles.videoIcon} name="FontAwesome/video-camera" size={12} color="#fff" />}
+      {video_url && <Icon style={styles.videoIcon} name="FontAwesome/video-camera" size={12} color="#fff" />}
       {/* Details */}
       <View style={styles.captionContainer}>
         {/* Title */}

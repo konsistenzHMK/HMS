@@ -1,146 +1,121 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
 import BakarrCard from '../components/bakarr-card/BakarrCard'
 import { setupPlayer, addTracks, playbackService } from '../utils/TrackPlayerService'
-import { ScrollView } from 'react-native-gesture-handler'
 import { useTranslation } from 'react-i18next'
-
+import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi'
+import { ScreenContainer } from '@draftbit/ui'
+import { FlashList } from '@shopify/flash-list'
 
-function BakarrRecordingsScreen(props) {
+function BakarrRecordingsScreen({ route }) {
+  const [bakarList, setBakarList] = useState([])
   const [isPlayerReady, setIsPlayerReady] = useState(false)
-  const [currentPlayingId, setCurrentPlayingId] = useState(null)
+  const [currentPlayingId, setCurrentPlayingId] = useState(-1)
   const [isPaused, setIsPaused] = useState(true)
-  //const { position, duration, buffered } = useProgress(200)
+
   const { t: translate } = useTranslation()
-  const [podcast, setPodcast] = useState([])
-  const [yCoordinates, setYCoordinates] = useState(null)
   const [highlight, setHighlight] = useState(false)
-  const scrollRef = useRef(null)
-  let scrollToId = props.route?.params?.id ?? null
+  const listRef = useRef(null)
+
+  const Constants = GlobalVariables.useValues()
+
+  const fetchBakarRecordings = async () => {
+    const response = await PagalFanBEApi.fetchAllBakarrRecordingsGET(Constants)
+    setBakarList(response)
+  }
+
+  function checkScrollToItem() {
+    let scrollToId = route?.params?.id
+    const index = bakarList.findIndex((p) => p.id === scrollToId)
+
+    if (index >= 0) {
+      listRef.current?.scrollToIndex?.({
+        index,
+        animated: true,
+      })
+      setHighlight(scrollToId)
+      setTimeout(() => {
+        setHighlight(-1)
+      }, 3000)
+    }
+  }
 
   useEffect(() => {
-    TrackPlayer.registerPlaybackService(() => {
-      playbackService
-    })
+    TrackPlayer.registerPlaybackService(() => playbackService)
+    fetchBakarRecordings()
   }, [])
 
   useEffect(() => {
-    let scrollToId = props.route?.params?.id ?? null
-    if (podcast.length > 0 && scrollToId && yCoordinates) {
-      scrollRef.current.scrollTo({
-        y: yCoordinates,
-        animated: true,
-      })
-    }
-    if (scrollToId) {
-      setHighlight(true)
-      setTimeout(() => {
-        setHighlight(false)
-      }, 3000)
-    }
-  }, [yCoordinates])
+    checkScrollToItem()
+  }, [bakarList])
 
-  //Start the player when play button is clicked
-  const onPressPlay = async (trackUrl, id, heading, subheading) => {
-    //condition for resume playing
+  useEffect(() => {
+    checkScrollToItem()
+    // timestamp will be updated on if screen lanched from home screen this will fix the issue of not showing highlight on 2nd time from home
+  }, [route?.params?.id, route?.params?.timestamp])
+
+  const onTogglePlayPress = async (trackUrl, id, heading, subheading) => {
     if (id === currentPlayingId) {
-      TrackPlayer.play()
+      // case of play/pause same track
+      isPaused ? TrackPlayer.play() : TrackPlayer.pause()
+      setIsPaused(!isPaused)
+      return
     }
-    //if a new podcast is being played
-    else {
-      const setup = async (trackUrl) => {
-        let isSetup = await setupPlayer(trackUrl)
 
-        const queue = await TrackPlayer.getQueue()
-        if (isSetup && queue.length <= 0) {
-          await addTracks(trackUrl, id, heading, subheading)
-          await TrackPlayer.skipToNext()
-        }
-        setIsPlayerReady(isSetup)
-        TrackPlayer.play()
-      }
-      //if podcast being played for the first time, setup the player first
-      if (!isPlayerReady) {
-        setup(trackUrl)
-      }
-      // reset the track player so as to remove the last podcast and start playing the new one
-      else {
-        await TrackPlayer.pause()
-        await addTracks(trackUrl, id, heading, subheading)
-        await TrackPlayer.skipToNext()
-        TrackPlayer.play()
-      }
-      setCurrentPlayingId(id)
+    //if podcast being played for the first time, setup the player first
+    if (!isPlayerReady) {
+      let isSetup = await setupPlayer()
+      setIsPlayerReady(isSetup)
     }
+
+    await TrackPlayer.pause()
+    await addTracks(trackUrl, id, heading, subheading)
+    await TrackPlayer.skipToNext()
+    TrackPlayer.play()
     setIsPaused(false)
+    setCurrentPlayingId(id)
   }
 
-  const onPressPause = () => {
-    TrackPlayer.pause()
-    setIsPaused(true)
+  const renderItem = ({ item }) => {
+    const { id, image_url, session_title, sub_title, description, session_recorded_link, created_at } = item
+    return (
+      <BakarrCard
+        id={id}
+        imageSource={image_url}
+        heading={session_title}
+        subheading={sub_title}
+        description={description}
+        onTogglePlayPress={onTogglePlayPress}
+        podcastUrl={session_recorded_link}
+        isPaused={id !== currentPlayingId || isPaused}
+        highlight={id === highlight}
+        createdAt={created_at}
+      />
+    )
   }
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer hasTopSafeArea style={styles.container}>
       <Text style={styles.mainHeading}> {translate('BakarrRecordingsScreen.Text.Bakarr')}</Text>
-      <PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
-        {({ loading, error, data }) => {
-          const fetchData = data
-          setPodcast(fetchData)
-          if (!fetchData || loading) {
-            return <ActivityIndicator />
-          }
-          if (error) {
-            return <Text style={{ textAlign: 'center' }}>There was a problem fetching this data</Text>
-          }
-          return (
-            <ScrollView
-              bounces={true}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              ref={scrollRef}
-            >
-              {fetchData.map((podcast) => {
-                return (
-                  <View
-                    onLayout={(event) => {
-                      const layout = event.nativeEvent.layout
-                      if (podcast.id === scrollToId) {
-                        setYCoordinates(layout.y)
-                      }
-                    }}
-                    key={podcast.id}
-                  >
-                    <BakarrCard
-                      id={podcast.id}
-                      imageSource={podcast.image_url}
-                      heading={podcast.session_title}
-                      subheading={podcast.sub_title}
-                      description={podcast.description}
-                      onPressPlay={onPressPlay}
-                      onPressPause={onPressPause}
-                      podcastUrl={podcast.session_recorded_link}
-                      isPaused={podcast.id !== currentPlayingId || isPaused}
-                      highlight={podcast.id === scrollToId && highlight}
-                      createdAt={podcast.created_at}
-                    />
-                  </View>
-                )
-              })}
-            </ScrollView>
-          )
-        }}
-      </PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
-    </View>
+      <FlashList
+        bounces={true}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        ref={listRef}
+        data={bakarList}
+        renderItem={renderItem}
+        estimatedItemSize={150}
+        extraData={`${currentPlayingId} ${isPaused} ${highlight}`}
+      />
+    </ScreenContainer>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    paddingBottom: 30,
+    paddingHorizontal: 10,
   },
   trackProgress: {
     marginTop: 40,
@@ -150,8 +125,7 @@ const styles = StyleSheet.create({
   },
   mainHeading: {
     fontSize: 20,
-    marginTop: 5,
-    marginBottom: 5,
+    marginVertical: 10,
     fontWeight: 600,
   },
 })

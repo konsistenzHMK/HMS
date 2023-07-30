@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as GlobalVariables from '../config/GlobalVariableContext'
@@ -7,7 +7,6 @@ import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@dr
 import { useIsFocused } from '@react-navigation/native'
 import { Image, Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
 import { VideoPlayer, useSnackbar } from '../components'
-import { getMimeTypeFromFilename } from '@shopify/mime-types'
 import { useTranslation } from 'react-i18next'
 
 const EditPostScreen = (props) => {
@@ -15,6 +14,9 @@ const EditPostScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const snackbar = useSnackbar()
   const { t: translate } = useTranslation()
+
+  const [postDetails, setPostDetails] = useState()
+  const [textAreaValue, setTextAreaValue] = React.useState('')
 
   const concatStrings = (text1, text2) => {
     return text1 + ' ' + text2
@@ -35,18 +37,13 @@ const EditPostScreen = (props) => {
         const postDetails = await PagalFanBEApi.fetchSinglePostGET(Constants, {
           id: props.route?.params?.post_id ?? 1,
         })
-        setPickedImage(postDetails?.[0]?.image_path)
-        setOriginalCaption(postDetails?.[0]?.caption)
+        setPostDetails(postDetails?.[0])
       } catch (err) {
         console.error(err)
       }
     }
     handler()
   }, [isFocused])
-
-  const [originalCaption, setOriginalCaption] = React.useState('')
-  const [pickedImage, setPickedImage] = React.useState('')
-  const [textAreaValue, setTextAreaValue] = React.useState('')
 
   const handlePostUpdatePress = async () => {
     try {
@@ -58,7 +55,7 @@ const EditPostScreen = (props) => {
       }
 
       snackbar.show({ title: translate('EditPostScreen.Toast.UpdatePost') })
-      const newCaption = concatStrings(originalCaption, textAreaValue)
+      const newCaption = concatStrings(postDetails?.caption, textAreaValue)
       await pagalFanBEUpdatePostPATCH.mutateAsync({
         postId: props.route?.params?.post_id ?? 1,
         updatedCaption: newCaption,
@@ -68,9 +65,6 @@ const EditPostScreen = (props) => {
       console.error(err)
     }
   }
-
-  const type = getMimeTypeFromFilename(pickedImage)
-  const isVideo = type && type.includes('video')
 
   return (
     <ScreenContainer
@@ -130,7 +124,7 @@ const EditPostScreen = (props) => {
               dimensions.width,
             )}
           >
-           {translate('EditPostScreen.Text.SubHeading')}
+            {translate('EditPostScreen.Text.SubHeading')}
           </Text>
           {/* Note2 */}
           <Text
@@ -163,8 +157,8 @@ const EditPostScreen = (props) => {
               dimensions.width,
             )}
           >
-            {isVideo ? (
-              <VideoPlayer uri={pickedImage} playing />
+            {postDetails?.video_url ? (
+              <VideoPlayer uri={postDetails?.video_url} playing />
             ) : (
               <Image
                 style={StyleSheet.applyWidth(
@@ -175,7 +169,7 @@ const EditPostScreen = (props) => {
                   }),
                   dimensions.width,
                 )}
-                source={{ uri: pickedImage }}
+                source={{ uri: postDetails?.image_path }}
                 resizeMode={'contain'}
               />
             )}
@@ -192,7 +186,7 @@ const EditPostScreen = (props) => {
               dimensions.width,
             )}
           >
-            {originalCaption}
+            {postDetails?.caption}
           </Text>
           {/* AddCaption */}
           <TextInput

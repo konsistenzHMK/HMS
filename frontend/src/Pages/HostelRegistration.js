@@ -3,7 +3,7 @@ import axios, { all } from 'axios';
 import Dropdown from 'react-dropdown';
 import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
-
+import Select from 'react-select';
 
 const App = () => {
   const [category1, setCategory1] = useState('');
@@ -86,6 +86,7 @@ const App = () => {
       alert(err);
     }
   };
+  
   const handleDropdownCat1 = (event) => {
     setCategory1(event.target.value);
     setFormData((prevData) => ({
@@ -114,6 +115,13 @@ const App = () => {
       mess: event.target.value
     }));
   };
+  const handleDropdownStatusType = (event) => {
+    setMessType(event.target.value);
+    setFormData((prevData) => ({
+      ...prevData,
+      status: event.target.value
+    }));
+  };
 
 
   const [formData, setFormData] = useState({
@@ -139,7 +147,7 @@ const App = () => {
     bcapacity:'',
     area:'',
     mess:'',
-    other_facility:'',
+    other_facility:[],
     status:'',
     email_id:'',
     website:'',
@@ -169,34 +177,34 @@ const App = () => {
       .catch((error) => {
         console.error('API request error:', error);
       });
-      // setFormData({
-      //   hostel_name: '',
-      //   description:'',
-      //   address1:'',
-      //   address2:'',
-      //   country:'',
-      //   state:'',
-      //   region:'',
-      //   district:'',
-      //   city:'',
-      //   pincode:'',
-      //   uuid:'',
-      //   rector_name:'',
-      //   categ1:'',
-      //   categ2:'',
-      //   categ3:'',
-      //   tower:'',
-      //   floor:'',
-      //   room:'',
-      //   scapacity:'',
-      //   bcapacity:'',
-      //   area:'',
-      //   mess:'',
-      //   other_facility:'',
-      //   status:'',
-      //   email_id:'',
-      //   website:'',
-      // });
+      setFormData({
+        hostel_name: '',
+        description:'',
+        address1:'',
+        address2:'',
+        country:'India',
+        state:'',
+        region:'',
+        district:'',
+        city:'',
+        pincode:'',
+        uuid:'',
+        rector_name:'',
+        categ1:'',
+        categ2:'',
+        categ3:'',
+        tower:'',
+        floor:'',
+        room:'',
+        scapacity:'',
+        bcapacity:'',
+        area:'',
+        mess:'',
+        other_facility:'',
+        status:'',
+        email_id:'',
+        website:'',
+      });
       setErrors({});
     } else {
       console.log("error");
@@ -204,10 +212,111 @@ const App = () => {
     }
   };
 
+
   const validateForm = () => {
-    const errors = {};
-    return {};
+    const errors = [];
+      // Validate hostel_name
+      if (!formData.hostel_name) {
+        errors.push(1);
+      }
+
+      // Validate description
+      // if (!formData.description) {
+      //   errors.description = "Description is required";
+      // }
+
+      // Validate address1
+      if (!formData.address1) {
+        errors.push(1);
+      }
+
+      // Validate country
+      if (formData.country !== 'India') {
+        errors.push(1);
+      }
+
+      // Validate state
+      if (!formData.state) {
+        errors.push(1);
+      }
+
+      // Validate region
+      if (!formData.region) {
+        errors.push(1);
+      }
+
+      // Validate district
+      if (!formData.district) {
+        errors.push(1);
+      }
+
+      // Validate city
+      if (!formData.city) {
+        errors.push(1);
+      }
+
+      // Validate pincode
+      if (!formData.pincode) {
+        errors.push(1);
+      }
+
+      // Validate rector_name
+      if (!formData.rector_name) {
+        errors.push(1);
+      }
+
+      // Validate categ1
+      if (!formData.categ1) {
+        errors.push(1);
+      }
+
+      // Validate categ2
+      if (!formData.categ2) {
+        errors.push(1);
+      }
+
+      // Validate categ3
+      if (!formData.categ3) {
+        errors.push(1);
+      }
+      // Validate scapacity
+      if (!formData.scapacity || formData.scapacity<=0) {
+        errors.push(1);;
+      }
+      // Validate bcapacity
+      if (!formData.bcapacity || formData.bcapacity<=0) {
+        errors.push(1);
+      }
+
+      if (!formData.mess) {
+        errors.push(1);
+      }
+
+      // Validate area
+      // if (!formData.area || formData.area<=0) {
+      //   errors.area = "Area is required";
+      // }
+
+      // Validate email_id
+      if (!isValidEmail(formData.email_id)) {
+        errors.push(1);
+      }
+    return errors;
   };
+
+  function isValidEmail(email) {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  
+  // Helper function to validate website URL
+  function isValidWebsite(website) {
+    // Regular expression for website URL validation
+    const websiteRegex = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/.*)?$/i;
+    return websiteRegex.test(website);
+  }
+
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
@@ -239,9 +348,42 @@ const App = () => {
     return date.toLocaleTimeString(undefined, options);
   };
 
+  const options = [
+    { value: 'StudyRoom', label: 'Study Room' },
+    { value: 'Computer_Room', label: 'Computer Room' },
+    { value: 'Library', label: 'Library' },
+    { value: 'Games', label: 'Indoor/Outdoor Games' },
+    { value: 'HotWater', label: 'Hot Water' },
+    { value: 'AC', label: 'Air Conditioner' },
+    { value: 'Parking', label: 'Parking' },
+    { value: 'Solar', label: 'Solar Energy' },
+    { value: 'GuestRoom', label: 'Guest Room' },
+  ];
+  
+  const handleChange2 = (selectedOptions) => {
+    console.log(selectedOptions);
+    let ans=[]
+    for(let i=0;i<selectedOptions.length;i++){
+      ans[i]=selectedOptions[i].value;
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      other_facility: ans
+    }));
+  };
+
+  const [sendForm,setSendForm]=useState(false);
+
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length==0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors.length);
+  },[formData])
+
   return (
       <div className="w-full bg-defaultBg top-0">
-      <form onSubmit={handleSubmit}>
+      <form>
         {/* Header */}
         <div className='w-full flex justify-center h-1/2 pt-10' >
             <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
@@ -280,7 +422,7 @@ const App = () => {
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
-                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
+                <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
                 <input
                   id="hostel_name"
                   name="hostel_name"
@@ -288,12 +430,12 @@ const App = () => {
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></input>
-                {errors.hostel_name && <span className="error">{errors.hostel_name}</span>}
+                {errors.hostel_name && <span className="error text-red-500">{errors.hostel_name}</span>}
               </div>
 
               {/* 1.2 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
-                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Description <p className='inline text-xl text-red-600'>*</p></div>
+                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Description <p className='inline text-xl text-red-600'></p></div>
                 <textarea
                   id="description"
                   name="description"
@@ -301,7 +443,7 @@ const App = () => {
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></textarea>
-                {errors.description && <span className="error">{errors.description}</span>}
+                {errors.description && <span className="error text-red-500">{errors.description}</span>}
               </div>
 
             {/* 2 --> Address*/}
@@ -312,7 +454,7 @@ const App = () => {
 
             <div className='w-full h-auto flex justify-between'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1 <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Address Line 1 <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="address1"
@@ -321,12 +463,12 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.address1 && <span className="error">{errors.address1}</span>}
+                    {errors.address1 && <span className="error  text-red-500">{errors.address1}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Address Line 2 <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="address2"
@@ -335,14 +477,14 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 '
                     />
-                    {errors.address2 && <span className="error">{errors.address2}</span>}
+                    {errors.address2 && <span className="error  text-red-500">{errors.address2}</span>}
                 </div>
                 </div>
               </div>
               {/* 2.2 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Country <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="state"
@@ -351,21 +493,21 @@ const App = () => {
                       onChange={handleChange}
                       className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
-                    {errors.country && <span className="error">{errors.country}</span>}
+                    {errors.country && <span className="error  text-red-500">{errors.country}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={State} 
                         onChange={handleChangeState}
                         >
-                        <option value="">Select an option</option>
+                        <option value="NA">Select an option</option>
                         <option value="Maharashtra">Maharashtra</option>
                     </select>
-                    {errors.state && <span className="error">{errors.state}</span>}
+                    {errors.state && <span className="error  text-red-500">{errors.state}</span>}
                 </div>
                 </div>
               </div>
@@ -373,38 +515,38 @@ const App = () => {
               {/* 2.3 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={region} 
                         onChange={handleChangeRegion}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                           {allRegion.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
                             </option>
                           ))}
                       </select>
-                    {errors.region && <span className="error">{errors.region}</span>}
+                    {errors.region && <span className="error  text-red-500">{errors.region}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={District} 
                         onChange={handleChangeDistrict}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                           {allDistrict.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
                             </option>
                           ))}
                       </select>
-                    {errors.district && <span className="error">{errors.district}</span>}
+                    {errors.district && <span className="error text-red-500">{errors.district}</span>}
                 </div>
                 </div>
 
@@ -413,25 +555,25 @@ const App = () => {
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={City} 
                         onChange={handleChangeCity}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                           {allDistrict.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
                             </option>
                           ))}
                       </select>
-                    {errors.city && <span className="error">{errors.city}</span>}
+                    {errors.city && <span className="error text-red-600">{errors.city}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="pincode"
@@ -440,7 +582,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
-                    {errors.pincode && <span className="error">{errors.pincode}</span>}
+                    {errors.pincode && <span className="error text-red-600">{errors.pincode}</span>}
                 </div>
                 </div>
               </div>
@@ -462,45 +604,50 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.rector_name && <span className="error">{errors.rector_name}</span>}
+                    {errors.rector_name && <span className="error text-red-600">{errors.rector_name}</span>}
                 </div>
               </div>
 
               {/* 4.2 -->3 */}
               <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category1} 
                         onChange={handleDropdownCat1}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="girls">Girls</option>
                         <option value="boys">Boys</option>
                         <option value="coed">Co-Ed</option>
                       </select>
-                      {errors.categ1 && <span className="error">{errors.categ1}</span>}
+                      {errors.categ1 && <span className="error text-red-600">{errors.categ1}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={category2} 
                         onChange={handleDropdownCat2}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="t-1">type-1</option>
                         <option value="t-2">type-2</option>
                         <option value="t-3">type-3</option>
                       </select>
-                      {errors.categ2 && <span className="error">{errors.categ2}</span>}
+                      {errors.categ2 && <span className="error text-red-600">{errors.categ2}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  
+              </div>
+
+              {/* 4.3 -> 3*/}
+              <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-3 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
@@ -508,20 +655,16 @@ const App = () => {
                         value={category3} 
                         onChange={handleDropdownCat3}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="rented">Rented</option>
                         <option value="government">Government</option>
                       </select>
-                      {errors.categ3 && <span className="error">{errors.categ3}</span>}
+                      {errors.categ3 && <span className="error text-red-600">{errors.categ3}</span>}
                   </div>
                   </div>
-              </div>
-
-              {/* 4.3 -> 3*/}
-              <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Towers <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Towers <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="tower"
@@ -530,12 +673,15 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.tower && <span className="error">{errors.tower}</span>}
+                      {errors.tower && <span className="error text-red-600">{errors.tower}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                  <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="floor"
@@ -544,12 +690,12 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.floor && <span className="error">{errors.floor}</span>}
+                      {errors.floor && <span className="error text-red-600">{errors.floor}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="room"
@@ -558,14 +704,14 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.room && <span className="error">{errors.room}</span>}
+                      {errors.room && <span className="error text-red-600">{errors.room}</span>}
                   </div>
                   </div>
               </div>
 
               {/* 4.4 -->3 */}
               <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Sanctioned Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -576,10 +722,10 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.scapacity && <span className="error">{errors.scapacity}</span>}
+                      {errors.scapacity && <span className="error text-red-600">{errors.scapacity}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Building Capacity <p className='inline text-xl text-red-600'>*</p></div>
                       <input
@@ -590,12 +736,16 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.bcapacity && <span className="error">{errors.bcapacity}</span>}
+                      {errors.bcapacity && <span className="error text-red-600">{errors.bcapacity}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Total Area (sq.ft) <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Total Area (sq.ft) <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
                         id="area"
@@ -604,55 +754,59 @@ const App = () => {
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
-                      {errors.area && <span className="error">{errors.area}</span>}
+                      {errors.area && <span className="error text-red-600">{errors.area}</span>}
                   </div>
                   </div>
-              </div>
-
-              <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/3 flex flex-col items-start'>
+                <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>**</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={messType} 
                         onChange={handleDropdownMessType}
                         >
-                        <option value="">Select an option</option>
+                        <option value="null">Select an option</option>
                         <option value="government">Government</option>
                         <option value="contract">Contract</option>
                         <option value="other">Other</option>
                         <option value="not">Not Applicable</option>
                       </select>
-                      {errors.mess && <span className="error">{errors.mess}</span>}
+                      {errors.mess && <span className="error text-red-600">{errors.mess}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-center'>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                  <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'>*</p></div>
-                      <input
-                        type="text"
-                        id="other_facility"
-                        name="other_facility"
-                        value={formData.other_facility}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'></p></div>
+                    <Select
+                        isMulti
+                        options={options}
+                        onChange={handleChange2}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
                       />
-                      {errors.other_facility && <span className="error">{errors.other_facility}</span>}
+                      {console.log(formData.other_facility)}
+                      {errors.other_facility && <span className="error text-red-600">{errors.other_facility}</span>}
                   </div>
                   </div>
-                  <div className='w-1/3 flex flex-col items-end'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'>*</p></div>
-                      <input
-                        type="text"
-                        id="status"
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                      />
-                      {errors.status && <span className="error">{errors.status}</span>}
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'></p></div>
+                      <select 
+                          className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                          value={State} 
+                          onChange={handleDropdownStatusType}
+                          >
+                          <option value="NA">Select an option</option>
+                          <option value="Draft">Draft</option>
+                          <option value="Saved">Saved</option>
+                          <option value="Pending">Pending for Approval</option>
+                          <option value="Active">Active</option>
+                          <option value="Block">Block</option>
+                      </select>
+                      {errors.status && <span className="error text-red-600">{errors.status}</span>}
                   </div>
                   </div>
               </div>
@@ -660,7 +814,7 @@ const App = () => {
               {/* 4.5 */}
               <div className='w-full h-auto flex justify-between mt-5 mb-7'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Hostel Email <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Hostel Email <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="email_id"
@@ -669,12 +823,12 @@ const App = () => {
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.email_id && <span className="error">{errors.email_id}</span>}
+                    {errors.email_id && <span className="error text-red-600">{errors.email_id}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div htmlFor="email_id" className='mb-1 font-popins text-lg font-medium'>Hostel Website <p className='inline text-xl text-red-600'>**</p></div>
+                  <div htmlFor="email_id" className='mb-1 font-popins text-lg font-medium'>Hostel Website <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="website"
@@ -683,7 +837,7 @@ const App = () => {
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.website && <span className="error">{errors.website}</span>}
+                    {errors.website && <span className="error text-red-600">{errors.website}</span>}
                 </div>
                 </div>
               </div>
@@ -705,7 +859,10 @@ const App = () => {
                 <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
                   Save
                 </button>
-                <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
+                  disabled={sendForm}
+                  onClick={handleSubmit}
+                >
                   Send for Approval
                 </button>
               </div>

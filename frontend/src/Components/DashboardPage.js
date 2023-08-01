@@ -68,7 +68,7 @@ const DashboardPage = () => {
 
 
         {/* Quick Links */}
-        <div className='flex justify-center mt-10'>
+        <div className='flex justify-center mt-10 mb-64'>
             <div className='w-11/12 flex flex-col'>
 
             <div className='w-full'>

@@ -205,7 +205,7 @@ const hostel_registration =  async(req,res)=>{
 // will be done by rector
 const student_registration  =  async(req,res)=>{
     const { 
-    first_name,
+        first_name,
     last_name,
     father_name,
     mother_name,
@@ -230,7 +230,7 @@ const student_registration  =  async(req,res)=>{
     handicapped,
     handicapped_per,
     handicapped_type,
-    orphan,
+    orphan:Boolean,
     personal_mobile,
     parent_mobile,
     teacher_mobile,
@@ -240,25 +240,22 @@ const student_registration  =  async(req,res)=>{
     teacher_email,
     collage_name,
     principle_name,
-    classs,
-    result,
     religon,
     category,
     subCategory,
     income,
-    quota,
-    // photo_file,
-    // aadhar_file,
+    photo_file,
+    aadhar_file,
+    caste_file,
+    medical_file,
     account_holder_name,
     bank_name,
     ifsc,
-    hostel_id,
-    // account_number
+    account_number,
     } = (req.body);
 
 const ans1 = await studentIdFunction(null);
-// console.log(ans1);
-// const ans1=1;
+
 try
 {
     await setDoc(doc(db, "student_registration",await randon_doc_id_function()), {
@@ -287,7 +284,6 @@ try
         handicapped,
         handicapped_per,
         handicapped_type,
-        orphan,
         personal_mobile,
         parent_mobile,
         teacher_mobile,
@@ -295,29 +291,21 @@ try
         personal_email,
         parent_email,
         teacher_email,
-        collage_name,
-        principle_name,
-        classs,
-        result,
-        religon,
-        category,
-        subCategory,
-        income,
-        quota,
-        // photo_file,
-        // aadhar_file,
-        account_holder_name,
-        bank_name,
-        ifsc,
-        hostel_id,
-        student_id:(ans1)
+        college_name,
+        principal_no,
+        class_education,
+        results,
+        caste,
+        sub_caste,
+        family_income,
+        student_id:(ans1+1)
     });
 }
 
 catch(e){
     res.send("Data not Inserted");
 }
-res.send("Data Inserted with id "+(ans1));
+res.send("Data Inserted with id "+(ans1+1));
 
 }
 
@@ -325,13 +313,10 @@ res.send("Data Inserted with id "+(ans1));
 
 const hostel_tower_reg = async(req,res)=>{
     const { 
-        hostel_id,
+        hostel_id ,
         tower_name,
-        // tower_no,
-        // no_floors,
         no_rooms,
         capacity,
-        // description,
         total_area, 
         other_facilities,
         no_wings,
@@ -342,15 +327,12 @@ const hostel_tower_reg = async(req,res)=>{
     const ans2=await tower_id_function(hostel_id);
 
     try{
-        await setDoc(doc(db, "hostel_tower",await randon_doc_id_function()), {
+        await setDoc(doc(db, "hostel_tower",uuidv4()), {
             hostel_id,
             tower_name,
-            // tower_no,
-            // no_floors,
             no_rooms,
             capacity,
-            // description,
-            total_area,
+            total_area, 
             other_facilities,
             no_wings,
             type,
@@ -370,12 +352,13 @@ const hostel_tower_reg = async(req,res)=>{
 
 const hostel_tower_wing_reg = async(req,res)=>{
     const {
-        tower_id,
-        wing_name,
+        hostel_id,
+        tower_name,
         no_rooms,
         capacity,
-        total_area,
+        total_area, 
         other_facilities,
+        no_wings,
         type,
         status,
     }=(req.body);
@@ -383,13 +366,14 @@ const hostel_tower_wing_reg = async(req,res)=>{
     const ans3=await wing_id_function(tower_id);
 
     try{
-        await setDoc(doc(db, "hostel_tower_wing",await randon_doc_id_function()), {
+        await setDoc(doc(db, "hostel_tower_wing",uuidv4()), {
             tower_id,
             wing_name,
             no_rooms,
             capacity,
-            total_area,
+            total_area, 
             other_facilities,
+            no_wings,
             type,
             status,
             wing_id:ans3,
@@ -486,37 +470,35 @@ const expense = async(req,res)=>{
 
 const expense_header = async(req,res)=>{
     const{
-        expense_code,
-        date_of_expense,
-        date_of_booking,
-        total_expense_amount,
-        voucher_no,
-        voucher_amount,
-        expense_name,
-        expense_type,
-        hostel_id,
+        exp_code,
+        exp_name,
+        exp_type,
+        doe,
+        dob,
+        total_amount,
+        vn,
+        va,
+        total_student,
     } = (req.body);
 
-    const ans6=await booking_expense_header_function(null);
+    // const ans6=await booking_expense_header_function(null);
 
     try{
         await setDoc(doc(db, "expense_header",await randon_doc_id_function()), {
-            expense_code,
-            date_of_expense,
-            date_of_booking,
-            total_expense_amount,
-            voucher_no,
-            voucher_amount,
-            expense_name,
-            expense_type,
-            hostel_id,
-            booking_id:ans6,
+            exp_code,
+            exp_name,
+            exp_type,
+            doe,
+            dob,
+            total_amount,
+            vn,
+            va,
+            total_student,
         });
     }
     
     catch(e){
         res.send("Data not inserted");
-        
     }
     res.send("Data Inserted with booking id "+ booking_id);
 }

@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import {users,expense_header, allAddressDetails ,hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg ,hostel_room_reg ,expense} from './models.js';
-import{rector_id_to_hostel_id , hostel_id_to_studentname} from './logics.js';
+import {expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management,role_to_process_mapping,process_id_to_process_description,expense_type,role_reference,users,expense_header, allAddressDetails ,hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg ,hostel_room_reg ,expense} from './models.js';
+import{get_expense_code_expense_name_expense_type,rector_id_to_hostel_id , hostel_id_to_studentname} from './logics.js';
 router.post('/hostel/registration',hostel_registration)
 router.post('/student/registration',student_registration)
 router.post('/hostel/tower',hostel_tower_reg) 
@@ -13,5 +13,14 @@ router.post('/user/registration',users)
 router.post('/expense/header',expense_header)
 router.get('/hostel_id_to_student_name',hostel_id_to_studentname)
 router.get('/rector_id_to_hostel_id',rector_id_to_hostel_id)
-
+router.post('/role/reference',role_reference)
+router.get('/get_expense_code_expense_name_expense_type',get_expense_code_expense_name_expense_type)
+router.post('/expense/type',expense_type)
+router.post('/role/to/process/mapping',role_to_process_mapping)                    //admin_dashboard
+router.post('/user/role/management',user_role_management)                          //admin_dashboard
+router.post('/process/id/to/processdescription',process_id_to_process_description) //admin_dashboard
+router.post('/flow/table/for/hostel',flow_table_for_hostel)    
+router.post('/flow/table/for/expense',flow_table_for_expense)
+router.post('/hostel/flow/code/to/hostel/id',hostel_flow_code_to_user_id)    
+router.post('/expense/flow/code/to/user/id',expense_flow_code_to_user_id)                           
 export default router;

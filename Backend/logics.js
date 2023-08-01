@@ -227,7 +227,7 @@ const room_id_function= async (hostel_id , room_no)=>{
 const expense_id_function= async ()=>{
     const docRef = doc(db, "no_of_expense", "pyb1GeVP6XFEiUDDzNmm");
     const docSnap = await getDoc(docRef);
-    console.log(docSnap.data().number);
+    // console.log(docSnap.data().number);
 
     let id=docSnap.data().number;
     try{
@@ -254,7 +254,7 @@ const expense_id_function= async ()=>{
 const booking_expense_header_function = async ()=>{
     const docRef = doc(db, "booking_expense_header", "KdWo5gUgaeM0joclf9E1");
     const docSnap = await getDoc(docRef);
-    console.log(docSnap.data().number);
+    // console.log(docSnap.data().number);
 
     let id=docSnap.data().number;
     try{
@@ -308,6 +308,110 @@ const rector_id_to_hostel_id = async(req,res)=>{
 }
 
 
+const get_expense_code_expense_name_expense_type = async(req,res)=>{
+    const querySnapshot = await getDocs(collection(db, "expense"));
+    const data1 = [];
+    querySnapshot.forEach((doc) => {
+        data1.push(doc.data()); 
+    });
+    res.send(data1);
+
+}
 
 
-export  {  rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+const process_id_to_process_description_count = async(req,res)=>{
+    const docRef = doc(db, "process_id_to_process_description_count", "11ILICM5WUrgnF2Oo2iA");
+    const docSnap = await getDoc(docRef);
+    
+    console.log(docSnap.data().number);
+
+    let id=docSnap.data().number;
+    try{
+        await updateDoc(docRef,{
+            number:id+1
+        });
+    }  
+    catch(e){ 
+        console.log("error",e);
+    }
+
+    const id_string = id.toString();
+    if(id_string.length<6){
+
+    const no_of_zeros_to_append = 6 - id_string.length;
+
+    const zeros = "0".repeat(no_of_zeros_to_append);
+
+    id = zeros + id_string;
+    }
+    return id;
+
+}
+
+const hostel_flow_code_count = async(req,res)=>{
+    const docRef = doc(db, "hostel_flow_code_count", "to4zujygJ61kRE85DEsr");
+    const docSnap = await getDoc(docRef);
+    
+    console.log(docSnap.data().number);
+
+    let id=docSnap.data().number;
+    try{
+        await updateDoc(docRef,{
+            number:id+1
+        });
+    }  
+    catch(e){ 
+        console.log("error",e);
+    }
+
+    const id_string = id.toString();
+    if(id_string.length<3){
+
+    const no_of_zeros_to_append = 3 - id_string.length;
+
+    const zeros = "0".repeat(no_of_zeros_to_append);
+    let num = parseInt(id_string);
+    num = num + 1;
+    let ans = String(num).padStart(id_string.length, "0");
+
+    id = "01" + zeros + ans;
+    }
+    return id;
+}
+
+const expense_flow_code_count = async(req,res)=>{
+    const docRef = doc(db, "expense_flow_code_count", "CCOauFCgTIkRqdNuau0r");
+    const docSnap = await getDoc(docRef);
+    
+    console.log(docSnap.data().number);
+
+    let id=docSnap.data().number;
+    try{
+        await updateDoc(docRef,{
+            number:id+1
+        });
+    }  
+    catch(e){ 
+        console.log("error",e);
+    }
+
+    const id_string = id.toString();
+    if(id_string.length<3){
+
+    const no_of_zeros_to_append = 3 - id_string.length;
+
+    const zeros = "0".repeat(no_of_zeros_to_append);
+    let num = parseInt(id_string);
+    num = num + 1;
+    let ans = String(num).padStart(id_string.length, "0");
+
+    id = "02" + zeros + ans;
+    }
+    return id;
+}
+    
+
+
+
+
+export  {expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

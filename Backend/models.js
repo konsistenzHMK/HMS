@@ -6,7 +6,7 @@ import storage from './storage.js';
 import './storage.js';
 import {  query, where, getDocs } from "firebase/firestore";
 import {collection, addDoc, doc, setDoc , getDoc ,updateDoc} from "firebase/firestore";
-import {randon_doc_id_function,booking_expense_header_function,UUIDFunction, studentIdFunction , tower_id_function , wing_id_function , room_id_function , expense_id_function} from './logics.js';
+import {expense_flow_code_count,hostel_flow_code_count,randon_doc_id_function,booking_expense_header_function,UUIDFunction, studentIdFunction , tower_id_function , wing_id_function , room_id_function , expense_id_function,process_id_to_process_description_count} from './logics.js';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
  
@@ -352,33 +352,33 @@ const hostel_tower_reg = async(req,res)=>{
 
 const hostel_tower_wing_reg = async(req,res)=>{
     const {
-        hostel_id,
-        tower_name,
+        tower_id,
+        wing_name,
         no_rooms,
         capacity,
         total_area, 
         other_facilities,
-        no_wings,
+        // no_wings,
         type,
-        status,
+        // status,
     }=(req.body);
 
     const ans3=await wing_id_function(tower_id);
 
     try{
-        await setDoc(doc(db, "hostel_tower_wing",uuidv4()), {
+        await setDoc(doc(db, "hostel_tower_wing",randon_doc_id_function()), {
             tower_id,
             wing_name,
             no_rooms,
             capacity,
             total_area, 
             other_facilities,
-            no_wings,
+            // no_wings,
             type,
-            status,
+            // status, 
             wing_id:ans3,
         });
-
+ 
     }
     catch(e){
         res.send("Data not inserted");
@@ -449,7 +449,7 @@ const expense = async(req,res)=>{
     let str = ans5;
     let num = parseInt(str);
     num = num + 1;
-    str = String(num).padStart(str.length, "0");
+    str = String(num).padStart(str.length, "0"); 
 
     try{
         await setDoc(doc(db, "expense",await randon_doc_id_function()), {
@@ -467,40 +467,62 @@ const expense = async(req,res)=>{
 
 }
 
+const expense_type = async(req,res)=>{
+    const{
+        expense_type,
+        expense_type_description,
+        expense_category,
+    } = (req.body);
+
+    try{
+        await setDoc(doc(db, "expense_type",await randon_doc_id_function()), {
+            expense_type,
+            expense_type_description,
+            expense_category,
+        });
+    }
+    catch(e){ 
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+}
+
 
 const expense_header = async(req,res)=>{
     const{
-        exp_code,
-        exp_name,
-        exp_type,
-        doe,
-        dob,
-        total_amount,
-        vn,
-        va,
-        total_student,
+        expense_code,
+        date_of_expense,
+        date_of_booking,
+        total_expense_amount,
+        voucher_no,
+        voucher_amount,
+        expense_name,
+        expense_type,
+        hostel_id,
     } = (req.body);
 
-    // const ans6=await booking_expense_header_function(null);
+    const ans6=await booking_expense_header_function(null);
 
     try{
         await setDoc(doc(db, "expense_header",await randon_doc_id_function()), {
-            exp_code,
-            exp_name,
-            exp_type,
-            doe,
-            dob,
-            total_amount,
-            vn,
-            va,
-            total_student,
+            expense_code,
+            date_of_expense,
+            date_of_booking,
+            total_expense_amount,
+            voucher_no,
+            voucher_amount,
+            expense_name,
+            expense_type,
+            hostel_id,
+            booking_id:ans6,
         });
     }
     
     catch(e){
         res.send("Data not inserted");
+        
     }
-    res.send("Data Inserted with booking id "+ booking_id);
+    res.send("Data Inserted with booking id "+ ans6);
 }
 
 
@@ -525,7 +547,172 @@ const expense_item = async(req,res)=>{
 }
 
 
+const role_reference = async(req,res)=>{
+   const{
+         role_name,
+        role_description,
+   } = (req.body);
+
+    try{
+        await setDoc(doc(db, "role_reference",await randon_doc_id_function()), {
+            role_name,
+            role_description,
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+
+}
+
+const user_role_management = async(req,res)=>{
+    const{
+        user_id,
+        role_name,
+    } = (req.body);
+    
+    try{
+        await setDoc(doc(db, "user_role_management",await randon_doc_id_function()), {
+            user_id,
+            role_name,
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+}
+
+ const role_to_process_mapping = async(req,res)=>{
+    const{
+        role_name,
+        process_name,
+    } = (req.body);
+
+    try{
+        await setDoc(doc(db, "role_to_process_mapping",await randon_doc_id_function()), {
+            role_name,
+            process_name,
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+}
+
+const process_id_to_process_description = async(req,res)=>{
+    const{
+        process_name,
+    } = (req.body); 
+
+    const ans7 = await process_id_to_process_description_count();
+    // console.log(ans7);
+    let num = parseInt(ans7);
+    num = num + 1;
+    let ans = String(num).padStart(ans7.length, "0");
+    try{
+        await setDoc(doc(db, "process_id_to_process_description",await randon_doc_id_function()), {
+            process_name,
+            process_id:(ans)
+        });
+    }
+    catch(e){
+        res.send("Data not inserted"); 
+    }
+    res.send("Data Inserted with id " + ans);
+}
+
+ const flow_table_for_hostel = async(req,res)=>{
+
+    const{
+        state,
+        region,
+        district,
+        category,
+    } = (req.body);
+
+    const ans8 = await hostel_flow_code_count();
+
+    try{
+        await setDoc(doc(db, "flow_table_for_hostel",await randon_doc_id_function()), {
+            state,
+            region,
+            district,
+            category,
+            hostel_flow_code:ans8,
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted " + ans8);
+
+ }
 
 
+const flow_table_for_expense = async(req,res)=>{
+    const{
+        district,
+        hostel_id,
+        expense_type,
+        amount_from,
+        amount_to,    
+    } = (req.body);
 
-export  {  users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense}
+    const ans9 = await expense_flow_code_count();
+
+    try{
+        await setDoc(doc(db, "flow_table_for_expense",await randon_doc_id_function()), {
+            district,
+            hostel_id,
+            expense_type,
+            amount_from,
+            amount_to,
+            expense_flow_code:ans9
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted " + ans9);
+}
+
+const hostel_flow_code_to_user_id = async(req,res)=>{
+    const{
+        hostel_flow_code,
+        user_id,
+    } = (req.body);
+
+    try{
+        await setDoc(doc(db, "hostel_flow_code_to_user_id",await randon_doc_id_function()), {
+            hostel_flow_code,
+            user_id,
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+}
+
+const expense_flow_code_to_user_id = async(req,res)=>{
+    const{
+        expense_flow_code,
+        user_id,
+    } = (req.body);
+
+    try{
+        await setDoc(doc(db, "expense_flow_code_to_user_id",await randon_doc_id_function()), {
+            expense_flow_code,
+            user_id,
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+}
+
+export  {expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense}

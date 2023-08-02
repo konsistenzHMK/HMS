@@ -189,7 +189,7 @@ const hostel_registration =  async(req,res)=>{
             area, 
             mess, 
             other_facility,
-            status:"pending",
+            status:"approval",
             email_id,  
             website,
             // rector_id
@@ -198,7 +198,7 @@ const hostel_registration =  async(req,res)=>{
     catch(e){
         res.send("Data not inserted");
     }
-    res.send("Data Inserted with id " + ans);
+    res.send("Sent for approval with id " + ans);
 }
 
 
@@ -258,7 +258,7 @@ const saved_form_hostel_registration =  async(req,res)=>{
             area, 
             mess, 
             other_facility,
-            status:"draft",
+            status:"Saved",
             email_id,  
             website,
             // rector_id
@@ -268,7 +268,7 @@ const saved_form_hostel_registration =  async(req,res)=>{
     catch(e){
         res.send("Data not inserted");
     }
-    const message = 'Saved with id' + ans + '\n Status : Draft';
+    const message = 'Saved with id ' + ans + '\n Status : Saved';
     res.send(message);
 }
  

@@ -409,9 +409,18 @@ const expense_flow_code_count = async(req,res)=>{
     }
     return id;
 }
+
+const saved_data_from_hostel_registration_save = async(req,res)=>{
+    const querySnapshot = await getDocs(collection(db, "hostel_registration_save"));
+    const data1 = [];
+    querySnapshot.forEach((doc) => {
+        data1.push(doc.data()); 
+    });
+    res.send(data1);
+}
     
 
 
 
 
-export  {expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+export  {saved_data_from_hostel_registration_save,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

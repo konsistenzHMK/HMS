@@ -78,6 +78,7 @@ const Dashboard = () => {
       </div>
       {/* Main Pages for Registartion */}
       <div className="w-5/6">
+        
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/hostel-Registration" element={<HostelRegistration />} />

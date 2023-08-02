@@ -128,10 +128,6 @@ const allAddressDetails =  async(req,res)=>{
 }
 
 
-
-
-
-
 const hostel_registration =  async(req,res)=>{
     const { 
         hostel_name,
@@ -144,7 +140,6 @@ const hostel_registration =  async(req,res)=>{
         district,
         city,
         pincode,
-        // uuid,
         rector_name,
         categ1,
         categ2,
@@ -160,7 +155,6 @@ const hostel_registration =  async(req,res)=>{
         status,
         email_id,
         website,
-        rector_id,
     } = (req.body);
      
     const ans=await UUIDFunction(country,state,district);
@@ -177,7 +171,6 @@ const hostel_registration =  async(req,res)=>{
             district,
             city,
             pincode,
-            uuid : ans,
             rector_name,
             categ1,
             categ2,
@@ -193,7 +186,7 @@ const hostel_registration =  async(req,res)=>{
             status,
             email_id,
             website,
-            rector_id
+            uuid:ans
         });
     }
     catch(e){

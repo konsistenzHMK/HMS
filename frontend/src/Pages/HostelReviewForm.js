@@ -78,8 +78,7 @@ const HostelReviewForm = () => {
             </div>
         }
 
-        {ShowForm && <HostelRegistration />}
-            
+        {ShowForm && <HostelRegistration ExistingFormData={FormData1}/>}
 
           </div>
     );

@@ -6,7 +6,7 @@ import BgImg from './grid.svg'
 import Select from 'react-select';
 import { useHistory } from 'react-router-dom';
 
-const App = () => {
+const App = (props) => {
   const [category1, setCategory1] = useState('');
   const [category2, setCategory2] = useState('');
   const [category3, setCategory3] = useState('');
@@ -334,6 +334,7 @@ const App = () => {
   const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
+    if(props.ExistingFormData!=null) setFormData(props.ExistingFormData);
     const intervalId = setInterval(() => {
       const date = new Date();
 
@@ -522,7 +523,7 @@ const App = () => {
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={State} 
+                        value={formData.state} 
                         onChange={handleChangeState}
                         >
                         <option value="NA">Select an option</option>
@@ -539,10 +540,11 @@ const App = () => {
                   <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={region} 
+                        value={formData.region} 
                         onChange={handleChangeRegion}
                         >
                         <option value="null">Select an option</option>
+                        {formData.region ?<option value={formData.region}>{formData.region}</option> : null}
                           {allRegion.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
@@ -557,10 +559,11 @@ const App = () => {
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={District} 
+                        value={formData.district} 
                         onChange={handleChangeDistrict}
                         >
                         <option value="null">Select an option</option>
+                        {formData.district ?<option value={formData.district}>{formData.district}</option> : null}
                           {allDistrict.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
@@ -579,7 +582,7 @@ const App = () => {
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Taluka <p className='inline text-xl text-red-600'>*</p></div>
                     <input 
                         className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
-                        value={District} 
+                        value={formData.city} 
                         onChange={handleChangeCity}
                         >
                       </input>
@@ -631,7 +634,7 @@ const App = () => {
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={category1} 
+                        value={formData.categ1} 
                         onChange={handleDropdownCat1}
                         >
                         <option value="null">Select an option</option>
@@ -647,7 +650,7 @@ const App = () => {
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={category2} 
+                        value={formData.categ2} 
                         onChange={handleDropdownCat2}
                         >
                         <option value="null">Select an option</option>
@@ -668,7 +671,7 @@ const App = () => {
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-3 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={category3} 
+                        value={formData.categ3} 
                         onChange={handleDropdownCat3}
                         >
                         <option value="null">Select an option</option>
@@ -781,7 +784,7 @@ const App = () => {
                     <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={messType} 
+                        value={formData.mess} 
                         onChange={handleDropdownMessType}
                         >
                         <option value="null">Select an option</option>

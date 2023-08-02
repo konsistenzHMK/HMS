@@ -138,7 +138,7 @@ const hostel_registration =  async(req,res)=>{
         description,
         address1,
         address2,
-        country,
+        country, 
         state,
         region,
         district,
@@ -157,10 +157,9 @@ const hostel_registration =  async(req,res)=>{
         area,
         mess,
         other_facility,
-        status,
         email_id,
         website,
-        rector_id,
+        // rector_id, 
     } = (req.body);
      
     const ans=await UUIDFunction(country,state,district);
@@ -187,25 +186,96 @@ const hostel_registration =  async(req,res)=>{
             room,
             scapacity,
             bcapacity,
-            area,
-            mess,
+            area, 
+            mess, 
             other_facility,
-            status,
-            email_id,
+            status:"pending",
+            email_id,  
             website,
-            rector_id
-        });
-    }
+            // rector_id
+        }); 
+    } 
     catch(e){
         res.send("Data not inserted");
     }
     res.send("Data Inserted with id " + ans);
 }
 
+
+const saved_form_hostel_registration =  async(req,res)=>{
+    const {
+        hostel_name,
+        description,
+        address1,
+        address2,
+        country, 
+        state,
+        region,
+        district,
+        city,
+        pincode,
+        // uuid,
+        rector_name,
+        categ1,
+        categ2,
+        categ3,
+        tower,
+        floor,
+        room,
+        scapacity,
+        bcapacity,
+        area,
+        mess,
+        other_facility,
+        email_id,
+        website,
+    } = (req.body);
+
+    const ans=await UUIDFunction(country,state,district);
+    // console.log(ans);
+    try{
+        await setDoc(doc(db, "hostel_registration_save",await randon_doc_id_function()), {
+            hostel_name,
+            description,
+            address1,
+            address2,
+            country,
+            state,
+            region,
+            district,
+            city,
+            pincode,
+            uuid : ans,
+            rector_name,
+            categ1,
+            categ2,
+            categ3,
+            tower,
+            floor,
+            room,
+            scapacity,
+            bcapacity,
+            area, 
+            mess, 
+            other_facility,
+            status:"draft",
+            email_id,  
+            website,
+            // rector_id
+        }); 
+        
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    const message = 'Saved with id' + ans + '\n Status : Draft';
+    res.send(message);
+}
+ 
 // will be done by rector
 const student_registration  =  async(req,res)=>{
     const { 
-        first_name,
+    first_name,
     last_name,
     father_name,
     mother_name,
@@ -220,7 +290,7 @@ const student_registration  =  async(req,res)=>{
     pincode,
     gender,
     aadhar_id,
-    dob,
+    dob, 
     height,
     weight,
     blood_group,
@@ -715,4 +785,4 @@ const expense_flow_code_to_user_id = async(req,res)=>{
     res.send("Data Inserted");
 }
 
-export  {expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense}
+export  {saved_form_hostel_registration,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense}

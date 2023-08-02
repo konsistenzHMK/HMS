@@ -4,6 +4,7 @@ import Dropdown from 'react-dropdown';
 import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
 import Select from 'react-select';
+import { useHistory } from 'react-router-dom';
 
 const App = () => {
   const [category1, setCategory1] = useState('');
@@ -173,37 +174,32 @@ const App = () => {
         // alert
         console.log('API response:', response.data);
         alert(response.data);
+        setErrors({});
+        window.location.href = '/';
       })
       .catch((error) => {
         console.error('API request error:', error);
       });
-      setFormData({
-        hostel_name: '',
-        description:'',
-        address1:'',
-        address2:'',
-        country:'India',
-        state:'',
-        region:'',
-        district:'',
-        city:'',
-        pincode:'',
-        uuid:'',
-        rector_name:'',
-        categ1:'',
-        categ2:'',
-        categ3:'',
-        tower:'',
-        floor:'',
-        room:'',
-        scapacity:'',
-        bcapacity:'',
-        area:'',
-        mess:'',
-        other_facility:'',
-        status:'',
-        email_id:'',
-        website:'',
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    const formErrors = validateForm2();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
       });
       setErrors({});
     } else {
@@ -212,6 +208,96 @@ const App = () => {
     }
   };
 
+  const validateForm2 = () => {
+    const errors = [];
+      // Validate hostel_name
+      if (!formData.hostel_name) {
+        errors.push(1);
+      }
+
+      // Validate description
+      // if (!formData.description) {
+      //   errors.description = "Description is required";
+      // }
+
+      // // Validate address1
+      // if (!formData.address1) {
+      //   errors.push(1);
+      // }
+
+      // Validate country
+      if (formData.country !== 'India') {
+        errors.push(1);
+      }
+
+      // Validate state
+      if (!formData.state) {
+        errors.push(1);
+      }
+
+      // Validate region
+      if (!formData.region) {
+        errors.push(1);
+      }
+
+      // Validate district
+      if (!formData.district) {
+        errors.push(1);
+      }
+
+      // Validate city
+      if (!formData.city) {
+        errors.push(1);
+      }
+
+      // Validate pincode
+      if (!formData.pincode) {
+        errors.push(1);
+      }
+
+      // // Validate rector_name
+      // if (!formData.rector_name) {
+      //   errors.push(1);
+      // }
+
+      // // Validate categ1
+      // if (!formData.categ1) {
+      //   errors.push(1);
+      // }
+
+      // // Validate categ2
+      // if (!formData.categ2) {
+      //   errors.push(1);
+      // }
+
+      // // Validate categ3
+      // if (!formData.categ3) {
+      //   errors.push(1);
+      // }
+      // // Validate scapacity
+      // if (!formData.scapacity || formData.scapacity<=0) {
+      //   errors.push(1);;
+      // }
+      // // Validate bcapacity
+      // if (!formData.bcapacity || formData.bcapacity<=0) {
+      //   errors.push(1);
+      // }
+
+      // if (!formData.mess) {
+      //   errors.push(1);
+      // }
+
+      // // Validate area
+      // // if (!formData.area || formData.area<=0) {
+      // //   errors.area = "Area is required";
+      // // }
+
+      // // Validate email_id
+      // if (!isValidEmail(formData.email_id)) {
+      //   errors.push(1);
+      // }
+    return errors;
+  };
 
   const validateForm = () => {
     const errors = [];
@@ -373,12 +459,18 @@ const App = () => {
   };
 
   const [sendForm,setSendForm]=useState(false);
+  const [saveForm,setSaveForm]=useState(false);
+
 
   useEffect(()=>{
     const errors=validateForm();
     if(errors.length==0) setSendForm(false);
     else setSendForm(true)
-    console.log(errors.length);
+
+    const errors2=validateForm2();
+    if(errors2.length==0) setSaveForm(false);
+    else setSaveForm(true)
+
   },[formData])
 
   return (
@@ -856,7 +948,10 @@ const App = () => {
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
-                <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
+              <button className={`h-10 ${saveForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
+                  disabled={saveForm}
+                  onClick={handleSave}
+                >
                   Save
                 </button>
                 <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}

@@ -9,20 +9,56 @@ import BgImg from './grid.svg'
 
 const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
   const [State,changeState]=useState('');
-  const [allRegion,changeAllRegion]=useState([]);
-  const [region,ChangeRegion]=useState('');
-  const [allDistrict,changeAllDistrict]=useState([]);
-  const [District,changeDistrict]=useState('');
+  const [allState,changeAllState]=useState([]);
   const [City,changeCity]=useState('');
-  const handleChangeDistrict = (event) =>{
-    changeDistrict(event.target.value);
-    setFormData((prevData) => ({
-      ...prevData,
-      district: event.target.value
-    }));
+  const [allCity,changeAllCity]=useState([]);
+  const [myAuth,setMyAuth]=useState('');
+
+  const getStatesByCountryId =(countryId) =>{
+    axios.get(`https://www.universal-tutorial.com/api/getaccesstoken`, {
+      headers: ({
+        "Accept": "application/json",
+        "api-token": "pjdU9BePqECXUt90qUtoOSxbwGqM2T8YS4yGeNSsibStNv0Foy7ROPLVHoP-oKLTHZA",
+        "user-email": "konsistenz.ind@gmail.com"
+      }),
+    }).then((response)=>{
+      let myAuth=response.data.auth_token;
+      setMyAuth(myAuth);
+      axios.get(`https://www.universal-tutorial.com/api/states/${countryId}`, {
+        headers: ({
+          "Authorization": `Bearer ${myAuth}`,
+          "Accept": "application/json"
+        }),
+      }).then((response)=>{
+      //  console.log(response.data);
+       changeAllState(response.data);
+      })
+    })
   }
 
-  const handleChangeCity = (event) =>{
+  const getCitiesByStateId = (stateId) =>{
+    console.log(myAuth);
+    axios.get(`https://www.universal-tutorial.com/api/cities/${stateId}`, {
+      headers: ({
+        "Authorization": `Bearer ${myAuth}`,
+        "Accept": "application/json"
+      }),
+    }).then((response)=>{
+      console.log(response.data);
+      changeAllCity(response.data);
+    })
+  }
+
+  const handleStateChange =(event)=>{
+    changeState(event.target.value);
+    setFormData((prevData) => ({
+      ...prevData,
+      state: event.target.value
+    }));
+    getCitiesByStateId(event.target.value);
+  }
+
+  const handleCityChange =(event)=>{
     changeCity(event.target.value);
     setFormData((prevData) => ({
       ...prevData,
@@ -30,58 +66,11 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
     }));
   }
 
-  const handleChangeRegion = async (event) => {
-    ChangeRegion(event.target.value);
-    const tempRegion=event.target.value;
-    setFormData((prevData) => ({
-      ...prevData,
-      region: tempRegion
-    }));
-    try{
-      const response = await fetch('http://localhost:7000/allAddressDetails', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if(response.ok) {
-        const result = await response.json();
-        const d=result[tempRegion];
-        changeAllDistrict(d);
-        console.log("Changed District");
-      }
-    }
-    catch(err){
-      alert(err);
-    }
-  };
 
-  const handleChangeState = async(event) => {
-    changeState(event.target.value);
-    const tempState=event.target.value;
-    setFormData((prevData) => ({
-      ...prevData,
-      state: tempState
-    }));
-    console.log("Changed State",tempState);
-    try{
-      const response = await fetch('http://localhost:7000/allAddressDetails', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if(response.ok) {
-        const result = await response.json();
-        const r=result[tempState];
-        changeAllRegion(r);
-        console.log("Changed Regions");
-      }
-    }
-    catch(err){
-      alert(err);
-    }
-  };
+  useEffect(() => {
+    getStatesByCountryId('India');
+  }, []);
+
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
@@ -122,6 +111,13 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
     }));
   };
 
+  const allowNumbers = (event) => {
+    const value = event.target.value;
+    if (/^\d*$/.test(value)) {
+      handleChange(event)
+    }
+  };
+
   const validateForm = () => {
     const errors = [];
     // Validate first_name
@@ -131,39 +127,38 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
 
   // Validate last_name
   if (!formData.last_name) {
-    errors.push(1);
+    errors.push(2);
   }
 
   // Validate father_name
   if (!formData.father_name) {
-    errors.push(1);
+    errors.push(3);
   }
 
   // Validate mother_name
   if (!formData.mother_name) {
-    errors.push(1);
+    errors.push(4);
   }
 
 
   // Validate address1
   if (!formData.address1) {
-    errors.push(1);
+    errors.push(5);
   }
 
 
   // Validate state
   if (!formData.state) {
-    errors.push(1);
+    errors.push(6);
+  }
+  // Validate religion
+  if (!formData.religon) {
+    errors.push(9);
   }
 
-  // Validate region
-  if (!formData.region) {
-    errors.push(1);
-  }
-
-  // Validate district
-  if (!formData.district) {
-    errors.push(1);
+  // Validate category
+  if (!formData.category) {
+    errors.push(10);
   }
 
   // Validate city
@@ -172,7 +167,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
   }
 
   // Validate pincode
-  if (!formData.pincode) {
+  if (formData.pincode.length<6) {
     errors.push(1);
   }
 
@@ -182,7 +177,7 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
   }
 
   // Validate aadhar_id
-  if (!formData.aadhar_id) {
+  if (formData.aadhar_id.length<12) {
     errors.push(1);
   }
 
@@ -253,8 +248,11 @@ const changeHandicappStatus =(event) =>{
     const errors=validateForm();
     if(errors.length==0) setSendForm(false);
     else setSendForm(true)
-    console.log(errors.length);
+    console.log(errors);
   },[formData])
+
+  const maxDate=new Date();
+  maxDate.setDate(maxDate.getDate() - 1);
 
   return (
     <div className="flex bg-defaultBg" >
@@ -289,18 +287,47 @@ const changeHandicappStatus =(event) =>{
         {/* Header */}
 
         <div className="form-progress flex justify-around items-center mt-8">
-          <div
-            className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center align-middle'}`}
-          ><p className='text-center font-extrabold text-2xl align-middle'>1</p></div>
-          <div
-            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>2</p></div>
-          <div
-            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>3</p></div>
-          <div
-            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>4</p></div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic Details</p></div>
+          </div>
+
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Medical Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 3 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Parents and College Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>4</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Attachments</p></div>
+          </div>
         </div>
 
         {/* Form Data */}
@@ -314,7 +341,7 @@ const changeHandicappStatus =(event) =>{
               {/* 1.1 -- Student Name*/}
               <div className='w-full h-auto flex justify-between'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Firstname <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">First Name <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="first_name"
@@ -328,7 +355,7 @@ const changeHandicappStatus =(event) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Lastname <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Last Name <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="last_name"
@@ -396,6 +423,7 @@ const changeHandicappStatus =(event) =>{
                       selected={formData.dob}
                       onChange={changeDate}
                       dateFormat="yyyy-MM-dd"
+                      maxDate={maxDate}
                       className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.dob && <span className="error text-red-500">{errors.dob}</span>}
@@ -408,11 +436,12 @@ const changeHandicappStatus =(event) =>{
                   <div className='w-full'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Aadhar Number <p className='inline text-xl text-red-600'>*</p></div>
                     <input
-                      type="Number"
+                      type="text"
                       id="aadhar_id"
                       name="aadhar_id"
                       value={formData.aadhar_id}
-                      onChange={handleChange}
+                      maxLength={12} 
+                      onChange={allowNumbers}
                       className='w-full border-gray-400 rounded-md font-montserrat px-2 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.aadhar_id && <span className="error text-red-500">{errors.aadhar_id}</span>}
@@ -422,7 +451,7 @@ const changeHandicappStatus =(event) =>{
 
               <div className='w-full h-auto flex justify-between mt-2'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Religon<p className='inline text-xl text-red-600'></p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Religon<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="religon"
@@ -436,7 +465,7 @@ const changeHandicappStatus =(event) =>{
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Category<p className='inline text-xl text-red-600'></p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Category<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="category"
@@ -487,7 +516,6 @@ const changeHandicappStatus =(event) =>{
                         value={formData.handicapped} 
                         onChange={changeHandicappStatus}
                         >
-                        <option value=''>Handicapped Status</option>
                         <option value='true'>Yes</option>
                         <option value='partial'>Partially</option>
                         <option value='false'>No</option>
@@ -597,46 +625,18 @@ const changeHandicappStatus =(event) =>{
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>*</p></div>
-                    <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                      />
+                  <select id="state" onChange={handleStateChange}
+                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                   value={State} 
+                  >
+                    <option value="">Select a state</option>
+                    {allState.map((state) => (
+                      <option value={state.state_name}>
+                        {state.state_name}
+                      </option>
+                    ))}
+                  </select>
                     {errors.state && <span className="error text-red-500">{errors.state}</span>}
-                </div>
-                </div>
-              </div>
-
-              {/* 2.3 */}
-              <div className='w-full h-auto flex justify-between mt-3'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>*</p></div>
-                    <input
-                        type="text"
-                        id="region"
-                        name="region"
-                        value={formData.region}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                      />
-                    {errors.region && <span className="error text-red-500">{errors.region}</span>}
-                </div>
-
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>*</p></div>
-                    <input
-                        type="text"
-                        id="district"
-                        name="district"
-                        value={formData.district}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                      />
-                    {errors.district && <span className="error text-red-500">{errors.district}</span>}
                 </div>
                 </div>
               </div>
@@ -644,16 +644,19 @@ const changeHandicappStatus =(event) =>{
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City<p className='inline text-xl text-red-600'>*</p></div>
-                  <input
-                        type="text"
-                        id="city"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                      />
-                    {errors.city && <span className="error text-red-500">{errors.city}</span>}
+                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City <p className='inline text-xl text-red-600'>*</p></div>
+                  <select id="city" onChange={handleCityChange}
+                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                   value={City} 
+                  >
+                    <option value="">Select a City</option>
+                    {allCity.map((city) => (
+                      <option value={city.city_name}>
+                        {city.city_name}
+                      </option>
+                    ))}
+                  </select>
+                    {errors.state && <span className="error text-red-500">{errors.state}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
@@ -663,8 +666,9 @@ const changeHandicappStatus =(event) =>{
                       type="text"
                       id="pincode"
                       name="pincode"
+                      maxLength={6} 
+                      onChange={allowNumbers}
                       value={formData.pincode}
-                      onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error text-red-500">{errors.pincode}</span>}
@@ -730,10 +734,10 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   function validateForm() {
     let errors = []
 
-    // Validate blood_group
-    if (!formData.blood_group) {
-      errors.push(1);
-    }
+    // // Validate blood_group
+    // if (!formData.blood_group) {
+    //   errors.push(1);
+    // }
   
     return errors;
   }
@@ -824,18 +828,47 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
             </div>
         </div>
         <div className="form-progress flex justify-around items-center mt-8">
-          <div
-            className={`step ${currentPage >= 1 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>1</p></div>
-          <div
-            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>2</p></div>
-          <div
-            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>3</p></div>
-          <div
-            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>4</p></div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic Details</p></div>
+          </div>
+
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Medical Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 3 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Parents and College Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>4</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Attachments</p></div>
+          </div>
         </div>
         {/* Form Data */}
 
@@ -843,11 +876,11 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
           <div className="bg-white  w-10/12 h-auto mt-8 border-none rounded-lg flex justify-center font-popins">
             <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
             <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
-                <p className=' font-popins'>Medical History </p>
+                <p className=' font-popins'>Medical</p>
             </div>
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Blood Group <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Blood Group <p className='inline text-xl text-red-600'></p></div>
                     <select
                         className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 ' 
                         value={formData.blood_group} 
@@ -962,28 +995,35 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
     previousPage();
   }
 
+  const allowNumbers = (event) => {
+    const value = event.target.value;
+    if (/^\d*$/.test(value)) {
+      handleChange(event)
+    }
+  };
+
 
   const validateForm = () => {
     let errors = [];
     // Validate personal_mobile
-    if (!formData.personal_mobile) {
+    if (formData.personal_mobile.length!=10) {
       errors.push(1);
     }
   
     // Validate parent_mobile
-    if (!formData.parent_mobile) {
+    if (formData.parent_mobile.length!=10) {
       errors.push(1);
     }
   
     // // Validate teacher_mobile
-    if (!formData.teacher_mobile) {
+    if (formData.teacher_mobile.length!=10) {
       errors.push(1);
     }
   
-    // // Validate emergency_number
-    // if (!formData.emergency_number) {
-    //   errors.emergency_number = "Emergency contact number is required";
-    // }
+    // Validate college_address1
+    if (!formData.college_address1) {
+      errors.push(1);
+    }
   
     // // Validate personal_email
     if (!formData.personal_email) {
@@ -1101,18 +1141,47 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
         </div>
 
         <div className="form-progress flex justify-around items-center mt-8">
-          <div
-            className={`step ${currentPage >= 1 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>1</p></div>
-          <div
-            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>2</p></div>
-          <div
-            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>3</p></div>
-          <div
-            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>4</p></div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic Details</p></div>
+          </div>
+
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Medical Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 3 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Parents and College Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>4</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Attachments</p></div>
+          </div>
         </div>
 
         {/* Form Data */}
@@ -1129,11 +1198,12 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Personal Mobile no <p className='inline text-xl text-red-600'>*</p></div>
                     <input
-                      type="Number"
+                      type='text'
                       id="personal_mobile"
                       name="personal_mobile"
+                      maxLength={10}
+                      onChange={allowNumbers}
                       value={formData.personal_mobile}
-                      onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.personal_mobile && <span className="error text-red-600">{errors.personal_mobile}</span>}
@@ -1143,11 +1213,12 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Parents Mobile no <p className='inline text-xl text-red-600'>*</p></div>
                     <input
-                      type="Number"
+                      type="text"
                       id="parent_mobile"
                       name="parent_mobile"
                       value={formData.parent_mobile}
-                      onChange={handleChange}
+                      maxLength={10}
+                      onChange={allowNumbers}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.parent_mobile && <span className="error text-red-600">{errors.parent_mobile}</span>}
@@ -1222,34 +1293,81 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                     {errors.collage_name && <span className="error text-red-600">{errors.collage_name}</span>}
                 </div>
 
+                
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-2'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">College Address Line 1<p className='inline text-xl text-red-600'>*</p></div>
+                    <input
+                      type="text"
+                      id="college_address1"
+                      name="college_address1"
+                      value={formData.college_address1}
+                      onChange={handleChange}
+                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.college_address1 && <span className="error text-red-500">{errors.college_address1}</span>}
+                </div>
+
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Principle Name<p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">College Address Line 2 <p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="college_address2"
+                      name="college_address2"
+                      value={formData.college_address2}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.college_address2 && <span className="error text-red-500">{errors.college_address2}</span>}
+                </div>
+                </div>
+              </div>
+              
+              <div className='w-full h-auto flex justify-between mt-3'>
+              <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Principle Name<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="principle_name"
                       name="principle_name"
                       value={formData.principle_name}
                       onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.principle_name && <span className="error text-red-600">{errors.principle_name}</span>}
+                    {errors.principle_name && <span className="error text-red-500">{errors.principle_name}</span>}
                 </div>
-                </div>
-              </div>
-              
-              <div className='w-full h-auto flex justify-between mt-3'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Teacher Mobile no<p className='inline text-xl text-red-600'>*</p></div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Principle Mobile no <p className='inline text-xl text-red-600'>*</p></div>
                     <input
-                      type="Number"
+                      type="text"
                       id="teacher_mobile"
                       name="teacher_mobile"
                       value={formData.teacher_mobile}
+                      maxLength={10}
+                      onChange={allowNumbers}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.teacher_mobile && <span className="error text-red-500">{errors.teacher_mobile}</span>}
+                </div>
+                </div>
+              </div>
+              <div className='w-full h-auto flex justify-between mt-3'>
+              <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Principle Email ID<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="teacher_email"
+                      name="teacher_email"
+                      value={formData.teacher_email}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
-                    {errors.teacher_mobile && <span className="error text-red-600">{errors.teacher_mobile}</span>}
+                    {errors.teacher_email && <span className="error text-red-500">{errors.teacher_email}</span>}
                 </div>
               </div>
             {/* end */}
@@ -1299,6 +1417,36 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
     }));
   };
 
+  const [currentDate, setCurrentDate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const date = new Date();
+
+      const formattedDate = formatDate(date);
+      const formattedTime = formatTime(date);
+
+      setCurrentDate(formattedDate);
+      setCurrentTime(formattedTime);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  // Helper function to format the date
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
+  };
+
+  // Helper function to format the time
+  const formatTime = (date) => {
+    const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    return date.toLocaleTimeString(undefined, options);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -1401,6 +1549,27 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
       medical_file: file
     }));
   };
+
+  const [IselectedFile, IsetSelectedFile] = useState(null);
+  const handleIncomeChange = (e) => {
+    const file = e.target.files[0];
+    IsetSelectedFile(file);
+    setFormData((prevData) => ({
+      ...prevData,
+      income_cer: file
+    }));
+  };
+
+
+  const [BDselectedFile, BDsetSelectedFile] = useState(null);
+  const handleBDChange = (e) => {
+    const file = e.target.files[0];
+    BDsetSelectedFile(file);
+    setFormData((prevData) => ({
+      ...prevData,
+      bank_details: file
+    }));
+  };
   const handlePrevPage =(e) =>{
     e.preventDefault();
     previousPage();
@@ -1421,7 +1590,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
       <div className="w-full h-full">
       <form onSubmit={handleSubmit}>
       <div className='w-full flex justify-center h-1/2 pt-10' >
-            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
+      <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
                 {/* content */}
                 <div className='w-1/2 flex flex-col ml-5'>
                     <div className='w-full mt-5'>
@@ -1435,7 +1604,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                         <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
                     </div>
                     <div className='w-full mt-0.5 mb-5'>
-                        <p className='font-popins text-ms '>🗓️ </p>
+                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
                     </div>
                 </div>
 
@@ -1444,27 +1613,119 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                 <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
                 </div>
             </div>
+        </div>
+
+          <div className="form-progress flex justify-around items-center mt-8">
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic Details</p></div>
           </div>
 
-        <div className="form-progress flex justify-around items-center mt-8">
-          <div
-            className={`step ${currentPage >= 1 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>1</p></div>
-          <div
-            className={`step ${currentPage >= 2 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>2</p></div>
-          <div
-            className={`step ${currentPage >= 3 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>3</p></div>
-          <div
-            className={`step ${currentPage >= 4 ? 'rounded-full bg-green-500 w-10 h-10 flex-col justify-center' : 'rounded-full bg-gray-600 w-10 h-10 flex-col justify-center'}`}
-          ><p className='text-center font-extrabold text-2xl'>4</p></div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Medical Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 3 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Parents and College Details</p></div>
+          </div>
+          <div className='pl-2 pr-2 flex-col justify-center'>
+            <div className='flex justify-center'>
+                    <div
+                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                    >
+                        <p className='text-center font-extrabold text-2xl align-middle'>4</p>
+                    </div>
+            </div>
+            <div><p className='font-popins font-sm text-sm text-gray-500'>Attachments</p></div>
+          </div>
         </div>
 
         {/* Form Data */}
         <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
           <div className="bg-white w-10/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
             <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
+            <div className='underline  underline-offset-1 text-sky-950 text-2xl font-semibold pt-4 mt-1 mb-1 font-popins'>
+                <p className=' font-popins'>Bank Details </p>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-4'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Account Holder Name<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="account_holder_name"
+                      name="account_holder_name"
+                      value={formData.account_holder_name}
+                      onChange={handleChange}
+                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.account_holder_name && <span className="error text-red-500">{errors.account_holder_name}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Bank name<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="bank_name"
+                      name="bank_name"
+                      value={formData.bank_name}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.bank_name && <span className="error text-red-500">{errors.bank_name}</span>}
+                </div>
+                </div>
+              </div>
+              <div className='w-full h-auto flex justify-between mt-4'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">IFSC<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="ifsc"
+                      name="ifsc"
+                      value={formData.ifsc}
+                      onChange={handleChange}
+                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.ifsc && <span className="error text-red-500">{errors.ifsc}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Account Number<p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="number"
+                      id="account_number"
+                      name="account_number"
+                      value={formData.account_number}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.account_number && <span className="error text-red-500">{errors.account_number}</span>}
+                </div>
+                </div>
+              </div>
+
               <div className='underline  underline-offset-1 text-sky-950 text-2xl font-semibold pt-4 mt-1 mb-3 font-popins'>
                 <p className=' font-popins'>Attachments </p>
               </div>
@@ -1549,69 +1810,49 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                 </div>
               </div>
 
-              <div className='underline  underline-offset-1 text-sky-950 text-2xl font-semibold pt-4 mt-1 mb-1 font-popins'>
-                <p className=' font-popins'>Bank Details </p>
-              </div>
-
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Account Holder Name<p className='inline text-xl text-red-600'></p></div>
-                    <input
-                      type="text"
-                      id="account_holder_name"
-                      name="account_holder_name"
-                      value={formData.account_holder_name}
-                      onChange={handleChange}
-                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Income Certificate  <p className='inline text-xl text-red-600'></p></div>
+                    <input 
+                      type="file" 
+                      id="photo" 
+                      accept=".pdf"
+                      onChange={handleIncomeChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
-                    {errors.account_holder_name && <span className="error text-red-500">{errors.account_holder_name}</span>}
+                    {IselectedFile && (
+                        <iframe
+                        src={URL.createObjectURL(IselectedFile)}
+                        title="PDF Preview"
+                        className='w-32 h-32 border-gray-400 rounded-md font-montserrat' 
+                      />
+                    )}
+                    {errors.photo_file && <span className="error text-red-500">{errors.photo_file}</span>}
                 </div>
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Bank name<p className='inline text-xl text-red-600'></p></div>
-                    <input
-                      type="text"
-                      id="bank_name"
-                      name="bank_name"
-                      value={formData.bank_name}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Bank Details<p className='inline text-xl text-red-600'></p></div>
+                  <input 
+                      type="file" 
+                      id="photo" 
+                      accept=".pdf"
+                      onChange={handleBDChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
-                    {errors.bank_name && <span className="error text-red-500">{errors.bank_name}</span>}
-                </div>
-                </div>
-              </div>
-              <div className='w-full h-auto flex justify-between mt-4'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">IFSC<p className='inline text-xl text-red-600'></p></div>
-                    <input
-                      type="text"
-                      id="ifsc"
-                      name="ifsc"
-                      value={formData.ifsc}
-                      onChange={handleChange}
-                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.ifsc && <span className="error text-red-500">{errors.ifsc}</span>}
-                </div>
-
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Account Number<p className='inline text-xl text-red-600'></p></div>
-                    <input
-                      type="number"
-                      id="account_number"
-                      name="account_number"
-                      value={formData.account_number}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.account_number && <span className="error text-red-500">{errors.account_number}</span>}
+                    {BDselectedFile && (
+                        <iframe
+                        src={URL.createObjectURL(BDselectedFile)}
+                        title="PDF Preview"
+                        className='w-32 h-32 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                      />
+                    )}
+                    {errors.aadhar_file && <span className="error text-red-500">{errors.aadhar_file}</span>}
                 </div>
                 </div>
               </div>
 
+              
             {/* end */}
             </div>
           </div>
@@ -1672,7 +1913,7 @@ const StudentRegistartion = () =>{
     medical_history:'',
     medicine_taken:'',
     birth_mark:'',
-    handicapped:'',
+    handicapped:'false',
     handicapped_per:Number,
     handicapped_type:String,
     orphan:Boolean,
@@ -1689,14 +1930,19 @@ const StudentRegistartion = () =>{
     category:'',
     subCategory:'',
     income:'',
+    college_address1:'',
+    college_address2:'',
     photo_file:null,
     aadhar_file:null,
     caste_file:null,
     medical_file:null,
+    income_cer:null,
+    bank_details:null,
     account_holder_name:'',
     bank_name:'',
     ifsc:'',
     account_number:''
+   
   });
 
   const [currentPage, setCurrentPage] = useState(1);

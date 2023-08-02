@@ -4514,7 +4514,8 @@ const MatchDaySingleScreen = (props) => {
               }}
             </PagalFanBEApi.FetchFetchFeedForSingleMatchGET>
             :
-            <>
+            
+            <View style={{ flexDirection: 'column', alignItems: 'flex-start'}}>
                 {/* API call to get match dommentary for this match id , if match commentary is present show that else show Match Commentary not availabe */}
                 <PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET
                   refetchInterval={30000}
@@ -4560,6 +4561,7 @@ const MatchDaySingleScreen = (props) => {
                         </View>
                         :
                         <FlatList
+                        inverted={true}
                         data={matchCommentary}
                         listKey={'o1Om4XPf'}
                         renderItem={({ item }) => { 
@@ -4607,7 +4609,8 @@ const MatchDaySingleScreen = (props) => {
                     
                   }}
                 </PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET>
-                </>
+                </View>
+                
             }
             </TabViewItem>
 

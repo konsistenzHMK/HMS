@@ -30,7 +30,14 @@ const ReviewCard = (props) => {
         </div>
 
         {/* Buttons */}
-        <div className='w-1/5 bg-red-200'>
+        <div className='w-1/5 bg-stone-400 pt-10'>
+            <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                <p className='font-popins text-normal'>Edit</p>
+            </button>
+
+            <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10 mt-2'>
+                <p className='font-popins text-normal'>Delete</p>
+            </button>
         </div>
     </div>
   )

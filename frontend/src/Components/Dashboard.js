@@ -32,7 +32,7 @@ const Dashboard = () => {
                         <p className='font-popins font-semibold overflow-x-hidden'>Rajesh <br />Bhatachariya</p>
                     </div>
                 </div>
-
+                
                 {/* Info */}
                 <div className='w-full justify-center mt-4'>
                     <p className='w-full text-center font-popins text-xs text-slate-700'>IIT Bombay, Hostel Rector</p>

@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 
 const ReviewCard = (props) => {
     const [formData,setFormData]=useState(props.data);
+
+    const setAll=()=>{
+        props.setFormDataOut(formData);
+        props.setShowForm(true);
+    }
   return (
     <div className='w-full flex mt-10 mb-10'>
         {/* Details */}
@@ -31,7 +36,9 @@ const ReviewCard = (props) => {
 
         {/* Buttons */}
         <div className='w-1/5 bg-stone-400 pt-10'>
-            <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+            <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'
+                onClick={setAll}
+            >
                 <p className='font-popins text-normal'>Edit</p>
             </button>
 

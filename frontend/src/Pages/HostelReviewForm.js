@@ -5,6 +5,7 @@ import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
 import Select from 'react-select';
 import { useHistory } from 'react-router-dom';
+import ReviewCard from '../Components/ReviewCard';
 
 const HostelReviewForm = () => {
 
@@ -22,7 +23,9 @@ const HostelReviewForm = () => {
                 },
             });
             if(response.ok) {
-                console.log(response);
+                const result = await response.json();
+                console.log(result);
+                setAllForms(result);
             }
         }
         catch(err){
@@ -65,7 +68,7 @@ const HostelReviewForm = () => {
     return (
         <div className="w-full bg-defaultBg top-0">
           {/* Header */}
-          <div className='w-full flex justify-center h-1/2 pt-10' >
+            <div className='w-full flex justify-center h-1/2 pt-10' >
               <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
                   {/* content */}
                   <div className='w-1/2 flex flex-col ml-5'>
@@ -89,7 +92,13 @@ const HostelReviewForm = () => {
                   <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
                   </div>
               </div>
-              </div>
+              
+            </div>
+
+            <div className='w-full flex justify-center'>
+               <div className='w-11/12'> {allForms.map((item, index) => (<ReviewCard data={item}/>))}</div>
+            </div>
+
           </div>
     );
   };

@@ -36,6 +36,11 @@ const App = (props) => {
     return false;
   }
 
+  const CheckEdit2Form =()=>{
+    if(props.op==2) return true;
+    return false;
+  }
+
   const handleChangeCity = (event) =>{
     changeCity(event.target.value);
     setFormData((prevData) => ({
@@ -882,7 +887,7 @@ const App = (props) => {
                       <select 
                           className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
                           value={formData.status}
-                          disabled={true}
+                          disabled={!CheckEdit2Form()}
                           onChange={handleDropdownStatusType}
                           >
                           <option value="NA">Select an option</option>

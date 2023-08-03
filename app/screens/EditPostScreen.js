@@ -5,7 +5,17 @@ import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Button, Circle, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
 import { useIsFocused } from '@react-navigation/native'
-import { Image, Keyboard, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import {
+  Image,
+  Keyboard,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+  useWindowDimensions,
+  Modal,
+  TouchableOpacity,
+} from 'react-native'
 import { VideoPlayer, useSnackbar } from '../components'
 import { useTranslation } from 'react-i18next'
 
@@ -17,7 +27,9 @@ const EditPostScreen = (props) => {
 
   const [postDetails, setPostDetails] = useState()
   const [textAreaValue, setTextAreaValue] = React.useState('')
+  const [deleteModalOpen, setDeleteModalOpen] = React.useState(false)
 
+  const pagalFanBEDeleteUserUploadedPostDELETE = PagalFanBEApi.useDeleteUserUploadedPostDELETE()
   const concatStrings = (text1, text2) => {
     return text1 + ' ' + text2
   }
@@ -66,12 +78,122 @@ const EditPostScreen = (props) => {
     }
   }
 
+  const handlePostDeletePress = () => {
+    setDeleteModalOpen(true)
+  }
+
+  const handlePostDeleteConfirmPress = async () => {
+    const id = props.route?.params?.post_id
+    if (!id) {
+      console.log('Post id invalid')
+      return
+    }
+    try {
+      await pagalFanBEDeleteUserUploadedPostDELETE.mutateAsync({
+        postId: props.route?.params?.id,
+      })
+      // navigation.navigate('HomeScreen')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteModalDismiss = () => {
+    setDeleteModalOpen(false)
+  }
+
+  const styles = StyleSheet.create({
+    modal: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.6)',
+    },
+    container: {
+      backgroundColor: theme.colors['Background'],
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      borderTop: 1,
+      borderColor: theme.colors['PF-Grey'],
+      width: '100%',
+      bottom: 0,
+      padding: 20,
+      position: 'absolute',
+      height: '20%',
+    },
+  })
+
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth({ marginLeft: 10, marginRight: 10, marginTop: 10 }, dimensions.width)}
       hasSafeArea={true}
       scrollable={false}
     >
+      {/*Delete Modal*/}
+      <Modal visible={deleteModalOpen} onDismiss={deleteModalDismiss} transparent animationType="slide">
+        <TouchableOpacity onPress={deleteModalDismiss} style={styles.modal} activeOpacity={1} />
+        <View style={styles.container}>
+          <View>
+            <Text
+              style={StyleSheet.applyWidth(
+                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                  color: theme.colors['Custom Color_34'],
+                  fontFamily: 'Rubik_400Regular',
+                  fontSize: 15,
+                  textAlign: 'center',
+                }),
+                dimensions.width,
+              )}
+            >
+              Are you sure you want to delete this post?
+            </Text>
+          </View>
+          <View
+            style={StyleSheet.applyWidth(
+              {
+                alignItems: 'center',
+                flexDirection: 'row',
+                height: 48,
+                justifyContent: 'space-between',
+              },
+              dimensions.width,
+            )}
+          >
+            <Button
+              style={StyleSheet.applyWidth(
+                {
+                  backgroundColor: theme.colors['PF-Primary'],
+                  borderRadius: 8,
+                  color: theme.colors['White'],
+                  fontFamily: 'Rubik_600SemiBold',
+                  height: 50,
+                  marginTop: 40,
+                  textAlign: 'center',
+                  width: 130,
+                },
+                dimensions.width,
+              )}
+              title="Delete"
+              onPress={handlePostDeleteConfirmPress}
+            />
+            <Button
+              style={StyleSheet.applyWidth(
+                {
+                  backgroundColor: theme.colors['PF-Grey'],
+                  borderRadius: 8,
+                  color: theme.colors['White'],
+                  fontFamily: 'Rubik_600SemiBold',
+                  height: 50,
+                  marginTop: 40,
+                  textAlign: 'center',
+                  width: 130,
+                },
+                dimensions.width,
+              )}
+              title="Cancel"
+              onPress={deleteModalDismiss}
+            />
+          </View>
+        </View>
+      </Modal>
       {/* Header */}
       <View
         style={StyleSheet.applyWidth(
@@ -255,6 +377,27 @@ const EditPostScreen = (props) => {
             dimensions.width,
           )}
           title={translate('EditPostScreen.Text.Button')}
+        />
+        {/* Delete */}
+        <Button
+          onPress={handlePostDeletePress}
+          style={StyleSheet.applyWidth(
+            {
+              backgroundColor: theme.colors['White'],
+              borderRadius: 8,
+              color: 'red',
+              borderWidth: 0.5,
+              borderColor: 'red',
+              fontFamily: 'Rubik_600SemiBold',
+              height: 50,
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+              textAlign: 'center',
+            },
+            dimensions.width,
+          )}
+          title={translate('EditPostScreen.Text.DeleteButton')}
         />
       </ScrollView>
     </ScreenContainer>

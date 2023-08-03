@@ -23,6 +23,7 @@
       "Text.InputPlaceholder": "What more do you want to say?",
       "Text.AddHashtags": "Add hashtags at the end for sports, matches, fanclubs etc that you want to tag. e.g. Smashing innings #ViratKohli #Cricket #IPL2023 #RCB",
       "Text.Button": "Update",
+      "Text.DeleteButton": "Delete",
       "Error.ProblemFetchData": "There was a problem fetching this data"
     },
 

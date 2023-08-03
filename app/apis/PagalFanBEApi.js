@@ -4014,3 +4014,49 @@ export const FetchFetchAllBakarrRecordingsGET = ({ children, onData = () => {}, 
 
   return children({ loading, data, error, refetchFetchAllBakarrRecordings: refetch })
 }
+
+export const deleteUserUploadedPostDELETEStatusAndText = (Constants, { postId }) =>
+  fetch(
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?id=eq.${postId ?? ''}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: Constants['AUTHORIZATION_HEADER'],
+        'Content-Type': 'application/json',
+        apiKey: Constants['API_KEY_HEADER'],
+      },
+      method: 'DELETE',
+    },
+  ).then(async (res) => ({
+    status: res.status,
+    statusText: res.statusText,
+    text: await res.text(),
+  }))
+
+export const deleteUserUploadedPostDELETE = (Constants, { postId }) =>
+  deleteUserUploadedPostDELETEStatusAndText(Constants, {
+    postId
+  }).then(({ status, statusText, text }) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.error(
+        ['Failed to parse response text as JSON.', `Error: ${e.message}`, `Text: ${JSON.stringify(text)}`].join('\n\n'),
+      )
+    }
+  })
+
+export const useDeleteUserUploadedPostDELETE = (initialArgs) => {
+  const queryClient = useQueryClient()
+  const Constants = GlobalVariables.useValues()
+
+  return useMutation((args) => deleteUserUploadedPostDELETE(Constants, { ...initialArgs, ...args }), {
+    onError: (err, variables) => {
+      console.log(err)
+    },
+    onSettled: (e) => {
+      console.log(e)
+    },
+  })
+}
+

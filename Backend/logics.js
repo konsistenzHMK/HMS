@@ -467,9 +467,9 @@ const status_of_hostel_active = async(req,res)=>{
         // rector_id, 
     } = (req.body);
 
-    const q = query(collection(db, "hostel_registration"), where("status", "==", "Pending"));
+    const documents = await getDocs(collection(db, "hostel_registration"));
     const data2 = {};
-    const documents = await getDocs(q);
+    // const documents = await getDocs(q);
     documents.forEach((doc) => {
         data2[doc.data().uuid] = doc.id;
     });
@@ -552,9 +552,9 @@ const status_of_hostel_block = async(req,res)=>{
         // rector_id, 
     } = (req.body);
 
-    const q = query(collection(db, "hostel_registration"), where("status", "==", "Pending"));
+    const documents = await getDocs(collection(db, "hostel_registration"));
     const data2 = {};
-    const documents = await getDocs(q);
+    // const documents = await getDocs(q);
     documents.forEach((doc) => {
         data2[doc.data().uuid] = doc.id;
     });

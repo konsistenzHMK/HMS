@@ -6,6 +6,16 @@ const ReviewCard = (props) => {
         props.setFormDataOut(formData);
         props.setShowForm(true);
     }
+
+    const setEdi2=()=>{
+        props.setFormDataOut(formData);
+        props.setEdit2(true);
+    }
+
+    const setDisplay=()=>{
+        props.setFormDataOut(formData);
+        props.setDisplay(true);
+    }
   return (
     <div className='w-full flex mt-10 mb-10'>
         {/* Details */}
@@ -34,11 +44,21 @@ const ReviewCard = (props) => {
         </div>
 
         {/* Buttons */}
-        <div className='w-1/5 bg-stone-400 pt-10'>
+        <div className='w-1/5 bg-stone-400 pt-5'>
             <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'
                 onClick={setAll}
             >
                 <p className='font-popins text-normal'>Edit</p>
+            </button>
+            <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10 mt-2'
+                onClick={setEdi2}
+            >
+                <p className='font-popins text-normal'>Edit 2</p>
+            </button>
+            <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10 mt-2'
+                onClick={setDisplay}
+            >
+                <p className='font-popins text-normal'>Display</p>
             </button>
         </div>
     </div>

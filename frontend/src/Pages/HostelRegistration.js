@@ -181,11 +181,6 @@ const App = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setFormData((prevData) => ({
-      ...prevData,
-      status: 'Approval'
-    }));
-
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
@@ -209,15 +204,59 @@ const App = (props) => {
   const handleSave = (e) => {
     e.preventDefault();
 
-    setFormData((prevData) => ({
-      ...prevData,
-      status: 'Saved'
-    }));
 
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
       axios.post('http://localhost:7000/hostel/saveform', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleApprove = (e) => {
+    e.preventDefault();
+
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/status_of_hostel_active', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleDecline = (e) => {
+    e.preventDefault();
+
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/status_of_hostel_block', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -416,6 +455,7 @@ const App = (props) => {
       handleChange(event)
     }
   };
+
 
   return (
       <div className="w-full bg-defaultBg top-0">
@@ -926,15 +966,15 @@ const App = (props) => {
               <div className='w-52 flex flex-col justify-center'>  
               <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
                   disabled={sendForm}
-                  onClick={handleSave}
+                  onClick={CheckEdit2Form()?handleApprove:handleSave}
                 >
-                  Save
+                 {CheckEdit2Form()? 'Approve' : 'Save'} 
                 </button>
                 <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
                   disabled={sendForm}
-                  onClick={handleSubmit}
+                  onClick={CheckEdit2Form()?handleDecline:handleSubmit}
                 >
-                  Send for Approval
+                  {CheckEdit2Form()? 'Deny' : 'Send for Approval'} 
                 </button>
               </div> 
               }

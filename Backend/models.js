@@ -5,7 +5,7 @@ import './auth.js'
 import storage from './storage.js';
 import './storage.js';
 import {  query, where, getDocs } from "firebase/firestore";
-import {collection, addDoc, doc, setDoc , getDoc ,updateDoc} from "firebase/firestore";
+import {collection, addDoc, doc, setDoc , getDoc ,updateDoc , deleteDoc} from "firebase/firestore";
 import {expense_flow_code_count,hostel_flow_code_count,randon_doc_id_function,booking_expense_header_function,UUIDFunction, studentIdFunction , tower_id_function , wing_id_function , room_id_function , expense_id_function,process_id_to_process_description_count} from './logics.js';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -144,7 +144,7 @@ const hostel_registration =  async(req,res)=>{
         district,
         city,
         pincode,
-        // uuid,
+        uuid,
         rector_name,
         categ1,
         categ2,
@@ -161,44 +161,98 @@ const hostel_registration =  async(req,res)=>{
         website,
         // rector_id, 
     } = (req.body);
-     
-    const ans=await UUIDFunction(country,state,district);
-    console.log(ans);
-    try{
-        await setDoc(doc(db, "hostel_registration",await randon_doc_id_function()), {
-            hostel_name,
-            description,
-            address1,
-            address2,
-            country,
-            state,
-            region,
-            district,
-            city,
-            pincode,
-            uuid : ans,
-            rector_name,
-            categ1,
-            categ2,
-            categ3,
-            tower,
-            floor,
-            room,
-            scapacity,
-            bcapacity,
-            area, 
-            mess, 
-            other_facility,
-            status:"approval",
-            email_id,  
-            website,
-            // rector_id
-        }); 
-    } 
-    catch(e){
-        res.send("Data not inserted");
+
+    const querySnapshot = await getDocs(collection(db, "hostel_registration_save"));
+        const data2 = {};
+        querySnapshot.forEach((doc) => {
+            data2[doc.data().uuid] = doc.id;
+            });
+
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                await deleteDoc(doc(db, "hostel_registration_save", data2[uuid]));
+                await setDoc(doc(db, "hostel_registration",await randon_doc_id_function()), {
+                    hostel_name,
+                    description,
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid ,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area, 
+                    mess, 
+                    other_facility,
+                    status:"approval",
+                    email_id,  
+                    website,
+                    // rector_id 
+                }); 
+            }  
+            catch(e){
+                res.send("Data not inserted");
+            }
+            res.send("Sent for approval with id " + uuid);
+        }
+
     }
-    res.send("Sent for approval with id " + ans);
+    
+     
+    if(uuid == null || uuid == undefined || uuid == ""){
+
+        const ans=await UUIDFunction(country,state,district);
+        console.log(ans);
+        try{
+            await setDoc(doc(db, "hostel_registration",await randon_doc_id_function()), {
+                hostel_name,
+                description,
+                address1,
+                address2,
+                country,
+                state,
+                region,
+                district,
+                city,
+                pincode,
+                uuid : ans,
+                rector_name,
+                categ1,
+                categ2,
+                categ3,
+                tower,
+                floor,
+                room,
+                scapacity,
+                bcapacity,
+                area, 
+                mess, 
+                other_facility,
+                status:"approval",
+                email_id,  
+                website,
+                // rector_id
+            }); 
+        } 
+        catch(e){
+            res.send("Data not inserted");
+        }
+        res.send("Sent for approval with id " + ans);
+    }
+
 }
 
 

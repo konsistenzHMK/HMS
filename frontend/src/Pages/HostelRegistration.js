@@ -31,6 +31,16 @@ const App = (props) => {
     }));
   }
 
+  const CheckDisplayForm =()=>{
+    if(props.op==3) return true;
+    return false;
+  }
+
+  const CheckEdit2Form =()=>{
+    if(props.op==2) return true;
+    return false;
+  }
+
   const handleChangeCity = (event) =>{
     changeCity(event.target.value);
     setFormData((prevData) => ({
@@ -171,11 +181,6 @@ const App = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setFormData((prevData) => ({
-      ...prevData,
-      status: 'Approval'
-    }));
-
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
@@ -199,15 +204,59 @@ const App = (props) => {
   const handleSave = (e) => {
     e.preventDefault();
 
-    setFormData((prevData) => ({
-      ...prevData,
-      status: 'Saved'
-    }));
 
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
       axios.post('http://localhost:7000/hostel/saveform', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleApprove = (e) => {
+    e.preventDefault();
+
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/status_of_hostel_active', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleDecline = (e) => {
+    e.preventDefault();
+
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/status_of_hostel_block', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -332,9 +381,13 @@ const App = (props) => {
 
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+  const [isUUID,setIsUUID]=useState(false);
 
   useEffect(() => {
-    if(props.ExistingFormData!=null) setFormData(props.ExistingFormData);
+    if(props.ExistingFormData!=null){ 
+      setFormData(props.ExistingFormData);
+      setIsUUID(true);
+    }
     const intervalId = setInterval(() => {
       const date = new Date();
 
@@ -403,6 +456,7 @@ const App = (props) => {
     }
   };
 
+
   return (
       <div className="w-full bg-defaultBg top-0">
       <form>
@@ -449,6 +503,7 @@ const App = (props) => {
                   id="hostel_name"
                   name="hostel_name"
                   value={formData.hostel_name}
+                  disabled={CheckDisplayForm()}
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></input>
@@ -462,6 +517,7 @@ const App = (props) => {
                   id="description"
                   name="description"
                   value={formData.description}
+                  disabled={CheckDisplayForm()}
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></textarea>
@@ -482,6 +538,7 @@ const App = (props) => {
                       id="address1"
                       name="address1"
                       value={formData.address1}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -496,6 +553,7 @@ const App = (props) => {
                       id="address2"
                       name="address2"
                       value={formData.address2}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 '
                     />
@@ -513,6 +571,7 @@ const App = (props) => {
                       name="country"
                       value={'India'}
                       onChange={handleChange}
+                      disabled={true}
                       className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
                     {errors.country && <span className="error  text-red-500">{errors.country}</span>}
@@ -525,6 +584,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.state} 
                         onChange={handleChangeState}
+                        disabled={isUUID}
                         >
                         <option value="NA">Select an option</option>
                         <option value="Maharashtra">Maharashtra</option>
@@ -542,6 +602,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.region} 
                         onChange={handleChangeRegion}
+                        disabled={isUUID}
                         >
                         <option value="null">Select an option</option>
                         {formData.region ?<option value={formData.region}>{formData.region}</option> : null}
@@ -561,6 +622,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.district} 
                         onChange={handleChangeDistrict}
+                        disabled={isUUID}
                         >
                         <option value="null">Select an option</option>
                         {formData.district ?<option value={formData.district}>{formData.district}</option> : null}
@@ -584,6 +646,7 @@ const App = (props) => {
                         className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
                         value={formData.city} 
                         onChange={handleChangeCity}
+                        disabled={true}
                         >
                       </input>
                     {errors.city && <span className="error text-red-600">{errors.city}</span>}
@@ -599,6 +662,7 @@ const App = (props) => {
                       maxLength={6}
                       value={formData.pincode}
                       onChange={allowNumbers}
+                      disabled={CheckDisplayForm()}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error text-red-600">{errors.pincode}</span>}
@@ -620,6 +684,7 @@ const App = (props) => {
                       id="rector_name"
                       name="rector_name"
                       value={formData.rector_name}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -636,6 +701,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ1} 
                         onChange={handleDropdownCat1}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="girls">Girls</option>
@@ -652,6 +718,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ2} 
                         onChange={handleDropdownCat2}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="t-1">type-1</option>
@@ -673,6 +740,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ3} 
                         onChange={handleDropdownCat3}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="rented">Rented</option>
@@ -693,6 +761,7 @@ const App = (props) => {
                         name="tower"
                         value={formData.tower}
                         onChange={handleChange}
+                        disabled={CheckDisplayForm()}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.tower && <span className="error text-red-600">{errors.tower}</span>}
@@ -706,6 +775,7 @@ const App = (props) => {
                         id="floor"
                         name="floor"
                         value={formData.floor}
+                        disabled={CheckDisplayForm()}
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
@@ -724,6 +794,7 @@ const App = (props) => {
                         name="room"
                         value={formData.room}
                         onChange={handleChange}
+                        disabled={CheckDisplayForm()}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.room && <span className="error text-red-600">{errors.room}</span>}
@@ -741,6 +812,7 @@ const App = (props) => {
                         id="scapacity"
                         name="scapacity"
                         value={formData.scapacity}
+                        disabled={CheckDisplayForm()}
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
@@ -755,6 +827,7 @@ const App = (props) => {
                         id="bcapacity"
                         name="bcapacity"
                         value={formData.bcapacity}
+                        disabled={CheckDisplayForm()}
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
@@ -774,6 +847,7 @@ const App = (props) => {
                         name="area"
                         value={formData.area}
                         onChange={handleChange}
+                        disabled={CheckDisplayForm()}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.area && <span className="error text-red-600">{errors.area}</span>}
@@ -786,6 +860,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.mess} 
                         onChange={handleDropdownMessType}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="government">Government</option>
@@ -806,6 +881,7 @@ const App = (props) => {
                       id="email_id"
                       name="email_id"
                       value={formData.email_id}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -820,6 +896,7 @@ const App = (props) => {
                       id="website"
                       name="website"
                       value={formData.website}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -836,6 +913,7 @@ const App = (props) => {
                         isMulti
                         options={options}
                         onChange={handleChange2}
+                        disabled={CheckDisplayForm()}
                         className="basic-multi-select"
                         classNamePrefix="select"
                       />
@@ -849,7 +927,7 @@ const App = (props) => {
                       <select 
                           className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
                           value={formData.status}
-                          disabled={true}
+                          disabled={!CheckEdit2Form()}
                           onChange={handleDropdownStatusType}
                           >
                           <option value="NA">Select an option</option>
@@ -884,20 +962,23 @@ const App = (props) => {
                 <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
-              <div className='w-52 flex flex-col justify-center'>
+              {!CheckDisplayForm() &&
+              <div className='w-52 flex flex-col justify-center'>  
               <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
                   disabled={sendForm}
-                  onClick={handleSave}
+                  onClick={CheckEdit2Form()?handleApprove:handleSave}
                 >
-                  Save
+                 {CheckEdit2Form()? 'Approve' : 'Save'} 
                 </button>
                 <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
                   disabled={sendForm}
-                  onClick={handleSubmit}
+                  onClick={CheckEdit2Form()?handleDecline:handleSubmit}
                 >
-                  Send for Approval
+                  {CheckEdit2Form()? 'Deny' : 'Send for Approval'} 
                 </button>
-              </div>
+              </div> 
+              }
+              
             </div>
           </div>
         </div>

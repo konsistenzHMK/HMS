@@ -17,6 +17,9 @@ const HostelReviewForm = () => {
     const [ShowForm,setShowForm]=useState(false);
 
     const [allForms,setAllForms]=useState([]);
+    const [edit2,setEdit2]=useState(false);
+    const [display,setDisplay]=useState(false);
+
 
     const getAllSavedForms =async()=>{
         try{
@@ -72,14 +75,14 @@ const HostelReviewForm = () => {
     return (
         <div className="w-full bg-defaultBg top-0">
           
-        {!ShowForm && 
+        {!ShowForm && !edit2 && !display &&
             <div className='w-full flex justify-center'>
-            <div className='w-11/12'> {allForms.map((item, index) => (<ReviewCard data={item} setShowForm={setShowForm} setFormDataOut={setFormData1} />))}</div>
+            <div className='w-11/12'> {allForms.map((item, index) => (<ReviewCard data={item} setShowForm={setShowForm} setFormDataOut={setFormData1} setEdit2={setEdit2} setDisplay={setDisplay}/>))}</div>
             </div>
         }
-
-        {ShowForm && <HostelRegistration ExistingFormData={FormData1}/>}
-
+        {ShowForm && <HostelRegistration ExistingFormData={FormData1} op={1}/>}
+        {edit2 && <HostelRegistration ExistingFormData={FormData1} op={2}/> }
+        {display && <HostelRegistration ExistingFormData={FormData1}op={3}/>}
           </div>
     );
   };

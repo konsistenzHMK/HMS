@@ -431,13 +431,12 @@ const gethostel_id_where_status_active = async(req,res)=>{
         data2.push(doc.data().hostel_name);
         data3.push(...data2)
         data1.push(data3);
-        
-        
-
-     });
+        });
 
     res.send(data1);
 }
+
+
 
 
 export  {gethostel_id_where_status_active,saved_data_from_hostel_registration_save,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

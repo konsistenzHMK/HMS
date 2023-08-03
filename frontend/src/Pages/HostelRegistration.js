@@ -922,7 +922,8 @@ const App = (props) => {
                 <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
-              <div className='w-52 flex flex-col justify-center'>
+              {!CheckDisplayForm() &&
+              <div className='w-52 flex flex-col justify-center'>  
               <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
                   disabled={sendForm}
                   onClick={handleSave}
@@ -935,7 +936,9 @@ const App = (props) => {
                 >
                   Send for Approval
                 </button>
-              </div>
+              </div> 
+              }
+              
             </div>
           </div>
         </div>

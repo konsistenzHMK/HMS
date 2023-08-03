@@ -162,20 +162,21 @@ const hostel_registration =  async(req,res)=>{
         // rector_id, 
     } = (req.body);
 
-    const querySnapshot = await getDocs(collection(db, "hostel_registration_save"));
-        const data2 = {};
-        querySnapshot.forEach((doc) => {
-            data2[doc.data().uuid] = doc.id;
-            });
+    const q = query(collection(db, "hostel_registration"), where("status", "==", "Draft"));
+    const data2 = {};
+    const documents = await getDocs(q);
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
 
     const keys = Object.keys(data2);
     for( let i = 0;i<= keys.length;i++){
         if (uuid == keys[i]) {
             try {
-                await deleteDoc(doc(db, "hostel_registration_save", data2[uuid]));
-                await setDoc(doc(db, "hostel_registration",await randon_doc_id_function()), {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
                     hostel_name,
-                    description,
+                    description, 
                     address1,
                     address2,
                     country,
@@ -184,7 +185,7 @@ const hostel_registration =  async(req,res)=>{
                     district,
                     city,
                     pincode,
-                    uuid ,
+                    uuid,
                     rector_name,
                     categ1,
                     categ2,
@@ -194,19 +195,19 @@ const hostel_registration =  async(req,res)=>{
                     room,
                     scapacity,
                     bcapacity,
-                    area, 
-                    mess, 
+                    area,
+                    mess,
                     other_facility,
-                    status:"approval",
-                    email_id,  
+                    status: "Send for Approval",
+                    email_id,
                     website,
-                    // rector_id 
+                    // rector_id
                 }); 
             }  
             catch(e){
                 res.send("Data not inserted");
             }
-            res.send("Sent for approval with id " + uuid);
+            res.send("Sent for Approval with id " + uuid);
         }
 
     }
@@ -241,7 +242,7 @@ const hostel_registration =  async(req,res)=>{
                 area, 
                 mess, 
                 other_facility,
-                status:"approval",
+                status:"Send for Approval",
                 email_id,  
                 website,
                 // rector_id
@@ -250,7 +251,7 @@ const hostel_registration =  async(req,res)=>{
         catch(e){
             res.send("Data not inserted");
         }
-        res.send("Sent for approval with id " + ans);
+        res.send("Sent for Approval with id " + ans);
     }
 
 }

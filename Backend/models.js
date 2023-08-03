@@ -198,7 +198,7 @@ const hostel_registration =  async(req,res)=>{
                     area,
                     mess,
                     other_facility,
-                    status: "Send for Approval",
+                    status: "Pending",
                     email_id,
                     website,
                     // rector_id
@@ -207,7 +207,7 @@ const hostel_registration =  async(req,res)=>{
             catch(e){
                 res.send("Data not inserted");
             }
-            res.send("Sent for Approval with id " + uuid);
+            res.send("Sent for Approval with id " + uuid + "/n Status : Pending for Approval");
         }
 
     }
@@ -242,7 +242,7 @@ const hostel_registration =  async(req,res)=>{
                 area, 
                 mess, 
                 other_facility,
-                status:"Send for Approval",
+                status:"Pending",
                 email_id,  
                 website,
                 // rector_id
@@ -251,7 +251,7 @@ const hostel_registration =  async(req,res)=>{
         catch(e){
             res.send("Data not inserted");
         }
-        res.send("Sent for Approval with id " + ans);
+        res.send("Sent for Approval with id " + ans + "/n Status : Pending for Approval");
     }
 
 }

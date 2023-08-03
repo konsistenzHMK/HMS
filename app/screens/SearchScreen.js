@@ -1,115 +1,71 @@
 import React, { useEffect, useState } from 'react'
 import * as GlobalStyles from '../GlobalStyles.js'
-import * as PagalFanBEApi from '../apis/PagalFanBEApi.js'
 import * as StyleSheet from '../utils/StyleSheet'
 import { Circle, Divider, Icon, ScreenContainer, Touchable, withTheme } from '@draftbit/ui'
-import { ActivityIndicator, FlatList, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native'
+import { ActivityIndicator, FlatList, ScrollView, TextInput, View, useWindowDimensions } from 'react-native'
 import { FeedCard } from '../shared'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import { useTranslation } from 'react-i18next'
 import debounce from 'lodash.debounce'
 
+const PER_PAGE = 10
+
 const SearchScreen = (props) => {
   const Constants = GlobalVariables.useValues()
   const dimensions = useWindowDimensions()
-
   const { t: translate } = useTranslation()
   const { theme } = props
   const { navigation } = props
   const [posts, setPosts] = useState([])
   const [pageNumber, setPageNumber] = useState(0)
-  const [allPostsLoaded, setAllPostsLoaded] = useState(false)
-
+  const [noNextPage, setNoNextPage] = useState(false)
   const [textInputValue, setTextInputValue] = React.useState('')
-
-  useEffect(() => {
-    fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc&limit=10&offset=0`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        apiKey: Constants['API_KEY_HEADER'],
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.length > 0) setPosts(data)
-        if (data.length < 10) {
-          setAllPostsLoaded(true)
-        }
-      })
-  }, [])
-
-  useEffect(() => {
-    setAllPostsLoaded(false)
-    fetchPosts(0)
-    if (pageNumber !== 0) {
-      setPageNumber(0)
-    }
-  }, [textInputValue])
-
-  useEffect(() => {
-    if (pageNumber !== 0) fetchPosts()
-  }, [pageNumber])
-
-  const checkPostsLoaded = (posts) => {
-    if (posts.length < 10) return true
-    return false
+  const headerObject = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      apiKey: Constants['API_KEY_HEADER'],
+      'Cache-Control': 'no-cache',
+    },
   }
-
-  const fetchPosts = (pageNumberScope = pageNumber) => {
-    if (textInputValue) {
+  useEffect(() => {
+    fetchPosts(0, '')
+  }, [])
+  const fetchPosts = (pageNumber, textInputValue) => {
+    if (!textInputValue) {
       fetch(
-        `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?caption=ilike.*${textInputValue}*&limit=10&offset=${pageNumberScope}`,
-        {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            apiKey: Constants['API_KEY_HEADER'],
-          },
-        },
+        `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc&limit=${PER_PAGE}&offset=${
+          PER_PAGE * pageNumber
+        }`,
+        headerObject,
       )
         .then((res) => res.json())
         .then((data) => {
-          if (!pageNumberScope) {
-            if (data.length > 0) {
-              setPosts([])
-              setPosts(data)
-            }
-            setAllPostsLoaded(checkPostsLoaded(data))
-          } else {
-            setPosts([...posts, ...data])
-            setAllPostsLoaded(checkPostsLoaded(data))
+          if (data?.length < PER_PAGE) {
+            setNoNextPage(true)
           }
+          if (pageNumber === 0) setPosts(data)
+          else setPosts((prev) => [...prev, ...data])
         })
     } else {
-      fetch(`https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc&limit=10&offset=${pageNumberScope}`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          apiKey: Constants['API_KEY_HEADER'],
-        },
-      })
+      fetch(
+        `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?caption=ilike.*${textInputValue}*&limit=10&offset=${pageNumber}`,
+        headerObject,
+      )
         .then((res) => res.json())
         .then((data) => {
-          if (!pageNumberScope) {
-            if (data.length > 0) {
-              setPosts([])
-              setPosts(data)
-            }
-            setAllPostsLoaded(checkPostsLoaded(data))
-          } else {
-            if (data.length > 0) setPosts([...posts, ...data])
-            setAllPostsLoaded(checkPostsLoaded(data))
+          if (data?.length < PER_PAGE) {
+            setNoNextPage(true)
           }
+          if (pageNumber === 0) setPosts(data)
+          else setPosts((prev) => [...prev, ...data])
         })
     }
   }
-
   const handleDebouncing = debounce((text) => {
-    setAllPostsLoaded(false)
     setTextInputValue(text)
+    fetchPosts(0, text)
   }, 500)
-
   return (
     <ScreenContainer
       style={StyleSheet.applyWidth(
@@ -131,15 +87,11 @@ const SearchScreen = (props) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         onScroll={(e) => {
-          if (allPostsLoaded) return
           let paddingToBottom = 15
           paddingToBottom += e.nativeEvent.layoutMeasurement.height
           if (e.nativeEvent.contentOffset.y >= e.nativeEvent.contentSize.height - paddingToBottom) {
-            if (pageNumber === null) {
-              setPageNumber(0)
-            } else {
-              setPageNumber(pageNumber + 1)
-            }
+            fetchPosts(pageNumber + 1, textInputValue)
+            if (!noNextPage) setPageNumber(pageNumber + 1)
           }
         }}
       >
@@ -242,10 +194,8 @@ const SearchScreen = (props) => {
             showsHorizontalScrollIndicator={false}
           />
         </View>
-        {!allPostsLoaded && <ActivityIndicator />}
       </ScrollView>
     </ScreenContainer>
   )
 }
-
 export default withTheme(SearchScreen)

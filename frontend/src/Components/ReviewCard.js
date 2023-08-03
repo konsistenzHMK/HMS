@@ -22,7 +22,8 @@ const ReviewCard = (props) => {
         <div className='w-4/5 bg-gray-200 flex-col p-3'>
             {/* Hostel name */}
             <div className='mb-1 font-popins text-medium text-blue-500 font-medium flex justify-start text-lg'>
-                <div>Hostel Name :<p className='inline ml-5 text-black'>{formData.hostel_name} ({formData.uuid}) </p></div>
+                <div>Hostel Name :<p className='inline ml-2 text-black'>{formData.hostel_name} ({formData.uuid}) </p></div>
+                <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div>
             </div>
 
             {/* Address */}

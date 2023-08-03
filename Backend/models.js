@@ -285,18 +285,19 @@ const saved_form_hostel_registration = async (req, res) => {
       website,
     }  = req.body
     
-    const querySnapshot = await getDocs(collection(db, "hostel_registration_save"));
-        const data2 = {};
-        querySnapshot.forEach((doc) => {
-            data2[doc.data().uuid] = doc.id;
-            });
+    const q = query(collection(db, "hostel_registration"), where("status", "==", "Draft"));
+    const data2 = {};
+    const documents = await getDocs(q);
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
     // console.log(data2);
     const keys = Object.keys(data2);
     // console.log(keys);
     for( let i = 0;i<= keys.length;i++){
         if (uuid == keys[i]) {
             try {
-                const docRef = doc(db,"hostel_registration_save",data2[uuid])
+                const docRef = doc(db,"hostel_registration",data2[uuid])
                 await updateDoc(docRef,{
                     hostel_name,
                     description, 
@@ -321,12 +322,12 @@ const saved_form_hostel_registration = async (req, res) => {
                     area,
                     mess,
                     other_facility,
-                    status: "Saved",
+                    status: "Draft",
                     email_id,
                     website,
                     // rector_id
                 }); 
-                const message = 'Updated with id ' +  uuid + '\n Status : Saved';
+                const message = 'Updated with id ' +  uuid + '\n Status : Draft';
                 res.send(message);
             } catch (error) {
                 res.status(500).send("Data not Updated");
@@ -362,13 +363,13 @@ const saved_form_hostel_registration = async (req, res) => {
               area,
               mess,
               other_facility,
-              status: "Saved",
+              status: "Draft",
               email_id,
               website,
               // rector_id
             });
       
-            const message = 'Saved with id ' + ans + '\n Status : Saved';
+            const message = 'Saved with id ' + ans + '\n Status : Draft';
             res.send(message);
             } 
           catch (e) {

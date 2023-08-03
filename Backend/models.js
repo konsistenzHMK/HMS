@@ -202,75 +202,127 @@ const hostel_registration =  async(req,res)=>{
 }
 
 
-const saved_form_hostel_registration =  async(req,res)=>{
-    const {
-        hostel_name,
-        description,
-        address1,
-        address2,
-        country, 
-        state,
-        region,
-        district,
-        city,
-        pincode,
-        // uuid,
-        rector_name,
-        categ1,
-        categ2,
-        categ3,
-        tower,
-        floor,
-        room,
-        scapacity,
-        bcapacity,
-        area,
-        mess,
-        other_facility,
-        email_id,
-        website,
-    } = (req.body);
+const saved_form_hostel_registration = async (req, res) => {
+     const {
+      hostel_name,
+      description,
+      address1,
+      address2,
+      country,
+      state,
+      region,
+      district,
+      city,
+      pincode,
+      uuid,
+      rector_name,
+      categ1,
+      categ2,
+      categ3,
+      tower,
+      floor,
+      room,
+      scapacity,
+      bcapacity,
+      area,
+      mess,
+      other_facility,
+      email_id,
+      website,
+    }  = req.body
+    
+    const querySnapshot = await getDocs(collection(db, "hostel_registration_save"));
+        const data2 = {};
+        querySnapshot.forEach((doc) => {
+            data2[doc.data().uuid] = doc.id;
+            });
+    // console.log(data2);
+    const keys = Object.keys(data2);
+    // console.log(keys);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration_save",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status: "Saved",
+                    email_id,
+                    website,
+                    // rector_id
+                }); 
+                const message = 'Updated with id ' +  uuid + '\n Status : Saved';
+                res.send(message);
+            } catch (error) {
+                res.status(500).send("Data not Updated");
+            }
+        }
+ 
+    }
+        if(uuid == null || uuid == undefined || uuid == "") {
 
-    const ans=await UUIDFunction(country,state,district);
-    // console.log(ans);
-    try{
-        await setDoc(doc(db, "hostel_registration_save",await randon_doc_id_function()), {
-            hostel_name,
-            description,
-            address1,
-            address2,
-            country,
-            state,
-            region,
-            district,
-            city,
-            pincode,
-            uuid : ans,
-            rector_name,
-            categ1,
-            categ2,
-            categ3,
-            tower,
-            floor,
-            room,
-            scapacity,
-            bcapacity,
-            area, 
-            mess, 
-            other_facility,
-            status:"Saved",
-            email_id,  
-            website,
-            // rector_id
-        }); 
+            try {
+            const ans = await UUIDFunction(country, state, district);
+            await setDoc(doc(db, "hostel_registration_save", await randon_doc_id_function()), {
+              hostel_name,
+              description,
+              address1,   
+              address2,
+              country,
+              state,
+              region,
+              district,
+              city,
+              pincode,
+              uuid: ans,
+              rector_name,
+              categ1,
+              categ2,
+              categ3,
+              tower,
+              floor,
+              room,
+              scapacity,
+              bcapacity,
+              area,
+              mess,
+              other_facility,
+              status: "Saved",
+              email_id,
+              website,
+              // rector_id
+            });
+      
+            const message = 'Saved with id ' + ans + '\n Status : Saved';
+            res.send(message);
+            } 
+          catch (e) {
+            res.status(500).send("Data not inserted");
+                }
+        }
         
-    }
-    catch(e){
-        res.send("Data not inserted");
-    }
-    const message = 'Saved with id ' + ans + '\n Status : Saved';
-    res.send(message);
-}
+    };
  
 // will be done by rector
 const student_registration  =  async(req,res)=>{
@@ -688,7 +740,7 @@ const process_id_to_process_description = async(req,res)=>{
             process_id:(ans)
         });
     }
-    catch(e){
+    catch(e){ 
         res.send("Data not inserted"); 
     }
     res.send("Data Inserted with id " + ans);
@@ -785,4 +837,4 @@ const expense_flow_code_to_user_id = async(req,res)=>{
     res.send("Data Inserted");
 }
 
-export  {saved_form_hostel_registration,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense}
+export  {saved_form_hostel_registration,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense};

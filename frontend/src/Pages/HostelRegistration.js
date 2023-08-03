@@ -337,9 +337,13 @@ const App = (props) => {
 
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+  const [isUUID,setIsUUID]=useState(false);
 
   useEffect(() => {
-    if(props.ExistingFormData!=null) setFormData(props.ExistingFormData);
+    if(props.ExistingFormData!=null){ 
+      setFormData(props.ExistingFormData);
+      setIsUUID(true);
+    }
     const intervalId = setInterval(() => {
       const date = new Date();
 
@@ -522,7 +526,7 @@ const App = (props) => {
                       name="country"
                       value={'India'}
                       onChange={handleChange}
-                      disabled={CheckDisplayForm()}
+                      disabled={true}
                       className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
                     {errors.country && <span className="error  text-red-500">{errors.country}</span>}
@@ -535,7 +539,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.state} 
                         onChange={handleChangeState}
-                        disabled={CheckDisplayForm()}
+                        disabled={isUUID}
                         >
                         <option value="NA">Select an option</option>
                         <option value="Maharashtra">Maharashtra</option>
@@ -553,7 +557,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.region} 
                         onChange={handleChangeRegion}
-                        disabled={CheckDisplayForm()}
+                        disabled={isUUID}
                         >
                         <option value="null">Select an option</option>
                         {formData.region ?<option value={formData.region}>{formData.region}</option> : null}
@@ -573,7 +577,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.district} 
                         onChange={handleChangeDistrict}
-                        disabled={CheckDisplayForm()}
+                        disabled={isUUID}
                         >
                         <option value="null">Select an option</option>
                         {formData.district ?<option value={formData.district}>{formData.district}</option> : null}
@@ -597,7 +601,7 @@ const App = (props) => {
                         className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
                         value={formData.city} 
                         onChange={handleChangeCity}
-                        disabled={CheckDisplayForm()}
+                        disabled={true}
                         >
                       </input>
                     {errors.city && <span className="error text-red-600">{errors.city}</span>}

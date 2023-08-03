@@ -207,7 +207,7 @@ const hostel_registration =  async(req,res)=>{
             catch(e){
                 res.send("Data not inserted");
             }
-            res.send("Sent for Approval with id " + uuid + "/n Status : Pending for Approval");
+            res.send("Sent for Approval with id " + uuid + "\n Status : Pending for Approval");
         }
 
     }
@@ -251,7 +251,7 @@ const hostel_registration =  async(req,res)=>{
         catch(e){
             res.send("Data not inserted");
         }
-        res.send("Sent for Approval with id " + ans + "/n Status : Pending for Approval");
+        res.send("Sent for Approval with id " + ans + "\n Status : Pending for Approval");
     }
 
 }

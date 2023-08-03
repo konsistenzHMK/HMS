@@ -436,7 +436,174 @@ const gethostel_id_where_status_active = async(req,res)=>{
     res.send(data1);
 }
 
+const status_of_hostel_active = async(req,res)=>{
+    const { 
+        hostel_name,
+        description,
+        address1,
+        address2,
+        country, 
+        state,
+        region,
+        district,
+        city,
+        pincode,
+        uuid,
+        rector_name,
+        categ1,
+        categ2,
+        categ3,
+        tower,
+        floor,
+        room,
+        scapacity,
+        bcapacity,
+        area,
+        mess,
+        other_facility,
+        email_id,
+        website,
+        status
+        // rector_id, 
+    } = (req.body);
+
+    const q = query(collection(db, "hostel_registration"), where("status", "==", "Pending"));
+    const data2 = {};
+    const documents = await getDocs(q);
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
+
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status: "Active",
+                    email_id,
+                    website,
+                    // rector_id
+                }); 
+            }  
+            catch(e){
+                res.send("Data not inserted");
+            }
+            res.send(" Approval with id " + uuid + "\n Status : Active");
+        }
+
+    }
 
 
+}
 
-export  {gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+
+const status_of_hostel_block = async(req,res)=>{
+    const { 
+        hostel_name,
+        description,
+        address1,
+        address2,
+        country, 
+        state,
+        region,
+        district,
+        city,
+        pincode,
+        uuid,
+        rector_name,
+        categ1,
+        categ2,
+        categ3,
+        tower,
+        floor,
+        room,
+        scapacity,
+        bcapacity,
+        area,
+        mess,
+        other_facility,
+        email_id,
+        website,
+        status
+        // rector_id, 
+    } = (req.body);
+
+    const q = query(collection(db, "hostel_registration"), where("status", "==", "Pending"));
+    const data2 = {};
+    const documents = await getDocs(q);
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
+
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status: "Block",
+                    email_id,
+                    website,
+                    // rector_id
+                }); 
+            }  
+            catch(e){
+                res.send("Data not inserted");
+            }
+            res.send(" Denied with id " + uuid + "\n Status : Block");
+        }
+
+    }
+
+
+}
+
+
+export  {status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

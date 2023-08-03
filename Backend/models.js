@@ -338,7 +338,7 @@ const saved_form_hostel_registration = async (req, res) => {
 
             try {
             const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration_save", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
               hostel_name,
               description,
               address1,   

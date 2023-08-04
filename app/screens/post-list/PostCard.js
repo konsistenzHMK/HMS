@@ -11,7 +11,7 @@ const ScreenHeight = Dimensions.get('screen').height
 export const PostHeight = ScreenHeight * 0.6
 
 const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
-  const { user_profiles, count_views, id, caption, count_likes, count_comments } = post
+  const { user_profiles, count_views, id, caption, count_likes } = post
 
   const username = `${user_profiles?.first_name} ${user_profiles?.last_name}`
   const profileImage = user_profiles?.profile_image
@@ -20,7 +20,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
   const videoUrl = post?.video_url
 
   const [liked, setLiked] = useState(false)
-  const [likesCount, setLikesCount] = useState(count_likes || 0)
+  const [likesCount, setLikesCount] = useState(count_likes)
   const [comments, setComments] = useState([])
   const [viewsCount, setViewsCount] = useState(count_views ?? 0)
   const [showCommentModal, setShowCommentModal] = useState(false)
@@ -40,17 +40,27 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
           postId: id,
           userId,
         })
-        setLikesCount(likesCount - 1)
       } else {
         await PagalFanBEApi.addPostLikePOSTStatusAndText(Constants, {
           post_id: id,
           user_id: userId,
         })
-        setLikesCount(likesCount + 1)
       }
+      fetchLikesCount()
     } catch (e) {
       // do nothign
     }
+  }
+
+  const fetchLikesCount = async () => {
+    const response = await PagalFanBEApi.fetchPostLikeGETCount(Constants, { postId: id, userId })
+    response.map((item) => {
+      if (item.post_id == id && item.user_id == userId) {
+        setLiked(true)
+        // todo: add edge function to check for likes
+      }
+    })
+    // setLikesCount(response.length)
   }
 
   const fetchComments = async () => {
@@ -76,6 +86,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
   }, [focused])
 
   useEffect(() => {
+    fetchLikesCount()
     fetchComments()
   }, [])
 
@@ -140,7 +151,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
               size={18}
               color={theme.colors.communityHighlightBlue}
             />
-            <Text style={styles.actionCount}>{count_comments}</Text>
+            <Text style={styles.actionCount}>{comments.length}</Text>
           </Pressable>
           {/* views */}
           <View style={styles.subActionContainer}>

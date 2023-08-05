@@ -287,9 +287,10 @@ const saved_form_hostel_registration = async (req, res) => {
       website,
     }  = req.body
     
-    const q = query(collection(db, "hostel_registration"), where("status", "==", "draft"));
+    // const q = query(collection(db, "hostel_registration"), where("status", "==", "draft"));
+    const documents = await getDocs(collection(db, "hostel_registration"));
     const data2 = {};
-    const documents = await getDocs(q);
+    // const documents = await getDocs(q);
     documents.forEach((doc) => {
         data2[doc.data().uuid] = doc.id;
     });

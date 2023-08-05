@@ -257,7 +257,7 @@ const hostel_registration =  async(req,res)=>{
 }
 
 
-const saved_form_hostel_registration = async (req, res) => {
+const saved_form_1 = async (req, res) => {
      const {
       hostel_name,
       description,
@@ -282,21 +282,17 @@ const saved_form_hostel_registration = async (req, res) => {
       area,
       mess,
       other_facility,
-      status,
       email_id,
       website,
     }  = req.body
     
-    // const q = query(collection(db, "hostel_registration"), where("status", "==", "draft"));
+    
     const documents = await getDocs(collection(db, "hostel_registration"));
     const data2 = {};
-    // const documents = await getDocs(q);
     documents.forEach((doc) => {
         data2[doc.data().uuid] = doc.id;
     });
-    // console.log(data2);
     const keys = Object.keys(data2);
-    // console.log(keys);
     for( let i = 0;i<= keys.length;i++){
         if (uuid == keys[i]) {
             try {
@@ -325,12 +321,11 @@ const saved_form_hostel_registration = async (req, res) => {
                     area,
                     mess,
                     other_facility,
-                    status,
+                    status:"draft",
                     email_id,
                     website,
-                    // rector_id
                 }); 
-                const message = 'Updated with id ' +  uuid + '\n Status :' + status;
+                const message = 'Updated with id ' +  uuid + '\n Status : Draft';
                 res.send(message);
             } catch (error) {
                 res.status(500).send("Data not Updated");
@@ -366,13 +361,602 @@ const saved_form_hostel_registration = async (req, res) => {
               area,
               mess,
               other_facility,
-              status,
+              status:"draft",
               email_id,
               website,
-              // rector_id
             });
       
-            const message = 'Saved with id ' + ans + '\n Status :' + status;
+            const message = 'Saved with id ' + ans + '\n Status : Draft';
+            res.send(message);
+            } 
+          catch (e) {
+            res.status(500).send("Data not inserted");
+                }
+        }
+        
+    };
+const saved_form_2 = async (req, res) => {
+     const {
+      hostel_name,
+      description,
+      address1,
+      address2,
+      country,
+      state,
+      region,
+      district,
+      city,
+      pincode,
+      uuid,
+      rector_name,
+      categ1,
+      categ2,
+      categ3,
+      tower,
+      floor,
+      room,
+      scapacity,
+      bcapacity,
+      area,
+      mess,
+      other_facility,
+      email_id,
+      website,
+    }  = req.body
+    
+    
+    const documents = await getDocs(collection(db, "hostel_registration"));
+    const data2 = {};
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status:"pending",
+                    email_id,
+                    website,
+                }); 
+                const message = 'Updated with id ' +  uuid + '\n Status : Pending for Approval';
+                res.send(message);
+            } catch (error) {
+                res.status(500).send("Data not Updated");
+            }
+        }
+ 
+    }
+        if(uuid == null || uuid == undefined || uuid == "") {
+
+            try {
+            const ans = await UUIDFunction(country, state, district);
+            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+              hostel_name,
+              description,
+              address1,   
+              address2,
+              country,
+              state,
+              region,
+              district,
+              city,
+              pincode,
+              uuid: ans,
+              rector_name,
+              categ1,
+              categ2,
+              categ3,
+              tower,
+              floor,
+              room,
+              scapacity,
+              bcapacity,
+              area,
+              mess,
+              other_facility,
+              status:"pending",
+              email_id,
+              website,
+            });
+      
+            const message = 'Saved with id ' + ans + '\n Status : Pending for Approval';
+            res.send(message);
+            } 
+          catch (e) {
+            res.status(500).send("Data not inserted");
+                }
+        }
+        
+    };
+const saved_form_3 = async (req, res) => {
+     const {
+      hostel_name,
+      description,
+      address1,
+      address2,
+      country,
+      state,
+      region,
+      district,
+      city,
+      pincode,
+      uuid,
+      rector_name,
+      categ1,
+      categ2,
+      categ3,
+      tower,
+      floor,
+      room,
+      scapacity,
+      bcapacity,
+      area,
+      mess,
+      other_facility,
+      email_id,
+      website,
+    }  = req.body
+    
+    
+    const documents = await getDocs(collection(db, "hostel_registration"));
+    const data2 = {};
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status:"active",
+                    email_id,
+                    website,
+                }); 
+                const message = 'Updated with id ' +  uuid + '\n Status : Active';
+                res.send(message);
+            } catch (error) {
+                res.status(500).send("Data not Updated");
+            }
+        }
+ 
+    }
+        if(uuid == null || uuid == undefined || uuid == "") {
+
+            try {
+            const ans = await UUIDFunction(country, state, district);
+            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+              hostel_name,
+              description,
+              address1,   
+              address2,
+              country,
+              state,
+              region,
+              district,
+              city,
+              pincode,
+              uuid: ans,
+              rector_name,
+              categ1,
+              categ2,
+              categ3,
+              tower,
+              floor,
+              room,
+              scapacity,
+              bcapacity,
+              area,
+              mess,
+              other_facility,
+              status:"active",
+              email_id,
+              website,
+            });
+      
+            const message = 'Saved with id ' + ans + '\n Status : Active';
+            res.send(message);
+            } 
+          catch (e) {
+            res.status(500).send("Data not inserted");
+                }
+        }
+        
+    };
+const saved_form_4 = async (req, res) => {
+     const {
+      hostel_name,
+      description,
+      address1,
+      address2,
+      country,
+      state,
+      region,
+      district,
+      city,
+      pincode,
+      uuid,
+      rector_name,
+      categ1,
+      categ2,
+      categ3,
+      tower,
+      floor,
+      room,
+      scapacity,
+      bcapacity,
+      area,
+      mess,
+      other_facility,
+      email_id,
+      website,
+    }  = req.body
+    
+    
+    const documents = await getDocs(collection(db, "hostel_registration"));
+    const data2 = {};
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status:"draft",
+                    email_id,
+                    website,
+                }); 
+                const message = 'Updated with id ' +  uuid + '\n Status : Draft';
+                res.send(message);
+            } catch (error) {
+                res.status(500).send("Data not Updated");
+            }
+        }
+ 
+    }
+        if(uuid == null || uuid == undefined || uuid == "") {
+
+            try {
+            const ans = await UUIDFunction(country, state, district);
+            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+              hostel_name,
+              description,
+              address1,   
+              address2,
+              country,
+              state,
+              region,
+              district,
+              city,
+              pincode,
+              uuid: ans,
+              rector_name,
+              categ1,
+              categ2,
+              categ3,
+              tower,
+              floor,
+              room,
+              scapacity,
+              bcapacity,
+              area,
+              mess,
+              other_facility,
+              status:"draft",
+              email_id,
+              website,
+            });
+      
+            const message = 'Saved with id ' + ans + '\n Status : Draft';
+            res.send(message);
+            } 
+          catch (e) {
+            res.status(500).send("Data not inserted");
+                }
+        }
+        
+    };
+const saved_form_5 = async (req, res) => {
+     const {
+      hostel_name,
+      description,
+      address1,
+      address2,
+      country,
+      state,
+      region,
+      district,
+      city,
+      pincode,
+      uuid,
+      rector_name,
+      categ1,
+      categ2,
+      categ3,
+      tower,
+      floor,
+      room,
+      scapacity,
+      bcapacity,
+      area,
+      mess,
+      other_facility,
+      email_id,
+      website,
+    }  = req.body
+    
+    
+    const documents = await getDocs(collection(db, "hostel_registration"));
+    const data2 = {};
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status:"block",
+                    email_id,
+                    website,
+                }); 
+                const message = 'Updated with id ' +  uuid + '\n Status : Block';
+                res.send(message);
+            } catch (error) {
+                res.status(500).send("Data not Updated");
+            }
+        }
+ 
+    }
+        if(uuid == null || uuid == undefined || uuid == "") {
+
+            try {
+            const ans = await UUIDFunction(country, state, district);
+            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+              hostel_name,
+              description,
+              address1,   
+              address2,
+              country,
+              state,
+              region,
+              district,
+              city,
+              pincode,
+              uuid: ans,
+              rector_name,
+              categ1,
+              categ2,
+              categ3,
+              tower,
+              floor,
+              room,
+              scapacity,
+              bcapacity,
+              area,
+              mess,
+              other_facility,
+              status:"block",
+              email_id,
+              website,
+            });
+      
+            const message = 'Saved with id ' + ans + '\n Status : Block';
+            res.send(message);
+            } 
+          catch (e) {
+            res.status(500).send("Data not inserted");
+                }
+        }
+        
+    };
+const saved_form_6 = async (req, res) => {
+     const {
+      hostel_name,
+      description,
+      address1,
+      address2,
+      country,
+      state,
+      region,
+      district,
+      city,
+      pincode,
+      uuid,
+      rector_name,
+      categ1,
+      categ2,
+      categ3,
+      tower,
+      floor,
+      room,
+      scapacity,
+      bcapacity,
+      area,
+      mess,
+      other_facility,
+      email_id,
+      website,
+    }  = req.body
+    
+    
+    const documents = await getDocs(collection(db, "hostel_registration"));
+    const data2 = {};
+    documents.forEach((doc) => {
+        data2[doc.data().uuid] = doc.id;
+    });
+    const keys = Object.keys(data2);
+    for( let i = 0;i<= keys.length;i++){
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db,"hostel_registration",data2[uuid])
+                await updateDoc(docRef,{
+                    hostel_name,
+                    description, 
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status:"del",
+                    email_id,
+                    website,
+                }); 
+                const message = 'Updated with id ' +  uuid + '\n Status : Deleted';
+                res.send(message);
+            } catch (error) {
+                res.status(500).send("Data not Updated");
+            }
+        }
+ 
+    }
+        if(uuid == null || uuid == undefined || uuid == "") {
+
+            try {
+            const ans = await UUIDFunction(country, state, district);
+            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+              hostel_name,
+              description,
+              address1,   
+              address2,
+              country,
+              state,
+              region,
+              district,
+              city,
+              pincode,
+              uuid: ans,
+              rector_name,
+              categ1,
+              categ2,
+              categ3,
+              tower,
+              floor,
+              room,
+              scapacity,
+              bcapacity,
+              area,
+              mess,
+              other_facility,
+              status:"del",
+              email_id,
+              website,
+            });
+      
+            const message = 'Saved with id ' + ans + '\n Status : Deleted';
             res.send(message);
             } 
           catch (e) {
@@ -921,4 +1505,4 @@ const status_trasition = async(req,res)=>{
 
 }
 
-export  {status_trasition,saved_form_hostel_registration,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense};
+export  {status_trasition,saved_form_1,saved_form_2,saved_form_3,saved_form_4,saved_form_5,saved_form_6,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense};

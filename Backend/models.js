@@ -282,11 +282,12 @@ const saved_form_hostel_registration = async (req, res) => {
       area,
       mess,
       other_facility,
+      status,
       email_id,
       website,
     }  = req.body
     
-    const q = query(collection(db, "hostel_registration"), where("status", "==", "Draft"));
+    const q = query(collection(db, "hostel_registration"), where("status", "==", "draft"));
     const data2 = {};
     const documents = await getDocs(q);
     documents.forEach((doc) => {
@@ -323,12 +324,12 @@ const saved_form_hostel_registration = async (req, res) => {
                     area,
                     mess,
                     other_facility,
-                    status: "Draft",
+                    status,
                     email_id,
                     website,
                     // rector_id
                 }); 
-                const message = 'Updated with id ' +  uuid + '\n Status : Draft';
+                const message = 'Updated with id ' +  uuid + '\n Status :' + status;
                 res.send(message);
             } catch (error) {
                 res.status(500).send("Data not Updated");
@@ -364,13 +365,13 @@ const saved_form_hostel_registration = async (req, res) => {
               area,
               mess,
               other_facility,
-              status: "Draft",
+              status,
               email_id,
               website,
               // rector_id
             });
       
-            const message = 'Saved with id ' + ans + '\n Status : Draft';
+            const message = 'Saved with id ' + ans + '\n Status :' + status;
             res.send(message);
             } 
           catch (e) {
@@ -893,4 +894,30 @@ const expense_flow_code_to_user_id = async(req,res)=>{
     res.send("Data Inserted");
 }
 
-export  {saved_form_hostel_registration,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense};
+
+const status_trasition = async(req,res)=>{
+    const{
+        draft,
+        pending,
+        active,
+        block,
+        del
+    } = (req.body);
+
+    try{
+        await setDoc(doc(db, "status_trasition","one"), {
+            draft,
+            pending,
+            active,
+            block,
+            del
+        });
+    }
+    catch(e){
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+
+}
+
+export  {status_trasition,saved_form_hostel_registration,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management, role_to_process_mapping,process_id_to_process_description,expense_type, role_reference, users ,  expense_item ,  expense_header , allAddressDetails , hostel_registration , student_registration , hostel_tower_reg , hostel_tower_wing_reg , hostel_room_reg , expense};

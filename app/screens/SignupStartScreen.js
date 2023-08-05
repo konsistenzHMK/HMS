@@ -18,7 +18,7 @@ const SignupStartScreen = (props) => {
   const { navigation } = props
   const { t: translate } = useTranslation()
 
-  const [checkboxValue, setCheckboxValue] = React.useState(false)
+  const [checkboxValue, setCheckboxValue] = React.useState(true)
   const [signupEmail, setSignupEmail] = React.useState('')
 
   return (
@@ -158,12 +158,12 @@ const SignupStartScreen = (props) => {
               dimensions.width,
             )}
           >
-            <Checkbox
+            {/* <Checkbox
               onPress={setCheckboxValue}
               status={checkboxValue}
               color={theme.colors['Secondary']}
               uncheckedColor={theme.colors['Secondary']}
-            />
+            /> */}
             {/* Disclaimer */}
             <Text
               style={StyleSheet.applyWidth(

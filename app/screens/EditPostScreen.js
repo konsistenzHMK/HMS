@@ -18,6 +18,7 @@ import {
 } from 'react-native'
 import { VideoPlayer, useSnackbar } from '../components'
 import { useTranslation } from 'react-i18next'
+import deleteFile from '../global-functions/deleteFile.js'
 
 const EditPostScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -82,6 +83,14 @@ const EditPostScreen = (props) => {
     setDeleteModalOpen(true)
   }
 
+  const cleanFilePathAndDelete = (filePath, directory) => {
+    const cleanUrl = filePath.replace(/\/+$/, '')
+
+    const parts = cleanUrl.split('/')
+    const fileName = parts[parts.length - 1]
+    deleteFile('post-bucket', directory, fileName)
+  }
+
   const handlePostDeleteConfirmPress = async () => {
     const id = props.route?.params?.post_id
     if (!id) {
@@ -90,9 +99,18 @@ const EditPostScreen = (props) => {
     }
     try {
       await pagalFanBEDeleteUserUploadedPostDELETE.mutateAsync({
-        postId: props.route?.params?.id,
+        postId: id,
+        post: postDetails,
       })
-      // navigation.navigate('HomeScreen')
+
+      cleanFilePathAndDelete(postDetails.image_path, 'images')
+      if (postDetails.video_url) {
+        cleanFilePathAndDelete(postDetails.video_url, 'videos')
+      }
+      snackbar.show({ title: 'Post deleted Suceessfully' })
+      setTimeout(() => {
+        navigation.navigate('HomeScreen')
+      }, 400)
     } catch (error) {
       console.log(error)
     }

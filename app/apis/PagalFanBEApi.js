@@ -4017,7 +4017,7 @@ export const FetchFetchAllBakarrRecordingsGET = ({ children, onData = () => {}, 
 
 export const deleteUserUploadedPostDELETEStatusAndText = (Constants, { postId }) =>
   fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?id=eq.${postId ?? ''}`,
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?id=eq.${postId}`,
     {
       headers: {
         Accept: 'application/json',

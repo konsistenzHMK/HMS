@@ -1,7 +1,6 @@
 import { Icon } from '@draftbit/ui'
 import React from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
-import convertUTCtoIST from '../../global-functions/convertUTCtoIST'
 
 const BakarrCard = ({
   imageSource,
@@ -15,7 +14,6 @@ const BakarrCard = ({
   highlight,
   createdAt,
 }) => {
-
   const styles = StyleSheet.create({
     container: {
       padding: 10,
@@ -34,7 +32,7 @@ const BakarrCard = ({
     },
     headingContainer: {
       marginLeft: 10,
-      marginBottom:35
+      flex: 1,
     },
     bottomContainer: {
       display: 'flex',
@@ -67,20 +65,20 @@ const BakarrCard = ({
     heading: {
       fontSize: 17,
       fontWeight: 'bold',
-      color: "rgb(102, 102, 102)",
+      color: 'rgb(102, 102, 102)',
       fontFamily: 'Rubik_600SemiBold',
     },
     subheading: {
       fontSize: 13,
-      color: "rgb(102, 102, 102)",
+      color: 'rgb(102, 102, 102)',
       fontFamily: 'Rubik_300Light',
       flex: 1,
-      marginTop:5
+      marginTop: 5,
     },
     description: {
       marginTop: 8,
       fontSize: 13,
-      color: "rgb(102, 102, 102)",
+      color: 'rgb(102, 102, 102)',
       fontFamily: 'Rubik_300Light',
     },
     date: {
@@ -89,7 +87,7 @@ const BakarrCard = ({
       justifyContent: 'center',
       marginLeft: 5,
       marginTop: 4.3,
-      fontFamily:"Rubik_400Regular"
+      fontFamily: 'Rubik_400Regular',
     },
     highlight: {
       borderWidth: 1,
@@ -98,34 +96,32 @@ const BakarrCard = ({
   })
 
   const convertUtcToDateString = (utcString) => {
-    const dateObject = new Date(utcString);
-  
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const dateString = dateObject.toLocaleDateString(undefined, options);
-  
-    const day = dateObject.getDate();
-    const daySuffix = getDaySuffix(day);
-    return dateString.replace('{day}', `${day}${daySuffix}`);
-  };
-  
+    const dateObject = new Date(utcString)
+
+    const options = { day: 'numeric', month: 'long', year: 'numeric' }
+    const dateString = dateObject.toLocaleDateString(undefined, options)
+
+    const day = dateObject.getDate()
+    const daySuffix = getDaySuffix(day)
+    return dateString.replace('{day}', `${day}${daySuffix}`)
+  }
+
   const getDaySuffix = (day) => {
     if (day >= 11 && day <= 13) {
-      return 'th';
+      return 'th'
     }
-    const lastDigit = day % 10;
+    const lastDigit = day % 10
     switch (lastDigit) {
       case 1:
-        return 'st';
+        return 'st'
       case 2:
-        return 'nd';
+        return 'nd'
       case 3:
-        return 'rd';
+        return 'rd'
       default:
-        return 'th';
+        return 'th'
     }
-  };
-  
-  
+  }
 
   return (
     <View style={[styles.container, highlight && styles.highlight]}>
@@ -133,9 +129,7 @@ const BakarrCard = ({
         <Image source={{ uri: imageSource }} style={styles.thumbnail} />
         <View style={styles.headingContainer}>
           <Text style={styles.heading}>{heading}</Text>
-          <View>
-            <Text style={styles.subheading}>{subheading}</Text>
-          </View>
+          <Text style={styles.subheading}>{subheading}</Text>
         </View>
       </View>
       <Text style={styles.description}>{description}</Text>

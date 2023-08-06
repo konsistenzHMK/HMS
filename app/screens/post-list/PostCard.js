@@ -46,6 +46,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
           user_id: userId,
         })
       }
+      setLikesCount(liked ? likesCount - 1 : likesCount + 1)
       fetchLikesCount()
     } catch (e) {
       // do nothign

@@ -23,6 +23,9 @@
       "Text.InputPlaceholder": "आप और क्या कहना चाहते हैं?",
       "Text.AddHashtags": "खेल, मैच, फैनक्लब आदि के लिए अंत में हैशटैग जोड़ें जिन्हें आप टैग करना चाहते हैं - जैसे #ViratKohli की धमाकेदार पारी #Cricket #IPL2023 #RCB",
       "Text.Button": "यहां अपडेट करें",
+      "Text.DeleteButton": "मिटायें",
+      "Text.CancelButton": "रद्द करें",
+      "Text.DeleteConfirm": "क्या आप वाकई इस पोस्ट को हटाना चाहते हैं?",
       "Error.ProblemFetchData": "डेटा लाने में समस्या हुई"
     },
 
@@ -195,7 +198,7 @@
       "Text.Lan2":"बदलने के लिए क्लिक करें"
     },
     "BakarrRecordingsScreen":{
-      "Text.Bakarr":"पुराने बकर सत्र"
+      "Text.Bakarr":"स्पोर्ट्स बकर"
     }
   }
 }

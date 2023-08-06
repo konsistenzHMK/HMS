@@ -73,7 +73,15 @@ const MatchDaySingleScreen = (props) => {
       wickets: jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.wickets,
       maiden: jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.maiden_overs,
     }
+    if(jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[1]==0) {
+      response.overs=jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[0];
+    }
     return response
+  }
+
+  const printWhole =(overs) =>{
+    let whole=overs;
+    return whole;
   }
   const GiveBowlingDetails2ndInnings = (rawName) => {
     var response = {
@@ -86,6 +94,9 @@ const MatchDaySingleScreen = (props) => {
       economy: jsonfeed?.data?.players?.[rawName]?.score?.['2']?.bowling?.score?.economy,
       wickets: jsonfeed?.data?.players?.[rawName]?.score?.['2']?.bowling?.score?.wickets,
       maiden: jsonfeed?.data?.players?.[rawName]?.score?.['2']?.bowling?.score?.maiden_overs,
+    }
+    if(jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[1]==0) {
+      response.overs=jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[0];
     }
     return response
   }
@@ -628,7 +639,7 @@ const MatchDaySingleScreen = (props) => {
   const [textInputValue, setTextInputValue] = React.useState('')
   const [matchCommentary,setMatchCommentary]=React.useState(null);
 
-  const [feedAvailable, setFeedAvailable] = React.useState(false)
+  const [feedAvailable, setFeedAvailable] = React.useState(true)
 
   const handleEmoticonPress = (item) => {
     setTextInputValue(textInputValue + item)
@@ -699,17 +710,13 @@ const MatchDaySingleScreen = (props) => {
         <View>
           <PagalFanBEApi.FetchFetchSingleMatchGET id={props.route?.params?.match_id ?? 77}
              onData={(data) => {
-              try {
-                if(data && data[0]?.feed_available == true) setFeedAvailable(data[0]?.feed_available);
-              } catch (err) {
-                console.error(err)
-              }
+              if(data && data[0]?.feed_available == false) setFeedAvailable(false);
             }}
           >
             {({ loading, error, data, refetchFetchSingleMatch }) => {
               const fetchData = data
               // console.log(data);
-              // console.log(feedAvailable);
+              console.log(feedAvailable);
               if (!fetchData || loading) {
                 return <ActivityIndicator />
               }
@@ -1777,8 +1784,9 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  // marginRight: 20,
                                                   color: '#fff',
+                                                  width:40,
                                                 }),
                                                 dimensions.width,
                                               )}
@@ -1791,7 +1799,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 18,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -1805,7 +1813,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 15,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -1819,7 +1827,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 18,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -1834,6 +1842,7 @@ const MatchDaySingleScreen = (props) => {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
                                                   color: '#fff',
+                                                  width:40,
                                                 }),
                                                 dimensions.width,
                                               )}
@@ -1914,7 +1923,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -1927,7 +1936,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -1940,7 +1949,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -1954,7 +1963,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 10,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -1969,6 +1978,7 @@ const MatchDaySingleScreen = (props) => {
                                                             fontSize: 12,
                                                             opacity: 1,
                                                             color: '#fff',
+                                                            width:50,
                                                           }),
                                                           dimensions.width,
                                                         )}
@@ -2129,7 +2139,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -2143,7 +2153,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 22,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -2157,7 +2167,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -2171,7 +2181,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -2186,6 +2196,7 @@ const MatchDaySingleScreen = (props) => {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
                                                   color: '#fff',
+                                                  width:40,
                                                 }),
                                                 dimensions.width,
                                               )}
@@ -2254,20 +2265,20 @@ const MatchDaySingleScreen = (props) => {
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {GiveBowlingDetails(flashListData)?.overs}
+                                                      {printWhole(GiveBowlingDetails(flashListData)?.overs)}
                                                     </Text>
                                                     {/* Maiden */}
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
@@ -2280,7 +2291,7 @@ const MatchDaySingleScreen = (props) => {
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
@@ -2294,7 +2305,7 @@ const MatchDaySingleScreen = (props) => {
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
@@ -2308,6 +2319,7 @@ const MatchDaySingleScreen = (props) => {
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
                                                           color: '#fff',
+                                                          width:40,
                                                         }),
                                                         dimensions.width,
                                                       )}
@@ -2410,7 +2422,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2424,7 +2436,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 18,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2438,7 +2450,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 15,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2452,7 +2464,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 18,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2467,6 +2479,7 @@ const MatchDaySingleScreen = (props) => {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
                                                     color: '#fff',
+                                                    width:40,
                                                   }),
                                                   dimensions.width,
                                                 )}
@@ -2554,8 +2567,9 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 20,
+                                                                width:40,
                                                                 color: '#fff',
+                                                              
                                                               },
                                                             ),
                                                             dimensions.width,
@@ -2570,7 +2584,7 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 20,
+                                                                width:40,
                                                                 color: '#fff',
                                                               },
                                                             ),
@@ -2586,7 +2600,7 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 20,
+                                                                width:40,
                                                                 color: '#fff',
                                                               },
                                                             ),
@@ -2603,7 +2617,7 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 10,
+                                                                width:40,
                                                                 color: '#fff',
                                                               },
                                                             ),
@@ -2621,6 +2635,7 @@ const MatchDaySingleScreen = (props) => {
                                                                 fontSize: 12,
                                                                 opacity: 1,
                                                                 color: '#fff',
+                                                                width:50,
                                                               },
                                                             ),
                                                             dimensions.width,
@@ -2787,7 +2802,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2801,7 +2816,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 22,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2815,7 +2830,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2829,7 +2844,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -2844,6 +2859,7 @@ const MatchDaySingleScreen = (props) => {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
                                                     color: '#fff',
+                                                    width:40,
                                                   }),
                                                   dimensions.width,
                                                 )}
@@ -2914,7 +2930,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -2927,7 +2943,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -2940,7 +2956,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -2954,7 +2970,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -2968,6 +2984,7 @@ const MatchDaySingleScreen = (props) => {
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
                                                             color: '#fff',
+                                                            width:40,
                                                           }),
                                                           dimensions.width,
                                                         )}
@@ -3085,7 +3102,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 24,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3099,7 +3116,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3113,7 +3130,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3127,7 +3144,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 32,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3142,6 +3159,7 @@ const MatchDaySingleScreen = (props) => {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
                                                   color: '#fff',
+                                                  width:40,
                                                 }),
                                                 dimensions.width,
                                               )}
@@ -3220,7 +3238,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -3233,7 +3251,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -3246,7 +3264,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -3260,7 +3278,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -3274,6 +3292,7 @@ const MatchDaySingleScreen = (props) => {
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
                                                             color: '#fff',
+                                                            width:50,
                                                           }),
                                                           dimensions.width,
                                                         )}
@@ -3433,7 +3452,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3447,7 +3466,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3461,7 +3480,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3475,7 +3494,7 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginRight: 20,
+                                                  width:40,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
@@ -3490,6 +3509,7 @@ const MatchDaySingleScreen = (props) => {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
                                                   color: '#fff',
+                                                  width:40,
                                                 }),
                                                 dimensions.width,
                                               )}
@@ -3558,7 +3578,7 @@ const MatchDaySingleScreen = (props) => {
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
@@ -3571,7 +3591,7 @@ const MatchDaySingleScreen = (props) => {
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
@@ -3584,7 +3604,7 @@ const MatchDaySingleScreen = (props) => {
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
@@ -3598,7 +3618,7 @@ const MatchDaySingleScreen = (props) => {
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
-                                                          marginRight: 20,
+                                                          width:40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
@@ -3612,6 +3632,7 @@ const MatchDaySingleScreen = (props) => {
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                           fontSize: 12,
                                                           color: '#fff',
+                                                          width:40,
                                                         }),
                                                         dimensions.width,
                                                       )}
@@ -3712,7 +3733,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 24,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -3726,7 +3747,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -3740,7 +3761,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -3754,7 +3775,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 32,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -3769,6 +3790,7 @@ const MatchDaySingleScreen = (props) => {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
                                                     color: '#fff',
+                                                    width:40,
                                                   }),
                                                   dimensions.width,
                                                 )}
@@ -3854,7 +3876,7 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 20,
+                                                                width:40,
                                                                 color: '#fff',
                                                               },
                                                             ),
@@ -3870,7 +3892,7 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 20,
+                                                                width:40,
                                                                 color: '#fff',
                                                               },
                                                             ),
@@ -3886,7 +3908,7 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 20,
+                                                                width:40,
                                                                 color: '#fff',
                                                               },
                                                             ),
@@ -3903,7 +3925,7 @@ const MatchDaySingleScreen = (props) => {
                                                               GlobalStyles.TextStyles(theme)['Text'],
                                                               {
                                                                 fontSize: 12,
-                                                                marginRight: 20,
+                                                                width:40,
                                                                 color: '#fff',
                                                               },
                                                             ),
@@ -3920,6 +3942,7 @@ const MatchDaySingleScreen = (props) => {
                                                               {
                                                                 fontSize: 12,
                                                                 color: '#fff',
+                                                                width:50,
                                                               },
                                                             ),
                                                             dimensions.width,
@@ -4085,7 +4108,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -4099,7 +4122,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -4113,7 +4136,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -4127,7 +4150,7 @@ const MatchDaySingleScreen = (props) => {
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
-                                                    marginRight: 20,
+                                                    width:40,
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
@@ -4142,6 +4165,7 @@ const MatchDaySingleScreen = (props) => {
                                                     fontFamily: 'System',
                                                     fontWeight: '600',
                                                     color: '#fff',
+                                                    width:40,
                                                   }),
                                                   dimensions.width,
                                                 )}
@@ -4212,7 +4236,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -4225,7 +4249,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -4238,7 +4262,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -4252,7 +4276,7 @@ const MatchDaySingleScreen = (props) => {
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
-                                                            marginRight: 20,
+                                                            width:40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
@@ -4266,6 +4290,7 @@ const MatchDaySingleScreen = (props) => {
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                             fontSize: 12,
                                                             color: '#fff',
+                                                            width:40,
                                                           }),
                                                           dimensions.width,
                                                         )}
@@ -4298,7 +4323,7 @@ const MatchDaySingleScreen = (props) => {
                             {/* Layer-4 */}
                             <View
                               style={StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Layer-4'], { marginTop: 20 }),
+                                StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Layer-4'], { marginTop: 10 }),
                                 dimensions.width,
                               )}
                             >
@@ -4485,7 +4510,7 @@ const MatchDaySingleScreen = (props) => {
                                     dimensions.width,
                                   )}
                                 >
-                                  {'Match Dates :  \n'}
+                                  {'Match Dates : '} 
                                 </Text>
                                 {/* Dynamic  */}
                                 <Text
@@ -4496,6 +4521,7 @@ const MatchDaySingleScreen = (props) => {
                                       fontSize: 11,
                                       fontWeight: '400',
                                       color: '#fff',
+                                      width:80,
                                     }),
                                     dimensions.width,
                                   )}

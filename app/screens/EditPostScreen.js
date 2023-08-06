@@ -161,7 +161,7 @@ const EditPostScreen = (props) => {
                 dimensions.width,
               )}
             >
-              Are you sure you want to delete this post?
+              {translate('EditPostScreen.Text.DeleteConfirm')}
             </Text>
           </View>
           <View
@@ -189,7 +189,7 @@ const EditPostScreen = (props) => {
                 },
                 dimensions.width,
               )}
-              title="Delete"
+              title={translate('EditPostScreen.Text.DeleteButton')}
               onPress={handlePostDeleteConfirmPress}
             />
             <Button
@@ -206,7 +206,7 @@ const EditPostScreen = (props) => {
                 },
                 dimensions.width,
               )}
-              title="Cancel"
+              title={translate('EditPostScreen.Text.CancelButton')}
               onPress={deleteModalDismiss}
             />
           </View>

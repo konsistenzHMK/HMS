@@ -11,7 +11,7 @@ const ScreenHeight = Dimensions.get('screen').height
 export const PostHeight = ScreenHeight * 0.6
 
 const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
-  const { user_profiles, count_views, id, caption, count_likes } = post
+  const { user_profiles, count_views, id, caption, count_likes, count_comments } = post
 
   const username = `${user_profiles?.first_name} ${user_profiles?.last_name}`
   const profileImage = user_profiles?.profile_image
@@ -87,7 +87,6 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
 
   useEffect(() => {
     fetchLikesCount()
-    fetchComments()
   }, [])
 
   if (!post) {
@@ -110,6 +109,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
 
   const handleCommentPress = () => {
     setShowCommentModal(true)
+    fetchComments()
   }
 
   const hideCommentModal = () => {
@@ -151,7 +151,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
               size={18}
               color={theme.colors.communityHighlightBlue}
             />
-            <Text style={styles.actionCount}>{comments.length}</Text>
+            <Text style={styles.actionCount}>{count_comments ?? 0}</Text>
           </Pressable>
           {/* views */}
           <View style={styles.subActionContainer}>

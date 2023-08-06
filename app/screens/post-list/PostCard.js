@@ -10,7 +10,7 @@ import PostCommentModal from './PostCommentModal'
 const ScreenHeight = Dimensions.get('screen').height
 export const PostHeight = ScreenHeight * 0.6
 
-const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
+const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress, onComment }) => {
   const { user_profiles, count_views, id, caption, count_likes, count_comments } = post
 
   const username = `${user_profiles?.first_name} ${user_profiles?.last_name}`
@@ -48,6 +48,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
       }
       setLikesCount(liked ? likesCount - 1 : likesCount + 1)
       fetchLikesCount()
+      if (onComment) onComment()
     } catch (e) {
       // do nothign
     }

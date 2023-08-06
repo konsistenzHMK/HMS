@@ -628,7 +628,7 @@ const MatchDaySingleScreen = (props) => {
   const [textInputValue, setTextInputValue] = React.useState('')
   const [matchCommentary,setMatchCommentary]=React.useState(null);
 
-  const [feedAvailable, setFeedAvailable] = React.useState(false)
+  const [feedAvailable, setFeedAvailable] = React.useState(true)
 
   const handleEmoticonPress = (item) => {
     setTextInputValue(textInputValue + item)
@@ -699,17 +699,13 @@ const MatchDaySingleScreen = (props) => {
         <View>
           <PagalFanBEApi.FetchFetchSingleMatchGET id={props.route?.params?.match_id ?? 77}
              onData={(data) => {
-              try {
-                if(data && data[0]?.feed_available == true) setFeedAvailable(data[0]?.feed_available);
-              } catch (err) {
-                console.error(err)
-              }
+              if(data && data[0]?.feed_available == false) setFeedAvailable(false);
             }}
           >
             {({ loading, error, data, refetchFetchSingleMatch }) => {
               const fetchData = data
               // console.log(data);
-              // console.log(feedAvailable);
+              console.log(feedAvailable);
               if (!fetchData || loading) {
                 return <ActivityIndicator />
               }

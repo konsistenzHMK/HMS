@@ -10,8 +10,8 @@ import PostCommentModal from './PostCommentModal'
 const ScreenHeight = Dimensions.get('screen').height
 export const PostHeight = ScreenHeight * 0.6
 
-const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
-  const { user_profiles, count_views, id, caption } = post
+const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress, onComment }) => {
+  const { user_profiles, count_views, id, caption, count_likes, count_comments } = post
 
   const username = `${user_profiles?.first_name} ${user_profiles?.last_name}`
   const profileImage = user_profiles?.profile_image
@@ -20,7 +20,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
   const videoUrl = post?.video_url
 
   const [liked, setLiked] = useState(false)
-  const [likesCount, setLikesCount] = useState(0)
+  const [likesCount, setLikesCount] = useState(count_likes)
   const [comments, setComments] = useState([])
   const [viewsCount, setViewsCount] = useState(count_views ?? 0)
   const [showCommentModal, setShowCommentModal] = useState(false)
@@ -46,7 +46,9 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
           user_id: userId,
         })
       }
+      setLikesCount(liked ? likesCount - 1 : likesCount + 1)
       fetchLikesCount()
+      if (onComment) onComment()
     } catch (e) {
       // do nothign
     }
@@ -57,9 +59,10 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
     response.map((item) => {
       if (item.post_id == id && item.user_id == userId) {
         setLiked(true)
+        // todo: add edge function to check for likes
       }
     })
-    setLikesCount(response.length)
+    // setLikesCount(response.length)
   }
 
   const fetchComments = async () => {
@@ -86,7 +89,6 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
 
   useEffect(() => {
     fetchLikesCount()
-    fetchComments()
   }, [])
 
   if (!post) {
@@ -109,6 +111,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
 
   const handleCommentPress = () => {
     setShowCommentModal(true)
+    fetchComments()
   }
 
   const hideCommentModal = () => {
@@ -150,7 +153,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress }) => {
               size={18}
               color={theme.colors.communityHighlightBlue}
             />
-            <Text style={styles.actionCount}>{comments.length}</Text>
+            <Text style={styles.actionCount}>{count_comments ?? 0}</Text>
           </Pressable>
           {/* views */}
           <View style={styles.subActionContainer}>

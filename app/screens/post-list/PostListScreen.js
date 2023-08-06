@@ -74,6 +74,14 @@ const PostListScreen = ({ navigation, route }) => {
         onHeaderPress={showProfileScreen}
         visible={visible}
         focused={focused}
+        onComment={() => {
+          // increase comment by one
+          setPosts((prevPosts) => {
+            const _posts = [...prevPosts]
+            _posts[index].count_comments = (_posts[index].count_comments ?? 0) + 1
+            return _posts
+          })
+        }}
       />
     )
   }

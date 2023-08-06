@@ -78,7 +78,7 @@ const PostListScreen = ({ navigation, route }) => {
           // increase comment by one
           setPosts((prevPosts) => {
             const _posts = [...prevPosts]
-            _posts[index].commentCount = _posts[index].commentCount + 1
+            _posts[index].count_comments = (_posts[index].count_comments ?? 0) + 1
             return _posts
           })
         }}

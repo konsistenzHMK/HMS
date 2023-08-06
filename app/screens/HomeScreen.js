@@ -614,6 +614,7 @@ const HomeScreen = (props) => {
                                   borderColor: theme.colors['App Green'],
                                   borderRadius: 50,
                                   borderWidth: 2,
+                                  marginBottom:3,
                                   // borderTopWidth: 1,
                                   height: 60,
                                   width: 60,
@@ -630,7 +631,6 @@ const HomeScreen = (props) => {
                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                   fontFamily: 'Inter_400Regular',
                                   fontSize: 8,
-                                  marginBottom: 4,
                                 }),
                                 dimensions.width,
                               )}
@@ -638,6 +638,19 @@ const HomeScreen = (props) => {
                               ellipsizeMode={'tail'}
                             >
                               {flashListData?.session_title}
+                            </Text>
+                            <Text 
+                            style={StyleSheet.applyWidth(
+                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                fontFamily: 'Inter_400Regular',
+                                fontSize: 7,
+                                marginBottom: 9,
+                              }),
+                              dimensions.width,
+                            )}
+                            numberOfLines={1}
+                            ellipsizeMode={'tail'}>
+                              {"("+flashListData?.language+")"}
                             </Text>
                           </View>
                         </Pressable>

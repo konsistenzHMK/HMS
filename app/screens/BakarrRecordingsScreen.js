@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
+import { Event } from 'react-native-track-player'
 import BakarrCard from '../components/bakarr-card/BakarrCard'
-import { setupPlayer, addTracks, playbackService } from '../utils/TrackPlayerService'
+import { setupPlayer, addTracks } from '../utils/TrackPlayerService'
 import { useTranslation } from 'react-i18next'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi'
-import { ScreenContainer } from '@draftbit/ui'
+import { Circle, Icon, ScreenContainer, Touchable } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
 
-function BakarrRecordingsScreen({ route }) {
+function BakarrRecordingsScreen({ navigation, route }) {
   const [bakarList, setBakarList] = useState([])
   const [isPlayerReady, setIsPlayerReady] = useState(false)
   const [currentPlayingId, setCurrentPlayingId] = useState(-1)
@@ -20,6 +21,8 @@ function BakarrRecordingsScreen({ route }) {
   const listRef = useRef(null)
 
   const Constants = GlobalVariables.useValues()
+
+  const dimensions = useWindowDimensions()
 
   const fetchBakarRecordings = async () => {
     const response = await PagalFanBEApi.fetchAllBakarrRecordingsGET(Constants)
@@ -36,10 +39,26 @@ function BakarrRecordingsScreen({ route }) {
         animated: true,
       })
       setHighlight(scrollToId)
+      const trackToPlay = bakarList[index];
+      // onTogglePlayPress(trackToPlay.session_recorded_link, trackToPlay.id, trackToPlay.session_title, trackToPlay.sub_title)
       setTimeout(() => {
         setHighlight(-1)
       }, 3000)
     }
+  }
+
+  async function playbackService() {
+    TrackPlayer.addEventListener(Event.RemotePause, () => {
+      TrackPlayer.pause()
+      setIsPaused(true)
+    })
+
+    TrackPlayer.addEventListener(Event.RemotePlay, () => {
+      TrackPlayer.play()
+      setIsPaused(false)
+    })
+
+    TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, () => {})
   }
 
   useEffect(() => {
@@ -96,8 +115,41 @@ function BakarrRecordingsScreen({ route }) {
     )
   }
 
+  const styles = StyleSheet.create({
+    container: {
+      paddingHorizontal: 10,
+    },
+    trackProgress: {
+      marginTop: 40,
+      textAlign: 'center',
+      fontSize: 24,
+      color: '#eee',
+    },
+    mainHeading: {
+      fontSize: 20,
+      marginVertical: 10,
+      fontWeight: 600,
+      fontFamily: 'Rubik_700Bold',
+      color: 'rgb(60, 63, 66)',
+    },
+  })
+
   return (
     <ScreenContainer hasTopSafeArea style={styles.container}>
+      {/* Back Frame */}
+      <View style={{paddingTop:16, paddingBottom:4}}>
+        <Touchable onPress={()=>{
+          try {
+            navigation.navigate("HomeScreen")
+          } catch (error) {
+            console.log(error)
+          }
+        }}>
+        <Circle size={31} bgColor="rgb(244, 246, 249)">
+          <Icon name={'Ionicons/caret-back'} size={18} color="rgb(135, 140, 144)" />
+        </Circle>
+        </Touchable>
+      </View>
       <Text style={styles.mainHeading}> {translate('BakarrRecordingsScreen.Text.Bakarr')}</Text>
       <FlashList
         bounces={true}
@@ -112,22 +164,5 @@ function BakarrRecordingsScreen({ route }) {
     </ScreenContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-  },
-  trackProgress: {
-    marginTop: 40,
-    textAlign: 'center',
-    fontSize: 24,
-    color: '#eee',
-  },
-  mainHeading: {
-    fontSize: 20,
-    marginVertical: 10,
-    fontWeight: 600,
-  },
-})
 
 export default BakarrRecordingsScreen

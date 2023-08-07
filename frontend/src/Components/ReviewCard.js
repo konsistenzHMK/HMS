@@ -17,7 +17,7 @@ const ReviewCard = (props) => {
         props.setDisplay(true);
     }
   return (
-    <div className='w-full flex mt-10 mb-10'>
+    <div className='w-full flex mt-10 mb-10 border-0 rounded-lg'>
         {/* Details */}
         <div className='w-4/5 bg-gray-200 flex-col p-3'>
             {/* Hostel name */}
@@ -54,12 +54,12 @@ const ReviewCard = (props) => {
             <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10 mt-2'
                 onClick={setEdi2}
             >
-                <p className='font-popins text-normal'>Edit 2</p>
+                <p className='font-popins text-normal'>Review</p>
             </button>
             <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10 mt-2'
                 onClick={setDisplay}
             >
-                <p className='font-popins text-normal'>Display</p>
+                <p className='font-popins text-normal'>View</p>
             </button>
         </div>
     </div>

@@ -1102,12 +1102,12 @@ const App = (props) => {
                       <select 
                           className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
                           value={formData.status}
-                          disabled={!CheckEdit2Form()}
+                          disabled={true}
                           onChange={handleDropdownStatusType}
                           >
                           <option value="draft">Draft</option>
                           <option value="NA">Select an option</option>
-                          <option value="saved">Saved</option>
+                          <option value="del">Deleted</option>
                           <option value="pending">Pending for Approval</option>
                           <option value="active">Active</option>
                           <option value="block">Block</option>
@@ -1140,14 +1140,14 @@ const App = (props) => {
               {CheckDisplayForm()?null:
               <div>
               {!CheckEdit2Form() ? 
-              <div className='w-full flex flex-row justify-between flex-wrap'>
-                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-1/4`}
+              <div className='w-full flex flex-row justify-between'>
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-60`}
                   disabled={sendForm}
                   onClick={handleSave1}
                 >
                  Save
                 </button>
-                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4 mr-2`}
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-60 mr-2`}
                   disabled={sendForm}
                   onClick={handleSave2}
                 >
@@ -1156,37 +1156,37 @@ const App = (props) => {
               </div>
               :
               <div className='w-full flex flex-row justify-between flex-wrap'>
-                {Save && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-1/4`}
+                {Save && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-40`}
                   disabled={sendForm}
                   onClick={handleSave1}
                 >
                  Save 
                 </button>}
-                {send &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4 mr-2`}
+                {send &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-48 mr-2`}
                   disabled={sendForm}
                   onClick={handleSave2}
                 >
                   Send for Approval 
                 </button> }
-                {approve &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                {approve &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
                   disabled={sendForm}
                   onClick={handleSave3}
                 >
                   Approve
                 </button> }
-                {retu &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                {retu &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
                   disabled={sendForm}
                   onClick={handleSave4}
                 >
                   Return 
                 </button> }
-                {block &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                {block &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
                   disabled={sendForm}
                   onClick={handleSave5}
                 >
                   Block
                 </button>}
-                {del && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                {del && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
                   disabled={sendForm}
                   onClick={handleSave6}
                 >

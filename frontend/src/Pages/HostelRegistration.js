@@ -163,7 +163,7 @@ const App = (props) => {
     area:'',
     mess:'',
     other_facility:[],
-    status:'Draft',
+    status:'',
     email_id:'',
     website:'',
   });
@@ -201,14 +201,151 @@ const App = (props) => {
     }
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
+  const setStatus=(status)=>{
+    setFormData((prevData) => ({
+      ...prevData,
+      status: status
+    }));
+  }
 
+  const handleSave1 = (e) => {
+    e.preventDefault();
 
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('http://localhost:7000/hostel/saveform', formData)
+      axios.post('http://localhost:7000/hostel/saveform1', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave2 = (e) => {
+    e.preventDefault();
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform2', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave3 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'active'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform3', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave4 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'draft'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform4', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave5 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'block'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform5', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave6 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'del'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform6', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -383,6 +520,43 @@ const App = (props) => {
   const [currentTime, setCurrentTime] = useState('');
   const [isUUID,setIsUUID]=useState(false);
 
+  
+  const [Save,setsave]=useState(false);
+  const [send,setSend]=useState(false);
+  const [approve,setApprove]=useState(false);
+  const [retu,setRetu]=useState(false);
+  const [block,setblock]=useState(false);
+  const [del,setdel]=useState(false);
+
+  const put=async()=>{
+    const ans={
+      "draft": ["save","approve","delete","block" ,"return","send"],
+      "pending": ["save","approve","delete","block","return"],
+      "active": ["block","delete"],
+      "block": ["approve","delete"],
+      "del": []
+    }
+    if(props.ExistingFormData){ 
+      let status=props.ExistingFormData.status;
+      let arr=[];
+      console.log(status);
+      if(status=="draft") arr=["save","approve","delete","block" ,"return","send"];
+      if(status=="pending") arr=["save","approve","delete","block","return"];
+      if(status=="active") arr=["block","delete"];
+      if(status=="block") arr=["approve","delete"];
+      console.log(arr);
+      arr.forEach(element => {
+        if(element=="save") setsave(true);
+        if(element=="approve") setApprove(true);
+        if(element=="delete") setdel(true);
+        if(element=="block") setblock(true);
+        if(element=="return") setRetu(true);
+        if(element=="send") setSend(true);
+      });
+      console.log(arr);
+    }
+  }
+
   useEffect(() => {
     if(props.ExistingFormData!=null){ 
       setFormData(props.ExistingFormData);
@@ -398,9 +572,11 @@ const App = (props) => {
       setCurrentTime(formattedTime);
     }, 1000);
 
+    put();
     return () => {
       clearInterval(intervalId);
     };
+    
   }, []);
 
   // Helper function to format the date
@@ -455,7 +631,6 @@ const App = (props) => {
       handleChange(event)
     }
   };
-
 
   return (
       <div className="w-full bg-defaultBg top-0">
@@ -930,12 +1105,12 @@ const App = (props) => {
                           disabled={!CheckEdit2Form()}
                           onChange={handleDropdownStatusType}
                           >
+                          <option value="draft">Draft</option>
                           <option value="NA">Select an option</option>
-                          <option value="Draft">Draft</option>
-                          <option value="Saved">Saved</option>
-                          <option value="Pending">Pending for Approval</option>
-                          <option value="Active">Active</option>
-                          <option value="Block">Block</option>
+                          <option value="saved">Saved</option>
+                          <option value="pending">Pending for Approval</option>
+                          <option value="active">Active</option>
+                          <option value="block">Block</option>
                       </select>
                       {errors.status && <span className="error text-red-600">{errors.status}</span>}
                   </div>
@@ -962,23 +1137,65 @@ const App = (props) => {
                 <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
-              {!CheckDisplayForm() &&
-              <div className='w-52 flex flex-col justify-center'>  
-              <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
+              {CheckDisplayForm()?null:
+              <div>
+              {!CheckEdit2Form() ? 
+              <div className='w-full flex flex-row justify-between flex-wrap'>
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-1/4`}
                   disabled={sendForm}
-                  onClick={CheckEdit2Form()?handleApprove:handleSave}
+                  onClick={handleSave1}
                 >
-                 {CheckEdit2Form()? 'Approve' : 'Save'} 
+                 Save
                 </button>
-                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4 mr-2`}
                   disabled={sendForm}
-                  onClick={CheckEdit2Form()?handleDecline:handleSubmit}
+                  onClick={handleSave2}
                 >
-                  {CheckEdit2Form()? 'Deny' : 'Send for Approval'} 
+                  Send for Approval 
                 </button>
-              </div> 
+              </div>
+              :
+              <div className='w-full flex flex-row justify-between flex-wrap'>
+                {Save && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-1/4`}
+                  disabled={sendForm}
+                  onClick={handleSave1}
+                >
+                 Save 
+                </button>}
+                {send &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4 mr-2`}
+                  disabled={sendForm}
+                  onClick={handleSave2}
+                >
+                  Send for Approval 
+                </button> }
+                {approve &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                  disabled={sendForm}
+                  onClick={handleSave3}
+                >
+                  Approve
+                </button> }
+                {retu &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                  disabled={sendForm}
+                  onClick={handleSave4}
+                >
+                  Return 
+                </button> }
+                {block &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                  disabled={sendForm}
+                  onClick={handleSave5}
+                >
+                  Block
+                </button>}
+                {del && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-1/4`}
+                  disabled={sendForm}
+                  onClick={handleSave6}
+                >
+                  Delete
+                </button>}
+              </div>
               }
-              
+              </div>
+              }
             </div>
           </div>
         </div>

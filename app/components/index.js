@@ -6,5 +6,6 @@ import Image from './image/Image'
 import BlurImage from './image/BlurImage'
 import VideoPlayer from './video-player/VideoPlayer'
 import Loader from './loader/Loader'
+import CaptionContainer from './caption-container/CaptionContainer'
 
-export { Loader, VideoPlayer, SnackbarProvider, useSnackbar, Modal, ShimmerPlaceHolder, Image, BlurImage }
+export { Loader, VideoPlayer, SnackbarProvider, useSnackbar, Modal, ShimmerPlaceHolder, Image, BlurImage, CaptionContainer }

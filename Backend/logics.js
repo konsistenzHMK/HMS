@@ -426,7 +426,7 @@ const gethostel_id_where_status_active = async(req,res)=>{
     const data1 = [];
     querySnapshot.forEach((doc) => {
         data1.push([doc.data().uuid,doc.data().hostel_name]);
-        });
+ });
 
     res.send(data1);
 }

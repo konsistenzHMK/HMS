@@ -113,7 +113,6 @@ const TowerRegistartion = () => {
           const result = await response.json();
           console.log(result);
           setHostel_name_and_id(result);
-
         }
       }
       catch(err){

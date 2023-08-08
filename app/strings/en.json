@@ -202,7 +202,8 @@
     },
 
     "BakarrRecordingsScreen":{
-      "Text.Bakarr":"Sports Bakarr"
+      "Text.Bakarr":"Sports Bakarr",
+      "Text.SearchBarPlaceholder":"Search in Bakarr"
     }
 
   }

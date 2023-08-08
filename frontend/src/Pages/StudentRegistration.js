@@ -1107,6 +1107,33 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
     console.log(errors.length);
   },[formData])
 
+  const [hostel_name_and_id, setHostel_name_and_id] = useState([]);
+    const hostel_name_and_id_fetch = async () => {
+      try{
+        const response = await fetch("http://localhost:7000/gethostel_id/where/status_active",{
+          method:"GET",
+          headers:{"Content-Type":"application/json"},
+        }); 
+        if(response.ok){
+          const result = await response.json();
+          console.log(result);
+          setHostel_name_and_id(result);
+        }
+      }
+      catch(err){
+        alert(err);
+      }
+    }
+    useEffect(() => {
+      hostel_name_and_id_fetch();
+    }, []);
+
+    const handleChange1 = (event) => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        hostel_name_or_id: event.target.value,
+      }));
+    };
 
   return (
     <div className="flex bg-defaultBg" >
@@ -1189,6 +1216,27 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
           <div className="bg-white  w-10/12 h-auto mt-8 border-none rounded-lg flex justify-center font-popins">
             <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
               {/* 1 --> Basic Details */}
+
+              <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
+                <p className=' font-popins'>Hostel Selection </p>
+              </div>
+
+              <div className='w-full h-auto flex flex-col mt-1'>
+                <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">Select Hostel Name or ID *</div>
+              <select
+                id="hostel_name_or_id"
+                name="hostel_name_or_id"
+                value={formData.hostel_name_or_id} // Use formData.hostel_name_or_id to pre-select the dropdown option based on the state
+                onChange={handleChange1} // Use handleChange for handling dropdown change
+                className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+              >
+                <option value="">-- Select an option --</option>
+                {hostel_name_and_id.map((item) => (
+                  <option value={item[0]}>{item[1] + "  |  " + item[0]}</option>
+                ))}
+              </select>
+              {errors.hostel_name_or_id && <span className="error">{errors.hostel_name_or_id}</span>}
+            </div>
 
               <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
                 <p className=' font-popins'>Parent details </p>
@@ -1941,7 +1989,8 @@ const StudentRegistartion = () =>{
     account_holder_name:'',
     bank_name:'',
     ifsc:'',
-    account_number:''
+    account_number:'',
+    hostel_name_or_id:''
    
   });
 

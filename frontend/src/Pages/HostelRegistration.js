@@ -4,8 +4,9 @@ import Dropdown from 'react-dropdown';
 import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
 import Select from 'react-select';
+import { useHistory } from 'react-router-dom';
 
-const App = () => {
+const App = (props) => {
   const [category1, setCategory1] = useState('');
   const [category2, setCategory2] = useState('');
   const [category3, setCategory3] = useState('');
@@ -24,6 +25,20 @@ const App = () => {
       ...prevData,
       district: event.target.value
     }));
+    setFormData((prevData) => ({
+      ...prevData,
+      city: event.target.value
+    }));
+  }
+
+  const CheckDisplayForm =()=>{
+    if(props.op==3) return true;
+    return false;
+  }
+
+  const CheckEdit2Form =()=>{
+    if(props.op==2) return true;
+    return false;
   }
 
   const handleChangeCity = (event) =>{
@@ -165,6 +180,7 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
@@ -173,37 +189,40 @@ const App = () => {
         // alert
         console.log('API response:', response.data);
         alert(response.data);
+        setErrors({});
+        window.location.href = '/';
       })
       .catch((error) => {
         console.error('API request error:', error);
       });
-      setFormData({
-        hostel_name: '',
-        description:'',
-        address1:'',
-        address2:'',
-        country:'India',
-        state:'',
-        region:'',
-        district:'',
-        city:'',
-        pincode:'',
-        uuid:'',
-        rector_name:'',
-        categ1:'',
-        categ2:'',
-        categ3:'',
-        tower:'',
-        floor:'',
-        room:'',
-        scapacity:'',
-        bcapacity:'',
-        area:'',
-        mess:'',
-        other_facility:'',
-        status:'',
-        email_id:'',
-        website:'',
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const setStatus=(status)=>{
+    setFormData((prevData) => ({
+      ...prevData,
+      status: status
+    }));
+  }
+
+  const handleSave1 = (e) => {
+    e.preventDefault();
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform1', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
       });
       setErrors({});
     } else {
@@ -212,6 +231,186 @@ const App = () => {
     }
   };
 
+  const handleSave2 = (e) => {
+    e.preventDefault();
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform2', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave3 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'active'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform3', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave4 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'draft'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform4', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave5 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'block'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform5', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleSave6 = (e) => {
+    e.preventDefault();
+
+    setFormData((prevData) => ({
+      ...prevData,
+      status: 'del'
+    }));
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/hostel/saveform6', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleApprove = (e) => {
+    e.preventDefault();
+
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/status_of_hostel_active', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  const handleDecline = (e) => {
+    e.preventDefault();
+
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      console.log('Form Saved successfully!');
+      axios.post('http://localhost:7000/status_of_hostel_block', formData)
+      .then((response) => {
+        // alert
+        console.log('API response:', response.data);
+        alert(response.data);
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('API request error:', error);
+      });
+      setErrors({});
+    } else {
+      console.log("error");
+      setErrors(formErrors);
+    }
+  };
+
+  
 
   const validateForm = () => {
     const errors = [];
@@ -298,9 +497,9 @@ const App = () => {
       // }
 
       // Validate email_id
-      if (!isValidEmail(formData.email_id)) {
-        errors.push(1);
-      }
+      // if (!isValidEmail(formData.email_id)) {
+      //   errors.push(1);
+      // }
     return errors;
   };
 
@@ -319,8 +518,50 @@ const App = () => {
 
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+  const [isUUID,setIsUUID]=useState(false);
+
+  
+  const [Save,setsave]=useState(false);
+  const [send,setSend]=useState(false);
+  const [approve,setApprove]=useState(false);
+  const [retu,setRetu]=useState(false);
+  const [block,setblock]=useState(false);
+  const [del,setdel]=useState(false);
+
+  const put=async()=>{
+    const ans={
+      "draft": ["save","approve","delete","block" ,"return","send"],
+      "pending": ["save","approve","delete","block","return"],
+      "active": ["block","delete"],
+      "block": ["approve","delete"],
+      "del": []
+    }
+    if(props.ExistingFormData){ 
+      let status=props.ExistingFormData.status;
+      let arr=[];
+      console.log(status);
+      if(status=="draft") arr=["save","approve","delete","block" ,"return","send"];
+      if(status=="pending") arr=["save","approve","delete","block","return"];
+      if(status=="active") arr=["block","delete"];
+      if(status=="block") arr=["approve","delete"];
+      console.log(arr);
+      arr.forEach(element => {
+        if(element=="save") setsave(true);
+        if(element=="approve") setApprove(true);
+        if(element=="delete") setdel(true);
+        if(element=="block") setblock(true);
+        if(element=="return") setRetu(true);
+        if(element=="send") setSend(true);
+      });
+      console.log(arr);
+    }
+  }
 
   useEffect(() => {
+    if(props.ExistingFormData!=null){ 
+      setFormData(props.ExistingFormData);
+      setIsUUID(true);
+    }
     const intervalId = setInterval(() => {
       const date = new Date();
 
@@ -331,9 +572,11 @@ const App = () => {
       setCurrentTime(formattedTime);
     }, 1000);
 
+    put();
     return () => {
       clearInterval(intervalId);
     };
+    
   }, []);
 
   // Helper function to format the date
@@ -374,12 +617,20 @@ const App = () => {
 
   const [sendForm,setSendForm]=useState(false);
 
+
+
   useEffect(()=>{
     const errors=validateForm();
     if(errors.length==0) setSendForm(false);
     else setSendForm(true)
-    console.log(errors.length);
   },[formData])
+
+  const allowNumbers = (event) => {
+    const value = event.target.value;
+    if (/^\d*$/.test(value)) {
+      handleChange(event)
+    }
+  };
 
   return (
       <div className="w-full bg-defaultBg top-0">
@@ -427,6 +678,7 @@ const App = () => {
                   id="hostel_name"
                   name="hostel_name"
                   value={formData.hostel_name}
+                  disabled={CheckDisplayForm()}
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></input>
@@ -440,6 +692,7 @@ const App = () => {
                   id="description"
                   name="description"
                   value={formData.description}
+                  disabled={CheckDisplayForm()}
                   onChange={handleChange}
                   className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 ></textarea>
@@ -460,6 +713,7 @@ const App = () => {
                       id="address1"
                       name="address1"
                       value={formData.address1}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -474,6 +728,7 @@ const App = () => {
                       id="address2"
                       name="address2"
                       value={formData.address2}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 '
                     />
@@ -491,6 +746,7 @@ const App = () => {
                       name="country"
                       value={'India'}
                       onChange={handleChange}
+                      disabled={true}
                       className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
                     />
                     {errors.country && <span className="error  text-red-500">{errors.country}</span>}
@@ -501,8 +757,9 @@ const App = () => {
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">State <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={State} 
+                        value={formData.state} 
                         onChange={handleChangeState}
+                        disabled={isUUID}
                         >
                         <option value="NA">Select an option</option>
                         <option value="Maharashtra">Maharashtra</option>
@@ -518,10 +775,12 @@ const App = () => {
                   <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Region <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={region} 
+                        value={formData.region} 
                         onChange={handleChangeRegion}
+                        disabled={isUUID}
                         >
                         <option value="null">Select an option</option>
+                        {formData.region ?<option value={formData.region}>{formData.region}</option> : null}
                           {allRegion.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
@@ -536,10 +795,12 @@ const App = () => {
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">District <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={District} 
+                        value={formData.district} 
                         onChange={handleChangeDistrict}
+                        disabled={isUUID}
                         >
                         <option value="null">Select an option</option>
+                        {formData.district ?<option value={formData.district}>{formData.district}</option> : null}
                           {allDistrict.map((region) => (
                             <option key={region.value} value={region.value}>
                               {region.label}
@@ -555,19 +816,14 @@ const App = () => {
               {/* 2.4 */}
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">City <p className='inline text-xl text-red-600'>*</p></div>
-                    <select 
-                        className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={City} 
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Taluka <p className='inline text-xl text-red-600'>*</p></div>
+                    <input 
+                        className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
+                        value={formData.city} 
                         onChange={handleChangeCity}
+                        disabled={true}
                         >
-                        <option value="null">Select an option</option>
-                          {allDistrict.map((region) => (
-                            <option key={region.value} value={region.value}>
-                              {region.label}
-                            </option>
-                          ))}
-                      </select>
+                      </input>
                     {errors.city && <span className="error text-red-600">{errors.city}</span>}
                 </div>
 
@@ -578,8 +834,10 @@ const App = () => {
                       type="text"
                       id="pincode"
                       name="pincode"
+                      maxLength={6}
                       value={formData.pincode}
-                      onChange={handleChange}
+                      onChange={allowNumbers}
+                      disabled={CheckDisplayForm()}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error text-red-600">{errors.pincode}</span>}
@@ -589,18 +847,19 @@ const App = () => {
 
               {/* 4 */}
               <div className='underline underline-offset-1 text-sky-950 text-xl font-semibold pt-7 mb-3 font-popins'>
-                <p className=''>Advance Details</p>
+                <p className=''>Details</p>
             </div>
 
             {/* 4.1 --> 1*/}
             <div className='w-full h-auto flex justify-between'>
                 <div className='w-full'>
-                  <div className="w-full mb-1 font-popins text-lg font-medium" htmlFor="email_id">Hostel Rector <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="w-full mb-1 font-popins text-lg font-medium" htmlFor="email_id">Rector Name<p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="rector_name"
                       name="rector_name"
                       value={formData.rector_name}
+                      disabled={CheckDisplayForm()}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -615,8 +874,9 @@ const App = () => {
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-1 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={category1} 
+                        value={formData.categ1} 
                         onChange={handleDropdownCat1}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="girls">Girls</option>
@@ -631,8 +891,9 @@ const App = () => {
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Category-2 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={category2} 
+                        value={formData.categ2} 
                         onChange={handleDropdownCat2}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="t-1">type-1</option>
@@ -647,13 +908,14 @@ const App = () => {
 
               {/* 4.3 -> 3*/}
               <div className='w-full h-auto flex justify-between mt-5'>
-                <div className='w-1/2 flex flex-col items-start'>
-                    <div className='w-11/12'>
+                <div className='w-full flex flex-col items-start'>
+                    <div className='w-full'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Category-3 <p className='inline text-xl text-red-600'>*</p></div>
                       <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={category3} 
+                        value={formData.categ3} 
                         onChange={handleDropdownCat3}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="rented">Rented</option>
@@ -661,8 +923,11 @@ const App = () => {
                       </select>
                       {errors.categ3 && <span className="error text-red-600">{errors.categ3}</span>}
                   </div>
-                  </div>
-                <div className='w-1/2 flex flex-col items-end'>
+                  </div>            
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Towers <p className='inline text-xl text-red-600'></p></div>
                       <input
@@ -671,15 +936,13 @@ const App = () => {
                         name="tower"
                         value={formData.tower}
                         onChange={handleChange}
+                        disabled={CheckDisplayForm()}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.tower && <span className="error text-red-600">{errors.tower}</span>}
                   </div>
                   </div>
-              </div>
-
-              <div className='w-full h-auto flex justify-between mt-5'>
-                  <div className='w-1/2 flex flex-col items-start'>
+                  <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'></p></div>
                       <input
@@ -687,14 +950,18 @@ const App = () => {
                         id="floor"
                         name="floor"
                         value={formData.floor}
+                        disabled={CheckDisplayForm()}
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.floor && <span className="error text-red-600">{errors.floor}</span>}
                   </div>
                   </div>
-                  <div className='w-1/2 flex flex-col items-end'>
-                    <div className='w-11/12'>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
+                  <div className='w-full flex flex-col items-start'>
+                    <div className='w-full'>
                     <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'></p></div>
                       <input
                         type="number"
@@ -702,6 +969,7 @@ const App = () => {
                         name="room"
                         value={formData.room}
                         onChange={handleChange}
+                        disabled={CheckDisplayForm()}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.room && <span className="error text-red-600">{errors.room}</span>}
@@ -719,6 +987,7 @@ const App = () => {
                         id="scapacity"
                         name="scapacity"
                         value={formData.scapacity}
+                        disabled={CheckDisplayForm()}
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
@@ -733,6 +1002,7 @@ const App = () => {
                         id="bcapacity"
                         name="bcapacity"
                         value={formData.bcapacity}
+                        disabled={CheckDisplayForm()}
                         onChange={handleChange}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
@@ -752,6 +1022,7 @@ const App = () => {
                         name="area"
                         value={formData.area}
                         onChange={handleChange}
+                        disabled={CheckDisplayForm()}
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                       />
                       {errors.area && <span className="error text-red-600">{errors.area}</span>}
@@ -762,8 +1033,9 @@ const App = () => {
                     <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Mess Type <p className='inline text-xl text-red-600'>*</p></div>
                     <select 
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                        value={messType} 
+                        value={formData.mess} 
                         onChange={handleDropdownMessType}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="null">Select an option</option>
                         <option value="government">Government</option>
@@ -777,6 +1049,38 @@ const App = () => {
               </div>
 
               <div className='w-full h-auto flex justify-between mt-5'>
+                <div className='w-1/2'>
+                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Email Id <p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="email_id"
+                      name="email_id"
+                      value={formData.email_id}
+                      disabled={CheckDisplayForm()}
+                      onChange={handleChange}
+                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.email_id && <span className="error text-red-600">{errors.email_id}</span>}
+                </div>
+
+                <div className='w-1/2 flex flex-col items-end'>
+                  <div className='w-11/12'>
+                  <div htmlFor="email_id" className='mb-1 font-popins text-lg font-medium'>Website Link <p className='inline text-xl text-red-600'></p></div>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      value={formData.website}
+                      disabled={CheckDisplayForm()}
+                      onChange={handleChange}
+                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    />
+                    {errors.website && <span className="error text-red-600">{errors.website}</span>}
+                </div>
+                </div>
+              </div>
+
+              <div className='w-full h-auto flex justify-between mt-5'>
                   <div className='w-1/2 flex flex-col items-start'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Other Facility <p className='inline text-xl text-red-600'></p></div>
@@ -784,6 +1088,7 @@ const App = () => {
                         isMulti
                         options={options}
                         onChange={handleChange2}
+                        disabled={CheckDisplayForm()}
                         className="basic-multi-select"
                         classNamePrefix="select"
                       />
@@ -795,52 +1100,29 @@ const App = () => {
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'></p></div>
                       <select 
-                          className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
-                          value={State} 
+                          className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
+                          value={formData.status}
+                          disabled={true}
                           onChange={handleDropdownStatusType}
                           >
+                          <option value="draft">Draft</option>
                           <option value="NA">Select an option</option>
-                          <option value="Draft">Draft</option>
-                          <option value="Saved">Saved</option>
-                          <option value="Pending">Pending for Approval</option>
-                          <option value="Active">Active</option>
-                          <option value="Block">Block</option>
+                          <option value="del">Deleted</option>
+                          <option value="pending">Pending for Approval</option>
+                          <option value="active">Active</option>
+                          <option value="block">Block</option>
                       </select>
                       {errors.status && <span className="error text-red-600">{errors.status}</span>}
                   </div>
                   </div>
               </div>
+              
+              <div className='w-full h-auto flex justify-between mt-5 mb-7'>
+                
+              </div>
 
               {/* 4.5 */}
-              <div className='w-full h-auto flex justify-between mt-5 mb-7'>
-                <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Hostel Email <p className='inline text-xl text-red-600'>*</p></div>
-                    <input
-                      type="text"
-                      id="email_id"
-                      name="email_id"
-                      value={formData.email_id}
-                      onChange={handleChange}
-                      className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.email_id && <span className="error text-red-600">{errors.email_id}</span>}
-                </div>
-
-                <div className='w-1/2 flex flex-col items-end'>
-                  <div className='w-11/12'>
-                  <div htmlFor="email_id" className='mb-1 font-popins text-lg font-medium'>Hostel Website <p className='inline text-xl text-red-600'></p></div>
-                    <input
-                      type="text"
-                      id="website"
-                      name="website"
-                      value={formData.website}
-                      onChange={handleChange}
-                      className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                    />
-                    {errors.website && <span className="error text-red-600">{errors.website}</span>}
-                </div>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -855,17 +1137,65 @@ const App = () => {
                 <div className='text-orange-600 text-xl font-semibold'>Hostel Registration Form ✨</div>
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
-              <div className='w-52 flex flex-col justify-center'>
-                <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl'>
-                  Save
-                </button>
-                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`}
+              {CheckDisplayForm()?null:
+              <div>
+              {!CheckEdit2Form() ? 
+              <div className='w-full flex flex-row justify-between'>
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-60`}
                   disabled={sendForm}
-                  onClick={handleSubmit}
+                  onClick={handleSave1}
                 >
-                  Send for Approval
+                 Save
+                </button>
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-60 mr-2`}
+                  disabled={sendForm}
+                  onClick={handleSave2}
+                >
+                  Send for Approval 
                 </button>
               </div>
+              :
+              <div className='w-full flex flex-row justify-between flex-wrap'>
+                {Save && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 mr-2 w-40`}
+                  disabled={sendForm}
+                  onClick={handleSave1}
+                >
+                 Save 
+                </button>}
+                {send &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-48 mr-2`}
+                  disabled={sendForm}
+                  onClick={handleSave2}
+                >
+                  Send for Approval 
+                </button> }
+                {approve &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
+                  disabled={sendForm}
+                  onClick={handleSave3}
+                >
+                  Approve
+                </button> }
+                {retu &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
+                  disabled={sendForm}
+                  onClick={handleSave4}
+                >
+                  Return 
+                </button> }
+                {block &&<button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
+                  disabled={sendForm}
+                  onClick={handleSave5}
+                >
+                  Block
+                </button>}
+                {del && <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-40`}
+                  disabled={sendForm}
+                  onClick={handleSave6}
+                >
+                  Delete
+                </button>}
+              </div>
+              }
+              </div>
+              }
             </div>
           </div>
         </div>

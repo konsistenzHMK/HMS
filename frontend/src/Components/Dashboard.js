@@ -12,6 +12,7 @@ import DashboardPage from '../Components/DashboardPage'
 
 import circularImage from './Ellipse 93.png';
 import RoomAllocation from '../Pages/RoomAllocation';
+import HostelReviewForm from '../Pages/HostelReviewForm';
 
 const Dashboard = () => {
   return (
@@ -77,6 +78,7 @@ const Dashboard = () => {
       </div>
       {/* Main Pages for Registartion */}
       <div className="w-5/6">
+        
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/hostel-Registration" element={<HostelRegistration />} />
@@ -86,6 +88,7 @@ const Dashboard = () => {
         <Route path="/student-Registration" element={<StudentRegistartion />} />
         <Route path="/expense-Allocation" element={<ExpenseForm />} />
         <Route path="/room-Allocation" element={<RoomAllocation />} />
+        <Route path="/hostel-FormReview" element={<HostelReviewForm />} />
       </Routes>
       </div>
     </div>

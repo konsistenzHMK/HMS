@@ -4,11 +4,13 @@ import TrackPlayer from 'react-native-track-player'
 import { Event } from 'react-native-track-player'
 import BakarrCard from '../components/bakarr-card/BakarrCard'
 import { setupPlayer, addTracks } from '../utils/TrackPlayerService'
+import openShareUtil from '../utils/openShare'
 import { useTranslation } from 'react-i18next'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi'
 import { Circle, Icon, ScreenContainer, Touchable } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
+import branch from 'react-native-branch'
 
 function BakarrRecordingsScreen({ navigation, route }) {
   const [bakarList, setBakarList] = useState([])
@@ -30,16 +32,15 @@ function BakarrRecordingsScreen({ navigation, route }) {
   }
 
   function checkScrollToItem() {
-    let scrollToId = route?.params?.id
+    let scrollToId = Number(route?.params?.id)
     const index = bakarList.findIndex((p) => p.id === scrollToId)
-
     if (index >= 0) {
       listRef.current?.scrollToIndex?.({
         index,
         animated: true,
       })
       setHighlight(scrollToId)
-      const trackToPlay = bakarList[index];
+      const trackToPlay = bakarList[index]
       // onTogglePlayPress(trackToPlay.session_recorded_link, trackToPlay.id, trackToPlay.session_title, trackToPlay.sub_title)
       setTimeout(() => {
         setHighlight(-1)
@@ -59,6 +60,29 @@ function BakarrRecordingsScreen({ navigation, route }) {
     })
 
     TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, () => {})
+  }
+
+  const handleSharePress = async (bakarrPost) => {
+    if (!bakarrPost) {
+      return
+    }
+
+    try {
+      let buo = await branch.createBranchUniversalObject(`bakarrRecordings/${bakarrPost.id}`, {
+        title: bakarrPost.session_title,
+        contentImageUrl: bakarrPost.image_url,
+        contentMetadata: {
+          customMetadata: {
+            bakarr_post_id: String(bakarrPost.id),
+          },
+        },
+      })
+
+      const response = await buo.generateShortUrl()
+      openShareUtil(response.url)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   useEffect(() => {
@@ -111,6 +135,8 @@ function BakarrRecordingsScreen({ navigation, route }) {
         isPaused={id !== currentPlayingId || isPaused}
         highlight={id === highlight}
         createdAt={created_at}
+        handleSharePress={handleSharePress}
+        item={item}
       />
     )
   }
@@ -137,17 +163,19 @@ function BakarrRecordingsScreen({ navigation, route }) {
   return (
     <ScreenContainer hasTopSafeArea style={styles.container}>
       {/* Back Frame */}
-      <View style={{paddingTop:16, paddingBottom:4}}>
-        <Touchable onPress={()=>{
-          try {
-            navigation.navigate("HomeScreen")
-          } catch (error) {
-            console.log(error)
-          }
-        }}>
-        <Circle size={31} bgColor="rgb(244, 246, 249)">
-          <Icon name={'Ionicons/caret-back'} size={18} color="rgb(135, 140, 144)" />
-        </Circle>
+      <View style={{ paddingTop: 16, paddingBottom: 4 }}>
+        <Touchable
+          onPress={() => {
+            try {
+              navigation.navigate('HomeScreen')
+            } catch (error) {
+              console.log(error)
+            }
+          }}
+        >
+          <Circle size={31} bgColor="rgb(244, 246, 249)">
+            <Icon name={'Ionicons/caret-back'} size={18} color="rgb(135, 140, 144)" />
+          </Circle>
         </Touchable>
       </View>
       <Text style={styles.mainHeading}> {translate('BakarrRecordingsScreen.Text.Bakarr')}</Text>

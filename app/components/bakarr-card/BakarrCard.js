@@ -1,8 +1,9 @@
-import { Icon } from '@draftbit/ui'
+import { Icon, withTheme } from '@draftbit/ui'
 import React from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 
 const BakarrCard = ({
+  theme,
   imageSource,
   heading,
   subheading,
@@ -13,6 +14,8 @@ const BakarrCard = ({
   isPaused,
   highlight,
   createdAt,
+  handleSharePress,
+  item,
 }) => {
   const styles = StyleSheet.create({
     container: {
@@ -37,6 +40,7 @@ const BakarrCard = ({
     bottomContainer: {
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'space-between',
       marginTop: 2,
       textAlign: 'center',
       alignContent: 'center',
@@ -134,22 +138,32 @@ const BakarrCard = ({
       </View>
       <Text style={styles.description}>{description}</Text>
       <View style={styles.bottomContainer}>
-        <Pressable
-          onPress={() => {
-            onTogglePlayPress(podcastUrl, id, heading, subheading)
-          }}
-        >
+        <View style={{ flexDirection: 'row' }}>
+          <Pressable
+            onPress={() => {
+              onTogglePlayPress(podcastUrl, id, heading, subheading)
+            }}
+          >
+            <Icon
+              style={styles.playIcon}
+              size={25}
+              name={`FontAwesome/${isPaused ? 'play' : 'pause'}`}
+              color={highlight ? '#FF4545' : 'black'}
+            />
+          </Pressable>
+          <Text style={styles.date}>{convertUtcToDateString(createdAt)}</Text>
+        </View>
+        <Pressable onPress={() => handleSharePress(item)}>
           <Icon
-            style={styles.playIcon}
-            size={25}
-            name={`FontAwesome/${isPaused ? 'play' : 'pause'}`}
-            color={highlight ? '#FF4545' : 'black'}
+            style={styles.shareModalActionIcon}
+            size={24}
+            name={'AntDesign/sharealt'}
+            color={theme.colors['PF-Grey']}
           />
         </Pressable>
-        <Text style={styles.date}>{convertUtcToDateString(createdAt)}</Text>
       </View>
     </View>
   )
 }
 
-export default BakarrCard
+export default withTheme(BakarrCard)

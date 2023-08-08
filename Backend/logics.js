@@ -421,17 +421,11 @@ const saved_data_from_hostel_registration = async(req,res)=>{
     
 
 const gethostel_id_where_status_active = async(req,res)=>{
-    const querySnapshot = await getDocs(collection(db, "hostel_registration") , where("status", "===", "active"));
+    const q = query(collection(db, "hostel_registration"), where("status", "==", "active"));
+    const querySnapshot = await getDocs(q);
     const data1 = [];
-    const data2 = [];
-    const data3 = [];
-
     querySnapshot.forEach((doc) => {
-        data3.push(doc.data().uuid);
-        data2.push(doc.data().hostel_name);
-        // data3.push(...data2)
-        // data1.push(data3);
-        data1.push([doc.data().hostel_name,doc.data().uuid]);
+        data1.push([doc.data().uuid,doc.data().hostel_name]);
         });
 
     res.send(data1);

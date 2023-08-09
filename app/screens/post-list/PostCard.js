@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { theme } from '../../themes'
 import * as GlobalVariables from '../../config/GlobalVariableContext'
-import { BlurImage, Image, VideoPlayer, useSnackbar } from '../../components'
+import { BlurImage, CaptionContainer, Image, VideoPlayer, useSnackbar } from '../../components'
 import * as PagalFanBEApi from '../../apis/PagalFanBEApi'
 import { Dimensions, Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
 import { Icon } from '@draftbit/ui'
@@ -165,11 +165,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress, onComme
             <Icon name={'Ionicons/share'} size={18} color={theme.colors.communityIconFill} />
           </Pressable>
         </View>
-        <View style={styles.postCaptionContainer}>
-          <Text style={styles.captionText} numberOfLines={3}>
-            {caption}
-          </Text>
-        </View>
+        <CaptionContainer text={caption} maxChars={150} />
       </View>
       {showCommentModal && (
         <PostCommentModal
@@ -244,7 +240,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   postCaptionContainer: {
-    height: 60,
     paddingTop: 10,
     width: '100%',
   },

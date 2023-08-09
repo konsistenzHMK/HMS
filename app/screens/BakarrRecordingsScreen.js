@@ -4,6 +4,7 @@ import TrackPlayer from 'react-native-track-player'
 import { Event } from 'react-native-track-player'
 import BakarrCard from '../components/bakarr-card/BakarrCard'
 import { setupPlayer, addTracks } from '../utils/TrackPlayerService'
+import openShareUtil from '../utils/openShare'
 import { useTranslation } from 'react-i18next'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi'
@@ -12,6 +13,7 @@ import { FlashList } from '@shopify/flash-list'
 import * as GlobalStyles from '../GlobalStyles.js'
 import * as StyleSheet from '../utils/StyleSheet'
 import debounce from 'lodash.debounce'
+import branch from 'react-native-branch'
 
 function BakarrRecordingsScreen({ navigation, route, theme }) {
   const [bakarList, setBakarList] = useState([])
@@ -50,9 +52,8 @@ function BakarrRecordingsScreen({ navigation, route, theme }) {
   }
 
   function checkScrollToItem() {
-    let scrollToId = route?.params?.id
+    let scrollToId = Number(route?.params?.id)
     const index = bakarList.findIndex((p) => p.id === scrollToId)
-
     if (index >= 0) {
       listRef.current?.scrollToIndex?.({
         index,
@@ -79,6 +80,29 @@ function BakarrRecordingsScreen({ navigation, route, theme }) {
     })
 
     TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, () => {})
+  }
+
+  const handleSharePress = async (bakarrPost) => {
+    if (!bakarrPost) {
+      return
+    }
+
+    try {
+      let buo = await branch.createBranchUniversalObject(`bakarrRecordings/${bakarrPost.id}`, {
+        title: bakarrPost.session_title,
+        contentImageUrl: bakarrPost.image_url,
+        contentMetadata: {
+          customMetadata: {
+            bakarr_post_id: String(bakarrPost.id),
+          },
+        },
+      })
+
+      const response = await buo.generateShortUrl()
+      openShareUtil(response.url)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   useEffect(() => {
@@ -135,6 +159,8 @@ function BakarrRecordingsScreen({ navigation, route, theme }) {
         isPaused={id !== currentPlayingId || isPaused}
         highlight={id === highlight}
         createdAt={created_at}
+        handleSharePress={handleSharePress}
+        item={item}
       />
     )
   }

@@ -95,6 +95,12 @@ const HomeScreen = (props) => {
         userid: data.follower_id,
       })
     }
+    if (data.bakarr_post_id) {
+      navigation.navigate('BakarrRecordingsScreen', {
+        id: data.bakarr_post_id,
+        timestamp: Date.now(),
+      })
+    }
   }
 
   useEffect(async () => {

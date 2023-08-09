@@ -48,7 +48,6 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress, onComme
       }
       setLikesCount(liked ? likesCount - 1 : likesCount + 1)
       fetchLikesCount()
-      if (onComment) onComment()
     } catch (e) {
       // do nothign
     }
@@ -104,6 +103,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress, onComme
       })
       Keyboard.dismiss()
       fetchComments()
+      if (onComment) onComment()
     } catch (err) {
       console.error(err)
     }

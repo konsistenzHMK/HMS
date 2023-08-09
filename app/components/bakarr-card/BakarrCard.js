@@ -23,11 +23,12 @@ const BakarrCard = ({
       backgroundColor: 'white',
       borderRadius: 8,
       marginBottom: 16,
+      marginHorizontal: 1,
       shadowColor: '#000000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.3,
       shadowRadius: 4,
-      elevation: 6,
+      elevation: 3,
     },
     thumbnailContainer: {
       flexDirection: 'row',

@@ -198,7 +198,8 @@
       "Text.Lan2":"बदलने के लिए क्लिक करें"
     },
     "BakarrRecordingsScreen":{
-      "Text.Bakarr":"स्पोर्ट्स बकर"
+      "Text.Bakarr":"स्पोर्ट्स बकर",
+      "Text.SearchBarPlaceholder":"बकर में खोजें"
     }
   }
 }

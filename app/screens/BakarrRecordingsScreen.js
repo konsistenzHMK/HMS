@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import { Text, View, useWindowDimensions } from 'react-native'
 import TrackPlayer from 'react-native-track-player'
 import { Event } from 'react-native-track-player'
 import BakarrCard from '../components/bakarr-card/BakarrCard'
@@ -8,15 +8,19 @@ import openShareUtil from '../utils/openShare'
 import { useTranslation } from 'react-i18next'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import * as PagalFanBEApi from '../apis/PagalFanBEApi'
-import { Circle, Icon, ScreenContainer, Touchable } from '@draftbit/ui'
+import { Circle, Icon, ScreenContainer, TextInput, Touchable, withTheme } from '@draftbit/ui'
 import { FlashList } from '@shopify/flash-list'
+import * as GlobalStyles from '../GlobalStyles.js'
+import * as StyleSheet from '../utils/StyleSheet'
+import debounce from 'lodash.debounce'
 import branch from 'react-native-branch'
 
-function BakarrRecordingsScreen({ navigation, route }) {
+function BakarrRecordingsScreen({ navigation, route, theme }) {
   const [bakarList, setBakarList] = useState([])
   const [isPlayerReady, setIsPlayerReady] = useState(false)
   const [currentPlayingId, setCurrentPlayingId] = useState(-1)
   const [isPaused, setIsPaused] = useState(true)
+  const [searchText, setSearchText] = useState(null)
 
   const { t: translate } = useTranslation()
   const [highlight, setHighlight] = useState(false)
@@ -29,6 +33,22 @@ function BakarrRecordingsScreen({ navigation, route }) {
   const fetchBakarRecordings = async () => {
     const response = await PagalFanBEApi.fetchAllBakarrRecordingsGET(Constants)
     setBakarList(response)
+  }
+
+  const FilterList = (list) => {
+    if (!searchText) {
+      return list
+    }
+
+    if (list.length) {
+      return list.filter(
+        (item) =>
+          item.session_title.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.sub_title.toLowerCase().includes(searchText.toLowerCase()),
+      )
+    }
+    return list
   }
 
   function checkScrollToItem() {
@@ -121,6 +141,10 @@ function BakarrRecordingsScreen({ navigation, route }) {
     setCurrentPlayingId(id)
   }
 
+  const handleDebouncing = debounce((text) => {
+    setSearchText(text)
+  }, 500)
+
   const renderItem = ({ item }) => {
     const { id, image_url, session_title, sub_title, description, session_recorded_link, created_at } = item
     return (
@@ -153,7 +177,8 @@ function BakarrRecordingsScreen({ navigation, route }) {
     },
     mainHeading: {
       fontSize: 20,
-      marginVertical: 10,
+      marginTop: 10,
+      marginBottom: 2,
       fontWeight: 600,
       fontFamily: 'Rubik_700Bold',
       color: 'rgb(60, 63, 66)',
@@ -179,12 +204,32 @@ function BakarrRecordingsScreen({ navigation, route }) {
         </Touchable>
       </View>
       <Text style={styles.mainHeading}> {translate('BakarrRecordingsScreen.Text.Bakarr')}</Text>
+      <View>
+        <TextInput
+          onChangeText={(text) => {
+            handleDebouncing(text)
+          }}
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
+              color: theme.colors['PF-Grey'],
+              fontSize: 12,
+              border: 0.5,
+              borderColor: theme.colors['LightGrey'],
+              marginBottom: 10,
+            }),
+            dimensions.width,
+          )}
+          placeholder={translate('BakarrRecordingsScreen.Text.SearchBarPlaceholder')}
+          autoCapitalize={'none'}
+          placeholderTextColor={theme.colors['PF-Grey']}
+        />
+      </View>
       <FlashList
         bounces={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         ref={listRef}
-        data={bakarList}
+        data={FilterList(bakarList)}
         renderItem={renderItem}
         estimatedItemSize={150}
         extraData={`${currentPlayingId} ${isPaused} ${highlight}`}
@@ -193,4 +238,4 @@ function BakarrRecordingsScreen({ navigation, route }) {
   )
 }
 
-export default BakarrRecordingsScreen
+export default withTheme(BakarrRecordingsScreen)

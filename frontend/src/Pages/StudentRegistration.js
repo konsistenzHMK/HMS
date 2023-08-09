@@ -548,7 +548,7 @@ const changeHandicappStatus =(event) =>{
                         value={formData.handicapped_type} 
                         onChange={changeHandicappType}
                         >
-                        <option value="">Select Handicap Type</option>
+                        <option value="nil">Select Handicap Type</option>
                         <option value="Physical">Physical</option>
                         <option value="Visual">Visual</option>
                         <option value="Hearing">Hearing</option>
@@ -1504,11 +1504,11 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
       axios.post('http://localhost:7000/student/registration', formData)
       .then((response) => {
         // alert
-        console.log('API response:', response.data);
+        console.log('API response:', formData);
         alert(response.data);
       })
       .catch((error) => {
-        console.error('API request error:', error);
+        console.error('API request error:', formData);
       });
       // setFormData({
       // });
@@ -1636,7 +1636,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
     <div className="flex bg-defaultBg" >
       {/* Main Content */}
       <div className="w-full h-full">
-      <form onSubmit={handleSubmit}>
+      <form>
       <div className='w-full flex justify-center h-1/2 pt-10' >
       <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
                 {/* content */}
@@ -1919,6 +1919,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
               <div className='w-52 flex flex-col justify-center'>
                 <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`} 
                 disabled={sendForm}
+                onClick={handleSubmit}
                 >
                   Submit 
                 </button>
@@ -1943,32 +1944,28 @@ const StudentRegistartion = () =>{
     last_name:'',
     father_name:'',
     mother_name:'',
-    address_type:'',
     address1:'',
     address2:'',
     country:'India',
     state:'',
-    region:'',
-    district:'',
     city:'',
     pincode:'',
     gender:'',
     aadhar_id:'',
-    dob:null,
-    height:Number,
-    weight:Number,
+    dob:'',
+    height:0,
+    weight:0,
     blood_group:'',
     medical_history:'',
     medicine_taken:'',
     birth_mark:'',
     handicapped:'false',
-    handicapped_per:Number,
-    handicapped_type:String,
-    orphan:Boolean,
+    handicapped_per:'',
+    handicapped_type:'nil',
+    orphan:'',
     personal_mobile:'',
     parent_mobile:'',
     teacher_mobile:'',
-    emergency_number:'',
     personal_email:'',
     parent_email:'',
     teacher_email:'',
@@ -1976,7 +1973,6 @@ const StudentRegistartion = () =>{
     principle_name:'',
     religon:'',
     category:'',
-    subCategory:'',
     income:'',
     college_address1:'',
     college_address2:'',
@@ -1991,7 +1987,6 @@ const StudentRegistartion = () =>{
     ifsc:'',
     account_number:'',
     hostel_name_or_id:''
-   
   });
 
   const [currentPage, setCurrentPage] = useState(1);

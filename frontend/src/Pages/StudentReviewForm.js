@@ -82,9 +82,9 @@ const StudentReviewForm = () => {
             <div className='w-11/12 '> {allForms.map((item, index) => (<ReviewCardStudent data={item} setShowForm={setShowForm} setFormDataOut={setFormData1} setEdit2={setEdit2} setDisplay={setDisplay}/>))}</div>
             </div>
         }
-        {ShowForm && <StudentRegistartion ExistingFormData={FormData1} />}
-        {edit2 && <StudentRegistartion ExistingFormData={FormData1} /> }
-        {display && <StudentRegistartion ExistingFormData={FormData1} />}
+        {ShowForm && <StudentRegistartion ExistingFormData={FormData1} edit={true} Review={false} display={false} />}
+        {edit2 && <StudentRegistartion ExistingFormData={FormData1} edit={false} Review={true} display={false} /> }
+        {display && <StudentRegistartion ExistingFormData={FormData1}edit={false} Review={false} display={true} />}
           </div>
     );
   };

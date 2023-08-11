@@ -109,7 +109,15 @@ const DashboardPage = () => {
             <div className='w-full mt-3 ml-6 flex justify-start'>
                 <a href='http://localhost:3000/hostel-FormReview'>
                 <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'>
-                    <p className='font-popins text-normal'>+ Review Saved HostelRegistration Form</p>
+                    <p className='font-popins text-normal'>+ Review Hostel Registrations</p>
+                </button>
+                </a>
+
+            </div>
+            <div className='w-full mt-3 ml-6 flex justify-start'>
+                <a href='http://localhost:3000/student-FormReview'>
+                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'>
+                    <p className='font-popins text-normal'>+ Review Student Registartions</p>
                 </button>
                 </a>
 

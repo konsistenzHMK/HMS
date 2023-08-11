@@ -7,7 +7,7 @@ import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
 
 
-const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
+const Page1 = ({currentPage,formData, setFormData, nextPage ,display}) =>{
   const [State,changeState]=useState('');
   const [allState,changeAllState]=useState([]);
   const [City,changeCity]=useState('');
@@ -182,9 +182,9 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
   }
 
   // Validate dob
-  if (!formData.dob) {
-    errors.push(1);
-  }
+  // if (!formData.dob) {
+  //   errors.push(1);
+  // }
 
   // Set the errors using setErrors
   setErrors(errors);
@@ -345,6 +345,7 @@ const changeHandicappStatus =(event) =>{
                     <input
                       type="text"
                       id="first_name"
+                      disabled={display}
                       name="first_name"
                       value={formData.first_name}
                       onChange={handleChange}
@@ -359,6 +360,7 @@ const changeHandicappStatus =(event) =>{
                     <input
                       type="text"
                       id="last_name"
+                      disabled={display}
                       name="last_name"
                       value={formData.last_name}
                       onChange={handleChange}
@@ -376,6 +378,7 @@ const changeHandicappStatus =(event) =>{
                     <input
                       type="text"
                       id="father_name"
+                      disabled={display}
                       name="father_name"
                       value={formData.father_name}
                       onChange={handleChange}
@@ -390,6 +393,7 @@ const changeHandicappStatus =(event) =>{
                     <input
                       type="text"
                       id="mother_name"
+                      disabled={display}
                       name="mother_name"
                       value={formData.mother_name}
                       onChange={handleChange}
@@ -406,6 +410,7 @@ const changeHandicappStatus =(event) =>{
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.gender} 
                         onChange={changeGender}
+                        disabled={display}
                         >
                         <option value="none">Select an option</option>
                         <option value="male">Male</option>
@@ -421,6 +426,7 @@ const changeHandicappStatus =(event) =>{
                   <div className="mb-1 font-popins text-lg font-medium w-full">Date of Birth <p className='inline text-xl text-red-600'>*</p></div>
                     <DatePicker
                       selected={formData.dob}
+                      disabled={display}
                       onChange={changeDate}
                       dateFormat="yyyy-MM-dd"
                       maxDate={maxDate}
@@ -439,6 +445,7 @@ const changeHandicappStatus =(event) =>{
                       type="text"
                       id="aadhar_id"
                       name="aadhar_id"
+                      disabled={display}
                       value={formData.aadhar_id}
                       maxLength={12} 
                       onChange={allowNumbers}
@@ -455,6 +462,7 @@ const changeHandicappStatus =(event) =>{
                     <input
                       type="text"
                       id="religon"
+                      disabled={display}
                       name="religon"
                       value={formData.religon}
                       onChange={handleChange}
@@ -469,6 +477,7 @@ const changeHandicappStatus =(event) =>{
                     <input
                       type="text"
                       id="category"
+                      disabled={display}
                       name="category"
                       value={formData.category}
                       onChange={handleChange}
@@ -486,6 +495,7 @@ const changeHandicappStatus =(event) =>{
                       type="Number"
                       id="height"
                       name="height"
+                      disabled={display}
                       value={formData.height}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -499,6 +509,7 @@ const changeHandicappStatus =(event) =>{
                       type="Number"
                       id="weight"
                       name="weight"
+                      disabled={display}
                       value={formData.weight}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -515,6 +526,7 @@ const changeHandicappStatus =(event) =>{
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 ' 
                         value={formData.handicapped} 
                         onChange={changeHandicappStatus}
+                        disabled={display}
                         >
                         <option value='true'>Yes</option>
                         <option value='partial'>Partially</option>
@@ -532,6 +544,7 @@ const changeHandicappStatus =(event) =>{
                       name="handicapped_per"
                       value={formData.handicapped_per}
                       onChange={handleChange}
+                      
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
                     {errors.handicapped_per && <span className="error text-red-500">{errors.handicapped_per}</span>}
@@ -564,6 +577,7 @@ const changeHandicappStatus =(event) =>{
                           className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                           value={formData.orphan} 
                           onChange={changeOrphan}
+                          disabled={display}
                           >
                           <option value="no">No</option>
                           <option value="yes">Yes</option>
@@ -585,6 +599,7 @@ const changeHandicappStatus =(event) =>{
                       type="text"
                       id="address1"
                       name="address1"
+                      disabled={display}
                       value={formData.address1}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -599,6 +614,7 @@ const changeHandicappStatus =(event) =>{
                       type="text"
                       id="address2"
                       name="address2"
+                      disabled={display}
                       value={formData.address2}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -615,6 +631,7 @@ const changeHandicappStatus =(event) =>{
                       type="text"
                       id="state"
                       name="country"
+                      disabled={display}
                       value={'India'}
                       onChange={handleChange}
                       className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1'
@@ -628,6 +645,7 @@ const changeHandicappStatus =(event) =>{
                   <select id="state" onChange={handleStateChange}
                    className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                    value={State} 
+                   disabled={display}
                   >
                     <option value="">Select a state</option>
                     {allState.map((state) => (
@@ -648,6 +666,7 @@ const changeHandicappStatus =(event) =>{
                   <select id="city" onChange={handleCityChange}
                    className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                    value={City} 
+                   disabled={display}
                   >
                     <option value="">Select a City</option>
                     {allCity.map((city) => (
@@ -669,6 +688,7 @@ const changeHandicappStatus =(event) =>{
                       maxLength={6} 
                       onChange={allowNumbers}
                       value={formData.pincode}
+                      disabled={display}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error text-red-500">{errors.pincode}</span>}
@@ -706,7 +726,7 @@ const changeHandicappStatus =(event) =>{
 
   );
 };
-const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
+const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage,display}) =>{
   const [errors, setErrors] = useState({});
   
   useEffect(() => {
@@ -882,8 +902,9 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Blood Group <p className='inline text-xl text-red-600'></p></div>
                     <select
+                    disabled={display}
                         className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 ' 
-                        value={formData.blood_group} 
+                        value={formData?.blood_group} 
                         onChange={changeBloodGroup}
                         >
                         <option value=''>Select Blood Group</option>
@@ -902,10 +923,11 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="medical_history"> Medical History <p className='inline text-xl text-red-600'></p></div>
                     <input
+                      disabled={display}
                       type="text"
                       id="medical_history"
                       name="medical_history"
-                      value={formData.medical_history}
+                      value={formData?.medical_history}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -919,9 +941,10 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Medicine taken</div>
                     <input
                       type="text"
+                      disabled={display}
                       id="medicine_taken"
                       name="medicine_taken"
-                      value={formData.medicine_taken}
+                      value={formData?.medicine_taken}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -933,9 +956,10 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Birth Mark</div>
                     <input
                       type="text"
+                      disabled={display}
                       id="birth_mark"
                       name="birth_mark"
-                      value={formData.birth_mark}
+                      value={formData?.birth_mark}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -979,7 +1003,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   );
 };
 
-const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
+const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage,display}) =>{
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -1006,17 +1030,17 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   const validateForm = () => {
     let errors = [];
     // Validate personal_mobile
-    if (formData.personal_mobile.length!=10) {
+    if (formData.personal_mobile && formData.personal_mobile.length!=10) {
       errors.push(1);
     }
   
     // Validate parent_mobile
-    if (formData.parent_mobile.length!=10) {
+    if (formData.parent_mobile && formData.parent_mobile.length!=10) {
       errors.push(1);
     }
   
     // // Validate teacher_mobile
-    if (formData.teacher_mobile.length!=10) {
+    if (formData.teacher_mobile && formData.teacher_mobile.length!=10) {
       errors.push(1);
     }
   
@@ -1249,6 +1273,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type='text'
                       id="personal_mobile"
                       name="personal_mobile"
+                      disabled={display}
                       maxLength={10}
                       onChange={allowNumbers}
                       value={formData.personal_mobile}
@@ -1264,6 +1289,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="parent_mobile"
                       name="parent_mobile"
+                      disabled={display}
                       value={formData.parent_mobile}
                       maxLength={10}
                       onChange={allowNumbers}
@@ -1283,6 +1309,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="personal_email"
                       name="personal_email"
+                      disabled={display}
                       value={formData.personal_email}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -1297,6 +1324,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="parent_email"
                       name="parent_email"
+                      disabled={display}
                       value={formData.parent_email}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -1313,6 +1341,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                     <input
                       type="number"
                       id="income"
+                      disabled={display}
                       name="income"
                       value={formData.income}
                       onChange={handleChange}
@@ -1334,6 +1363,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="collage_name"
                       name="collage_name"
+                      disabled={display}
                       value={formData.collage_name}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -1351,6 +1381,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="college_address1"
                       name="college_address1"
+                      disabled={display}
                       value={formData.college_address1}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -1365,6 +1396,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="college_address2"
                       name="college_address2"
+                      disabled={display}
                       value={formData.college_address2}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -1381,6 +1413,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="principle_name"
                       name="principle_name"
+                      disabled={display}
                       value={formData.principle_name}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -1395,6 +1428,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="teacher_mobile"
                       name="teacher_mobile"
+                      disabled={display}
                       value={formData.teacher_mobile}
                       maxLength={10}
                       onChange={allowNumbers}
@@ -1411,6 +1445,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="teacher_email"
                       name="teacher_email"
+                      disabled={display}
                       value={formData.teacher_email}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
@@ -1454,7 +1489,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   );
 };
 
-const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
+const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,review}) =>{
   const [errors, setErrors] = useState({});
   
   const handleChange = (e) => {
@@ -1720,6 +1755,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Account Holder Name<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
+                      disabled={display}
                       id="account_holder_name"
                       name="account_holder_name"
                       value={formData.account_holder_name}
@@ -1734,6 +1770,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Bank name<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
+                      disabled={display}
                       id="bank_name"
                       name="bank_name"
                       value={formData.bank_name}
@@ -1749,6 +1786,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">IFSC<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
+                      disabled={display}
                       id="ifsc"
                       name="ifsc"
                       value={formData.ifsc}
@@ -1763,6 +1801,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Account Number<p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="number"
+                      disabled={display}
                       id="account_number"
                       name="account_number"
                       value={formData.account_number}
@@ -1782,7 +1821,8 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Photo Attachment <p className='inline text-xl text-red-600'>*</p></div>
                     <input 
-                      type="file" 
+                      type="file"
+                      disabled={display}
                       id="photo" 
                       accept=".jpg, .jpeg, .png"
                       onChange={handlePhotoChange}
@@ -1799,6 +1839,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Upload Aadhar<p className='inline text-xl text-red-600'>*</p></div>
                   <input 
                       type="file" 
+                      disabled={display}
                       id="photo" 
                       accept=".pdf"
                       onChange={handleAadharChange}
@@ -1806,6 +1847,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                     />
                     {AselectedFile && (
                         <iframe
+                        disabled={display}
                         src={URL.createObjectURL(AselectedFile)}
                         title="PDF Preview"
                         className='w-32 h-32 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
@@ -1820,7 +1862,8 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                 <div className='w-1/2'>
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Caste Certificate  <p className='inline text-xl text-red-600'>*</p></div>
                     <input 
-                      type="file" 
+                      type="file"
+                      disabled={display} 
                       id="photo" 
                       accept=".pdf"
                       onChange={handleCasteChange}
@@ -1828,6 +1871,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                     />
                     {CselectedFile && (
                         <iframe
+                        disabled={display}
                         src={URL.createObjectURL(CselectedFile)}
                         title="PDF Preview"
                         className='w-32 h-32 border-gray-400 rounded-md font-montserrat' 
@@ -1840,7 +1884,8 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Medical Certificates<p className='inline text-xl text-red-600'></p></div>
                   <input 
-                      type="file" 
+                      type="file"
+                      disabled={display}
                       id="photo" 
                       accept=".pdf"
                       onChange={handleMedicalChange}
@@ -1848,6 +1893,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                     />
                     {MselectedFile && (
                         <iframe
+                        disabled={display}
                         src={URL.createObjectURL(MselectedFile)}
                         title="PDF Preview"
                         className='w-32 h-32 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
@@ -1863,6 +1909,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Income Certificate  <p className='inline text-xl text-red-600'></p></div>
                     <input 
                       type="file" 
+                      disabled={display}
                       id="photo" 
                       accept=".pdf"
                       onChange={handleIncomeChange}
@@ -1870,6 +1917,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                     />
                     {IselectedFile && (
                         <iframe
+                        disabled={display}
                         src={URL.createObjectURL(IselectedFile)}
                         title="PDF Preview"
                         className='w-32 h-32 border-gray-400 rounded-md font-montserrat' 
@@ -1882,7 +1930,8 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Bank Details<p className='inline text-xl text-red-600'></p></div>
                   <input 
-                      type="file" 
+                      type="file"
+                      disabled={display}
                       id="photo" 
                       accept=".pdf"
                       onChange={handleBDChange}
@@ -1890,6 +1939,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                     />
                     {BDselectedFile && (
                         <iframe
+                        disabled={display}
                         src={URL.createObjectURL(BDselectedFile)}
                         title="PDF Preview"
                         className='w-32 h-32 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
@@ -1917,11 +1967,19 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
+                {edit || review ?
+                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`} 
+                disabled={sendForm}
+                >
+                  Save 
+                </button>
+                :null
+                }
                 <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`} 
                 disabled={sendForm}
                 onClick={handleSubmit}
                 >
-                  Submit 
+                  {review ? 'Block' : 'Submit'} 
                 </button>
                 <button onClick={handlePrevPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
                   Previous Page 
@@ -1938,7 +1996,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
   );
 };
 
-const StudentRegistartion = () =>{
+const StudentRegistartion = (props) =>{
   const [formData, setFormData] = useState({
     first_name: '',
     last_name:'',
@@ -1989,6 +2047,18 @@ const StudentRegistartion = () =>{
     hostel_name_or_id:''
   });
 
+  const [existingformData, setExistingFormData] = useState(null)
+
+  useEffect(()=>{
+    if(props.ExistingFormData){
+      setFormData(props.ExistingFormData)
+      setFormData((prevData) => ({
+        ...prevData,
+        dob: ''
+      }));
+    }
+  })
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const nextPage = () => {
@@ -2003,16 +2073,16 @@ const StudentRegistartion = () =>{
   return (
     <>
       {currentPage === 1 && (
-        <Page1 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} />
+        <Page1 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} display={props.display}/>
       )}
       {currentPage === 2 && (
-        <Page2 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
+        <Page2 currentPage={currentPage} formData={existingformData ? formData:existingformData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} display={props.display}/>
       )}
       {currentPage === 3 && (
-        <Page3  currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
+        <Page3  currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} display={props.display}/>
       )}
       {currentPage === 4 && (
-        <Page4  currentPage={currentPage} formData={formData} setFormData={setFormData} previousPage={previousPage} />
+        <Page4  currentPage={currentPage} formData={formData} setFormData={setFormData} previousPage={previousPage} display={props.display} edit={props.edit} review={props.Review}/>
       )}
     </>
     

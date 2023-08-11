@@ -182,9 +182,9 @@ const Page1 = ({currentPage,formData, setFormData, nextPage }) =>{
   }
 
   // Validate dob
-  if (!formData.dob) {
-    errors.push(1);
-  }
+  // if (!formData.dob) {
+  //   errors.push(1);
+  // }
 
   // Set the errors using setErrors
   setErrors(errors);
@@ -883,7 +883,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                   <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Blood Group <p className='inline text-xl text-red-600'></p></div>
                     <select
                         className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5 ' 
-                        value={formData.blood_group} 
+                        value={formData?.blood_group} 
                         onChange={changeBloodGroup}
                         >
                         <option value=''>Select Blood Group</option>
@@ -905,7 +905,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="medical_history"
                       name="medical_history"
-                      value={formData.medical_history}
+                      value={formData?.medical_history}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -921,7 +921,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="medicine_taken"
                       name="medicine_taken"
-                      value={formData.medicine_taken}
+                      value={formData?.medicine_taken}
                       onChange={handleChange}
                       className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -935,7 +935,7 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
                       type="text"
                       id="birth_mark"
                       name="birth_mark"
-                      value={formData.birth_mark}
+                      value={formData?.birth_mark}
                       onChange={handleChange}
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     />
@@ -1006,17 +1006,17 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage}) =>{
   const validateForm = () => {
     let errors = [];
     // Validate personal_mobile
-    if (formData.personal_mobile.length!=10) {
+    if (formData.personal_mobile && formData.personal_mobile.length!=10) {
       errors.push(1);
     }
   
     // Validate parent_mobile
-    if (formData.parent_mobile.length!=10) {
+    if (formData.parent_mobile && formData.parent_mobile.length!=10) {
       errors.push(1);
     }
   
     // // Validate teacher_mobile
-    if (formData.teacher_mobile.length!=10) {
+    if (formData.teacher_mobile && formData.teacher_mobile.length!=10) {
       errors.push(1);
     }
   
@@ -1938,7 +1938,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData}) =>{
   );
 };
 
-const StudentRegistartion = () =>{
+const StudentRegistartion = (props) =>{
   const [formData, setFormData] = useState({
     first_name: '',
     last_name:'',
@@ -1989,6 +1989,18 @@ const StudentRegistartion = () =>{
     hostel_name_or_id:''
   });
 
+  const [existingformData, setExistingFormData] = useState(null)
+
+  useEffect(()=>{
+    if(props.ExistingFormData){
+      setFormData(props.ExistingFormData)
+      setFormData((prevData) => ({
+        ...prevData,
+        dob: ''
+      }));
+    }
+  })
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const nextPage = () => {
@@ -2006,7 +2018,7 @@ const StudentRegistartion = () =>{
         <Page1 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} />
       )}
       {currentPage === 2 && (
-        <Page2 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
+        <Page2 currentPage={currentPage} formData={existingformData ? formData:existingformData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />
       )}
       {currentPage === 3 && (
         <Page3  currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} previousPage={previousPage} />

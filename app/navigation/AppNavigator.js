@@ -19,6 +19,7 @@ import { navigationRef } from './NavigationRef'
 import NavigationContext from './NavigationContext'
 import * as GlobalVariables from '../config/GlobalVariableContext'
 import PostListScreen from '../screens/post-list/PostListScreen'
+import LegalDocumentScreen from '../screens/LegalDocumentScreen'
 
 export const AppNavigator = () => {
   const [stack, setStack] = useState('loading')
@@ -59,6 +60,13 @@ export const AppNavigator = () => {
               component={OnboardingScreen}
               options={{
                 title: 'Onboarding',
+              }}
+            />
+            <Stack.Screen
+              name="LegalDocumentScreen"
+              component={LegalDocumentScreen}
+              options={{
+                title: 'Posts',
               }}
             />
           </React.Fragment>
@@ -143,6 +151,14 @@ export const AppNavigator = () => {
             <Stack.Screen
               name="PostListScreen"
               component={PostListScreen}
+              options={{
+                title: 'Posts',
+              }}
+            />
+
+            <Stack.Screen
+              name="LegalDocumentScreen"
+              component={LegalDocumentScreen}
               options={{
                 title: 'Posts',
               }}

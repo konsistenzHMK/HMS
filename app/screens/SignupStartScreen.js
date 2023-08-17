@@ -39,7 +39,7 @@ const SignupStartScreen = (props) => {
               dimensions.width,
             )}
             resizeMode={'cover'}
-            source={Images.PFLogin}
+            source={Images.PFBanner1}
           />
           <View style={StyleSheet.applyWidth({ marginTop: 20 }, dimensions.width)}>
             {/* Title */}
@@ -104,7 +104,7 @@ const SignupStartScreen = (props) => {
               dimensions.width,
             )}
           >
-           {translate('SignupStartScreen.Text.OTPSentText')}
+            {translate('SignupStartScreen.Text.OTPSentText')}
           </Text>
           {/* Mail row */}
           <View
@@ -175,7 +175,37 @@ const SignupStartScreen = (props) => {
                 dimensions.width,
               )}
             >
-              {translate('SignupStartScreen.Text.TermsCondition')}
+              {translate('SignupStartScreen.Text.TermsConditionBreakup1')}
+              <Text
+                style={{ color: '#0a798f' }}
+                onPress={() => {
+                  try {
+                    navigation.navigate('LegalDocumentScreen', {
+                      docName: 'tnc',
+                    })
+                  } catch (err) {
+                    console.error(err)
+                  }
+                }}
+              >
+                {translate('SignupStartScreen.Text.TermsConditionBreakup2')}
+              </Text>
+              {translate('SignupStartScreen.Text.TermsConditionBreakup3')}
+              <Text
+                style={{ color: '#0a798f' }}
+                onPress={() => {
+                  try {
+                    navigation.navigate('LegalDocumentScreen', {
+                      docName: 'privacyPolicy',
+                    })
+                  } catch (err) {
+                    console.error(err)
+                  }
+                }}
+              >
+                {translate('SignupStartScreen.Text.TermsConditionBreakup4')}
+              </Text>
+              {translate('SignupStartScreen.Text.TermsConditionBreakup5')}
             </Text>
           </View>
           {/* Proceed Button */}

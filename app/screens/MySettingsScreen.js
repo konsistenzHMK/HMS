@@ -148,7 +148,17 @@ const MySettingsScreen = (props) => {
           />
         </Touchable>
         {/* Support */}
-        <Touchable>
+        <Touchable
+          onPress={() => {
+            try {
+              navigation.navigate('LegalDocumentScreen', {
+                docName: 'support',
+              })
+            } catch (err) {
+              console.error(err)
+            }
+          }}
+        >
           {/* Row Wrapper */}
           <View
             style={StyleSheet.applyWidth(
@@ -195,7 +205,17 @@ const MySettingsScreen = (props) => {
           />
         </Touchable>
         {/* About */}
-        <Touchable>
+        <Touchable
+          onPress={() => {
+            try {
+              navigation.navigate('LegalDocumentScreen', {
+                docName: 'aboutUs',
+              })
+            } catch (err) {
+              console.error(err)
+            }
+          }}
+        >
           {/* Row Wrapper */}
           <View
             style={StyleSheet.applyWidth(

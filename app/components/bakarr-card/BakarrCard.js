@@ -1,6 +1,7 @@
 import { Icon, withTheme } from '@draftbit/ui'
 import React from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
+import CaptionContainer from '../caption-container/CaptionContainer'
 
 const BakarrCard = ({
   theme,
@@ -137,7 +138,9 @@ const BakarrCard = ({
           <Text style={styles.subheading}>{subheading}</Text>
         </View>
       </View>
-      <Text style={styles.description}>{description}</Text>
+      <View style={styles.description}>
+        <CaptionContainer text={description} maxChars={90} textColor="rgb(102, 102, 102)" />
+      </View>
       <View style={styles.bottomContainer}>
         <View style={{ flexDirection: 'row' }}>
           <Pressable

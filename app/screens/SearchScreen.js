@@ -49,7 +49,7 @@ const SearchScreen = (props) => {
         })
     } else {
       fetch(
-        `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?caption=ilike.*${textInputValue}*&limit=10&offset=${pageNumber}`,
+        `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc&caption=ilike.*${textInputValue}*&limit=10&offset=${pageNumber}`,
         headerObject,
       )
         .then((res) => res.json())

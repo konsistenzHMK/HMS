@@ -608,7 +608,7 @@ const HomeScreen = (props) => {
                               {
                                 alignItems: 'center',
                                 marginRight: 10,
-                                width: 70,
+                                width: 90,
                               },
                               dimensions.width,
                             )}
@@ -619,11 +619,11 @@ const HomeScreen = (props) => {
                                   // borderBottomWidth: 3,
                                   borderColor: theme.colors['App Green'],
                                   borderRadius: 50,
-                                  borderWidth: 2,
-                                  marginBottom:3,
+                                  borderWidth: 1,
+                                  marginBottom: 3,
                                   // borderTopWidth: 1,
-                                  height: 60,
-                                  width: 60,
+                                  height: 70,
+                                  width: 70,
                                 }),
                                 dimensions.width,
                               )}
@@ -636,27 +636,29 @@ const HomeScreen = (props) => {
                               style={StyleSheet.applyWidth(
                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                   fontFamily: 'Inter_400Regular',
-                                  fontSize: 8,
+                                  fontSize: 9,
+                                  textAlign: 'center',
+                                }),
+                                dimensions.width,
+                              )}
+                              numberOfLines={2}
+                              ellipsizeMode={'tail'}
+                            >
+                              {flashListData?.session_title}
+                            </Text>
+                            <Text
+                              style={StyleSheet.applyWidth(
+                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                  fontFamily: 'Inter_400Regular',
+                                  fontSize: 7,
+                                  marginBottom: 9,
                                 }),
                                 dimensions.width,
                               )}
                               numberOfLines={1}
                               ellipsizeMode={'tail'}
                             >
-                              {flashListData?.session_title}
-                            </Text>
-                            <Text 
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                fontFamily: 'Inter_400Regular',
-                                fontSize: 7,
-                                marginBottom: 9,
-                              }),
-                              dimensions.width,
-                            )}
-                            numberOfLines={1}
-                            ellipsizeMode={'tail'}>
-                              {"("+flashListData?.language+")"}
+                              {'(' + flashListData?.language + ')'}
                             </Text>
                           </View>
                         </Pressable>
@@ -693,9 +695,9 @@ const HomeScreen = (props) => {
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.DividerStyles(theme)['Divider'], {
               height: 0.5,
-              marginBottom: 10,
+              marginBottom: 7,
               marginLeft: 80,
-              marginTop: 10,
+              marginTop: 7,
               width: '50%',
             }),
             dimensions.width,
@@ -1042,7 +1044,7 @@ const HomeScreen = (props) => {
             }}
           </PagalFanBEApi.FetchFetchAllUpcomingMatchesGET>
         </View>
-        <Divider
+        {/* <Divider
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.DividerStyles(theme)['Divider'], {
               height: 0.5,
@@ -1054,7 +1056,7 @@ const HomeScreen = (props) => {
             dimensions.width,
           )}
           color={theme.colors['PF-Primary']}
-        />
+        /> */}
         {/* ClubScroll */}
         {/* <View>
           <View
@@ -1193,9 +1195,9 @@ const HomeScreen = (props) => {
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.DividerStyles(theme)['Divider'], {
               height: 0.5,
-              marginBottom: 0,
+              marginBottom: 5,
               marginLeft: 80,
-              marginTop: 10,
+              marginTop: 7,
               width: '50%',
             }),
             dimensions.width,
@@ -1406,8 +1408,8 @@ const styles = RNStyleSheet.create({
   },
   fanClubShimmer: {
     marginRight: 14,
-    width: 90,
-    height: 90,
+    width: 80,
+    height: 80,
     borderRadius: 45,
   },
   feedShimmer: {

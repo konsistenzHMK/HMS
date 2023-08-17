@@ -195,8 +195,8 @@ const OthersProfileScreen = (props) => {
                 )}
               >
                 <Image
-                  style={StyleSheet.applyWidth({ height: 150, width: 500 }, dimensions.width)}
-                  source={Images.JonathanBorbaKgCSRo4SiT8Unsplash}
+                  style={StyleSheet.applyWidth({ height: 150, width: 'auto' }, dimensions.width)}
+                  source={Images.ProfileCover}
                   resizeMode={'cover'}
                 />
               </View>

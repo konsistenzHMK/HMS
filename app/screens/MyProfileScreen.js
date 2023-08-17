@@ -203,9 +203,9 @@ const MyProfileScreen = (props) => {
                 )}
               >
                 <Image
-                  style={StyleSheet.applyWidth({ height: 150, width: 500 }, dimensions.width)}
-                  source={Images.JonathanBorbaKgCSRo4SiT8Unsplash}
-                  resizeMode={'cover'}
+                  style={StyleSheet.applyWidth({ height: 150, width: '100%' }, dimensions.width)}
+                  source={Images.ProfileCover}
+                  resizeMode={'stretch'}
                 />
               </View>
               {/* Profile Image Frame */}

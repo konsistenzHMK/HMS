@@ -27,7 +27,7 @@ const SignupOTPScreen = (props) => {
   const { setStack } = useNavigationContext()
 
   const handleSignUpPress = async () => {
-    snackbar.show({ title: translate('SignupOTPScreen.Toast.CheckOTPText')})
+    snackbar.show({ title: translate('SignupOTPScreen.Toast.CheckOTPText') })
     try {
       const responseJson = await PagalFanBEApi.loginViaEmailOTPPOST(Constants, {
         emailId: props.route?.params?.user_email,
@@ -88,7 +88,7 @@ const SignupOTPScreen = (props) => {
               dimensions.width,
             )}
             resizeMode={'cover'}
-            source={Images.PFLogin}
+            source={Images.PFBanner1}
           />
           <View style={StyleSheet.applyWidth({ marginTop: 20 }, dimensions.width)}>
             {/* Title */}
@@ -199,7 +199,7 @@ const SignupOTPScreen = (props) => {
             )}
             title={translate('SignupOTPScreen.Text.Continue')}
           >
-           {translate('SignupOTPScreen.Button.SignUp')}
+            {translate('SignupOTPScreen.Button.SignUp')}
           </Button>
         </View>
       </KeyboardAwareScrollView>

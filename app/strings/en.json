@@ -186,7 +186,11 @@
       "Text.Welcome": "Welcome!",
       "Text.LoginText": "Login / Register",
       "Text.OTPSentText": "We will send an OTP to your mail id",
-      "Text.TermsCondition": "I agree with the Terms of Use and Privacy Policy of PagalFan",
+      "Text.TermsConditionBreakup1": "I agree with the ",
+      "Text.TermsConditionBreakup2": "Terms of Use ",
+      "Text.TermsConditionBreakup3": "and ",
+      "Text.TermsConditionBreakup4": "Privacy Policy ",
+      "Text.TermsConditionBreakup5": "of PagalFan ",
       "Toast.SentOTP": "Sending OTP …",
       "Button.GetOTP": "Get OTP by Email",
       "Text.SignUp": "Sign Up"

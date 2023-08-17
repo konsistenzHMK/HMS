@@ -61,6 +61,73 @@ const MatchDaySingleScreen = (props) => {
     return 'Match Feed Not Available'
   }
 
+  const checkMatchDates = (str1,str2) => {
+    const [year1, month1, day1] = str1.split('-');
+    const [year2, month2, day2] = str2.split('-');
+  
+    if(year1==year2 && month1==month2 && day1==day2) return true;
+    return false;
+  }
+
+  const YetToBat1 = () =>{
+    var team1
+    var team2
+
+    team1 = jsonfeed?.data?.play?.first_batting
+    if (team1 == undefined) team1 = 'a'
+
+    if (team1 == 'a') team2 = 'b'
+    else team2 = 'a'
+
+    const playingAll=jsonfeed?.data?.squad?.[team1].playing_xi;
+
+    var st
+    if (team1 == 'a') st = 'a_1'
+    else st = 'b_1'
+
+    const batted=jsonfeed?.data?.play?.innings?.[st]?.batting_order;
+    // console.log(batted);
+
+    const ans=playingAll.filter((ele)=>{
+      var t=true;
+      batted.forEach((ele2)=>{
+        if(ele == ele2) t=false;
+      })
+      return t;
+    })
+
+    return ans;
+  }
+
+  const YetToBat2 = () =>{
+    var team1
+    var team2
+
+    team1 = jsonfeed?.data?.play?.first_batting
+    if (team1 == undefined) team1 = 'a'
+
+    if (team1 == 'a') team2 = 'b'
+    else team2 = 'a'
+
+    const playingAll=jsonfeed?.data?.squad?.[team2].playing_xi;
+
+    var st
+    if (team2 == 'a') st = 'a_1'
+    else st = 'b_1'
+
+    const batted=jsonfeed?.data?.play?.innings?.[st]?.batting_order;
+    // console.log(batted);
+
+    const ans=playingAll.filter((ele)=>{
+      var t=true;
+      batted.forEach((ele2)=>{
+        if(ele == ele2) t=false;
+      })
+      return t;
+    })
+    return ans;
+  }
+
   const GiveBowlingDetails = (rawName) => {
     var response = {
       name: jsonfeed?.data?.players?.[rawName]?.player?.name,
@@ -954,8 +1021,8 @@ const MatchDaySingleScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {getCorrectDateFormat(listData?.match_date)}
-                              {endDate(listData?.end_date)}
+                              {checkMatchDates(listData?.match_date,listData?.end_date) ? getCorrectDateFormat(listData?.match_date):getCorrectDateFormat(listData?.match_date)}
+                                  {checkMatchDates(listData?.match_date,listData?.end_date) ? null:endDate(listData?.end_date)}
                             </Text>
                             {/* StartTime */}
                             <Text
@@ -969,7 +1036,7 @@ const MatchDaySingleScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {getCorrectTimeFormat(listData?.start_time)}
+                              {getCorrectTimeFormat(listData?.start_time)} {" "}
                               {translate('MatchDaySingleScreen.Text.IST')}
                             </Text>
                           </View>
@@ -2074,12 +2141,72 @@ const MatchDaySingleScreen = (props) => {
                                                 dimensions.width,
                                               )}
                                             >
-                                              {'RR - '}
+                                              {'RR -'}
                                               {Team1RR()}
                                             </Text>
                                           </View>
                                         </View>
                                       </View>
+                                      {YetToBat1().length==0 ?null :
+                                      <View
+                                          style={StyleSheet.applyWidth(
+                                            {
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              marginTop: 3,
+                                              alignSelf:'baseline'
+                                            },
+                                            dimensions.width,
+                                          )}
+                                        >
+                                          <Text
+                                            style={StyleSheet.applyWidth(
+                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                fontFamily: 'System',
+                                                fontWeight: '600',
+                                                color: '#fff',
+                                                
+                                              }),
+                                              dimensions.width,
+                                            )}
+                                          >
+                                            {'Yet to Bat:'}
+                                          </Text>
+                                          <View
+                                            style={{
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              marginTop: 3,
+                                              marginLeft: 5,
+                                              width:300,
+                                              flexWrap: 'wrap'
+                                            }}
+                                          >
+                                          <FlatList
+                                            data={YetToBat1()}
+                                            contentContainerStyle={{flexDirection : "row", flexWrap : "wrap"}} 
+                                            listKey={'o1Om4XPq'}
+                                            renderItem={({ item ,index }) => { 
+                                              return (
+                                                <Text
+                                                style={StyleSheet.applyWidth(
+                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                    fontSize: 11,
+                                                    color: '#fff',
+                                                  }),
+                                                  dimensions.width,
+                                                )}
+                                              >
+                                                
+                                                {GiveBatsmanDetails(item).name}
+                                                {index== YetToBat1().length-1 ? "" : ", "}
+                                              </Text>
+                                              )}}
+                                            >
+                                            </FlatList>
+                                            </View>
+                                        </View>
+                                      }
                                       {/* Bowling Score  */}
                                       <View
                                         style={StyleSheet.applyWidth(
@@ -2737,7 +2864,7 @@ const MatchDaySingleScreen = (props) => {
                                                   dimensions.width,
                                                 )}
                                               >
-                                                {'RR - '}
+                                                {'RR -'}
                                                 {Team1RR2ndInnings()}
                                               </Text>
                                             </View>
@@ -3393,6 +3520,66 @@ const MatchDaySingleScreen = (props) => {
                                           </View>
                                         </View>
                                       </View>
+                                      {YetToBat2().length==0 ?null :
+                                      <View
+                                          style={StyleSheet.applyWidth(
+                                            {
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              marginTop: 3,
+                                              alignSelf:'baseline'
+                                            },
+                                            dimensions.width,
+                                          )}
+                                        >
+                                          <Text
+                                            style={StyleSheet.applyWidth(
+                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                fontFamily: 'System',
+                                                fontWeight: '600',
+                                                color: '#fff',
+                                                
+                                              }),
+                                              dimensions.width,
+                                            )}
+                                          >
+                                            {'Yet to Bat:'}
+                                          </Text>
+                                          <View
+                                            style={{
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              marginTop: 3,
+                                              marginLeft: 5,
+                                              width:300,
+                                              flexWrap: 'wrap'
+                                            }}
+                                          >
+                                          <FlatList
+                                            data={YetToBat2()}
+                                            contentContainerStyle={{flexDirection : "row", flexWrap : "wrap"}} 
+                                            listKey={'o1Om4XPq'}
+                                            renderItem={({ item ,index }) => { 
+                                              return (
+                                                <Text
+                                                style={StyleSheet.applyWidth(
+                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                    fontSize: 11,
+                                                    color: '#fff',
+                                                  }),
+                                                  dimensions.width,
+                                                )}
+                                              >
+                                                
+                                                {GiveBatsmanDetails(item).name}
+                                                {index== YetToBat2().length-1 ? "" : ", "}
+                                              </Text>
+                                              )}}
+                                            >
+                                            </FlatList>
+                                            </View>
+                                        </View>
+                                      }
                                       {/* Bowling Score  */}
                                       <View
                                         style={StyleSheet.applyWidth(

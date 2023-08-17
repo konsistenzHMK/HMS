@@ -61,6 +61,14 @@ const MatchDaySingleScreen = (props) => {
     return 'Match Feed Not Available'
   }
 
+  const checkMatchDates = (str1,str2) => {
+    const [year1, month1, day1] = str1.split('-');
+    const [year2, month2, day2] = str2.split('-');
+  
+    if(year1==year2 && month1==month2 && day1==day2) return true;
+    return false;
+  }
+
   const YetToBat1 = () =>{
     var team1
     var team2
@@ -1013,8 +1021,8 @@ const MatchDaySingleScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {getCorrectDateFormat(listData?.match_date)}
-                              {endDate(listData?.end_date)}
+                              {checkMatchDates(listData?.match_date,listData?.end_date) ? getCorrectDateFormat(listData?.match_date):getCorrectDateFormat(listData?.match_date)}
+                                  {checkMatchDates(listData?.match_date,listData?.end_date) ? null:endDate(listData?.end_date)}
                             </Text>
                             {/* StartTime */}
                             <Text
@@ -1028,7 +1036,7 @@ const MatchDaySingleScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {getCorrectTimeFormat(listData?.start_time)}
+                              {getCorrectTimeFormat(listData?.start_time)} {" "}
                               {translate('MatchDaySingleScreen.Text.IST')}
                             </Text>
                           </View>

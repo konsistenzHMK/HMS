@@ -82,12 +82,12 @@ const SignupOTPScreen = (props) => {
           <Image
             style={StyleSheet.applyWidth(
               StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                height: 300,
+                height: 150,
                 width: '100%',
               }),
               dimensions.width,
             )}
-            resizeMode={'cover'}
+            resizeMode={'stretch'}
             source={Images.PFBanner1}
           />
           <View style={StyleSheet.applyWidth({ marginTop: 20 }, dimensions.width)}>

@@ -8,6 +8,8 @@ android/.gradle
 android/.idea
 android/build
 android/app/build
+android/app/release
+android/app/debug
 
 # Xcode
 .DS_Store

@@ -24,7 +24,12 @@ platform :android do
     desc "Android build"
     lane :build do |options|
         androidVersionUpdate options
-        gradle(task: "app:assembleRelease", project_dir:"./android")
+        gradle(task: "app:assembleRelease", project_dir:"./android", properties: {
+            "android.injected.signing.store.file" => "#{project_root}/android/app/release-keystore.jks",
+            "android.injected.signing.store.password" => "P@galF@n",
+            "android.injected.signing.key.alias" => "release",
+            "android.injected.signing.key.password" => "P@galF@n",
+            })
     end
 
 end

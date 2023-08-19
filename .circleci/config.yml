@@ -8,7 +8,7 @@ parameters:
     default: false
     type: boolean
   version:
-    default: '0.0.1'
+    default: '1.0.0'
     type: string
   build:
     default: '1'

@@ -21,10 +21,21 @@ platform :android do
         )
     end
 
-    desc "Android build"
-    lane :build do |options|
+    desc "Android build apk"
+    lane :build_apk do |options|
         androidVersionUpdate options
         gradle(task: "app:assembleRelease", project_dir:"./android", properties: {
+            "android.injected.signing.store.file" => "#{project_root}/android/app/release-keystore.jks",
+            "android.injected.signing.store.password" => "P@galF@n",
+            "android.injected.signing.key.alias" => "release",
+            "android.injected.signing.key.password" => "P@galF@n",
+            })
+    end
+
+    desc "Android build aab"
+    lane :build_aab do |options|
+        androidVersionUpdate options
+        gradle(task: "app:bundleRelease", project_dir:"./android", properties: {
             "android.injected.signing.store.file" => "#{project_root}/android/app/release-keystore.jks",
             "android.injected.signing.store.password" => "P@galF@n",
             "android.injected.signing.key.alias" => "release",

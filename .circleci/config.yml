@@ -4,7 +4,10 @@ version: 2.1
 
 parameters:
   # Workflow Config
-  android:
+  android_apk:
+    default: false
+    type: boolean
+  android_aab:
     default: false
     type: boolean
   version:
@@ -70,25 +73,40 @@ jobs:
   build_android:
     working_directory: ~/pagalfan
     executor: linux_android
+    parameters:
+      buildType:
+        description: options are build_apk, build_aab (apk or aab file)
+        type: string
+        default: 'build_apk'
     steps:
       - bundle_setup
       - run:
           name: Build android app
           command: |
-            bundle exec fastlane android build version:<<pipeline.parameters.version>> build:<<pipeline.parameters.build>>
+            bundle exec fastlane android <<parameters.buildType>> version:<<pipeline.parameters.version>> build:<<pipeline.parameters.build>>
       - run:
           name: Move build output to artifacts directory
           command: |
-            cp -r ./android/app/build/outputs/apk/ ./artifacts
+            cp -r ./android/app/build/outputs/ ./artifacts
       - store_artifacts:
           name: Artifact generated app build
           path: ./artifacts
 
 workflows:
-  android_internal:
-    when: <<pipeline.parameters.android>>
+  build_android_apk:
+    when: <<pipeline.parameters.android_apk>>
     jobs:
       - node_setup
       - build_android:
+          buildType: 'build_apk'
+          requires:
+            - node_setup
+
+  build_android_aab:
+    when: <<pipeline.parameters.android_aab>>
+    jobs:
+      - node_setup
+      - build_android:
+          buildType: 'build_aab'
           requires:
             - node_setup

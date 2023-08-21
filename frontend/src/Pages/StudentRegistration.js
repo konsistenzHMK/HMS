@@ -198,6 +198,13 @@ const Page1 = ({currentPage,formData, setFormData, nextPage ,display}) =>{
     }));
   }
 
+  const handleDropdownStatusType = (event) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      status: event.target.value
+    }));
+  };
+
   const changeGender = event  =>{
     setFormData((prevData) => ({
       ...prevData,
@@ -678,6 +685,8 @@ const changeHandicappStatus =(event) =>{
                     {errors.state && <span className="error text-red-500">{errors.state}</span>}
                 </div>
 
+                
+
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Pincode <p className='inline text-xl text-red-600'>*</p></div>
@@ -692,7 +701,25 @@ const changeHandicappStatus =(event) =>{
                       className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.pincode && <span className="error text-red-500">{errors.pincode}</span>}
-                </div>    
+                </div>
+                
+                </div> 
+                <div className='w-1/2 flex flex-col items-end'>
+                    <div className='w-11/12'>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'></p></div>
+                      <select 
+                          className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
+                          value={formData.status}
+                          onChange={handleDropdownStatusType}
+                          >
+                          <option disabled value="NA">Select an option</option>
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                          <option value="block">Block</option>
+                      </select>
+                      {errors.status && <span className="error text-red-600">{errors.status}</span>}
+                  </div>
+                  
             </div>
             </div>
             {/* end */}
@@ -1819,7 +1846,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,revie
 
               <div className='w-full h-auto flex justify-between mt-4'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Photo Attachment <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Photo <p className='inline text-xl text-red-600'>*</p></div>
                     <input 
                       type="file"
                       disabled={display}
@@ -1836,7 +1863,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,revie
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Upload Aadhar<p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Aadhar<p className='inline text-xl text-red-600'>*</p></div>
                   <input 
                       type="file" 
                       disabled={display}
@@ -1975,12 +2002,6 @@ const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,revie
                 </button>
                 :null
                 }
-                <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`} 
-                disabled={sendForm}
-                onClick={handleSubmit}
-                >
-                  {review ? 'Block' : 'Submit'} 
-                </button>
                 <button onClick={handlePrevPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
                   Previous Page 
                 </button>
@@ -2006,6 +2027,7 @@ const StudentRegistartion = (props) =>{
     address2:'',
     country:'India',
     state:'',
+    status:'active',
     city:'',
     pincode:'',
     gender:'',

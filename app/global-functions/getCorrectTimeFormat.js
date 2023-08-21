@@ -9,9 +9,9 @@ const getCorrectTimeFormat = (timeString) => {
   var minute = parts[1]
   var second = parts[2]
 
-  var period = 'am'
+  var period = 'AM'
   if (hour >= 12) {
-    period = 'pm'
+    period = 'PM'
     if (hour > 12) {
       hour -= 12
     }

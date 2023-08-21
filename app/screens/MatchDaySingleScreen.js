@@ -368,7 +368,7 @@ const MatchDaySingleScreen = (props) => {
   const showOutNotout = (rawName) => {
     var status_msg = jsonfeed?.data?.players?.[rawName]?.score?.['1']?.batting?.dismissal
     if (status_msg == null) {
-      return 'not out'
+      return 'Not Out'
     }
 
     return status_msg?.msg
@@ -377,7 +377,7 @@ const MatchDaySingleScreen = (props) => {
   const showOutNotout2ndInnings = (rawName) => {
     var status_msg = jsonfeed?.data?.players?.[rawName]?.score?.['2']?.batting?.dismissal
     if (status_msg == null) {
-      return 'not out'
+      return 'Not Out'
     }
 
     return status_msg?.msg
@@ -973,7 +973,7 @@ const MatchDaySingleScreen = (props) => {
                                 alignItems: 'flex-end',
                                 flexDirection: 'column',
                                 justifyContent: 'flex-start',
-                                marginTop: 20,
+                                marginTop: 11,
                                 paddingLeft: 4,
                                 paddingRight: 4,
                               },
@@ -1015,7 +1015,7 @@ const MatchDaySingleScreen = (props) => {
                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                   color: theme.colors['PF-Grey'],
                                   fontFamily: 'Rubik_400Regular',
-                                  fontSize: 11,
+                                  fontSize: 12,
                                   marginBottom: 2,
                                 }),
                                 dimensions.width,
@@ -1030,7 +1030,7 @@ const MatchDaySingleScreen = (props) => {
                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                   color: theme.colors['PF-Grey'],
                                   fontFamily: 'System',
-                                  fontSize: 11,
+                                  fontSize: 12,
                                   fontWeight: '400',
                                 }),
                                 dimensions.width,
@@ -1274,11 +1274,12 @@ const MatchDaySingleScreen = (props) => {
                       backgroundColor: theme.colors['Secondary'],
                       flexDirection: 'row',
                       flexWrap: 'nowrap',
-                      height: 20,
+                      height: 25,
                       justifyContent: 'space-between',
                       paddingLeft: 2,
                       paddingRight: 2,
-                      width: 130,
+                      paddingTop:2,
+                      width: 145,
                     },
                     dimensions.width,
                   )}
@@ -1317,7 +1318,7 @@ const MatchDaySingleScreen = (props) => {
                         paddingBottom: 4,
                         paddingLeft: 12,
                         paddingRight: 12,
-                        paddingTop: 4,
+                        paddingTop: 2,
                       },
                       dimensions.width,
                     )}
@@ -1616,6 +1617,7 @@ const MatchDaySingleScreen = (props) => {
                               style={StyleSheet.applyWidth(
                                 GlobalStyles.ViewStyles(theme)['Layer-1'],
                                 dimensions.width,
+                                {marginBottom:5}
                               )}
                             >
                               {/* Team_1 */}
@@ -1655,7 +1657,7 @@ const MatchDaySingleScreen = (props) => {
                                     dimensions.width,
                                   )}
                                 >
-                                  {Team1ScoreBoth()}
+                                  {Team1ScoreBoth()} {Team1ScoreBoth()? 'Overs':null}
                                   {'\n'}
                                 </Text>
                               </View>
@@ -1667,6 +1669,7 @@ const MatchDaySingleScreen = (props) => {
                                     justifyContent: 'space-between',
                                   },
                                   dimensions.width,
+                                  {marginBottom:5}
                                 )}
                               >
                                 {/* Team_name_2 */}
@@ -1696,7 +1699,7 @@ const MatchDaySingleScreen = (props) => {
                                     dimensions.width,
                                   )}
                                 >
-                                  {Team2ScoreBoth()}
+                                  {Team2ScoreBoth()}{Team2ScoreBoth()? ' Overs':null}
                                   {'\n'}
                                 </Text>
                               </View>
@@ -1706,38 +1709,22 @@ const MatchDaySingleScreen = (props) => {
                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                     fontSize: 11,
                                     color: '#fff',
+                                    marginBottom:-5
                                   }),
                                   dimensions.width,
                                 )}
                               >
-                                {StatusData()}
+                                 {getGameStatus(jsonfeed?.data?.status)}: {StatusData()}
                                 {'\n'}
                               </Text>
                             </View>
                             {/* Layer-2 */}
                             <View>
-                              {/* Match Status */}
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    fontFamily: 'System',
-                                    fontSize: 12,
-                                    fontWeight: '600',
-                                    marginBottom: 4,
-                                    textTransform: 'uppercase',
-                                    color: '#fff',
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                {getGameStatus(jsonfeed?.data?.status)}
-                                {'\n'}
-                              </Text>
                               {/* Match Title */}
                               <Text
                                 style={StyleSheet.applyWidth(
                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    fontSize: 8,
+                                    fontSize: 11,
                                     textAlign: 'left',
                                     color: '#fff',
                                   }),
@@ -1753,17 +1740,18 @@ const MatchDaySingleScreen = (props) => {
                               style={{
                                 borderTopColor: '#fff',
                                 borderTopWidth: 1,
+                                fontSize: 13,
                               }}
                               tabBarPosition={'top'}
                               keyboardDismissMode={'auto'}
                               swipeEnabled={true}
-                              activeColor={theme.colors.primary}
-                              pressColor={theme.colors.primary}
-                              indicatorColor={theme.colors.primary}
+                              activeColor={theme.colors.peoplebitSalmonRed}
+                              pressColor={theme.colors.peoplebitSalmonRed}
+                              indicatorColor={theme.colors.peoplebitSalmonRed}
                               tabsBackgroundColor={theme.colors['PF-Grey']}
                             >
                               {/* Tab Team1 */}
-                              <TabViewItem title={Team1Name()}>
+                              <TabViewItem title={Team1Name()} >
                                 <ScrollView
                                   bounces={true}
                                   showsHorizontalScrollIndicator={false}
@@ -1937,6 +1925,7 @@ const MatchDaySingleScreen = (props) => {
                                                       flexDirection: 'column',
                                                       height: 33,
                                                       justifyContent: 'flex-start',
+                                                      marginBottom:1
                                                     },
                                                     dimensions.width,
                                                   )}
@@ -2057,7 +2046,7 @@ const MatchDaySingleScreen = (props) => {
                                                   </View>
                                                   {/* View 2 */}
                                                   <View
-                                                    style={StyleSheet.applyWidth({ marginLeft: 3 }, dimensions.width)}
+                                                    style={StyleSheet.applyWidth({ marginTop: 1 }, dimensions.width)}
                                                   >
                                                     <Text
                                                       style={StyleSheet.applyWidth(
@@ -2068,7 +2057,7 @@ const MatchDaySingleScreen = (props) => {
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {' '}
+                                                      
                                                       {showOutNotout(flashListData)}
                                                     </Text>
                                                   </View>
@@ -2099,11 +2088,12 @@ const MatchDaySingleScreen = (props) => {
                                                 fontFamily: 'System',
                                                 fontWeight: '600',
                                                 color: '#fff',
+                                                fontSize:16
                                               }),
                                               dimensions.width,
                                             )}
                                           >
-                                            {'Total\n'}
+                                            {'Total:\n'}
                                           </Text>
 
                                           <View
@@ -2112,6 +2102,7 @@ const MatchDaySingleScreen = (props) => {
                                                 flexDirection: 'row',
                                                 justifyContent: 'space-between',
                                                 width: 200,
+                                                paddingLeft:-30
                                               },
                                               dimensions.width,
                                             )}
@@ -2121,13 +2112,13 @@ const MatchDaySingleScreen = (props) => {
                                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
-                                                  marginLeft: 10,
+                                                  marginLeft: 5,
                                                   color: '#fff',
                                                 }),
                                                 dimensions.width,
                                               )}
                                             >
-                                              {Team1Score()}
+                                              {Team1Score()} {"Ovs"}
                                             </Text>
 
                                             <Text
@@ -2141,7 +2132,7 @@ const MatchDaySingleScreen = (props) => {
                                                 dimensions.width,
                                               )}
                                             >
-                                              {'RR -'}
+                                              {'RR: '}
                                               {Team1RR()}
                                             </Text>
                                           </View>
@@ -2170,7 +2161,7 @@ const MatchDaySingleScreen = (props) => {
                                               dimensions.width,
                                             )}
                                           >
-                                            {'Yet to Bat:'}
+                                            {getGameStatus()=='RESULT'?'Did not bat:':'Yet to bat:'}
                                           </Text>
                                           <View
                                             style={{
@@ -2636,6 +2627,7 @@ const MatchDaySingleScreen = (props) => {
                                                         flexDirection: 'column',
                                                         height: 33,
                                                         justifyContent: 'flex-start',
+                                                        marginBottom:1
                                                       },
                                                       dimensions.width,
                                                     )}
@@ -2778,7 +2770,7 @@ const MatchDaySingleScreen = (props) => {
                                                     {/* View 2 */}
                                                     <View
                                                       style={StyleSheet.applyWidth(
-                                                        { marginLeft: 3 },
+                                                        {marginTop: 1},
                                                         dimensions.width,
                                                       )}
                                                     >
@@ -2822,11 +2814,12 @@ const MatchDaySingleScreen = (props) => {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
                                                   color: '#fff',
+                                                  fontSize:16
                                                 }),
                                                 dimensions.width,
                                               )}
                                             >
-                                              {'Total\n'}
+                                              {'Total:\n'}
                                             </Text>
 
                                             <View
@@ -3154,7 +3147,7 @@ const MatchDaySingleScreen = (props) => {
                                   showsVerticalScrollIndicator={false}
                                 >
                                   {/* Individual Team Scores */}
-                                  <View style={StyleSheet.applyWidth({ marginTop: 40 }, dimensions.width)}>
+                                  <View style={StyleSheet.applyWidth({ marginTop: 10}, dimensions.width)}>
                                     {/* Team2 */}
                                     <View>
                                       {/* Team_Name */}
@@ -3312,6 +3305,7 @@ const MatchDaySingleScreen = (props) => {
                                                       flexDirection: 'column',
                                                       height: 33,
                                                       justifyContent: 'flex-start',
+                                                      marginBottom:1
                                                     },
                                                     dimensions.width,
                                                   )}
@@ -3431,7 +3425,7 @@ const MatchDaySingleScreen = (props) => {
                                                   </View>
                                                   {/* View 2 */}
                                                   <View
-                                                    style={StyleSheet.applyWidth({ marginLeft: 3 }, dimensions.width)}
+                                                    style={StyleSheet.applyWidth({ marginTop: 1 }, dimensions.width)}
                                                   >
                                                     <Text
                                                       style={StyleSheet.applyWidth(
@@ -3472,11 +3466,12 @@ const MatchDaySingleScreen = (props) => {
                                                 fontFamily: 'System',
                                                 fontWeight: '600',
                                                 color: '#fff',
+                                                fontSize:16
                                               }),
                                               dimensions.width,
                                             )}
                                           >
-                                            {'Total\n'}
+                                            {'Total:\n'}
                                           </Text>
 
                                           <View
@@ -3500,7 +3495,7 @@ const MatchDaySingleScreen = (props) => {
                                                 dimensions.width,
                                               )}
                                             >
-                                              {Team2Score()}
+                                              {Team2Score()}{" Ovs"}
                                             </Text>
 
                                             <Text
@@ -3543,7 +3538,7 @@ const MatchDaySingleScreen = (props) => {
                                               dimensions.width,
                                             )}
                                           >
-                                            {'Yet to Bat:'}
+                                            {getGameStatus()=='RESULT'?'Did not bat:':'Yet to bat:'}
                                           </Text>
                                           <View
                                             style={{
@@ -4005,6 +4000,7 @@ const MatchDaySingleScreen = (props) => {
                                                         flexDirection: 'column',
                                                         height: 33,
                                                         justifyContent: 'flex-start',
+                                                        marginBottom:1
                                                       },
                                                       dimensions.width,
                                                     )}
@@ -4145,7 +4141,7 @@ const MatchDaySingleScreen = (props) => {
                                                     {/* View 2 */}
                                                     <View
                                                       style={StyleSheet.applyWidth(
-                                                        { marginLeft: 3 },
+                                                        {marginTop: 1 },
                                                         dimensions.width,
                                                       )}
                                                     >
@@ -4188,11 +4184,12 @@ const MatchDaySingleScreen = (props) => {
                                                   fontFamily: 'System',
                                                   fontWeight: '600',
                                                   color: '#fff',
+                                                  fontSize:16
                                                 }),
                                                 dimensions.width,
                                               )}
                                             >
-                                              {'Total\n'}
+                                              {'Total:\n'}
                                             </Text>
 
                                             <View
@@ -4508,11 +4505,24 @@ const MatchDaySingleScreen = (props) => {
                               </TabViewItem>
                             </TabView>
                             {/* Layer-4 */}
+                            {/* style={StyleSheet.applyWidth(
+                                                        {
+                                                          flexDirection: 'row',
+                                                          justifyContent: 'space-around',
+                                                          width: 200,
+                                                        },
+                                                        dimensions.width,
+                                                      )} */}
                             <View
-                              style={StyleSheet.applyWidth(
+                              style={
+                                StyleSheet.applyWidth(
                                 StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Layer-4'], { marginTop: 10 }),
+                                {
+                                  height:500
+                                },
                                 dimensions.width,
-                              )}
+                                )
+                              }
                             >
                               {/* Header */}
                               <Text
@@ -4522,6 +4532,7 @@ const MatchDaySingleScreen = (props) => {
                                     fontWeight: '700',
                                     textAlign: 'center',
                                     color: '#fff',
+                                    fontSize:14,
                                   }),
                                   dimensions.width,
                                 )}
@@ -4579,7 +4590,7 @@ const MatchDaySingleScreen = (props) => {
                                     StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                       alignSelf: 'center',
                                       fontFamily: 'System',
-                                      fontSize: 11,
+                                      fontSize: 12,
                                       fontWeight: '400',
                                       color: '#fff',
                                     }),
@@ -4596,6 +4607,7 @@ const MatchDaySingleScreen = (props) => {
                                     alignItems: 'center',
                                     flexDirection: 'row',
                                     justifyContent: 'flex-start',
+                                    marginBottom:1
                                   },
                                   dimensions.width,
                                 )}
@@ -4621,7 +4633,7 @@ const MatchDaySingleScreen = (props) => {
                                     StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                       alignSelf: 'center',
                                       fontFamily: 'System',
-                                      fontSize: 11,
+                                      fontSize: 12,
                                       fontWeight: '400',
                                       color: '#fff',
                                     }),
@@ -4638,6 +4650,7 @@ const MatchDaySingleScreen = (props) => {
                                     alignItems: 'center',
                                     flexDirection: 'row',
                                     justifyContent: 'flex-start',
+                                    marginBottom:1
                                   },
                                   dimensions.width,
                                 )}
@@ -4663,7 +4676,7 @@ const MatchDaySingleScreen = (props) => {
                                     StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                       alignSelf: 'center',
                                       fontFamily: 'System',
-                                      fontSize: 11,
+                                      fontSize: 12,
                                       fontWeight: '400',
                                       color: '#fff',
                                     }),
@@ -4680,6 +4693,7 @@ const MatchDaySingleScreen = (props) => {
                                     alignItems: 'center',
                                     flexDirection: 'row',
                                     justifyContent: 'flex-start',
+                                    marginBottom:4
                                   },
                                   dimensions.width,
                                 )}
@@ -4708,7 +4722,7 @@ const MatchDaySingleScreen = (props) => {
                                       fontSize: 11,
                                       fontWeight: '400',
                                       color: '#fff',
-                                      width:80,
+                                      width:100,
                                     }),
                                     dimensions.width,
                                   )}

@@ -106,16 +106,16 @@
       "Text.Live": "LIVE",
       "Text.vs": "v/s",
       "Text.IST": "IST",
-      "Text.LiveBakarr": "live bakarr",
+      "Text.LiveBakarr": "Live Bakarr",
       "Text.Join": "Join Now",
-      "Text.BakarrSession": "BAKARR session",
+      "Text.BakarrSession": "BAKARR Session",
       "Text.BakarrRoom": "Hear celebrities and fans speak, and assert your \nviews - in the PagalFan audio chatroom!!",
       "Text.FanChat": "FAN CHAT",
       "Text.Scores": "SCORES",
       "Text.Moments": "MOMENTS",
-      "Text.FanReaction": "fan reactions",
-      "Text.InputPlaceholder": "Type something...",
-      "Toast.Upload": "Uploading comment …"
+      "Text.FanReaction": "Fan Reactions",
+      "Text.InputPlaceholder": "Type Something...",
+      "Toast.Upload": "Uploading Comment …"
     },
 
     "MyFanClubsScreen": {

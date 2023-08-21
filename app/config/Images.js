@@ -23,7 +23,7 @@ const Images = {
   Video: require('../assets/images/Video.png'),
   Avatar: require('../assets/images/Avatar.jpeg'),
   RCB2020: require('../assets/images/RCB2020.png'),
-  PFBanner1: require('../assets/images/PFBanner1.jpeg'),
+  PFBanner1: require('../assets/images/PFBanner1.png'),
   JoelMottLaK153ghdigUnsplash: require('../assets/images/JoelMottLaK153ghdigUnsplash.jpg'),
   JakubKapusnak1TkhHPOubu4Unsplash: require('../assets/images/JakubKapusnak1TkhHPOubu4Unsplash.jpg'),
   IndAusDay1: require('../assets/images/IndAusDay1.png'),
@@ -61,7 +61,7 @@ const Images = {
   Twitter: require('../assets/images/Twitter.png'),
   _27iplChikas: require('../assets/images/27iplChikas.png'),
   Mic1: require('../assets/images/Mic1.jpeg'),
-  ProfileCover: require('../assets/images/ProfileCover.jpeg')
+  ProfileCover: require('../assets/images/ProfileCover.png')
 }
 
 export const RemoteAvatars = [

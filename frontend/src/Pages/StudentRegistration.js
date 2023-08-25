@@ -1568,6 +1568,7 @@ const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,revie
         // alert
         console.log('API response:', formData);
         alert(response.data);
+        window.location.href = '/';
       })
       .catch((error) => {
         console.error('API request error:', formData);
@@ -1994,14 +1995,11 @@ const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,revie
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-52 flex flex-col justify-center'>
-                {edit || review ?
                 <button className={`h-10 ${sendForm ? 'bg-gray-500' : 'bg-accent2'}  text-lg font-semibold text-white border-none rounded-2xl mt-5`} 
-                disabled={sendForm}
+                disabled={sendForm} onClick={handleSubmit}
                 >
                   Save 
                 </button>
-                :null
-                }
                 <button onClick={handlePrevPage} className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
                   Previous Page 
                 </button>
@@ -2033,8 +2031,8 @@ const StudentRegistartion = (props) =>{
     gender:'',
     aadhar_id:'',
     dob:'',
-    height:0,
-    weight:0,
+    height:'',
+    weight:'',
     blood_group:'',
     medical_history:'',
     medicine_taken:'',
@@ -2056,12 +2054,12 @@ const StudentRegistartion = (props) =>{
     income:'',
     college_address1:'',
     college_address2:'',
-    photo_file:null,
-    aadhar_file:null,
-    caste_file:null,
-    medical_file:null,
-    income_cer:null,
-    bank_details:null,
+    photo_file:'',
+    aadhar_file:'',
+    caste_file:'',
+    medical_file:'',
+    income_cer:'',
+    bank_details:'',
     account_holder_name:'',
     bank_name:'',
     ifsc:'',
@@ -2079,7 +2077,7 @@ const StudentRegistartion = (props) =>{
         dob: ''
       }));
     }
-  })
+  },[])
 
   const [currentPage, setCurrentPage] = useState(1);
 

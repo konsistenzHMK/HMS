@@ -150,7 +150,7 @@ const App = (props) => {
     district:'',
     city:'',
     pincode:'',
-    uuid:'',
+    uuid:null,
     rector_name:'',
     categ1:'',
     categ2:'',
@@ -180,7 +180,6 @@ const App = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');

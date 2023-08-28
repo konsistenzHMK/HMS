@@ -19,6 +19,7 @@
     "@100mslive/react-native-hms": "^1.6.2",
     "@draftbit/ui": "47.5.0",
     "@expo/vector-icons": "^13.0.0",
+    "@miblanchard/react-native-slider": "^2.3.1",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/blur": "^4.3.2",
     "@react-native-firebase/app": "^18.0.0",

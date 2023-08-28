@@ -2,6 +2,8 @@ import { Icon, withTheme } from '@draftbit/ui'
 import React from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import CaptionContainer from '../caption-container/CaptionContainer'
+import TrackPlayer, { useProgress } from 'react-native-track-player'
+import { Slider } from '@miblanchard/react-native-slider'
 
 const BakarrCard = ({
   theme,
@@ -17,7 +19,10 @@ const BakarrCard = ({
   createdAt,
   handleSharePress,
   item,
+  currentPlayingId
 }) => {
+  const { duration, position } = useProgress(1000)
+
   const styles = StyleSheet.create({
     container: {
       padding: 10,
@@ -46,6 +51,7 @@ const BakarrCard = ({
       marginTop: 2,
       textAlign: 'center',
       alignContent: 'center',
+      alignItems: "center"
     },
     thumbnail: {
       width: 80,
@@ -62,7 +68,7 @@ const BakarrCard = ({
     playIcon: {
       // backgroundColor: 'gray',
       // borderRadius: 100,
-      marginRight: 5,
+      // marginRight: 5,
     },
     contentContainer: {
       flex: 1,
@@ -89,28 +95,49 @@ const BakarrCard = ({
     },
     date: {
       display: 'flex',
-      color: 'rgb(153, 153, 153)',
+      color: theme.colors['PF-Primary'],
       justifyContent: 'center',
-      marginLeft: 5,
-      marginTop: 4.3,
-      fontFamily: 'Rubik_400Regular',
+      fontFamily: 'Rubik_500Medium',
+      opacity:0.7
     },
     highlight: {
       borderWidth: 1,
       borderColor: '#FF4545',
     },
+    seekButton: {
+      marginHorizontal: 6,
+      width: 33,
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderRadius: 50,
+      borderColor: theme.colors['PF-Grey'],
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
   })
 
-  const convertUtcToDateString = (utcString) => {
-    const dateObject = new Date(utcString)
+  function convertUtcToDateString(utcTimeString) {
+    const utcDate = new Date(utcTimeString)
+    const dd = String(utcDate.getUTCDate()).padStart(2, '0')
+    const mm = String(utcDate.getUTCMonth() + 1).padStart(2, '0') // Months are zero-based
+    const yy = String(utcDate.getUTCFullYear()).slice(-2)
 
-    const options = { day: 'numeric', month: 'long', year: 'numeric' }
-    const dateString = dateObject.toLocaleDateString(undefined, options)
-
-    const day = dateObject.getDate()
-    const daySuffix = getDaySuffix(day)
-    return dateString.replace('{day}', `${day}${daySuffix}`)
+    return `${dd}-${mm}-${yy}`
   }
+
+  function formatTime(seconds) {
+    const totalSeconds = Math.floor(seconds); // Round down to nearest whole second
+  
+    const minutes = Math.floor(totalSeconds / 60);
+    const remainingSeconds = totalSeconds % 60;
+  
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+  
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
 
   const getDaySuffix = (day) => {
     if (day >= 11 && day <= 13) {
@@ -134,6 +161,7 @@ const BakarrCard = ({
       <View style={styles.thumbnailContainer}>
         <Image source={{ uri: imageSource }} style={styles.thumbnail} />
         <View style={styles.headingContainer}>
+          <Text style={styles.date}>{convertUtcToDateString(createdAt)}</Text>
           <Text style={styles.heading}>{heading}</Text>
           <Text style={styles.subheading}>{subheading}</Text>
         </View>
@@ -155,8 +183,40 @@ const BakarrCard = ({
               color={highlight ? '#FF4545' : 'black'}
             />
           </Pressable>
-          <Text style={styles.date}>{convertUtcToDateString(createdAt)}</Text>
         </View>
+        {(currentPlayingId == id) && (
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems:"center" }}>
+          <Pressable
+            style={styles.seekButton}
+            onPress={() => {
+              TrackPlayer.seekTo(Math.max(0, position - 10))
+            }}
+          >
+            <Text>-10</Text>
+          </Pressable>
+          
+          <Text>{formatTime(position)}</Text>
+          <View style={{width:120, marginHorizontal:4}}>
+          <Slider
+            minimumValue={0}
+            maximumValue={duration}
+            value={position}
+            onSlidingComplete={val => {
+              TrackPlayer.seekTo(Number(val));
+            }}
+          />
+          </View>
+          <Text>{formatTime(duration)}</Text>
+          <Pressable
+            style={styles.seekButton}
+            onPress={() => {
+              TrackPlayer.seekTo(Math.min(duration, position + 10))
+            }}
+          >
+            <Text>+10</Text>
+          </Pressable>
+        </View>
+      )}
         <Pressable onPress={() => handleSharePress(item)}>
           <Icon
             style={styles.shareModalActionIcon}
@@ -166,6 +226,7 @@ const BakarrCard = ({
           />
         </Pressable>
       </View>
+
     </View>
   )
 }

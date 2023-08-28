@@ -117,6 +117,7 @@ const PostListScreen = ({ navigation, route }) => {
         showsVerticalScrollIndicator={false}
         onEndReached={fetchNextPosts}
         onEndReachedThreshold={1}
+        ItemSeparatorComponent={() => <View style={{ height: 25 }} />}
       />
       {/* ShareModal */}
       {showShareModal && (

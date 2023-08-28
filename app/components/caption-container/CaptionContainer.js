@@ -15,7 +15,7 @@ const CaptionContainer = ({ text, maxChars, textColor = 'black' }) => {
           {text.length > maxChars ? text.substring(0, maxChars) + '...' : text}
         </Text>
       ) : (
-        <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled>
+        <ScrollView style={{ maxHeight: 200 }} nestedScrollEnabled>
           <Text style={{ color: textColor, fontSize: 14 }}>{text}</Text>
         </ScrollView>
       )}

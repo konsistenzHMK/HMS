@@ -32,8 +32,8 @@ export const FeedCard = ({ feed, onPress }) => {
       {/* Details */}
       <View style={styles.captionContainer}>
         {/* Title */}
-        <Text style={styles.captionText} ellipsizeMode={'tail'} numberOfLines={2}>
-          {'🖖 '}
+        <Text style={styles.captionText} ellipsizeMode={'tail'} numberOfLines={1}>
+          {/* {'🖖 '} */}
           {feed?.caption}
         </Text>
       </View>
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     width: '49%',
     margin: 2,
-    height: 130,
+    height: 150,
     elevation: 10,
   },
   blurContainer: {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors['Studily_Opacity_25'],
     bottom: 0,
     padding: 4,
-    height: 40,
+    height: 25,
     position: 'absolute',
     width: '100%',
     borderBottomLeftRadius: 12,

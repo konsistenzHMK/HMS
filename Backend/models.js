@@ -292,46 +292,6 @@ const saved_form_1 = async (req, res) => {
         data2[doc.data().uuid] = doc.id;
     });
     const keys = Object.keys(data2);
-    for (let i = 0; i <= keys.length; i++) {
-        if (uuid == keys[i]) {
-            try {
-                const docRef = doc(db, "hostel_registration", data2[uuid])
-                await updateDoc(docRef, {
-                    hostel_name,
-                    description,
-                    address1,
-                    address2,
-                    country,
-                    state,
-                    region,
-                    district,
-                    city,
-                    pincode,
-                    uuid,
-                    rector_name,
-                    categ1,
-                    categ2,
-                    categ3,
-                    tower,
-                    floor,
-                    room,
-                    scapacity,
-                    bcapacity,
-                    area,
-                    mess,
-                    other_facility,
-                    status: "draft",
-                    email_id,
-                    website,
-                });
-                const message = 'Updated with id ' + uuid + '\n Status : Draft';
-                res.send(message);
-            } catch (error) {
-                res.status(500).send("Data not Updated");
-            }
-        }
-
-    }
     if (uuid == null || uuid == undefined || uuid == "") {
         try {
             const ans = await UUIDFunction(country, state, district);
@@ -370,7 +330,50 @@ const saved_form_1 = async (req, res) => {
             console.log(e);
             res.status(500).send("Data not inserted");
         }
+    }else{
+    for (let i = 0; i <= keys.length; i++) {
+        if (uuid == keys[i]) {
+            try {
+                const docRef = doc(db, "hostel_registration", data2[uuid])
+                await updateDoc(docRef, {
+                    hostel_name,
+                    description,
+                    address1,
+                    address2,
+                    country,
+                    state,
+                    region,
+                    district,
+                    city,
+                    pincode,
+                    uuid,
+                    rector_name,
+                    categ1,
+                    categ2,
+                    categ3,
+                    tower,
+                    floor,
+                    room,
+                    scapacity,
+                    bcapacity,
+                    area,
+                    mess,
+                    other_facility,
+                    status: "draft",
+                    email_id,
+                    website,
+                });
+                const message = 'Updated with id ' + uuid + '\n Status : Draft';
+                res.send(message);
+            } catch (error) {
+                console.log(error);
+                res.status(500).send("Data not Updated");
+            }
+        }
     }
+
+    }
+    
 };
 const saved_form_2 = async (req, res) => {
     const {

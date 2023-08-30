@@ -783,7 +783,6 @@ const MatchDaySingleScreen = (props) => {
             {({ loading, error, data, refetchFetchSingleMatch }) => {
               const fetchData = data
               // console.log(data);
-              console.log(feedAvailable);
               if (!fetchData || loading) {
                 return <ActivityIndicator />
               }
@@ -849,122 +848,141 @@ const MatchDaySingleScreen = (props) => {
                                       dimensions.width,
                                     )}
                                   >
-                                   {translate('MatchDaySingleScreen.Text.Live')}
+                                    {translate('MatchDaySingleScreen.Text.Live')}
                                   </Text>
                                 </View>
                               )}
                             </>
-                            {/* Teams */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexDirection: 'column',
-                                  justifyContent: 'space-around',
-                                  marginBottom: 4,
-                                  marginTop: 2,
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              {/* Team-1 */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-around',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Logo */}
-                                <Image
+                            {listData?.feed_available ? (
+                              <>
+                                {/* Teams */}
+                                <View
                                   style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                                      height: 30,
-                                      marginRight: 1,
-                                      width: 30,
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                  resizeMode={'cover'}
-                                  source={{
-                                    uri: `${listData?.team_1?.logo_path}`,
-                                  }}
-                                />
-                                {/* Name */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      color: theme.colors['PF-Grey'],
-                                      fontFamily: 'Rubik_600SemiBold',
-                                      fontSize: 14,
-                                    }),
+                                    {
+                                      alignItems: 'center',
+                                      flexDirection: 'column',
+                                      justifyContent: 'space-around',
+                                      marginBottom: 4,
+                                      marginTop: 2,
+                                    },
                                     dimensions.width,
                                   )}
                                 >
-                                  {convertNullToTBD(listData?.team_1?.team_name)}
-                                </Text>
-                              </View>
-                              {/* vs */}
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    color: theme.colors['PF-Grey'],
-                                    fontFamily: 'System',
-                                    fontSize: 12,
-                                    fontStyle: 'italic',
-                                    fontWeight: '600',
-                                    marginBottom: 2,
-                                    marginTop: 2,
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                {translate('MatchDaySingleScreen.Text.vs')}
-                              </Text>
-                              {/* Team-2 */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Logo */}
-                                <Image
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                                      height: 30,
-                                      marginRight: 1,
-                                      width: 30,
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                  resizeMode={'cover'}
-                                  source={{
-                                    uri: `${listData?.team_2?.logo_path}`,
-                                  }}
-                                />
-                                {/* Name */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      color: theme.colors['PF-Grey'],
-                                      fontFamily: 'Rubik_600SemiBold',
-                                      fontSize: 14,
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {convertNullToTBD(listData?.team_2?.team_name)}
-                                </Text>
-                              </View>
-                            </View>
+                                  {/* Team-1 */}
+                                  <View
+                                    style={StyleSheet.applyWidth(
+                                      {
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-around',
+                                      },
+                                      dimensions.width,
+                                    )}
+                                  >
+                                    {/* Logo */}
+                                    <Image
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                                          height: 30,
+                                          marginRight: 1,
+                                          width: 30,
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                      resizeMode={'cover'}
+                                      source={{
+                                        uri: `${listData?.team_1?.logo_path}`,
+                                      }}
+                                    />
+                                    {/* Name */}
+                                    <Text
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                          color: theme.colors['PF-Grey'],
+                                          fontFamily: 'Rubik_600SemiBold',
+                                          fontSize: 14,
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {convertNullToTBD(listData?.team_1?.team_name)}
+                                    </Text>
+                                  </View>
+                                  {/* vs */}
+                                  <Text
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                        color: theme.colors['PF-Grey'],
+                                        fontFamily: 'System',
+                                        fontSize: 12,
+                                        fontStyle: 'italic',
+                                        fontWeight: '600',
+                                        marginBottom: 2,
+                                        marginTop: 2,
+                                      }),
+                                      dimensions.width,
+                                    )}
+                                  >
+                                    {translate('MatchDaySingleScreen.Text.vs')}
+                                  </Text>
+                                  {/* Team-2 */}
+                                  <View
+                                    style={StyleSheet.applyWidth(
+                                      {
+                                        alignItems: 'center',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                      },
+                                      dimensions.width,
+                                    )}
+                                  >
+                                    {/* Logo */}
+                                    <Image
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                                          height: 30,
+                                          marginRight: 1,
+                                          width: 30,
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                      resizeMode={'cover'}
+                                      source={{
+                                        uri: `${listData?.team_2?.logo_path}`,
+                                      }}
+                                    />
+                                    {/* Name */}
+                                    <Text
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                          color: theme.colors['PF-Grey'],
+                                          fontFamily: 'Rubik_600SemiBold',
+                                          fontSize: 14,
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {convertNullToTBD(listData?.team_2?.team_name)}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </>
+                            ) : (
+                              <>
+                                <>
+                                  {/*Image to cover if not feed is not available*/}
+                                  <Image
+                                    source={{ uri: listData?.thumbnail_path }}
+                                    style={{
+                                      height: '100%',
+                                      width: '100%',
+                                      borderRadius: 12,
+                                    }}
+                                    resizeMode="stretch"
+                                  />
+                                </>
+                              </>
+                            )}
                           </View>
                           {/* Details */}
                           <View
@@ -1180,7 +1198,7 @@ const MatchDaySingleScreen = (props) => {
                                           dimensions.width,
                                         )}
                                       >
-                                       {translate('MatchDaySingleScreen.Text.BakarrSession')}
+                                        {translate('MatchDaySingleScreen.Text.BakarrSession')}
                                       </Text>
                                       {/* Time */}
                                       <Text
@@ -1539,7 +1557,10 @@ const MatchDaySingleScreen = (props) => {
                 </PagalFanBEApi.FetchFetchAllCommentsForAMatchGET>
               </View>
             </TabViewItem>
-            {/* Scores */}
+
+            {feedAvailable && 
+
+            // Scores
             <TabViewItem
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(GlobalStyles.TabViewItemStyles(theme)['Tab View Item'], {
@@ -4840,6 +4861,7 @@ const MatchDaySingleScreen = (props) => {
                 
             }
             </TabViewItem>
+             }
 
             {/* Moments */}
             <TabViewItem

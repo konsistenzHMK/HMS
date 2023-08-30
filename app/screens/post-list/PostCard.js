@@ -165,7 +165,7 @@ const PostCard = ({ post, visible, focused, onSharePress, onHeaderPress, onComme
             <Icon name={'Ionicons/share'} size={18} color={theme.colors.communityIconFill} />
           </Pressable>
         </View>
-        <CaptionContainer text={caption} maxChars={150} />
+        <CaptionContainer text={caption} maxChars={500} />
       </View>
       {showCommentModal && (
         <PostCommentModal

@@ -676,6 +676,19 @@ const HomeScreen = (props) => {
             }}
           </PagalFanBEApi.FetchFetchAllBakarrRecordingsGET>
         </View>
+        <Divider
+          style={StyleSheet.applyWidth(
+            StyleSheet.compose(GlobalStyles.DividerStyles(theme)['Divider'], {
+              height: 0.5,
+              marginBottom: 10,
+              marginLeft: 80,
+              marginTop: 10,
+              width: '50%',
+            }),
+            dimensions.width,
+          )}
+          color={theme.colors['PF-Primary']}
+        />
         {/* AdView */}
         <View>
           {/* PF Banner */}

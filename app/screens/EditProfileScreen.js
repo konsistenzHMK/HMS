@@ -110,7 +110,11 @@ const EditProfileScreen = (props) => {
         <KeyboardAwareScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
           {/* Profile Pic */}
           <TouchableOpacity style={styles.profilePicContainer} onPress={showPickerTypeModal} activeOpacity={0.8}>
-            {userPic && <Image style={styles.profilePic} resizeMode={'cover'} source={{ uri: `${userPic}` }} />}
+            {userPic ? (
+              <Image style={styles.profilePic} resizeMode={'cover'} source={{ uri: `${userPic}` }} />
+            ) : (
+              <Icon name="FontAwesome/user" style={styles.postUserAvatar} size={50} color="#000" />
+            )}
             <Icon style={styles.profileEditIcon} size={20} name={'Feather/edit'} color={theme.colors['Secondary']} />
           </TouchableOpacity>
           {/* Name */}
@@ -179,7 +183,9 @@ const EditProfileScreen = (props) => {
       </ScreenContainer>
       <Modal visible={pickerTypeModalVisible} onDismiss={hidePickerTypeModal}>
         <View style={{ padding: 30, backgroundColor: '#fff' }}>
-          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>{translate('EditProfileScreen.Text.MediaType')}</Text>
+          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>
+            {translate('EditProfileScreen.Text.MediaType')}
+          </Text>
           <Button
             title="Camera"
             onPress={() => handlePickerTypeSelect('camera')}
@@ -259,6 +265,7 @@ const styles = StyleSheet.create({
     height: 48,
     marginVertical: 8,
     paddingHorizontal: 10,
+    fontSize: 12,
   },
   textInputBio: {
     fontFamily: 'Inter_400Regular',
@@ -289,6 +296,13 @@ const styles = StyleSheet.create({
     height: 52,
     marginTop: 20,
     textAlign: 'center',
+  },
+  postUserAvatar: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    marginBottom: 10,
+    backgroundColor: 'rgba(0,0,0,0.2)',
   },
 })
 

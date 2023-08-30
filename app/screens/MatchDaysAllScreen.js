@@ -228,7 +228,7 @@ const MatchDaysAllScreen = (props) => {
                               {/* Left Side */}
                               <View style={StyleSheet.applyWidth({ justifyContent: 'center' }, dimensions.width)}>
                                 {/* Circle Image Frame */}
-                                <View>
+                                {/* <View>
                                   {listData?.thumbnail_path && (
                                     <CircleImage
                                       size={30}
@@ -237,7 +237,7 @@ const MatchDaysAllScreen = (props) => {
                                       }}
                                     />
                                   )}
-                                </View>
+                                </View> */}
                               </View>
                               {/* Right Side */}
                               <View

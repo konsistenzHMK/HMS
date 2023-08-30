@@ -627,7 +627,7 @@ const HomeScreen = (props) => {
                                 }),
                                 dimensions.width,
                               )}
-                              resizeMode={'stretch'}
+                              resizeMode="cover"
                               source={{
                                 uri: `${flashListData?.image_url}`,
                               }}
@@ -859,176 +859,194 @@ const HomeScreen = (props) => {
                               {flashListData?.title}
                             </Text>
                           </View>
-                          {/* Teams */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                justifyContent: 'space-around',
-                                marginBottom: 4,
-                                marginTop: 4,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            {/* Team-1 */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              {/* Logo */}
-                              <Image
+                          {flashListData?.feed_available ? (
+                            <>
+                              {/* Teams */}
+                              <View
                                 style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                                    height: 24,
-                                    marginRight: 1,
-                                    width: 24,
-                                  }),
+                                  {
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-around',
+                                    marginBottom: 4,
+                                    marginTop: 4,
+                                  },
                                   dimensions.width,
                                 )}
-                                resizeMode={'cover'}
-                                source={{
-                                  uri: `${flashListData?.team_1?.logo_path}`,
-                                }}
-                              />
-                              {/* Name */}
+                              >
+                                {/* Team-1 */}
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-between',
+                                    },
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {/* Logo */}
+                                  <Image
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                                        height: 24,
+                                        marginRight: 1,
+                                        width: 24,
+                                      }),
+                                      dimensions.width,
+                                    )}
+                                    resizeMode={'cover'}
+                                    source={{
+                                      uri: `${flashListData?.team_1?.logo_path}`,
+                                    }}
+                                  />
+                                  {/* Name */}
+                                  <Text
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                        color: theme.colors['Community_Highlight_Blue'],
+                                        fontFamily: 'Inter_600SemiBold',
+                                        fontSize: 13,
+                                        marginLeft: 2,
+                                      }),
+                                      dimensions.width,
+                                    )}
+                                  >
+                                    {convertNullToTBD(flashListData?.team_1?.team_initials)}
+                                  </Text>
+                                </View>
+                                {/* vs */}
+                                <Text
+                                  style={StyleSheet.applyWidth(
+                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                      color: theme.colors['Custom #eb3a4a'],
+                                      fontFamily: 'Inter_600SemiBold',
+                                      fontSize: 12,
+                                    }),
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {translate('HomeScreen.Text.vs')}
+                                </Text>
+                                {/* Team-2 */}
+                                <View
+                                  style={StyleSheet.applyWidth(
+                                    {
+                                      alignItems: 'center',
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-between',
+                                    },
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {/* Name */}
+                                  <Text
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                        color: theme.colors['Community_Highlight_Blue'],
+                                        fontFamily: 'Inter_600SemiBold',
+                                        fontSize: 13,
+                                        marginRight: 2,
+                                      }),
+                                      dimensions.width,
+                                    )}
+                                  >
+                                    {convertNullToTBD(flashListData?.team_2?.team_initials)}
+                                  </Text>
+                                  {/* Logo */}
+                                  <Image
+                                    style={StyleSheet.applyWidth(
+                                      StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
+                                        height: 20,
+                                        marginRight: 1,
+                                        width: 20,
+                                      }),
+                                      dimensions.width,
+                                    )}
+                                    resizeMode={'cover'}
+                                    source={{
+                                      uri: `${flashListData?.team_2?.logo_path}`,
+                                    }}
+                                  />
+                                </View>
+                              </View>
+                              {/* Details */}
+                              <View
+                                style={StyleSheet.applyWidth(
+                                  {
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    marginBottom: 4,
+                                    marginTop: 4,
+                                  },
+                                  dimensions.width,
+                                )}
+                              >
+                                {/* Date */}
+                                <Text
+                                  style={StyleSheet.applyWidth(
+                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                      color: theme.colors['PF-Grey'],
+                                      fontFamily: 'Inter_600SemiBold',
+                                      fontSize: 8,
+                                      marginRight: 4,
+                                    }),
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {checkMatchDates(flashListData?.match_date, flashListData?.end_date)
+                                    ? getCorrectDateFormat(flashListData?.match_date)
+                                    : getCorrectDateFormat(flashListData?.match_date)}
+                                  {checkMatchDates(flashListData?.match_date, flashListData?.end_date)
+                                    ? null
+                                    : endDate(flashListData?.end_date)}
+                                </Text>
+                                {/* StartTime */}
+                                <Text
+                                  style={StyleSheet.applyWidth(
+                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                      color: theme.colors['PF-Grey'],
+                                      fontFamily: 'Inter_600SemiBold',
+                                      fontSize: 8,
+                                    }),
+                                    dimensions.width,
+                                  )}
+                                >
+                                  {getCorrectTimeFormat(flashListData?.start_time)}
+                                  {translate('HomeScreen.Text.IST')}
+                                </Text>
+                              </View>
+                              {/* venue */}
                               <Text
                                 style={StyleSheet.applyWidth(
                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    color: theme.colors['Community_Highlight_Blue'],
+                                    alignSelf: 'center',
+                                    color: theme.colors['PF-Grey'],
                                     fontFamily: 'Inter_600SemiBold',
-                                    fontSize: 13,
-                                    marginLeft: 2,
+                                    fontSize: 10,
                                   }),
                                   dimensions.width,
                                 )}
                               >
-                                {convertNullToTBD(flashListData?.team_1?.team_initials)}
+                                {flashListData?.venue_city}
                               </Text>
-                            </View>
-                            {/* vs */}
-                            <Text
-                              style={StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                  color: theme.colors['Custom #eb3a4a'],
-                                  fontFamily: 'Inter_600SemiBold',
-                                  fontSize: 12,
-                                }),
-                                dimensions.width,
-                              )}
-                            >
-                              {translate('HomeScreen.Text.vs')}
-                            </Text>
-                            {/* Team-2 */}
-                            <View
-                              style={StyleSheet.applyWidth(
-                                {
-                                  alignItems: 'center',
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                },
-                                dimensions.width,
-                              )}
-                            >
-                              {/* Name */}
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    color: theme.colors['Community_Highlight_Blue'],
-                                    fontFamily: 'Inter_600SemiBold',
-                                    fontSize: 13,
-                                    marginRight: 2,
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                {convertNullToTBD(flashListData?.team_2?.team_initials)}
-                              </Text>
-                              {/* Logo */}
+                            </>
+                          ) : (
+                            <>
+                              {/*Image to cover if not feed is not available*/}
                               <Image
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
-                                    height: 20,
-                                    marginRight: 1,
-                                    width: 20,
-                                  }),
-                                  dimensions.width,
-                                )}
-                                resizeMode={'cover'}
-                                source={{
-                                  uri: `${flashListData?.team_2?.logo_path}`,
+                                source={{ uri: flashListData?.thumbnail_path }}
+                                style={{
+                                  height: 70,
+                                  width: '100%',
+                                  borderBottomLeftRadius: 12,
+                                  borderBottomRightRadius: 12,
                                 }}
+                                resizeMode="stretch"
                               />
-                            </View>
-                          </View>
-                          {/* Details */}
-                          <View
-                            style={StyleSheet.applyWidth(
-                              {
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                marginBottom: 4,
-                                marginTop: 4,
-                              },
-                              dimensions.width,
-                            )}
-                          >
-                            {/* Date */}
-                            <Text
-                              style={StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                  color: theme.colors['PF-Grey'],
-                                  fontFamily: 'Inter_600SemiBold',
-                                  fontSize: 8,
-                                  marginRight: 4,
-                                }),
-                                dimensions.width,
-                              )}
-                            >
-                              {checkMatchDates(flashListData?.match_date, flashListData?.end_date)
-                                ? getCorrectDateFormat(flashListData?.match_date)
-                                : getCorrectDateFormat(flashListData?.match_date)}
-                              {checkMatchDates(flashListData?.match_date, flashListData?.end_date)
-                                ? null
-                                : endDate(flashListData?.end_date)}
-                            </Text>
-                            {/* StartTime */}
-                            <Text
-                              style={StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                  color: theme.colors['PF-Grey'],
-                                  fontFamily: 'Inter_600SemiBold',
-                                  fontSize: 8,
-                                }),
-                                dimensions.width,
-                              )}
-                            >
-                              {getCorrectTimeFormat(flashListData?.start_time)}
-                              {translate('HomeScreen.Text.IST')}
-                            </Text>
-                          </View>
-                          {/* venue */}
-                          <Text
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                alignSelf: 'center',
-                                color: theme.colors['PF-Grey'],
-                                fontFamily: 'Inter_600SemiBold',
-                                fontSize: 10,
-                              }),
-                              dimensions.width,
-                            )}
-                          >
-                            {flashListData?.venue_city}
-                          </Text>
+                            </>
+                          )}
                         </View>
                       </Pressable>
                     )

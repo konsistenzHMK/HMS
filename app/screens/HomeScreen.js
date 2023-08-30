@@ -451,6 +451,7 @@ const HomeScreen = (props) => {
                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                           fontFamily: 'Rubik_400Regular',
                           fontSize: 10,
+                          color: theme.colors['PF-Grey'],
                           marginBottom: 4,
                         }),
                         dimensions.width,
@@ -608,6 +609,7 @@ const HomeScreen = (props) => {
                               {
                                 alignItems: 'center',
                                 marginRight: 10,
+                                marginBottom: 5,
                                 width: 90,
                               },
                               dimensions.width,
@@ -636,6 +638,7 @@ const HomeScreen = (props) => {
                               style={StyleSheet.applyWidth(
                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                   fontFamily: 'Inter_400Regular',
+                                  color: theme.colors['PF-Grey'],
                                   fontSize: 9,
                                   textAlign: 'center',
                                 }),
@@ -650,6 +653,7 @@ const HomeScreen = (props) => {
                               style={StyleSheet.applyWidth(
                                 StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                   fontFamily: 'Inter_400Regular',
+                                  color: theme.colors['PF-Grey'],
                                   fontSize: 7,
                                   marginBottom: 9,
                                 }),

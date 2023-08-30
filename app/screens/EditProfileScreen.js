@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
   textInput: {
     fontFamily: 'Inter_400Regular',
     borderColor: theme.colors['Light'],
+    color: theme.colors['text'],
     borderWidth: 1,
     borderRadius: 8,
     height: 48,
@@ -270,6 +271,7 @@ const styles = StyleSheet.create({
   textInputBio: {
     fontFamily: 'Inter_400Regular',
     borderColor: theme.colors['Light'],
+    color: theme.colors['text'],
     borderWidth: 1,
     borderRadius: 8,
     maxHeight: 100,
@@ -285,6 +287,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   userHandleInputPrefix: {
+    color: theme.colors['text'],
     textAlignVertical: 'center',
     marginRight: 10,
   },

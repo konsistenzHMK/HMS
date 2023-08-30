@@ -12,6 +12,10 @@ import { Modal, useSnackbar, VideoPlayer, Image, Loader } from '../components'
 import { useTranslation } from 'react-i18next'
 import { createThumbnail } from 'react-native-create-thumbnail'
 
+const VIDEO_DURATION = 30
+const VIDEO_QUALITY = 'low'
+const IMAGE_QUALITY = 1
+
 const CreatePostScreen = (props) => {
   const dimensions = useWindowDimensions()
   const Constants = GlobalVariables.useValues()
@@ -73,11 +77,11 @@ const CreatePostScreen = (props) => {
 
     try {
       const asset = await (pickerTypeRef.current === 'camera'
-        ? openCamera({ mediaType, durationLimit: 15 })
-        : openImagePickerUtil({ mediaType }))
+        ? openCamera({ mediaType, durationLimit: VIDEO_DURATION, quality: IMAGE_QUALITY, videoQuality: VIDEO_QUALITY })
+        : openImagePickerUtil({ mediaType, quality: IMAGE_QUALITY, videoQuality: VIDEO_QUALITY }))
 
       if (asset) {
-        if (mediaType === 'video' && asset.duration > 15) {
+        if (mediaType === 'video' && asset.duration > VIDEO_DURATION) {
           Alert.alert(translate('CreatePostScreen.Alert.MediaSize'))
           return
         }

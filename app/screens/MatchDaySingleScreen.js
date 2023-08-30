@@ -61,15 +61,15 @@ const MatchDaySingleScreen = (props) => {
     return 'Match Feed Not Available'
   }
 
-  const checkMatchDates = (str1,str2) => {
+  const checkMatchDates = (str1, str2) => {
     const [year1, month1, day1] = str1.split('-');
     const [year2, month2, day2] = str2.split('-');
-  
-    if(year1==year2 && month1==month2 && day1==day2) return true;
+
+    if (year1 == year2 && month1 == month2 && day1 == day2) return true;
     return false;
   }
 
-  const YetToBat1 = () =>{
+  const YetToBat1 = () => {
     var team1
     var team2
 
@@ -79,19 +79,23 @@ const MatchDaySingleScreen = (props) => {
     if (team1 == 'a') team2 = 'b'
     else team2 = 'a'
 
-    const playingAll=jsonfeed?.data?.squad?.[team1].playing_xi;
+    const playingAll = jsonfeed?.data?.squad?.[team1].playing_xi;
+
+    if (jsonfeed?.data?.squad?.[team2].playing_xi.length == 0) {
+      return false;
+    }
 
     var st
     if (team1 == 'a') st = 'a_1'
     else st = 'b_1'
 
-    const batted=jsonfeed?.data?.play?.innings?.[st]?.batting_order;
+    const batted = jsonfeed?.data?.play?.innings?.[st]?.batting_order;
     // console.log(batted);
 
-    const ans=playingAll.filter((ele)=>{
-      var t=true;
-      batted.forEach((ele2)=>{
-        if(ele == ele2) t=false;
+    const ans = playingAll.filter((ele) => {
+      var t = true;
+      batted.forEach((ele2) => {
+        if (ele == ele2) t = false;
       })
       return t;
     })
@@ -99,7 +103,7 @@ const MatchDaySingleScreen = (props) => {
     return ans;
   }
 
-  const YetToBat2 = () =>{
+  const YetToBat2 = () => {
     var team1
     var team2
 
@@ -109,19 +113,24 @@ const MatchDaySingleScreen = (props) => {
     if (team1 == 'a') team2 = 'b'
     else team2 = 'a'
 
-    const playingAll=jsonfeed?.data?.squad?.[team2].playing_xi;
+    const playingAll = jsonfeed?.data?.squad?.[team2].playing_xi;
+
+    console.log(Object.keys(playingAll).length);
+    if (Object.keys(playingAll).length == 0) {
+      return false;
+    }
 
     var st
     if (team2 == 'a') st = 'a_1'
     else st = 'b_1'
 
-    const batted=jsonfeed?.data?.play?.innings?.[st]?.batting_order;
+    const batted = jsonfeed?.data?.play?.innings?.[st]?.batting_order;
     // console.log(batted);
 
-    const ans=playingAll.filter((ele)=>{
-      var t=true;
-      batted.forEach((ele2)=>{
-        if(ele == ele2) t=false;
+    const ans = playingAll.filter((ele) => {
+      var t = true;
+      batted.forEach((ele2) => {
+        if (ele == ele2) t = false;
       })
       return t;
     })
@@ -140,14 +149,14 @@ const MatchDaySingleScreen = (props) => {
       wickets: jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.wickets,
       maiden: jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.maiden_overs,
     }
-    if(jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[1]==0) {
-      response.overs=jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[0];
+    if (jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[1] == 0) {
+      response.overs = jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[0];
     }
     return response
   }
 
-  const printWhole =(overs) =>{
-    let whole=overs;
+  const printWhole = (overs) => {
+    let whole = overs;
     return whole;
   }
   const GiveBowlingDetails2ndInnings = (rawName) => {
@@ -162,8 +171,8 @@ const MatchDaySingleScreen = (props) => {
       wickets: jsonfeed?.data?.players?.[rawName]?.score?.['2']?.bowling?.score?.wickets,
       maiden: jsonfeed?.data?.players?.[rawName]?.score?.['2']?.bowling?.score?.maiden_overs,
     }
-    if(jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[1]==0) {
-      response.overs=jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[0];
+    if (jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[1] == 0) {
+      response.overs = jsonfeed?.data?.players?.[rawName]?.score?.['1']?.bowling?.score?.overs[0];
     }
     return response
   }
@@ -261,14 +270,14 @@ const MatchDaySingleScreen = (props) => {
 
     team1 = jsonfeed?.data?.play?.first_batting
 
-    var st,str2;
-    if(team1=='a'){
-      st='b_1'
-      str2='b_2'
+    var st, str2;
+    if (team1 == 'a') {
+      st = 'b_1'
+      str2 = 'b_2'
     }
-    else{
-      st='a_1'
-      str2='a_2'
+    else {
+      st = 'a_1'
+      str2 = 'a_2'
     }
 
     var ans1 = jsonfeed?.data?.play?.innings?.[st]?.score_str
@@ -348,7 +357,7 @@ const MatchDaySingleScreen = (props) => {
     let innings = jsonfeed?.data?.play?.innings_order
 
     let ans = false
-    for (let i = 0; i < innings.length; i++) {
+    for (let i = 0; i < innings?.length; i++) {
       if (innings[i] == 'a_2') ans = true
     }
     console.log(1)
@@ -359,7 +368,7 @@ const MatchDaySingleScreen = (props) => {
     let innings = jsonfeed?.data?.play?.innings_order
 
     let ans = false
-    for (let i = 0; i < innings.length; i++) {
+    for (let i = 0; i < innings?.length; i++) {
       if (innings[i] == 'b_2') ans = true
     }
     return ans
@@ -704,7 +713,7 @@ const MatchDaySingleScreen = (props) => {
   const [team1_name, setTeam1_name] = React.useState('')
   const [team2_name, setTeam2_name] = React.useState('')
   const [textInputValue, setTextInputValue] = React.useState('')
-  const [matchCommentary,setMatchCommentary]=React.useState(null);
+  const [matchCommentary, setMatchCommentary] = React.useState(null);
 
   const [feedAvailable, setFeedAvailable] = React.useState(true)
 
@@ -776,8 +785,8 @@ const MatchDaySingleScreen = (props) => {
         {/* MatchHeader */}
         <View>
           <PagalFanBEApi.FetchFetchSingleMatchGET id={props.route?.params?.match_id ?? 77}
-             onData={(data) => {
-              if(data && data[0]?.feed_available == false) setFeedAvailable(false);
+            onData={(data) => {
+              if (data && data[0]?.feed_available == false) setFeedAvailable(false);
             }}
           >
             {({ loading, error, data, refetchFetchSingleMatch }) => {
@@ -1039,8 +1048,8 @@ const MatchDaySingleScreen = (props) => {
                                 dimensions.width,
                               )}
                             >
-                              {checkMatchDates(listData?.match_date,listData?.end_date) ? getCorrectDateFormat(listData?.match_date):getCorrectDateFormat(listData?.match_date)}
-                                  {checkMatchDates(listData?.match_date,listData?.end_date) ? null:endDate(listData?.end_date)}
+                              {checkMatchDates(listData?.match_date, listData?.end_date) ? getCorrectDateFormat(listData?.match_date) : getCorrectDateFormat(listData?.match_date)}
+                              {checkMatchDates(listData?.match_date, listData?.end_date) ? null : endDate(listData?.end_date)}
                             </Text>
                             {/* StartTime */}
                             <Text
@@ -1296,7 +1305,7 @@ const MatchDaySingleScreen = (props) => {
                       justifyContent: 'space-between',
                       paddingLeft: 2,
                       paddingRight: 2,
-                      paddingTop:2,
+                      paddingTop: 2,
                       width: 145,
                     },
                     dimensions.width,
@@ -1571,795 +1580,252 @@ const MatchDaySingleScreen = (props) => {
               )}
               title={translate('MatchDaySingleScreen.Text.Scores')}
             >
-            {feedAvailable ?
-              <PagalFanBEApi.FetchFetchFeedForSingleMatchGET
-              refetchInterval={30000}
-              matchid={props.route?.params?.match_id ?? 77}
-              onData={(fetchData) => {
-                try {
-                  const valueqsF9k609 = JSON.parse(fetchData && fetchData[0].match_data)
-                  setJsonfeed(valueqsF9k609)
-                  const parsedJsonFeed = valueqsF9k609
-                  setTeamSequence()
-                } catch (err) {
-                  console.error(err)
-                }
-              }}
-            >
-              {({ loading, error, data, refetchFetchFeedForSingleMatch }) => {
-                const fetchData = data
-                if (!fetchData || loading) {
-                  return <ActivityIndicator />
-                }
+              {feedAvailable ?
+                <PagalFanBEApi.FetchFetchFeedForSingleMatchGET
+                  refetchInterval={30000}
+                  matchid={props.route?.params?.match_id ?? 77}
+                  onData={(fetchData) => {
+                    try {
+                      const valueqsF9k609 = JSON.parse(fetchData && fetchData[0].match_data)
+                      setJsonfeed(valueqsF9k609)
+                      const parsedJsonFeed = valueqsF9k609
+                      setTeamSequence()
+                    } catch (err) {
+                      console.error(err)
+                    }
+                  }}
+                >
+                  {({ loading, error, data, refetchFetchFeedForSingleMatch }) => {
+                    const fetchData = data
+                    if (!fetchData || loading) {
+                      return <ActivityIndicator />
+                    }
 
-                if (error) {
-                  return <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
-                }
+                    if (error) {
+                      return <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
+                    }
 
-                return (
-                  <>
-                    {/* Match Live  */}
-                    <>
-                      {!showScorecard(jsonfeed) ? 
-                      <View
-                      style={StyleSheet.applyWidth(
-                        StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Before match'], {
-                          alignContent: 'center',
-                          marginTop: 200,
-                        }),
-                        dimensions.width,
-                      )}
-                    >
-                      <Text
-                        style={StyleSheet.applyWidth(
-                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                            alignSelf: 'center',
-                            fontSize: 20,
-                            textAlign: 'center',
-                            color: '#fff',
-                          }),
-                          dimensions.width,
-                        )}
-                      >
-                        {MatchText()}
-                        {'\n'}
-                      </Text>
-                      </View>
-                      : (
-                        <View style={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}>
-                          <ScrollView
-                            contentContainerStyle={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}
-                            bounces={true}
-                            showsHorizontalScrollIndicator={false}
-                            showsVerticalScrollIndicator={false}
-                          >
-                            {/* Layer-1 */}
+                    return (
+                      <>
+                        {/* Match Live  */}
+                        <>
+                          {!showScorecard(jsonfeed) ?
                             <View
                               style={StyleSheet.applyWidth(
-                                GlobalStyles.ViewStyles(theme)['Layer-1'],
+                                StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Before match'], {
+                                  alignContent: 'center',
+                                  marginTop: 200,
+                                }),
                                 dimensions.width,
-                                {marginBottom:5}
                               )}
                             >
-                              {/* Team_1 */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Team_name_1 */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      fontFamily: 'System',
-                                      fontSize: 13,
-                                      fontWeight: '700',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {Team1Name()}
-                                </Text>
-                                {/* Team_score_1 */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 10,
-                                      fontWeight: '600',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {Team1ScoreBoth()} {Team1ScoreBoth()? 'Overs':null}
-                                  {'\n'}
-                                </Text>
-                              </View>
-                              {/* Team_2 */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                  },
-                                  dimensions.width,
-                                  {marginBottom:5}
-                                )}
-                              >
-                                {/* Team_name_2 */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      fontFamily: 'System',
-                                      fontSize: 13,
-                                      fontWeight: '700',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {Team2Name()}
-                                </Text>
-                                {/* Team_score_2 */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 10,
-                                      fontWeight: '600',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {Team2ScoreBoth()}{Team2ScoreBoth()? ' Overs':null}
-                                  {'\n'}
-                                </Text>
-                              </View>
-                              {/* Text 3 */}
                               <Text
                                 style={StyleSheet.applyWidth(
                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    fontSize: 11,
-                                    color: '#fff',
-                                    marginBottom:-5
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                 {getGameStatus(jsonfeed?.data?.status)}: {StatusData()}
-                                {'\n'}
-                              </Text>
-                            </View>
-                            {/* Layer-2 */}
-                            <View>
-                              {/* Match Title */}
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    fontSize: 11,
-                                    textAlign: 'left',
+                                    alignSelf: 'center',
+                                    fontSize: 20,
+                                    textAlign: 'center',
                                     color: '#fff',
                                   }),
                                   dimensions.width,
                                 )}
                               >
-                                {jsonfeed?.data?.title}
+                                {MatchText()}
                                 {'\n'}
                               </Text>
                             </View>
-                            {/* Layer-3 */}
-                            <TabView
-                              style={{
-                                borderTopColor: '#fff',
-                                borderTopWidth: 1,
-                                fontSize: 13,
-                              }}
-                              tabBarPosition={'top'}
-                              keyboardDismissMode={'auto'}
-                              swipeEnabled={true}
-                              activeColor={theme.colors.peoplebitSalmonRed}
-                              pressColor={theme.colors.peoplebitSalmonRed}
-                              indicatorColor={theme.colors.peoplebitSalmonRed}
-                              tabsBackgroundColor={theme.colors['PF-Grey']}
-                            >
-                              {/* Tab Team1 */}
-                              <TabViewItem title={Team1Name()} >
+                            : (
+                              <View style={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}>
                                 <ScrollView
+                                  contentContainerStyle={StyleSheet.applyWidth({ flex: 1 }, dimensions.width)}
                                   bounces={true}
                                   showsHorizontalScrollIndicator={false}
                                   showsVerticalScrollIndicator={false}
                                 >
-                                  {/* Individual Team Scores */}
+                                  {/* Layer-1 */}
                                   <View
                                     style={StyleSheet.applyWidth(
-                                      { marginTop: 10, position: 'relative' },
+                                      GlobalStyles.ViewStyles(theme)['Layer-1'],
                                       dimensions.width,
-                                      { color: '	rgb(255, 0, 102)' },
+                                      { marginBottom: 5 }
                                     )}
                                   >
-                                    {/* Team1 */}
-                                    <View>
-                                      {/* Team_Name */}
+                                    {/* Team_1 */}
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          flexDirection: 'row',
+                                          justifyContent: 'space-between',
+                                        },
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {/* Team_name_1 */}
                                       <Text
                                         style={StyleSheet.applyWidth(
                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                             fontFamily: 'System',
+                                            fontSize: 13,
                                             fontWeight: '700',
                                             color: '#fff',
                                           }),
                                           dimensions.width,
                                         )}
                                       >
-                                        {Team1Name()}{' '}
-                                        {jsonfeed?.data?.format == 'test' ? (
-                                          <Text>(1st Innings)</Text>
-                                        ) : (
-                                          <Text></Text>
-                                        )}
+                                        {Team1Name()}
                                       </Text>
-                                      {/* Batting Score  */}
-                                      <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
-                                        {/* Batting Header */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              alignContent: 'space-between',
-                                              alignItems: 'stretch',
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {/* Left */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              { alignSelf: 'flex-start' },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Batting */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontSize: 14,
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Batting\n'}
-                                            </Text>
-                                          </View>
-                                          {/* Right */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'center',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                width: 200,
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Runs */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  // marginRight: 20,
-                                                  color: '#fff',
-                                                  width:40,
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'R\n'}
-                                            </Text>
-                                            {/* Balls */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'B'}
-                                            </Text>
-                                            {/* Fours */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'4s\n'}
-                                            </Text>
-                                            {/* Sixes */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'6s'}
-                                            </Text>
-                                            {/* Strike rate */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                  width:40,
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'SR'}
-                                            </Text>
-                                          </View>
-                                        </View>
-                                        <FlashList
-                                          data={Team1BattingOrder()}
-                                          listKey={'xb06IoKb'}
-                                          keyExtractor={(flashListData) =>
-                                            flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
-                                          }
-                                          renderItem={({ item }) => {
-                                            const flashListData = item
-                                            return (
-                                              <>
-                                                {/* Batting Dynamic  */}
-                                                <View
-                                                  style={StyleSheet.applyWidth(
-                                                    {
-                                                      alignItems: 'stretch',
-                                                      alignSelf: 'auto',
-                                                      flexDirection: 'column',
-                                                      height: 33,
-                                                      justifyContent: 'flex-start',
-                                                      marginBottom:1
-                                                    },
-                                                    dimensions.width,
-                                                  )}
-                                                >
-                                                  <View
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        flexDirection: 'row',
-                                                        height: 15,
-                                                        justifyContent: 'space-between',
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    {/* Left */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          alignSelf: 'flex-start',
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {/* Batting */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBatsmanDetails(flashListData)?.name}
-                                                        {'\n\n\n\n'}
-                                                      </Text>
-                                                    </View>
-                                                    {/* Right */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          flexDirection: 'row',
-                                                          justifyContent: 'space-between',
-                                                          width: 200,
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {/* Runs */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBatsmanDetails(flashListData)?.runs}
-                                                      </Text>
-                                                      {/* Balls */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBatsmanDetails(flashListData)?.balls}
-                                                      </Text>
-                                                      {/* Fours */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBatsmanDetails(flashListData)?.fours}
-                                                        {'\n'}
-                                                      </Text>
-                                                      {/* Sixes */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBatsmanDetails(flashListData)?.sixes}
-                                                      </Text>
-                                                      {/* Strike rate */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            opacity: 1,
-                                                            color: '#fff',
-                                                            width:50,
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {Convert2Decimal(GiveBatsmanDetails(flashListData)?.sr)}
-                                                        {'\n'}
-                                                      </Text>
-                                                    </View>
-                                                  </View>
-                                                  {/* View 2 */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth({ marginTop: 1 }, dimensions.width)}
-                                                  >
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 9,
-                                                          color: '#fff',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      
-                                                      {showOutNotout(flashListData)}
-                                                    </Text>
-                                                  </View>
-                                                </View>
-                                              </>
-                                            )
-                                          }}
-                                          numColumns={1}
-                                          onEndReachedThreshold={0.5}
+                                      {/* Team_score_1 */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 10,
+                                            fontWeight: '600',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {Team1ScoreBoth()} {Team1ScoreBoth() ? 'Overs' : null}
+                                        {'\n'}
+                                      </Text>
+                                    </View>
+                                    {/* Team_2 */}
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          flexDirection: 'row',
+                                          justifyContent: 'space-between',
+                                        },
+                                        dimensions.width,
+                                        { marginBottom: 5 }
+                                      )}
+                                    >
+                                      {/* Team_name_2 */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            fontFamily: 'System',
+                                            fontSize: 13,
+                                            fontWeight: '700',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {Team2Name()}
+                                      </Text>
+                                      {/* Team_score_2 */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 10,
+                                            fontWeight: '600',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {Team2ScoreBoth()}{Team2ScoreBoth() ? ' Overs' : null}
+                                        {'\n'}
+                                      </Text>
+                                    </View>
+                                    {/* Text 3 */}
+                                    <Text
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                          fontSize: 11,
+                                          color: '#fff',
+                                          marginBottom: -5
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {getGameStatus(jsonfeed?.data?.status)}: {StatusData()}
+                                      {'\n'}
+                                    </Text>
+                                  </View>
+                                  {/* Layer-2 */}
+                                  <View>
+                                    {/* Match Title */}
+                                    <Text
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                          fontSize: 11,
+                                          textAlign: 'left',
+                                          color: '#fff',
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {jsonfeed?.data?.title}
+                                      {'\n'}
+                                    </Text>
+                                  </View>
+                                  {/* Layer-3 */}
+                                  <TabView
+                                    style={{
+                                      borderTopColor: '#fff',
+                                      borderTopWidth: 1,
+                                      fontSize: 13,
+                                    }}
+                                    tabBarPosition={'top'}
+                                    keyboardDismissMode={'auto'}
+                                    swipeEnabled={true}
+                                    activeColor={theme.colors.peoplebitSalmonRed}
+                                    pressColor={theme.colors.peoplebitSalmonRed}
+                                    indicatorColor={theme.colors.peoplebitSalmonRed}
+                                    tabsBackgroundColor={theme.colors['PF-Grey']}
+                                  >
+                                    {/* Tab Team1 */}
+                                    {console.log(YetToBat1())}
+                                    {YetToBat1()?.length == 11 || YetToBat1() == false ? null :
+                                      <TabViewItem title={Team1Name()} >
+                                        <ScrollView
+                                          bounces={true}
                                           showsHorizontalScrollIndicator={false}
-                                          showsVerticalScrollIndicator={true}
-                                          estimatedItemSize={20}
-                                        />
-                                        {/* Footer */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                              marginTop: 5,
-                                            },
-                                            dimensions.width,
-                                          )}
+                                          showsVerticalScrollIndicator={false}
                                         >
-                                          <Text
-                                            style={StyleSheet.applyWidth(
-                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                fontFamily: 'System',
-                                                fontWeight: '600',
-                                                color: '#fff',
-                                                fontSize:16
-                                              }),
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {'Total:\n'}
-                                          </Text>
-
+                                          {/* Individual Team Scores */}
                                           <View
                                             style={StyleSheet.applyWidth(
-                                              {
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                width: 200,
-                                                paddingLeft:-30
-                                              },
+                                              { marginTop: 10, position: 'relative' },
                                               dimensions.width,
+                                              { color: '	rgb(255, 0, 102)' },
                                             )}
                                           >
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  marginLeft: 5,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {Team1Score()} {"Ovs"}
-                                            </Text>
-
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  marginLeft: 10,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'RR: '}
-                                              {Team1RR()}
-                                            </Text>
-                                          </View>
-                                        </View>
-                                      </View>
-                                      {YetToBat1().length==0 ?null :
-                                      <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                              marginTop: 3,
-                                              alignSelf:'baseline'
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          <Text
-                                            style={StyleSheet.applyWidth(
-                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                fontFamily: 'System',
-                                                fontWeight: '600',
-                                                color: '#fff',
-                                                
-                                              }),
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {getGameStatus()=='RESULT'?'Did not bat:':'Yet to bat:'}
-                                          </Text>
-                                          <View
-                                            style={{
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                              marginTop: 3,
-                                              marginLeft: 5,
-                                              width:300,
-                                              flexWrap: 'wrap'
-                                            }}
-                                          >
-                                          <FlatList
-                                            data={YetToBat1()}
-                                            contentContainerStyle={{flexDirection : "row", flexWrap : "wrap"}} 
-                                            listKey={'o1Om4XPq'}
-                                            renderItem={({ item ,index }) => { 
-                                              return (
-                                                <Text
+                                            {/* Team1 */}
+                                            <View>
+                                              {/* Team_Name */}
+                                              <Text
                                                 style={StyleSheet.applyWidth(
                                                   StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontSize: 11,
+                                                    fontFamily: 'System',
+                                                    fontWeight: '700',
                                                     color: '#fff',
                                                   }),
                                                   dimensions.width,
                                                 )}
                                               >
-                                                
-                                                {GiveBatsmanDetails(item).name}
-                                                {index== YetToBat1().length-1 ? "" : ", "}
+                                                {Team1Name()}{' '}
+                                                {jsonfeed?.data?.format == 'test' ? (
+                                                  <Text>(1st Innings)</Text>
+                                                ) : (
+                                                  <Text></Text>
+                                                )}
                                               </Text>
-                                              )}}
-                                            >
-                                            </FlatList>
-                                            </View>
-                                        </View>
-                                      }
-                                      {/* Bowling Score  */}
-                                      <View
-                                        style={StyleSheet.applyWidth(
-                                          { marginRight: 10, marginTop: 30 },
-                                          dimensions.width,
-                                        )}
-                                      >
-                                        {/* Bowling Header */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              alignContent: 'space-between',
-                                              alignItems: 'stretch',
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {/* Left */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              { alignSelf: 'flex-start' },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Bowling */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontSize: 14,
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Bowling\n'}
-                                            </Text>
-                                          </View>
-                                          {/* Right */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'center',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                width: 200,
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Overs */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'O\n'}
-                                            </Text>
-                                            {/* Maiden */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'M'}
-                                            </Text>
-                                            {/* Runs */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'R'}
-                                            </Text>
-                                            {/* Wickets */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'W'}
-                                            </Text>
-                                            {/* Economy */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                  width:40,
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Econ'}
-                                            </Text>
-                                          </View>
-                                        </View>
-                                        <FlashList
-                                          data={Team2BowlingOrder()}
-                                          listKey={'YR7ZDSL2'}
-                                          keyExtractor={(flashListData) =>
-                                            flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
-                                          }
-                                          renderItem={({ item }) => {
-                                            const flashListData = item
-                                            return (
-                                              <>
-                                                {/* Bowling Dynamic  */}
+                                              {/* Batting Score  */}
+                                              <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
+                                                {/* Batting Header */}
                                                 <View
                                                   style={StyleSheet.applyWidth(
                                                     {
+                                                      alignContent: 'space-between',
+                                                      alignItems: 'stretch',
                                                       flexDirection: 'row',
-                                                      height: 20,
                                                       justifyContent: 'space-between',
                                                     },
                                                     dimensions.width,
@@ -2368,32 +1834,451 @@ const MatchDaySingleScreen = (props) => {
                                                   {/* Left */}
                                                   <View
                                                     style={StyleSheet.applyWidth(
-                                                      {
-                                                        alignSelf: 'flex-start',
-                                                      },
+                                                      { alignSelf: 'flex-start' },
                                                       dimensions.width,
                                                     )}
                                                   >
-                                                    {/* Bowler */}
+                                                    {/* Batting */}
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
+                                                          fontFamily: 'System',
+                                                          fontSize: 14,
+                                                          fontWeight: '600',
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {GiveBowlingDetails(flashListData)?.name}
-                                                      {'\n\n\n\n'}
+                                                      {'Batting\n'}
                                                     </Text>
                                                   </View>
                                                   {/* Right */}
                                                   <View
                                                     style={StyleSheet.applyWidth(
                                                       {
+                                                        alignContent: 'center',
                                                         flexDirection: 'row',
-                                                        justifyContent: 'space-around',
+                                                        justifyContent: 'space-between',
+                                                        width: 200,
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Runs */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          // marginRight: 20,
+                                                          color: '#fff',
+                                                          width: 40,
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'R\n'}
+                                                    </Text>
+                                                    {/* Balls */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'B'}
+                                                    </Text>
+                                                    {/* Fours */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'4s\n'}
+                                                    </Text>
+                                                    {/* Sixes */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'6s'}
+                                                    </Text>
+                                                    {/* Strike rate */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          color: '#fff',
+                                                          width: 40,
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'SR'}
+                                                    </Text>
+                                                  </View>
+                                                </View>
+                                                <FlashList
+                                                  data={Team1BattingOrder()}
+                                                  listKey={'xb06IoKb'}
+                                                  keyExtractor={(flashListData) =>
+                                                    flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
+                                                  }
+                                                  renderItem={({ item }) => {
+                                                    const flashListData = item
+                                                    return (
+                                                      <>
+                                                        {/* Batting Dynamic  */}
+                                                        <View
+                                                          style={StyleSheet.applyWidth(
+                                                            {
+                                                              alignItems: 'stretch',
+                                                              alignSelf: 'auto',
+                                                              flexDirection: 'column',
+                                                              height: 33,
+                                                              justifyContent: 'flex-start',
+                                                              marginBottom: 1
+                                                            },
+                                                            dimensions.width,
+                                                          )}
+                                                        >
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                flexDirection: 'row',
+                                                                height: 15,
+                                                                justifyContent: 'space-between',
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Left */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  alignSelf: 'flex-start',
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Batting */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.name}
+                                                                {'\n\n\n\n'}
+                                                              </Text>
+                                                            </View>
+                                                            {/* Right */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  flexDirection: 'row',
+                                                                  justifyContent: 'space-between',
+                                                                  width: 200,
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Runs */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.runs}
+                                                              </Text>
+                                                              {/* Balls */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.balls}
+                                                              </Text>
+                                                              {/* Fours */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.fours}
+                                                                {'\n'}
+                                                              </Text>
+                                                              {/* Sixes */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.sixes}
+                                                              </Text>
+                                                              {/* Strike rate */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    opacity: 1,
+                                                                    color: '#fff',
+                                                                    width: 50,
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {Convert2Decimal(GiveBatsmanDetails(flashListData)?.sr)}
+                                                                {'\n'}
+                                                              </Text>
+                                                            </View>
+                                                          </View>
+                                                          {/* View 2 */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth({ marginTop: 1 }, dimensions.width)}
+                                                          >
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 9,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+
+                                                              {showOutNotout(flashListData)}
+                                                            </Text>
+                                                          </View>
+                                                        </View>
+                                                      </>
+                                                    )
+                                                  }}
+                                                  numColumns={1}
+                                                  onEndReachedThreshold={0.5}
+                                                  showsHorizontalScrollIndicator={false}
+                                                  showsVerticalScrollIndicator={true}
+                                                  estimatedItemSize={20}
+                                                />
+                                                {/* Footer */}
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    {
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                      marginTop: 5,
+                                                    },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  <Text
+                                                    style={StyleSheet.applyWidth(
+                                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                        fontFamily: 'System',
+                                                        fontWeight: '600',
+                                                        color: '#fff',
+                                                        fontSize: 16
+                                                      }),
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {'Total:\n'}
+                                                  </Text>
+
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                        width: 200,
+                                                        paddingLeft: -30
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          marginLeft: 5,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {Team1Score()} {"Ovs"}
+                                                    </Text>
+
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          marginLeft: 10,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'RR: '}
+                                                      {Team1RR()}
+                                                    </Text>
+                                                  </View>
+                                                </View>
+                                              </View>
+                                              {YetToBat1()?.length == 0 ? null :
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    {
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                      marginTop: 3,
+                                                      alignSelf: 'baseline'
+                                                    },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  <Text
+                                                    style={StyleSheet.applyWidth(
+                                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                        fontFamily: 'System',
+                                                        fontWeight: '600',
+                                                        color: '#fff',
+
+                                                      }),
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {getGameStatus() == 'RESULT' ? 'Did not bat:' : 'Yet to bat:'}
+                                                  </Text>
+                                                  <View
+                                                    style={{
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                      marginTop: 3,
+                                                      marginLeft: 5,
+                                                      width: 300,
+                                                      flexWrap: 'wrap'
+                                                    }}
+                                                  >
+                                                    <FlatList
+                                                      data={YetToBat1()}
+                                                      contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
+                                                      listKey={'o1Om4XPq'}
+                                                      renderItem={({ item, index }) => {
+                                                        return (
+                                                          <Text
+                                                            style={StyleSheet.applyWidth(
+                                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                fontSize: 11,
+                                                                color: '#fff',
+                                                              }),
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+
+                                                            {GiveBatsmanDetails(item).name}
+                                                            {index == YetToBat1()?.length - 1 ? "" : ", "}
+                                                          </Text>
+                                                        )
+                                                      }}
+                                                    >
+                                                    </FlatList>
+                                                  </View>
+                                                </View>
+                                              }
+                                              {/* Bowling Score  */}
+                                              <View
+                                                style={StyleSheet.applyWidth(
+                                                  { marginRight: 10, marginTop: 30 },
+                                                  dimensions.width,
+                                                )}
+                                              >
+                                                {/* Bowling Header */}
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    {
+                                                      alignContent: 'space-between',
+                                                      alignItems: 'stretch',
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                    },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  {/* Left */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      { alignSelf: 'flex-start' },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Bowling */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontSize: 14,
+                                                          fontWeight: '600',
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'Bowling\n'}
+                                                    </Text>
+                                                  </View>
+                                                  {/* Right */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        alignContent: 'center',
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
                                                         width: 200,
                                                       },
                                                       dimensions.width,
@@ -2403,939 +2288,246 @@ const MatchDaySingleScreen = (props) => {
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {printWhole(GiveBowlingDetails(flashListData)?.overs)}
+                                                      {'O\n'}
                                                     </Text>
                                                     {/* Maiden */}
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {GiveBowlingDetails(flashListData)?.maiden}
+                                                      {'M'}
                                                     </Text>
                                                     {/* Runs */}
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {GiveBowlingDetails(flashListData)?.runs}
-                                                      {'\n'}
+                                                      {'R'}
                                                     </Text>
                                                     {/* Wickets */}
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
                                                           color: '#fff',
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {GiveBowlingDetails(flashListData)?.wickets}
+                                                      {'W'}
                                                     </Text>
                                                     {/* Economy */}
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
                                                           color: '#fff',
-                                                          width:40,
+                                                          width: 40,
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {Convert2Decimal(GiveBowlingDetails(flashListData)?.economy)}
-                                                      {'\n'}
+                                                      {'Econ'}
                                                     </Text>
                                                   </View>
                                                 </View>
-                                              </>
-                                            )
-                                          }}
-                                          estimatedItemSize={50}
-                                          numColumns={1}
-                                          onEndReachedThreshold={0.5}
-                                          showsHorizontalScrollIndicator={true}
-                                          showsVerticalScrollIndicator={false}
-                                        />
-                                      </View>
-                                    </View>
-                                    {check2InningsTeamA() == true ? (
-                                      <View>
-                                        {/* Team_Name */}
-                                        <Text
-                                          style={{
-                                            borderBottomColor: 'white',
-                                            borderBottomWidth: 1,
-                                            color: '#fff',
-                                          }}
-                                        ></Text>
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                              fontFamily: 'System',
-                                              fontWeight: '700',
-                                              color: '#fff',
-                                              marginTop: 5,
-                                            }),
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {Team1Name()}{' '}
-                                          {jsonfeed?.data?.format == 'test' ? (
-                                            <Text>(2nd Innings)</Text>
-                                          ) : (
-                                            <Text></Text>
-                                          )}
-                                        </Text>
-                                        {/* Batting Score  */}
-                                        <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
-                                          {/* Batting Header */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'space-between',
-                                                alignItems: 'stretch',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Left */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                { alignSelf: 'flex-start' },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Batting */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontSize: 14,
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'Batting\n'}
-                                              </Text>
+                                                <FlashList
+                                                  data={Team2BowlingOrder()}
+                                                  listKey={'YR7ZDSL2'}
+                                                  keyExtractor={(flashListData) =>
+                                                    flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
+                                                  }
+                                                  renderItem={({ item }) => {
+                                                    const flashListData = item
+                                                    return (
+                                                      <>
+                                                        {/* Bowling Dynamic  */}
+                                                        <View
+                                                          style={StyleSheet.applyWidth(
+                                                            {
+                                                              flexDirection: 'row',
+                                                              height: 20,
+                                                              justifyContent: 'space-between',
+                                                            },
+                                                            dimensions.width,
+                                                          )}
+                                                        >
+                                                          {/* Left */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                alignSelf: 'flex-start',
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Bowler */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.name}
+                                                              {'\n\n\n\n'}
+                                                            </Text>
+                                                          </View>
+                                                          {/* Right */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'space-around',
+                                                                width: 200,
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Overs */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {printWhole(GiveBowlingDetails(flashListData)?.overs)}
+                                                            </Text>
+                                                            {/* Maiden */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.maiden}
+                                                            </Text>
+                                                            {/* Runs */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.runs}
+                                                              {'\n'}
+                                                            </Text>
+                                                            {/* Wickets */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.wickets}
+                                                            </Text>
+                                                            {/* Economy */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  color: '#fff',
+                                                                  width: 40,
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {Convert2Decimal(GiveBowlingDetails(flashListData)?.economy)}
+                                                              {'\n'}
+                                                            </Text>
+                                                          </View>
+                                                        </View>
+                                                      </>
+                                                    )
+                                                  }}
+                                                  estimatedItemSize={50}
+                                                  numColumns={1}
+                                                  onEndReachedThreshold={0.5}
+                                                  showsHorizontalScrollIndicator={true}
+                                                  showsVerticalScrollIndicator={false}
+                                                />
+                                              </View>
                                             </View>
-                                            {/* Right */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  alignContent: 'center',
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  width: 200,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Runs */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
+                                            {check2InningsTeamA() == true ? (
+                                              <View>
+                                                {/* Team_Name */}
+                                                <Text
+                                                  style={{
+                                                    borderBottomColor: 'white',
+                                                    borderBottomWidth: 1,
                                                     color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'R\n'}
-                                              </Text>
-                                              {/* Balls */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'B'}
-                                              </Text>
-                                              {/* Fours */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'4s\n'}
-                                              </Text>
-                                              {/* Sixes */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'6s'}
-                                              </Text>
-                                              {/* Strike rate */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                    width:40,
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'SR'}
-                                              </Text>
-                                            </View>
-                                          </View>
-                                          <FlashList
-                                            data={Team1BattingOrder2ndInnings()}
-                                            listKey={'xb06IoKb'}
-                                            keyExtractor={(flashListData) =>
-                                              flashListData?.id ||
-                                              flashListData?.uuid ||
-                                              JSON.stringify(flashListData)
-                                            }
-                                            renderItem={({ item }) => {
-                                              const flashListData = item
-                                              return (
-                                                <>
-                                                  {/* Batting Dynamic  */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        alignItems: 'stretch',
-                                                        alignSelf: 'auto',
-                                                        flexDirection: 'column',
-                                                        height: 33,
-                                                        justifyContent: 'flex-start',
-                                                        marginBottom:1
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          flexDirection: 'row',
-                                                          height: 15,
-                                                          justifyContent: 'space-between',
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {/* Left */}
-                                                      <View
-                                                        style={StyleSheet.applyWidth(
-                                                          {
-                                                            alignSelf: 'flex-start',
-                                                          },
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {/* Batting */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.name}
-                                                          {'\n\n\n\n'}
-                                                        </Text>
-                                                      </View>
-                                                      {/* Right */}
-                                                      <View
-                                                        style={StyleSheet.applyWidth(
-                                                          {
-                                                            flexDirection: 'row',
-                                                            justifyContent: 'space-between',
-                                                            width: 200,
-                                                          },
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {/* Runs */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.runs}
-                                                        </Text>
-                                                        {/* Balls */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.balls}
-                                                        </Text>
-                                                        {/* Fours */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.fours}
-                                                          {'\n'}
-                                                        </Text>
-                                                        {/* Sixes */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.sixes}
-                                                        </Text>
-                                                        {/* Strike rate */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                opacity: 1,
-                                                                color: '#fff',
-                                                                width:50,
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {Convert2Decimal(
-                                                            GiveBatsmanDetails2ndInnings(flashListData)?.sr,
-                                                          )}
-                                                          {'\n'}
-                                                        </Text>
-                                                      </View>
-                                                    </View>
-                                                    {/* View 2 */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {marginTop: 1},
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 9,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {' '}
-                                                        {showOutNotout2ndInnings(flashListData)}
-                                                      </Text>
-                                                    </View>
-                                                  </View>
-                                                </>
-                                              )
-                                            }}
-                                            numColumns={1}
-                                            onEndReachedThreshold={0.5}
-                                            showsHorizontalScrollIndicator={false}
-                                            showsVerticalScrollIndicator={true}
-                                            estimatedItemSize={20}
-                                          />
-                                          {/* Footer */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                marginTop: 5,
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                  fontSize:16
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Total:\n'}
-                                            </Text>
-
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  width: 200,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    marginLeft: 10,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {Team1Score2ndInnings()}
-                                              </Text>
-
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    marginLeft: 10,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'RR -'}
-                                                {Team1RR2ndInnings()}
-                                              </Text>
-                                            </View>
-                                          </View>
-                                        </View>
-                                        {/* Bowling Score  */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            { marginRight: 10, marginTop: 30 },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {/* Bowling Header */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'space-between',
-                                                alignItems: 'stretch',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Left */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                { alignSelf: 'flex-start' },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Bowling */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontSize: 14,
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'Bowling\n'}
-                                              </Text>
-                                            </View>
-                                            {/* Right */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  alignContent: 'center',
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  width: 200,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Overs */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'O\n'}
-                                              </Text>
-                                              {/* Maiden */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'M'}
-                                              </Text>
-                                              {/* Runs */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'R'}
-                                              </Text>
-                                              {/* Wickets */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'W'}
-                                              </Text>
-                                              {/* Economy */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                    width:40,
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'Econ'}
-                                              </Text>
-                                            </View>
-                                          </View>
-                                          <FlashList
-                                            data={Team2BowlingOrder2ndInnings()}
-                                            listKey={'YR7ZDSL2'}
-                                            keyExtractor={(flashListData) =>
-                                              flashListData?.id ||
-                                              flashListData?.uuid ||
-                                              JSON.stringify(flashListData)
-                                            }
-                                            renderItem={({ item }) => {
-                                              const flashListData = item
-                                              return (
-                                                <>
-                                                  {/* Bowling Dynamic  */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        flexDirection: 'row',
-                                                        height: 20,
-                                                        justifyContent: 'space-between',
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    {/* Left */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          alignSelf: 'flex-start',
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {/* Bowler */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.name}
-                                                        {'\n\n\n\n'}
-                                                      </Text>
-                                                    </View>
-                                                    {/* Right */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {
-                                                          flexDirection: 'row',
-                                                          justifyContent: 'space-around',
-                                                          width: 200,
-                                                        },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {/* Overs */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.overs}
-                                                      </Text>
-                                                      {/* Maiden */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.maiden}
-                                                      </Text>
-                                                      {/* Runs */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.runs}
-                                                        {'\n'}
-                                                      </Text>
-                                                      {/* Wickets */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
-                                                            color: '#fff',
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.wickets}
-                                                      </Text>
-                                                      {/* Economy */}
-                                                      <Text
-                                                        style={StyleSheet.applyWidth(
-                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            color: '#fff',
-                                                            width:40,
-                                                          }),
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {Convert2Decimal(
-                                                          GiveBowlingDetails2ndInnings(flashListData)?.economy,
-                                                        )}
-                                                        {'\n'}
-                                                      </Text>
-                                                    </View>
-                                                  </View>
-                                                </>
-                                              )
-                                            }}
-                                            estimatedItemSize={50}
-                                            numColumns={1}
-                                            onEndReachedThreshold={0.5}
-                                            showsHorizontalScrollIndicator={true}
-                                            showsVerticalScrollIndicator={false}
-                                          />
-                                        </View>
-                                      </View>
-                                    ) : (
-                                      <Text></Text>
-                                    )}
-                                  </View>
-                                </ScrollView>
-                              </TabViewItem>
-                              {/* Tab Team2 */}
-                              <TabViewItem
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TabViewItemStyles(theme)['Tab View Item']),
-                                  dimensions.width,
-                                )}
-                                title={Team2Name()}
-                              >
-                                <ScrollView
-                                  bounces={true}
-                                  showsHorizontalScrollIndicator={false}
-                                  showsVerticalScrollIndicator={false}
-                                >
-                                  {/* Individual Team Scores */}
-                                  <View style={StyleSheet.applyWidth({ marginTop: 10}, dimensions.width)}>
-                                    {/* Team2 */}
-                                    <View>
-                                      {/* Team_Name */}
-                                      <Text
-                                        style={StyleSheet.applyWidth(
-                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                            fontFamily: 'System',
-                                            fontWeight: '700',
-                                            color: '#fff',
-                                          }),
-                                          dimensions.width,
-                                        )}
-                                      >
-                                        {Team2Name()}{' '}
-                                        {jsonfeed?.data?.format == 'test' ? (
-                                          <Text>(1st Innings)</Text>
-                                        ) : (
-                                          <Text></Text>
-                                        )}
-                                      </Text>
-                                      {/* Batting Score  */}
-                                      <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
-                                        {/* Batting Header */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              alignContent: 'space-between',
-                                              alignItems: 'stretch',
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {/* Left */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              { alignSelf: 'flex-start' },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Batting */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontSize: 14,
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Batting\n'}
-                                            </Text>
-                                          </View>
-                                          {/* Right */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'center',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                width: 200,
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Runs */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'R\n'}
-                                            </Text>
-                                            {/* Balls */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'B'}
-                                            </Text>
-                                            {/* Fours */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'4s\n'}
-                                            </Text>
-                                            {/* Sixes */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'6s'}
-                                            </Text>
-                                            {/* Strike rate */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                  width:40,
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'SR'}
-                                            </Text>
-                                          </View>
-                                        </View>
-                                        <FlashList
-                                          data={team2BattingOrder()}
-                                          listKey={'0OabhL3m'}
-                                          keyExtractor={(flashListData) =>
-                                            flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
-                                          }
-                                          renderItem={({ item }) => {
-                                            const flashListData = item
-                                            return (
-                                              <>
-                                                {/* Batting Dynamic  */}
-                                                <View
+                                                  }}
+                                                ></Text>
+                                                <Text
                                                   style={StyleSheet.applyWidth(
-                                                    {
-                                                      flexDirection: 'column',
-                                                      height: 33,
-                                                      justifyContent: 'flex-start',
-                                                      marginBottom:1
-                                                    },
+                                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                      fontFamily: 'System',
+                                                      fontWeight: '700',
+                                                      color: '#fff',
+                                                      marginTop: 5,
+                                                    }),
                                                     dimensions.width,
                                                   )}
                                                 >
+                                                  {Team1Name()}{' '}
+                                                  {jsonfeed?.data?.format == 'test' ? (
+                                                    <Text>(2nd Innings)</Text>
+                                                  ) : (
+                                                    <Text></Text>
+                                                  )}
+                                                </Text>
+                                                {/* Batting Score  */}
+                                                <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
+                                                  {/* Batting Header */}
                                                   <View
                                                     style={StyleSheet.applyWidth(
                                                       {
+                                                        alignContent: 'space-between',
+                                                        alignItems: 'stretch',
                                                         flexDirection: 'row',
-                                                        height: 15,
                                                         justifyContent: 'space-between',
                                                       },
                                                       dimensions.width,
@@ -3344,9 +2536,7 @@ const MatchDaySingleScreen = (props) => {
                                                     {/* Left */}
                                                     <View
                                                       style={StyleSheet.applyWidth(
-                                                        {
-                                                          alignSelf: 'flex-start',
-                                                        },
+                                                        { alignSelf: 'flex-start' },
                                                         dimensions.width,
                                                       )}
                                                     >
@@ -3354,20 +2544,22 @@ const MatchDaySingleScreen = (props) => {
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
+                                                            fontFamily: 'System',
+                                                            fontSize: 14,
+                                                            fontWeight: '600',
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBatsmanDetails(flashListData)?.name}
-                                                        {'\n\n\n\n'}
+                                                        {'Batting\n'}
                                                       </Text>
                                                     </View>
                                                     {/* Right */}
                                                     <View
                                                       style={StyleSheet.applyWidth(
                                                         {
+                                                          alignContent: 'center',
                                                           flexDirection: 'row',
                                                           justifyContent: 'space-between',
                                                           width: 200,
@@ -3379,1024 +2571,345 @@ const MatchDaySingleScreen = (props) => {
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBatsmanDetails(flashListData)?.runs}
+                                                        {'R\n'}
                                                       </Text>
                                                       {/* Balls */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBatsmanDetails(flashListData)?.balls}
+                                                        {'B'}
                                                       </Text>
                                                       {/* Fours */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBatsmanDetails(flashListData)?.fours}
-                                                        {'\n'}
+                                                        {'4s\n'}
                                                       </Text>
                                                       {/* Sixes */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBatsmanDetails(flashListData)?.sixes}
+                                                        {'6s'}
                                                       </Text>
                                                       {/* Strike rate */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
                                                             color: '#fff',
-                                                            width:50,
+                                                            width: 40,
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {Convert2Decimal(GiveBatsmanDetails(flashListData)?.sr)}
-                                                        {'\n'}
+                                                        {'SR'}
                                                       </Text>
                                                     </View>
                                                   </View>
-                                                  {/* View 2 */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth({ marginTop: 1 }, dimensions.width)}
-                                                  >
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 9,
-                                                          color: '#fff',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {showOutNotout(flashListData)}
-                                                    </Text>
-                                                  </View>
-                                                </View>
-                                              </>
-                                            )
-                                          }}
-                                          estimatedItemSize={50}
-                                          numColumns={1}
-                                          onEndReachedThreshold={0.5}
-                                          showsHorizontalScrollIndicator={true}
-                                          showsVerticalScrollIndicator={false}
-                                        />
-                                        {/* Footer */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                              marginTop: 5,
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          <Text
-                                            style={StyleSheet.applyWidth(
-                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                fontFamily: 'System',
-                                                fontWeight: '600',
-                                                color: '#fff',
-                                                fontSize:16
-                                              }),
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {'Total:\n'}
-                                          </Text>
+                                                  <FlashList
+                                                    data={Team1BattingOrder2ndInnings()}
+                                                    listKey={'xb06IoKb'}
+                                                    keyExtractor={(flashListData) =>
+                                                      flashListData?.id ||
+                                                      flashListData?.uuid ||
+                                                      JSON.stringify(flashListData)
+                                                    }
+                                                    renderItem={({ item }) => {
+                                                      const flashListData = item
+                                                      return (
+                                                        <>
+                                                          {/* Batting Dynamic  */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                alignItems: 'stretch',
+                                                                alignSelf: 'auto',
+                                                                flexDirection: 'column',
+                                                                height: 33,
+                                                                justifyContent: 'flex-start',
+                                                                marginBottom: 1
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  flexDirection: 'row',
+                                                                  height: 15,
+                                                                  justifyContent: 'space-between',
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Left */}
+                                                              <View
+                                                                style={StyleSheet.applyWidth(
+                                                                  {
+                                                                    alignSelf: 'flex-start',
+                                                                  },
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {/* Batting */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.name}
+                                                                  {'\n\n\n\n'}
+                                                                </Text>
+                                                              </View>
+                                                              {/* Right */}
+                                                              <View
+                                                                style={StyleSheet.applyWidth(
+                                                                  {
+                                                                    flexDirection: 'row',
+                                                                    justifyContent: 'space-between',
+                                                                    width: 200,
+                                                                  },
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {/* Runs */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
 
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                width: 200,
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  marginLeft: 10,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {Team2Score()}{" Ovs"}
-                                            </Text>
-
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  marginLeft: 10,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'RR - '}
-                                              {Team2RR()}{' '}
-                                            </Text>
-                                          </View>
-                                        </View>
-                                      </View>
-                                      {YetToBat2().length==0 ?null :
-                                      <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                              marginTop: 3,
-                                              alignSelf:'baseline'
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          <Text
-                                            style={StyleSheet.applyWidth(
-                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                fontFamily: 'System',
-                                                fontWeight: '600',
-                                                color: '#fff',
-                                                
-                                              }),
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {getGameStatus()=='RESULT'?'Did not bat:':'Yet to bat:'}
-                                          </Text>
-                                          <View
-                                            style={{
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                              marginTop: 3,
-                                              marginLeft: 5,
-                                              width:300,
-                                              flexWrap: 'wrap'
-                                            }}
-                                          >
-                                          <FlatList
-                                            data={YetToBat2()}
-                                            contentContainerStyle={{flexDirection : "row", flexWrap : "wrap"}} 
-                                            listKey={'o1Om4XPq'}
-                                            renderItem={({ item ,index }) => { 
-                                              return (
-                                                <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontSize: 11,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                
-                                                {GiveBatsmanDetails(item).name}
-                                                {index== YetToBat2().length-1 ? "" : ", "}
-                                              </Text>
-                                              )}}
-                                            >
-                                            </FlatList>
-                                            </View>
-                                        </View>
-                                      }
-                                      {/* Bowling Score  */}
-                                      <View
-                                        style={StyleSheet.applyWidth(
-                                          { marginRight: 10, marginTop: 30 },
-                                          dimensions.width,
-                                        )}
-                                      >
-                                        {/* Bowling Header */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              alignContent: 'space-between',
-                                              alignItems: 'stretch',
-                                              flexDirection: 'row',
-                                              justifyContent: 'space-between',
-                                            },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {/* Left */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              { alignSelf: 'flex-start' },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Bowling */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontSize: 14,
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Bowling\n'}
-                                            </Text>
-                                          </View>
-                                          {/* Right */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'center',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                width: 200,
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Overs */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'O\n'}
-                                            </Text>
-                                            {/* Maiden */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'M'}
-                                            </Text>
-                                            {/* Runs */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'R'}
-                                            </Text>
-                                            {/* Wickets */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  width:40,
-                                                  color: '#fff',
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'W'}
-                                            </Text>
-                                            {/* Economy */}
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                  width:40,
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Econ'}
-                                            </Text>
-                                          </View>
-                                        </View>
-                                        <FlashList
-                                          data={Team1BowlingOrder()}
-                                          listKey={'CIgn0RwB'}
-                                          keyExtractor={(flashListData) =>
-                                            flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
-                                          }
-                                          renderItem={({ item }) => {
-                                            const flashListData = item
-                                            return (
-                                              <>
-                                                {/* Bowling Dynamic  */}
-                                                <View
-                                                  style={StyleSheet.applyWidth(
-                                                    {
-                                                      flexDirection: 'row',
-                                                      height: 20,
-                                                      justifyContent: 'space-between',
-                                                    },
-                                                    dimensions.width,
-                                                  )}
-                                                >
-                                                  {/* Left */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        alignSelf: 'flex-start',
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
-                                                    {/* Bowler */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          color: '#fff',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {GiveBowlingDetails(flashListData)?.name}
-                                                      {'\n\n\n\n'}
-                                                    </Text>
-                                                  </View>
-                                                  {/* Right */}
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.runs}
+                                                                </Text>
+                                                                {/* Balls */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.balls}
+                                                                </Text>
+                                                                {/* Fours */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.fours}
+                                                                  {'\n'}
+                                                                </Text>
+                                                                {/* Sixes */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.sixes}
+                                                                </Text>
+                                                                {/* Strike rate */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        opacity: 1,
+                                                                        color: '#fff',
+                                                                        width: 50,
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {Convert2Decimal(
+                                                                    GiveBatsmanDetails2ndInnings(flashListData)?.sr,
+                                                                  )}
+                                                                  {'\n'}
+                                                                </Text>
+                                                              </View>
+                                                            </View>
+                                                            {/* View 2 */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                { marginTop: 1 },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 9,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {' '}
+                                                                {showOutNotout2ndInnings(flashListData)}
+                                                              </Text>
+                                                            </View>
+                                                          </View>
+                                                        </>
+                                                      )
+                                                    }}
+                                                    numColumns={1}
+                                                    onEndReachedThreshold={0.5}
+                                                    showsHorizontalScrollIndicator={false}
+                                                    showsVerticalScrollIndicator={true}
+                                                    estimatedItemSize={20}
+                                                  />
+                                                  {/* Footer */}
                                                   <View
                                                     style={StyleSheet.applyWidth(
                                                       {
                                                         flexDirection: 'row',
-                                                        justifyContent: 'space-around',
-                                                        width: 200,
+                                                        justifyContent: 'space-between',
+                                                        marginTop: 5,
                                                       },
                                                       dimensions.width,
                                                     )}
                                                   >
-                                                    {/* Overs */}
                                                     <Text
                                                       style={StyleSheet.applyWidth(
                                                         StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
                                                           color: '#fff',
+                                                          fontSize: 16
                                                         }),
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {GiveBowlingDetails(flashListData)?.overs}
+                                                      {'Total:\n'}
                                                     </Text>
-                                                    {/* Maiden */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
-                                                          color: '#fff',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {GiveBowlingDetails(flashListData)?.maiden}
-                                                    </Text>
-                                                    {/* Runs */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
-                                                          color: '#fff',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {GiveBowlingDetails(flashListData)?.runs}
-                                                      {'\n'}
-                                                    </Text>
-                                                    {/* Wickets */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          width:40,
-                                                          color: '#fff',
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {GiveBowlingDetails(flashListData)?.wickets}
-                                                    </Text>
-                                                    {/* Economy */}
-                                                    <Text
-                                                      style={StyleSheet.applyWidth(
-                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                          fontSize: 12,
-                                                          color: '#fff',
-                                                          width:40,
-                                                        }),
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {Convert2Decimal(GiveBowlingDetails(flashListData)?.economy)}
-                                                      {'\n'}
-                                                    </Text>
-                                                  </View>
-                                                </View>
-                                              </>
-                                            )
-                                          }}
-                                          estimatedItemSize={50}
-                                          numColumns={1}
-                                          onEndReachedThreshold={0.5}
-                                          showsHorizontalScrollIndicator={true}
-                                          showsVerticalScrollIndicator={false}
-                                        />
-                                      </View>
-                                    </View>
-                                    {check2InningsTeamB() == true ? (
-                                      <View>
-                                        {/* Team_Name */}
-                                        <Text
-                                          style={{
-                                            borderBottomColor: 'white',
-                                            borderBottomWidth: 1,
-                                          }}
-                                        ></Text>
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                              fontFamily: 'System',
-                                              fontWeight: '700',
-                                              color: '#fff',
-                                            }),
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {Team2Name()}{' '}
-                                          {jsonfeed?.data?.format == 'test' ? (
-                                            <Text>(2nd Innings)</Text>
-                                          ) : (
-                                            <Text></Text>
-                                          )}
-                                        </Text>
-                                        {/* Batting Score  */}
-                                        <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
-                                          {/* Batting Header */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'space-between',
-                                                alignItems: 'stretch',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Left */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                { alignSelf: 'flex-start' },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Batting */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontSize: 14,
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'Batting\n'}
-                                              </Text>
-                                            </View>
-                                            {/* Right */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  alignContent: 'center',
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  width: 200,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Runs */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'R\n'}
-                                              </Text>
-                                              {/* Balls */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'B'}
-                                              </Text>
-                                              {/* Fours */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'4s\n'}
-                                              </Text>
-                                              {/* Sixes */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'6s'}
-                                              </Text>
-                                              {/* Strike rate */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                    width:40,
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'SR'}
-                                              </Text>
-                                            </View>
-                                          </View>
-                                          <FlashList
-                                            data={team2BattingOrder2ndInnings()}
-                                            listKey={'0OabhL3m'}
-                                            keyExtractor={(flashListData) =>
-                                              flashListData?.id ||
-                                              flashListData?.uuid ||
-                                              JSON.stringify(flashListData)
-                                            }
-                                            renderItem={({ item }) => {
-                                              const flashListData = item
-                                              return (
-                                                <>
-                                                  {/* Batting Dynamic  */}
-                                                  <View
-                                                    style={StyleSheet.applyWidth(
-                                                      {
-                                                        flexDirection: 'column',
-                                                        height: 33,
-                                                        justifyContent: 'flex-start',
-                                                        marginBottom:1
-                                                      },
-                                                      dimensions.width,
-                                                    )}
-                                                  >
+
                                                     <View
                                                       style={StyleSheet.applyWidth(
                                                         {
                                                           flexDirection: 'row',
-                                                          height: 15,
                                                           justifyContent: 'space-between',
+                                                          width: 200,
                                                         },
-                                                        dimensions.width,
-                                                      )}
-                                                    >
-                                                      {/* Left */}
-                                                      <View
-                                                        style={StyleSheet.applyWidth(
-                                                          {
-                                                            alignSelf: 'flex-start',
-                                                          },
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {/* Batting */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.name}
-                                                          {'\n\n\n\n'}
-                                                        </Text>
-                                                      </View>
-                                                      {/* Right */}
-                                                      <View
-                                                        style={StyleSheet.applyWidth(
-                                                          {
-                                                            flexDirection: 'row',
-                                                            justifyContent: 'space-between',
-                                                            width: 200,
-                                                          },
-                                                          dimensions.width,
-                                                        )}
-                                                      >
-                                                        {/* Runs */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.runs}
-                                                        </Text>
-                                                        {/* Balls */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.balls}
-                                                        </Text>
-                                                        {/* Fours */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.fours}
-                                                          {'\n'}
-                                                        </Text>
-                                                        {/* Sixes */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                width:40,
-                                                                color: '#fff',
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {GiveBatsmanDetails2ndInnings(flashListData)?.sixes}
-                                                        </Text>
-                                                        {/* Strike rate */}
-                                                        <Text
-                                                          style={StyleSheet.applyWidth(
-                                                            StyleSheet.compose(
-                                                              GlobalStyles.TextStyles(theme)['Text'],
-                                                              {
-                                                                fontSize: 12,
-                                                                color: '#fff',
-                                                                width:50,
-                                                              },
-                                                            ),
-                                                            dimensions.width,
-                                                          )}
-                                                        >
-                                                          {Convert2Decimal(
-                                                            GiveBatsmanDetails2ndInnings(flashListData)?.sr,
-                                                          )}
-                                                          {'\n'}
-                                                        </Text>
-                                                      </View>
-                                                    </View>
-                                                    {/* View 2 */}
-                                                    <View
-                                                      style={StyleSheet.applyWidth(
-                                                        {marginTop: 1 },
                                                         dimensions.width,
                                                       )}
                                                     >
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 9,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            marginLeft: 10,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {showOutNotout2ndInnings(flashListData)}
+                                                        {Team1Score2ndInnings()}
+                                                      </Text>
+
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            marginLeft: 10,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'RR -'}
+                                                        {Team1RR2ndInnings()}
                                                       </Text>
                                                     </View>
                                                   </View>
-                                                </>
-                                              )
-                                            }}
-                                            estimatedItemSize={50}
-                                            numColumns={1}
-                                            onEndReachedThreshold={0.5}
-                                            showsHorizontalScrollIndicator={true}
-                                            showsVerticalScrollIndicator={false}
-                                          />
-                                          {/* Footer */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                marginTop: 5,
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            <Text
-                                              style={StyleSheet.applyWidth(
-                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                  fontFamily: 'System',
-                                                  fontWeight: '600',
-                                                  color: '#fff',
-                                                  fontSize:16
-                                                }),
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {'Total:\n'}
-                                            </Text>
-
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  width: 200,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    marginLeft: 10,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {Team2Score2ndInnings()}
-                                              </Text>
-
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    marginLeft: 10,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'RR - '}
-                                                {Team2RR2ndInnings()}{' '}
-                                              </Text>
-                                            </View>
-                                          </View>
-                                        </View>
-                                        {/* Bowling Score  */}
-                                        <View
-                                          style={StyleSheet.applyWidth(
-                                            { marginRight: 10, marginTop: 30 },
-                                            dimensions.width,
-                                          )}
-                                        >
-                                          {/* Bowling Header */}
-                                          <View
-                                            style={StyleSheet.applyWidth(
-                                              {
-                                                alignContent: 'space-between',
-                                                alignItems: 'stretch',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                              },
-                                              dimensions.width,
-                                            )}
-                                          >
-                                            {/* Left */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                { alignSelf: 'flex-start' },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Bowling */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontSize: 14,
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'Bowling\n'}
-                                              </Text>
-                                            </View>
-                                            {/* Right */}
-                                            <View
-                                              style={StyleSheet.applyWidth(
-                                                {
-                                                  alignContent: 'center',
-                                                  flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  width: 200,
-                                                },
-                                                dimensions.width,
-                                              )}
-                                            >
-                                              {/* Overs */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'O\n'}
-                                              </Text>
-                                              {/* Maiden */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'M'}
-                                              </Text>
-                                              {/* Runs */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'R'}
-                                              </Text>
-                                              {/* Wickets */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    width:40,
-                                                    color: '#fff',
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'W'}
-                                              </Text>
-                                              {/* Economy */}
-                                              <Text
-                                                style={StyleSheet.applyWidth(
-                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                    fontFamily: 'System',
-                                                    fontWeight: '600',
-                                                    color: '#fff',
-                                                    width:40,
-                                                  }),
-                                                  dimensions.width,
-                                                )}
-                                              >
-                                                {'Econ'}
-                                              </Text>
-                                            </View>
-                                          </View>
-                                          <FlashList
-                                            data={Team1BowlingOrder2ndInnings()}
-                                            listKey={'CIgn0RwB'}
-                                            keyExtractor={(flashListData) =>
-                                              flashListData?.id ||
-                                              flashListData?.uuid ||
-                                              JSON.stringify(flashListData)
-                                            }
-                                            renderItem={({ item }) => {
-                                              const flashListData = item
-                                              return (
-                                                <>
-                                                  {/* Bowling Dynamic  */}
+                                                </View>
+                                                {/* Bowling Score  */}
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    { marginRight: 10, marginTop: 30 },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  {/* Bowling Header */}
                                                   <View
                                                     style={StyleSheet.applyWidth(
                                                       {
+                                                        alignContent: 'space-between',
+                                                        alignItems: 'stretch',
                                                         flexDirection: 'row',
-                                                        height: 20,
                                                         justifyContent: 'space-between',
                                                       },
                                                       dimensions.width,
@@ -4405,32 +2918,32 @@ const MatchDaySingleScreen = (props) => {
                                                     {/* Left */}
                                                     <View
                                                       style={StyleSheet.applyWidth(
-                                                        {
-                                                          alignSelf: 'flex-start',
-                                                        },
+                                                        { alignSelf: 'flex-start' },
                                                         dimensions.width,
                                                       )}
                                                     >
-                                                      {/* Bowler */}
+                                                      {/* Bowling */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
+                                                            fontFamily: 'System',
+                                                            fontSize: 14,
+                                                            fontWeight: '600',
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.name}
-                                                        {'\n\n\n\n'}
+                                                        {'Bowling\n'}
                                                       </Text>
                                                     </View>
                                                     {/* Right */}
                                                     <View
                                                       style={StyleSheet.applyWidth(
                                                         {
+                                                          alignContent: 'center',
                                                           flexDirection: 'row',
-                                                          justifyContent: 'space-around',
+                                                          justifyContent: 'space-between',
                                                           width: 200,
                                                         },
                                                         dimensions.width,
@@ -4440,93 +2953,1597 @@ const MatchDaySingleScreen = (props) => {
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.overs}
+                                                        {'O\n'}
                                                       </Text>
                                                       {/* Maiden */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.maiden}
+                                                        {'M'}
                                                       </Text>
                                                       {/* Runs */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.runs}
-                                                        {'\n'}
+                                                        {'R'}
                                                       </Text>
                                                       {/* Wickets */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
-                                                            width:40,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
                                                             color: '#fff',
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {GiveBowlingDetails2ndInnings(flashListData)?.wickets}
+                                                        {'W'}
                                                       </Text>
                                                       {/* Economy */}
                                                       <Text
                                                         style={StyleSheet.applyWidth(
                                                           StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                                            fontSize: 12,
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
                                                             color: '#fff',
-                                                            width:40,
+                                                            width: 40,
                                                           }),
                                                           dimensions.width,
                                                         )}
                                                       >
-                                                        {Convert2Decimal(
-                                                          GiveBowlingDetails2ndInnings(flashListData)?.economy,
-                                                        )}
-                                                        {'\n'}
+                                                        {'Econ'}
                                                       </Text>
                                                     </View>
                                                   </View>
-                                                </>
-                                              )
-                                            }}
-                                            estimatedItemSize={50}
-                                            numColumns={1}
-                                            onEndReachedThreshold={0.5}
-                                            showsHorizontalScrollIndicator={true}
-                                            showsVerticalScrollIndicator={false}
-                                          />
-                                        </View>
-                                      </View>
-                                    ) : (
-                                      <Text></Text>
-                                    )}
-                                  </View>
-                                </ScrollView>
-                              </TabViewItem>
-                            </TabView>
-                            {/* Layer-4 */}
-                            {/* style={StyleSheet.applyWidth(
+                                                  <FlashList
+                                                    data={Team2BowlingOrder2ndInnings()}
+                                                    listKey={'YR7ZDSL2'}
+                                                    keyExtractor={(flashListData) =>
+                                                      flashListData?.id ||
+                                                      flashListData?.uuid ||
+                                                      JSON.stringify(flashListData)
+                                                    }
+                                                    renderItem={({ item }) => {
+                                                      const flashListData = item
+                                                      return (
+                                                        <>
+                                                          {/* Bowling Dynamic  */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                flexDirection: 'row',
+                                                                height: 20,
+                                                                justifyContent: 'space-between',
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Left */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  alignSelf: 'flex-start',
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Bowler */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.name}
+                                                                {'\n\n\n\n'}
+                                                              </Text>
+                                                            </View>
+                                                            {/* Right */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  flexDirection: 'row',
+                                                                  justifyContent: 'space-around',
+                                                                  width: 200,
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Overs */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.overs}
+                                                              </Text>
+                                                              {/* Maiden */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.maiden}
+                                                              </Text>
+                                                              {/* Runs */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.runs}
+                                                                {'\n'}
+                                                              </Text>
+                                                              {/* Wickets */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.wickets}
+                                                              </Text>
+                                                              {/* Economy */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    color: '#fff',
+                                                                    width: 40,
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {Convert2Decimal(
+                                                                  GiveBowlingDetails2ndInnings(flashListData)?.economy,
+                                                                )}
+                                                                {'\n'}
+                                                              </Text>
+                                                            </View>
+                                                          </View>
+                                                        </>
+                                                      )
+                                                    }}
+                                                    estimatedItemSize={50}
+                                                    numColumns={1}
+                                                    onEndReachedThreshold={0.5}
+                                                    showsHorizontalScrollIndicator={true}
+                                                    showsVerticalScrollIndicator={false}
+                                                  />
+                                                </View>
+                                              </View>
+                                            ) : (
+                                              <Text></Text>
+                                            )}
+                                          </View>
+                                        </ScrollView>
+                                      </TabViewItem>
+                                    }
+                                    {/* Tab Team2 */}
+                                    {/* {console.log("Yet to Bat", YetToBat2())} */}
+                                    {(YetToBat2()?.length == 11) ? null :
+                                      <TabViewItem
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TabViewItemStyles(theme)['Tab View Item']),
+                                          dimensions.width,
+                                        )}
+                                        title={Team2Name()}
+                                      >
+                                        <ScrollView
+                                          bounces={true}
+                                          showsHorizontalScrollIndicator={false}
+                                          showsVerticalScrollIndicator={false}
+                                        >
+                                          {/* Individual Team Scores */}
+                                          <View style={StyleSheet.applyWidth({ marginTop: 10 }, dimensions.width)}>
+                                            {/* Team2 */}
+                                            <View>
+                                              {/* Team_Name */}
+                                              <Text
+                                                style={StyleSheet.applyWidth(
+                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                    fontFamily: 'System',
+                                                    fontWeight: '700',
+                                                    color: '#fff',
+                                                  }),
+                                                  dimensions.width,
+                                                )}
+                                              >
+                                                {Team2Name()}{' '}
+                                                {jsonfeed?.data?.format == 'test' ? (
+                                                  <Text>(1st Innings)</Text>
+                                                ) : (
+                                                  <Text></Text>
+                                                )}
+                                              </Text>
+                                              {/* Batting Score  */}
+                                              <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
+                                                {/* Batting Header */}
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    {
+                                                      alignContent: 'space-between',
+                                                      alignItems: 'stretch',
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                    },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  {/* Left */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      { alignSelf: 'flex-start' },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Batting */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontSize: 14,
+                                                          fontWeight: '600',
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'Batting\n'}
+                                                    </Text>
+                                                  </View>
+                                                  {/* Right */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        alignContent: 'center',
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                        width: 200,
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Runs */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'R\n'}
+                                                    </Text>
+                                                    {/* Balls */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'B'}
+                                                    </Text>
+                                                    {/* Fours */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'4s\n'}
+                                                    </Text>
+                                                    {/* Sixes */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'6s'}
+                                                    </Text>
+                                                    {/* Strike rate */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          color: '#fff',
+                                                          width: 40,
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'SR'}
+                                                    </Text>
+                                                  </View>
+                                                </View>
+                                                <FlashList
+                                                  data={team2BattingOrder()}
+                                                  listKey={'0OabhL3m'}
+                                                  keyExtractor={(flashListData) =>
+                                                    flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
+                                                  }
+                                                  renderItem={({ item }) => {
+                                                    const flashListData = item
+                                                    return (
+                                                      <>
+                                                        {/* Batting Dynamic  */}
+                                                        <View
+                                                          style={StyleSheet.applyWidth(
+                                                            {
+                                                              flexDirection: 'column',
+                                                              height: 33,
+                                                              justifyContent: 'flex-start',
+                                                              marginBottom: 1
+                                                            },
+                                                            dimensions.width,
+                                                          )}
+                                                        >
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                flexDirection: 'row',
+                                                                height: 15,
+                                                                justifyContent: 'space-between',
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Left */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  alignSelf: 'flex-start',
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Batting */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.name}
+                                                                {'\n\n\n\n'}
+                                                              </Text>
+                                                            </View>
+                                                            {/* Right */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  flexDirection: 'row',
+                                                                  justifyContent: 'space-between',
+                                                                  width: 200,
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Runs */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.runs}
+                                                              </Text>
+                                                              {/* Balls */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.balls}
+                                                              </Text>
+                                                              {/* Fours */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.fours}
+                                                                {'\n'}
+                                                              </Text>
+                                                              {/* Sixes */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBatsmanDetails(flashListData)?.sixes}
+                                                              </Text>
+                                                              {/* Strike rate */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    color: '#fff',
+                                                                    width: 50,
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {Convert2Decimal(GiveBatsmanDetails(flashListData)?.sr)}
+                                                                {'\n'}
+                                                              </Text>
+                                                            </View>
+                                                          </View>
+                                                          {/* View 2 */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth({ marginTop: 1 }, dimensions.width)}
+                                                          >
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 9,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {showOutNotout(flashListData)}
+                                                            </Text>
+                                                          </View>
+                                                        </View>
+                                                      </>
+                                                    )
+                                                  }}
+                                                  estimatedItemSize={50}
+                                                  numColumns={1}
+                                                  onEndReachedThreshold={0.5}
+                                                  showsHorizontalScrollIndicator={true}
+                                                  showsVerticalScrollIndicator={false}
+                                                />
+                                                {/* Footer */}
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    {
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                      marginTop: 5,
+                                                    },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  <Text
+                                                    style={StyleSheet.applyWidth(
+                                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                        fontFamily: 'System',
+                                                        fontWeight: '600',
+                                                        color: '#fff',
+                                                        fontSize: 16
+                                                      }),
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {'Total:\n'}
+                                                  </Text>
+
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                        width: 200,
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          marginLeft: 10,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {Team2Score()}{" Ovs"}
+                                                    </Text>
+
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          marginLeft: 10,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'RR - '}
+                                                      {Team2RR()}{' '}
+                                                    </Text>
+                                                  </View>
+                                                </View>
+                                              </View>
+                                              {YetToBat2()?.length == 0 ? null :
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    {
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                      marginTop: 3,
+                                                      alignSelf: 'baseline'
+                                                    },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  <Text
+                                                    style={StyleSheet.applyWidth(
+                                                      StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                        fontFamily: 'System',
+                                                        fontWeight: '600',
+                                                        color: '#fff',
+
+                                                      }),
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {getGameStatus() == 'RESULT' ? 'Did not bat:' : 'Yet to bat:'}
+                                                  </Text>
+                                                  <View
+                                                    style={{
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                      marginTop: 3,
+                                                      marginLeft: 5,
+                                                      width: 300,
+                                                      flexWrap: 'wrap'
+                                                    }}
+                                                  >
+                                                    <FlatList
+                                                      data={YetToBat2()}
+                                                      contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
+                                                      listKey={'o1Om4XPq'}
+                                                      renderItem={({ item, index }) => {
+                                                        return (
+                                                          <Text
+                                                            style={StyleSheet.applyWidth(
+                                                              StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                fontSize: 11,
+                                                                color: '#fff',
+                                                              }),
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+
+                                                            {GiveBatsmanDetails(item).name}
+                                                            {index == YetToBat2()?.length - 1 ? "" : ", "}
+                                                          </Text>
+                                                        )
+                                                      }}
+                                                    >
+                                                    </FlatList>
+                                                  </View>
+                                                </View>
+                                              }
+                                              {/* Bowling Score  */}
+                                              <View
+                                                style={StyleSheet.applyWidth(
+                                                  { marginRight: 10, marginTop: 30 },
+                                                  dimensions.width,
+                                                )}
+                                              >
+                                                {/* Bowling Header */}
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    {
+                                                      alignContent: 'space-between',
+                                                      alignItems: 'stretch',
+                                                      flexDirection: 'row',
+                                                      justifyContent: 'space-between',
+                                                    },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  {/* Left */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      { alignSelf: 'flex-start' },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Bowling */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontSize: 14,
+                                                          fontWeight: '600',
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'Bowling\n'}
+                                                    </Text>
+                                                  </View>
+                                                  {/* Right */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        alignContent: 'center',
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                        width: 200,
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Overs */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'O\n'}
+                                                    </Text>
+                                                    {/* Maiden */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'M'}
+                                                    </Text>
+                                                    {/* Runs */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'R'}
+                                                    </Text>
+                                                    {/* Wickets */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          width: 40,
+                                                          color: '#fff',
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'W'}
+                                                    </Text>
+                                                    {/* Economy */}
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          color: '#fff',
+                                                          width: 40,
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'Econ'}
+                                                    </Text>
+                                                  </View>
+                                                </View>
+                                                <FlashList
+                                                  data={Team1BowlingOrder()}
+                                                  listKey={'CIgn0RwB'}
+                                                  keyExtractor={(flashListData) =>
+                                                    flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
+                                                  }
+                                                  renderItem={({ item }) => {
+                                                    const flashListData = item
+                                                    return (
+                                                      <>
+                                                        {/* Bowling Dynamic  */}
+                                                        <View
+                                                          style={StyleSheet.applyWidth(
+                                                            {
+                                                              flexDirection: 'row',
+                                                              height: 20,
+                                                              justifyContent: 'space-between',
+                                                            },
+                                                            dimensions.width,
+                                                          )}
+                                                        >
+                                                          {/* Left */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                alignSelf: 'flex-start',
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Bowler */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.name}
+                                                              {'\n\n\n\n'}
+                                                            </Text>
+                                                          </View>
+                                                          {/* Right */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                flexDirection: 'row',
+                                                                justifyContent: 'space-around',
+                                                                width: 200,
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Overs */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.overs}
+                                                            </Text>
+                                                            {/* Maiden */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.maiden}
+                                                            </Text>
+                                                            {/* Runs */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.runs}
+                                                              {'\n'}
+                                                            </Text>
+                                                            {/* Wickets */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  width: 40,
+                                                                  color: '#fff',
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {GiveBowlingDetails(flashListData)?.wickets}
+                                                            </Text>
+                                                            {/* Economy */}
+                                                            <Text
+                                                              style={StyleSheet.applyWidth(
+                                                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                  fontSize: 12,
+                                                                  color: '#fff',
+                                                                  width: 40,
+                                                                }),
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {Convert2Decimal(GiveBowlingDetails(flashListData)?.economy)}
+                                                              {'\n'}
+                                                            </Text>
+                                                          </View>
+                                                        </View>
+                                                      </>
+                                                    )
+                                                  }}
+                                                  estimatedItemSize={50}
+                                                  numColumns={1}
+                                                  onEndReachedThreshold={0.5}
+                                                  showsHorizontalScrollIndicator={true}
+                                                  showsVerticalScrollIndicator={false}
+                                                />
+                                              </View>
+                                            </View>
+                                            {check2InningsTeamB() == true ? (
+                                              <View>
+                                                {/* Team_Name */}
+                                                <Text
+                                                  style={{
+                                                    borderBottomColor: 'white',
+                                                    borderBottomWidth: 1,
+                                                  }}
+                                                ></Text>
+                                                <Text
+                                                  style={StyleSheet.applyWidth(
+                                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                      fontFamily: 'System',
+                                                      fontWeight: '700',
+                                                      color: '#fff',
+                                                    }),
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  {Team2Name()}{' '}
+                                                  {jsonfeed?.data?.format == 'test' ? (
+                                                    <Text>(2nd Innings)</Text>
+                                                  ) : (
+                                                    <Text></Text>
+                                                  )}
+                                                </Text>
+                                                {/* Batting Score  */}
+                                                <View style={StyleSheet.applyWidth({ marginRight: 10 }, dimensions.width)}>
+                                                  {/* Batting Header */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        alignContent: 'space-between',
+                                                        alignItems: 'stretch',
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Left */}
+                                                    <View
+                                                      style={StyleSheet.applyWidth(
+                                                        { alignSelf: 'flex-start' },
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {/* Batting */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontSize: 14,
+                                                            fontWeight: '600',
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'Batting\n'}
+                                                      </Text>
+                                                    </View>
+                                                    {/* Right */}
+                                                    <View
+                                                      style={StyleSheet.applyWidth(
+                                                        {
+                                                          alignContent: 'center',
+                                                          flexDirection: 'row',
+                                                          justifyContent: 'space-between',
+                                                          width: 200,
+                                                        },
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {/* Runs */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'R\n'}
+                                                      </Text>
+                                                      {/* Balls */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'B'}
+                                                      </Text>
+                                                      {/* Fours */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'4s\n'}
+                                                      </Text>
+                                                      {/* Sixes */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'6s'}
+                                                      </Text>
+                                                      {/* Strike rate */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            color: '#fff',
+                                                            width: 40,
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'SR'}
+                                                      </Text>
+                                                    </View>
+                                                  </View>
+                                                  <FlashList
+                                                    data={team2BattingOrder2ndInnings()}
+                                                    listKey={'0OabhL3m'}
+                                                    keyExtractor={(flashListData) =>
+                                                      flashListData?.id ||
+                                                      flashListData?.uuid ||
+                                                      JSON.stringify(flashListData)
+                                                    }
+                                                    renderItem={({ item }) => {
+                                                      const flashListData = item
+                                                      return (
+                                                        <>
+                                                          {/* Batting Dynamic  */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                flexDirection: 'column',
+                                                                height: 33,
+                                                                justifyContent: 'flex-start',
+                                                                marginBottom: 1
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  flexDirection: 'row',
+                                                                  height: 15,
+                                                                  justifyContent: 'space-between',
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Left */}
+                                                              <View
+                                                                style={StyleSheet.applyWidth(
+                                                                  {
+                                                                    alignSelf: 'flex-start',
+                                                                  },
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {/* Batting */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.name}
+                                                                  {'\n\n\n\n'}
+                                                                </Text>
+                                                              </View>
+                                                              {/* Right */}
+                                                              <View
+                                                                style={StyleSheet.applyWidth(
+                                                                  {
+                                                                    flexDirection: 'row',
+                                                                    justifyContent: 'space-between',
+                                                                    width: 200,
+                                                                  },
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {/* Runs */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.runs}
+                                                                </Text>
+                                                                {/* Balls */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.balls}
+                                                                </Text>
+                                                                {/* Fours */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.fours}
+                                                                  {'\n'}
+                                                                </Text>
+                                                                {/* Sixes */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        width: 40,
+                                                                        color: '#fff',
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {GiveBatsmanDetails2ndInnings(flashListData)?.sixes}
+                                                                </Text>
+                                                                {/* Strike rate */}
+                                                                <Text
+                                                                  style={StyleSheet.applyWidth(
+                                                                    StyleSheet.compose(
+                                                                      GlobalStyles.TextStyles(theme)['Text'],
+                                                                      {
+                                                                        fontSize: 12,
+                                                                        color: '#fff',
+                                                                        width: 50,
+                                                                      },
+                                                                    ),
+                                                                    dimensions.width,
+                                                                  )}
+                                                                >
+                                                                  {Convert2Decimal(
+                                                                    GiveBatsmanDetails2ndInnings(flashListData)?.sr,
+                                                                  )}
+                                                                  {'\n'}
+                                                                </Text>
+                                                              </View>
+                                                            </View>
+                                                            {/* View 2 */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                { marginTop: 1 },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 9,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {showOutNotout2ndInnings(flashListData)}
+                                                              </Text>
+                                                            </View>
+                                                          </View>
+                                                        </>
+                                                      )
+                                                    }}
+                                                    estimatedItemSize={50}
+                                                    numColumns={1}
+                                                    onEndReachedThreshold={0.5}
+                                                    showsHorizontalScrollIndicator={true}
+                                                    showsVerticalScrollIndicator={false}
+                                                  />
+                                                  {/* Footer */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                        marginTop: 5,
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    <Text
+                                                      style={StyleSheet.applyWidth(
+                                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                          fontFamily: 'System',
+                                                          fontWeight: '600',
+                                                          color: '#fff',
+                                                          fontSize: 16
+                                                        }),
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {'Total:\n'}
+                                                    </Text>
+
+                                                    <View
+                                                      style={StyleSheet.applyWidth(
+                                                        {
+                                                          flexDirection: 'row',
+                                                          justifyContent: 'space-between',
+                                                          width: 200,
+                                                        },
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            marginLeft: 10,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {Team2Score2ndInnings()}
+                                                      </Text>
+
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            marginLeft: 10,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'RR - '}
+                                                        {Team2RR2ndInnings()}{' '}
+                                                      </Text>
+                                                    </View>
+                                                  </View>
+                                                </View>
+                                                {/* Bowling Score  */}
+                                                <View
+                                                  style={StyleSheet.applyWidth(
+                                                    { marginRight: 10, marginTop: 30 },
+                                                    dimensions.width,
+                                                  )}
+                                                >
+                                                  {/* Bowling Header */}
+                                                  <View
+                                                    style={StyleSheet.applyWidth(
+                                                      {
+                                                        alignContent: 'space-between',
+                                                        alignItems: 'stretch',
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-between',
+                                                      },
+                                                      dimensions.width,
+                                                    )}
+                                                  >
+                                                    {/* Left */}
+                                                    <View
+                                                      style={StyleSheet.applyWidth(
+                                                        { alignSelf: 'flex-start' },
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {/* Bowling */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontSize: 14,
+                                                            fontWeight: '600',
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'Bowling\n'}
+                                                      </Text>
+                                                    </View>
+                                                    {/* Right */}
+                                                    <View
+                                                      style={StyleSheet.applyWidth(
+                                                        {
+                                                          alignContent: 'center',
+                                                          flexDirection: 'row',
+                                                          justifyContent: 'space-between',
+                                                          width: 200,
+                                                        },
+                                                        dimensions.width,
+                                                      )}
+                                                    >
+                                                      {/* Overs */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'O\n'}
+                                                      </Text>
+                                                      {/* Maiden */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'M'}
+                                                      </Text>
+                                                      {/* Runs */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'R'}
+                                                      </Text>
+                                                      {/* Wickets */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            width: 40,
+                                                            color: '#fff',
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'W'}
+                                                      </Text>
+                                                      {/* Economy */}
+                                                      <Text
+                                                        style={StyleSheet.applyWidth(
+                                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                            fontFamily: 'System',
+                                                            fontWeight: '600',
+                                                            color: '#fff',
+                                                            width: 40,
+                                                          }),
+                                                          dimensions.width,
+                                                        )}
+                                                      >
+                                                        {'Econ'}
+                                                      </Text>
+                                                    </View>
+                                                  </View>
+                                                  <FlashList
+                                                    data={Team1BowlingOrder2ndInnings()}
+                                                    listKey={'CIgn0RwB'}
+                                                    keyExtractor={(flashListData) =>
+                                                      flashListData?.id ||
+                                                      flashListData?.uuid ||
+                                                      JSON.stringify(flashListData)
+                                                    }
+                                                    renderItem={({ item }) => {
+                                                      const flashListData = item
+                                                      return (
+                                                        <>
+                                                          {/* Bowling Dynamic  */}
+                                                          <View
+                                                            style={StyleSheet.applyWidth(
+                                                              {
+                                                                flexDirection: 'row',
+                                                                height: 20,
+                                                                justifyContent: 'space-between',
+                                                              },
+                                                              dimensions.width,
+                                                            )}
+                                                          >
+                                                            {/* Left */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  alignSelf: 'flex-start',
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Bowler */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.name}
+                                                                {'\n\n\n\n'}
+                                                              </Text>
+                                                            </View>
+                                                            {/* Right */}
+                                                            <View
+                                                              style={StyleSheet.applyWidth(
+                                                                {
+                                                                  flexDirection: 'row',
+                                                                  justifyContent: 'space-around',
+                                                                  width: 200,
+                                                                },
+                                                                dimensions.width,
+                                                              )}
+                                                            >
+                                                              {/* Overs */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.overs}
+                                                              </Text>
+                                                              {/* Maiden */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.maiden}
+                                                              </Text>
+                                                              {/* Runs */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.runs}
+                                                                {'\n'}
+                                                              </Text>
+                                                              {/* Wickets */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    width: 40,
+                                                                    color: '#fff',
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {GiveBowlingDetails2ndInnings(flashListData)?.wickets}
+                                                              </Text>
+                                                              {/* Economy */}
+                                                              <Text
+                                                                style={StyleSheet.applyWidth(
+                                                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                                                    fontSize: 12,
+                                                                    color: '#fff',
+                                                                    width: 40,
+                                                                  }),
+                                                                  dimensions.width,
+                                                                )}
+                                                              >
+                                                                {Convert2Decimal(
+                                                                  GiveBowlingDetails2ndInnings(flashListData)?.economy,
+                                                                )}
+                                                                {'\n'}
+                                                              </Text>
+                                                            </View>
+                                                          </View>
+                                                        </>
+                                                      )
+                                                    }}
+                                                    estimatedItemSize={50}
+                                                    numColumns={1}
+                                                    onEndReachedThreshold={0.5}
+                                                    showsHorizontalScrollIndicator={true}
+                                                    showsVerticalScrollIndicator={false}
+                                                  />
+                                                </View>
+                                              </View>
+                                            ) : (
+                                              <Text></Text>
+                                            )}
+                                          </View>
+                                        </ScrollView>
+                                      </TabViewItem>
+                                    }
+                                  </TabView>
+                                  {/* Layer-4 */}
+                                  {/* style={StyleSheet.applyWidth(
                                                         {
                                                           flexDirection: 'row',
                                                           justifyContent: 'space-around',
@@ -4534,332 +4551,332 @@ const MatchDaySingleScreen = (props) => {
                                                         },
                                                         dimensions.width,
                                                       )} */}
-                            <View
-                              style={
-                                StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Layer-4'], { marginTop: 10 }),
-                                {
-                                  height:500
-                                },
-                                dimensions.width,
-                                )
-                              }
-                            >
-                              {/* Header */}
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    fontFamily: 'System',
-                                    fontWeight: '700',
-                                    textAlign: 'center',
-                                    color: '#fff',
-                                    fontSize:14,
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                {'MATCH DETAILS'}
-                              </Text>
-                              {/* Venue */}
-                              <Text
-                                style={StyleSheet.applyWidth(
-                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                    fontFamily: 'System',
-                                    fontSize: 12,
-                                    fontWeight: '600',
-                                    marginTop: 2,
-                                    color: '#fff',
-                                  }),
-                                  dimensions.width,
-                                )}
-                              >
-                                {jsonfeed?.data?.venue?.name}
-                                {', '}
-                                {jsonfeed?.data?.venue?.city}
-                                {' , '}
-                                {jsonfeed?.data?.venue?.country?.name}
-                              </Text>
-                              {/* Toss */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Static */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 12,
-                                      fontWeight: '600',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {'Toss : '}
-                                </Text>
-                                {/* Dynamic  */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 12,
-                                      fontWeight: '400',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {giveTossStatement()}
-                                </Text>
+                                  <View
+                                    style={
+                                      StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Layer-4'], { marginTop: 10 }),
+                                        {
+                                          height: 500
+                                        },
+                                        dimensions.width,
+                                      )
+                                    }
+                                  >
+                                    {/* Header */}
+                                    <Text
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                          fontFamily: 'System',
+                                          fontWeight: '700',
+                                          textAlign: 'center',
+                                          color: '#fff',
+                                          fontSize: 14,
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {'MATCH DETAILS'}
+                                    </Text>
+                                    {/* Venue */}
+                                    <Text
+                                      style={StyleSheet.applyWidth(
+                                        StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                          fontFamily: 'System',
+                                          fontSize: 12,
+                                          fontWeight: '600',
+                                          marginTop: 2,
+                                          color: '#fff',
+                                        }),
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {jsonfeed?.data?.venue?.name}
+                                      {', '}
+                                      {jsonfeed?.data?.venue?.city}
+                                      {' , '}
+                                      {jsonfeed?.data?.venue?.country?.name}
+                                    </Text>
+                                    {/* Toss */}
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          flexDirection: 'row',
+                                          justifyContent: 'flex-start',
+                                        },
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {/* Static */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 12,
+                                            fontWeight: '600',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {'Toss : '}
+                                      </Text>
+                                      {/* Dynamic  */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 12,
+                                            fontWeight: '400',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {giveTossStatement()}
+                                      </Text>
+                                    </View>
+                                    {/* Series */}
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          flexDirection: 'row',
+                                          justifyContent: 'flex-start',
+                                          marginBottom: 1
+                                        },
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {/* Static */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 12,
+                                            fontWeight: '600',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {'Series : '}
+                                      </Text>
+                                      {/* Dynamic  */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 12,
+                                            fontWeight: '400',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {jsonfeed?.data?.tournament?.name}
+                                      </Text>
+                                    </View>
+                                    {/* MVP */}
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          flexDirection: 'row',
+                                          justifyContent: 'flex-start',
+                                          marginBottom: 1
+                                        },
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {/* Static */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'flex-start',
+                                            fontFamily: 'System',
+                                            fontSize: 12,
+                                            fontWeight: '600',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {'Player Of The Match : '}
+                                      </Text>
+                                      {/* Dynamic  */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 12,
+                                            fontWeight: '400',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {NameMVP()}{' '}
+                                      </Text>
+                                    </View>
+                                    {/* Dates */}
+                                    <View
+                                      style={StyleSheet.applyWidth(
+                                        {
+                                          alignItems: 'center',
+                                          flexDirection: 'row',
+                                          justifyContent: 'flex-start',
+                                          marginBottom: 4
+                                        },
+                                        dimensions.width,
+                                      )}
+                                    >
+                                      {/* Static */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 12,
+                                            fontWeight: '600',
+                                            color: '#fff',
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {'Match Dates : '}
+                                      </Text>
+                                      {/* Dynamic  */}
+                                      <Text
+                                        style={StyleSheet.applyWidth(
+                                          StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                            alignSelf: 'center',
+                                            fontFamily: 'System',
+                                            fontSize: 11,
+                                            fontWeight: '400',
+                                            color: '#fff',
+                                            width: 100,
+                                          }),
+                                          dimensions.width,
+                                        )}
+                                      >
+                                        {jsonfeed?.data?.sub_title}
+                                      </Text>
+                                    </View>
+                                  </View>
+                                </ScrollView>
                               </View>
-                              {/* Series */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                    marginBottom:1
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Static */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 12,
-                                      fontWeight: '600',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {'Series : '}
-                                </Text>
-                                {/* Dynamic  */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 12,
-                                      fontWeight: '400',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {jsonfeed?.data?.tournament?.name}
-                                </Text>
-                              </View>
-                              {/* MVP */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                    marginBottom:1
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Static */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'flex-start',
-                                      fontFamily: 'System',
-                                      fontSize: 12,
-                                      fontWeight: '600',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {'Player Of The Match : '}
-                                </Text>
-                                {/* Dynamic  */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 12,
-                                      fontWeight: '400',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {NameMVP()}{' '}
-                                </Text>
-                              </View>
-                              {/* Dates */}
-                              <View
-                                style={StyleSheet.applyWidth(
-                                  {
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                    marginBottom:4
-                                  },
-                                  dimensions.width,
-                                )}
-                              >
-                                {/* Static */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 12,
-                                      fontWeight: '600',
-                                      color: '#fff',
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {'Match Dates : '} 
-                                </Text>
-                                {/* Dynamic  */}
-                                <Text
-                                  style={StyleSheet.applyWidth(
-                                    StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                      alignSelf: 'center',
-                                      fontFamily: 'System',
-                                      fontSize: 11,
-                                      fontWeight: '400',
-                                      color: '#fff',
-                                      width:100,
-                                    }),
-                                    dimensions.width,
-                                  )}
-                                >
-                                  {jsonfeed?.data?.sub_title}
-                                </Text>
-                              </View>
-                            </View>
-                          </ScrollView>
-                        </View>
-                      )}
-                    </>
-                    {/* Before match */}
-                  </>
-                )
-              }}
-            </PagalFanBEApi.FetchFetchFeedForSingleMatchGET>
-            :
-            
-            <View style={{ flexDirection: 'column', alignItems: 'flex-start'}}>
-                {/* API call to get match dommentary for this match id , if match commentary is present show that else show Match Commentary not availabe */}
-                <PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET
-                  refetchInterval={30000}
-                  matchid={props.route?.params?.match_id ?? 77}
-                  onData={(fetchData) => {
-                    try {
-                      console.log(fetchData[0]?.match_update);
-                      console.log(props.route?.params?.match_id);
-                      setMatchCommentary(fetchData[0]?.match_update);
-                    } catch (err) {
-                      console.error(err)
-                    }
-                  }}
-                >
-                  {({ loading, error, data, refetchFetchFeedForSingleMatch }) => {
-                    console.log(matchCommentary);
-                    return(
-                      <>
-                      {!matchCommentary ?
-                          <View
-                            style={StyleSheet.applyWidth(
-                              StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Before match'], {
-                                alignContent: 'center',
-                                marginTop: 200,
-                              }),
-                              dimensions.width,
                             )}
-                          >
-                            <Text
+                        </>
+                        {/* Before match */}
+                      </>
+                    )
+                  }}
+                </PagalFanBEApi.FetchFetchFeedForSingleMatchGET>
+                :
+
+                <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                  {/* API call to get match dommentary for this match id , if match commentary is present show that else show Match Commentary not availabe */}
+                  <PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET
+                    refetchInterval={30000}
+                    matchid={props.route?.params?.match_id ?? 77}
+                    onData={(fetchData) => {
+                      try {
+                        console.log(fetchData[0]?.match_update);
+                        console.log(props.route?.params?.match_id);
+                        setMatchCommentary(fetchData[0]?.match_update);
+                      } catch (err) {
+                        console.error(err)
+                      }
+                    }}
+                  >
+                    {({ loading, error, data, refetchFetchFeedForSingleMatch }) => {
+                      console.log(matchCommentary);
+                      return (
+                        <>
+                          {!matchCommentary ?
+                            <View
                               style={StyleSheet.applyWidth(
-                                StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
-                                  alignSelf: 'center',
-                                  fontSize: 20,
-                                  textAlign: 'center',
-                                  color: '#fff',
+                                StyleSheet.compose(GlobalStyles.ViewStyles(theme)['Before match'], {
+                                  alignContent: 'center',
+                                  marginTop: 200,
                                 }),
                                 dimensions.width,
                               )}
                             >
-                              {MatchText()}
-                              {'\n'}
-                            </Text>
-                        </View>
-                        :
-                        <FlatList
-                        inverted={true}
-                        data={matchCommentary}
-                        listKey={'o1Om4XPf'}
-                        renderItem={({ item }) => { 
-                          return (
-                          <View
-                          style={{
-                            maxWidth: 800,
-                            marginHorizontal: 'auto',
-                            padding: 10,
-                            shadowColor: '#000',
-                            shadowOffset: {
-                              width: 0,
-                              height: 2,
-                            },
-                            shadowOpacity: 0.1,
-                            shadowRadius: 4,
-                            elevation: 5,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              fontWeight: 'bold',
-                              color: '#FFFFFF',
-                              marginBottom: 10,
-                            }}
-                          >
-                            {item.title}
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              color: '#F5FFFA',
-                            }}
-                          >
-                            {/* Place your commentary content here */}
-                            {item.desc}
-                          </Text>
-                      </View>
-                        )}}
-                        ></FlatList>
-                        }
-                      </>
-                    )
-                    
-                  }}
-                </PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET>
+                              <Text
+                                style={StyleSheet.applyWidth(
+                                  StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
+                                    alignSelf: 'center',
+                                    fontSize: 20,
+                                    textAlign: 'center',
+                                    color: '#fff',
+                                  }),
+                                  dimensions.width,
+                                )}
+                              >
+                                {MatchText()}
+                                {'\n'}
+                              </Text>
+                            </View>
+                            :
+                            <FlatList
+                              inverted={true}
+                              data={matchCommentary}
+                              listKey={'o1Om4XPf'}
+                              renderItem={({ item }) => {
+                                return (
+                                  <View
+                                    style={{
+                                      maxWidth: 800,
+                                      marginHorizontal: 'auto',
+                                      padding: 10,
+                                      shadowColor: '#000',
+                                      shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                      },
+                                      shadowOpacity: 0.1,
+                                      shadowRadius: 4,
+                                      elevation: 5,
+                                    }}
+                                  >
+                                    <Text
+                                      style={{
+                                        fontSize: 16,
+                                        fontWeight: 'bold',
+                                        color: '#FFFFFF',
+                                        marginBottom: 10,
+                                      }}
+                                    >
+                                      {item.title}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 12,
+                                        color: '#F5FFFA',
+                                      }}
+                                    >
+                                      {/* Place your commentary content here */}
+                                      {item.desc}
+                                    </Text>
+                                  </View>
+                                )
+                              }}
+                            ></FlatList>
+                          }
+                        </>
+                      )
+
+                    }}
+                  </PagalFanBEApi.FetchFetchCommentrayForSingleMatchGET>
                 </View>
-                
-            }
+              }
             </TabViewItem>
              }
 

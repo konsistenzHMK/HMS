@@ -1599,7 +1599,7 @@ export const FetchFetchAllPastMatchesGET = ({ children, onData = () => {}, refet
 
 export const fetchAllPostsGETStatusAndText = (Constants, args) =>
   fetch(
-    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc&limit=${args.limit}&offset=${args.offset}`,
+    `https://pvbtcdjiibcaleqjdrih.supabase.co/rest/v1/posts?order=id.desc&limit=${args.limit}&offset=${args.offset}&or=(posted_by_id.eq.1fab7628-6ecb-4b5a-87ea-f3c33a52016a,count_likes.gt.5)`,
     {
       headers: {
         Accept: 'application/json',

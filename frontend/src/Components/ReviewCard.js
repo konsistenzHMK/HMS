@@ -35,13 +35,13 @@ const ReviewCard = (props) => {
         return 'bg-cyan-200 text-cyan-500';
     }
   return (
-    <div className='w-full auto bg-white flex mt-10 mb-10 border-0 rounded-tl-lg rounded-bl-lg  rounded-tr-lg rounded-br-lg'>
+    <div className='w-full auto bg-white flex mt-10 mb-10 border-0 rounded-tl-lg rounded-bl-lg rounded-tr-lg rounded-br-lg'>
         {/* Details */}
         <div className='w-3/5 flex-col p-3 mb-5'>
             {/* Hostel name */}
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-3 ml-4'>
                 <div className='text-lg '>Hostel Name :</div>
-                <div><p className='text-blue-500  text-xl'>{formData.hostel_name}({formData.uuid}) </p></div>
+                <div><p className='text-blue-500  text-xl'>{formData.hostel_name} ({formData.uuid}) </p></div>
                 {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
             </div>
 
@@ -116,7 +116,7 @@ const ReviewCard = (props) => {
         </div>
 
         {/* Buttons */}
-        <div className='w-2/5 mt-10 flex justify-end pr-5'>
+        <div className='w-2/5 mt-10 flex justify-end pr-5 mr-'>
             <div className='w-full flex-col'>
                 <div className='flex justify-end'>
                     <button className={`w-3/5 h-10 ${setColor()} flex justify-center pt-1 rounded-md pl-2 pr-2`} disabled={true}>

@@ -866,7 +866,7 @@ const HomeScreen = (props) => {
                                   alignSelf: 'center',
                                   color: theme.colors['Community_White'],
                                   fontFamily: 'Inter_600SemiBold',
-                                  fontSize: 13,
+                                  fontSize: 11,
                                   marginBottom: 2,
                                   textDecorationLine: 'none',
                                 }),
@@ -1031,7 +1031,7 @@ const HomeScreen = (props) => {
                                   )}
                                 >
                                   {getCorrectTimeFormat(flashListData?.start_time)}
-                                  {translate('HomeScreen.Text.IST')}
+                                  {" "}{translate('HomeScreen.Text.IST')}
                                 </Text>
                               </View>
                               {/* venue */}

@@ -1782,7 +1782,7 @@ const MatchDaySingleScreen = (props) => {
                                   >
                                     {/* Tab Team1 */}
                                     {console.log(YetToBat1())}
-                                    {YetToBat1()?.length == 11 || YetToBat1() == false ? null :
+                                    {YetToBat1()?.length == 11? null :
                                       <TabViewItem title={Team1Name()} >
                                         <ScrollView
                                           bounces={true}
@@ -4749,7 +4749,7 @@ const MatchDaySingleScreen = (props) => {
                                           dimensions.width,
                                         )}
                                       >
-                                        {'Match Dates : '}
+                                        {'Match Title : '}
                                       </Text>
                                       {/* Dynamic  */}
                                       <Text
@@ -4760,7 +4760,7 @@ const MatchDaySingleScreen = (props) => {
                                             fontSize: 11,
                                             fontWeight: '400',
                                             color: '#fff',
-                                            width: 100,
+                                            width: 200,
                                           }),
                                           dimensions.width,
                                         )}

@@ -17,7 +17,7 @@ const getCorrectDateFormat = (dateString) => {
   const monthName = months[parseInt(month) - 1]
 
   // Format the date in mmm-dd format
-  const formattedDate = `${monthName} ${day}${nth(day)}, ${year[2]+year[3]}`
+  const formattedDate = `${monthName} ${day}`
 
   return formattedDate
 }

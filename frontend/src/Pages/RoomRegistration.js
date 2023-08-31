@@ -270,7 +270,7 @@ const RoomRegistartion = () => {
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-1'>
-        <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">Select Hostel Name or ID *</div>
+        <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">Select Hostel Name or ID  <p className='inline text-xl text-red-600'>*</p></div>
         <select
           id="hostel_id"
           name="hostel_id"
@@ -307,12 +307,15 @@ const RoomRegistartion = () => {
             </div>
 
             <div className='w-full h-auto flex flex-col mb-2 mt-2'>
-            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Wing Name or ID*</div>
+
+            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Wing Name or ID <p className='inline text-xl text-red-600'>*</p></div>
             <select
                 id="wing_id"
                 name="wing_id"
                 value={formData.wing_id}
                 onChange={handleChange2}
+
+        
                 className='w-full  border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
             >
               <option value="" disabled>-- Select an option --</option>\
@@ -326,7 +329,7 @@ const RoomRegistartion = () => {
 
             <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Name of Room **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Name of Room  <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="room_name"
@@ -340,8 +343,11 @@ const RoomRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room Number **</div>
-                    <input
+                    
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room Number <p className='inline text-xl text-red-600'>*</p></div>
+
+   
+                      <input
                       type="text"
                       id="room_no"
                       name="room_no"
@@ -370,7 +376,7 @@ const RoomRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room capacity **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room capacity  <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="room_capacity"
@@ -386,7 +392,7 @@ const RoomRegistartion = () => {
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Height (unit) **</div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Height (unit)  <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="height"
@@ -400,7 +406,7 @@ const RoomRegistartion = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Width (unit)**</div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Width (unit) <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="width"
@@ -414,7 +420,7 @@ const RoomRegistartion = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Length (unit)**</div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Length (unit) <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="length"
@@ -430,7 +436,7 @@ const RoomRegistartion = () => {
 
               <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No. of Doors</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No of Doors</div>
                     <input
                       type="text"
                       id="no_of_doors"
@@ -444,7 +450,7 @@ const RoomRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No. of Windows **</div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No of Windows  <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="no_of_windows"
@@ -475,8 +481,9 @@ const RoomRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room Status **</div>
-                    <select
+
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room Status<p className='inline text-xl text-red-600'>*</p></div>
+                    <select 
                       type="text"
                       id="room_status"
                       name="room_status"

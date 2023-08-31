@@ -1295,7 +1295,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage,display})
 
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Personal Mobile no <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Personal Contact Number <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type='text'
                       id="personal_mobile"
@@ -1311,7 +1311,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage,display})
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Parents Mobile no <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="email_id">Parents Contact Number <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="parent_mobile"
@@ -1450,7 +1450,7 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage,display})
 
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Principle Mobile no <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Principle Contact Number <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="text"
                       id="teacher_mobile"

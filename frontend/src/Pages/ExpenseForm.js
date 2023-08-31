@@ -103,7 +103,7 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                     <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                                 </div>
                                 <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
+                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
                                 </div>
 
                                 <div className='w-full mt-3'>
@@ -452,7 +452,7 @@ const Page2 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                     <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                                 </div>
                                 <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
+                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
                                 </div>
 
                                 <div className='w-full mt-3'>
@@ -687,7 +687,7 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
                                     <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                                 </div>
                                 <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
+                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
                                 </div>
 
                                 <div className='w-full mt-3'>
@@ -973,7 +973,7 @@ const Page4 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                     <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
                                 </div>
                                 <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
+                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
                                 </div>
                                 <div className='w-full mt-3'>
                                     <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>

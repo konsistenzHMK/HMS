@@ -877,7 +877,7 @@ const App = (props) => {
                         onChange={handleDropdownCat1}
                         disabled={CheckDisplayForm()}
                         >
-                        <option value="null">Select an option</option>
+                        <option value="null" disabled>Select an option</option>
                         <option value="girls">Girls</option>
                         <option value="boys">Boys</option>
                         <option value="coed">Co-Ed</option>
@@ -894,7 +894,7 @@ const App = (props) => {
                         onChange={handleDropdownCat2}
                         disabled={CheckDisplayForm()}
                         >
-                        <option value="null">Select an option</option>
+                        <option value="null" disabled>Select an option</option>
                         <option value="t-1">type-1</option>
                         <option value="t-2">type-2</option>
                         <option value="t-3">type-3</option>
@@ -916,7 +916,7 @@ const App = (props) => {
                         onChange={handleDropdownCat3}
                         disabled={CheckDisplayForm()}
                         >
-                        <option value="null">Select an option</option>
+                        <option value="null" disabled>Select an option</option>
                         <option value="rented">Rented</option>
                         <option value="government">Government</option>
                       </select>
@@ -1036,7 +1036,7 @@ const App = (props) => {
                         onChange={handleDropdownMessType}
                         disabled={CheckDisplayForm()}
                         >
-                        <option value="null">Select an option</option>
+                        <option value="null" disabled>Select an option</option>
                         <option value="government">Government</option>
                         <option value="contract">Contract</option>
                         <option value="other">Other</option>
@@ -1105,7 +1105,7 @@ const App = (props) => {
                           onChange={handleDropdownStatusType}
                           >
                           <option value="draft">Draft</option>
-                          <option value="NA">Select an option</option>
+                          <option value="NA" disabled>Select an option</option>
                           <option value="del">Deleted</option>
                           <option value="pending">Pending for Approval</option>
                           <option value="active">Active</option>

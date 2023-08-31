@@ -6,7 +6,7 @@ import storage from './storage.js';
 import './storage.js';
 import { query, where, getDocs } from "firebase/firestore";
 import { collection, addDoc, doc, setDoc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { expense_flow_code_count, hostel_flow_code_count, randon_doc_id_function, booking_expense_header_function, UUIDFunction, studentIdFunction, tower_id_function, wing_id_function, room_id_function, expense_id_function, process_id_to_process_description_count } from './logics.js';
+import {upload_file,expense_flow_code_count, hostel_flow_code_count, random_doc_id_function, booking_expense_header_function, UUIDFunction, studentIdFunction, tower_id_function, wing_id_function, room_id_function, expense_id_function, process_id_to_process_description_count } from './logics.js';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
@@ -42,7 +42,7 @@ const users = async (req, res) => {
 
 
     try {
-        await setDoc(doc(db, "users", await randon_doc_id_function()), {
+        await setDoc(doc(db, "users", await random_doc_id_function()), {
             // user_id,
             username,
             // password,
@@ -218,7 +218,7 @@ const hostel_registration = async (req, res) => {
         const ans = await UUIDFunction(country, state, district);
         console.log(ans);
         try {
-            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
                 hostel_name,
                 description,
                 address1,
@@ -264,7 +264,7 @@ const saved_form_1 = async (req, res) => {
         address1,
         address2,
         country,
-        state,
+        state, 
         region,
         district,
         city,
@@ -295,7 +295,7 @@ const saved_form_1 = async (req, res) => {
     if (uuid == null || uuid == undefined || uuid == "") {
         try {
             const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
                 hostel_name,
                 description,
                 address1,
@@ -455,7 +455,7 @@ const saved_form_2 = async (req, res) => {
 
         try {
             const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
                 hostel_name,
                 description,
                 address1,
@@ -573,7 +573,7 @@ const saved_form_3 = async (req, res) => {
 
         try {
             const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
                 hostel_name,
                 description,
                 address1,
@@ -691,7 +691,7 @@ const saved_form_4 = async (req, res) => {
 
         try {
             const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
                 hostel_name,
                 description,
                 address1,
@@ -809,7 +809,7 @@ const saved_form_5 = async (req, res) => {
 
         try {
             const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
                 hostel_name,
                 description,
                 address1,
@@ -927,7 +927,7 @@ const saved_form_6 = async (req, res) => {
 
         try {
             const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
                 hostel_name,
                 description,
                 address1,
@@ -1020,12 +1020,25 @@ const student_registration = async (req, res) => {
         student_id,
     } = (req.body);
 
+    
+
     const documents = await getDocs(collection(db, "student_registration"));
     const data2 = {};
+    const data3 = [];
     documents.forEach((doc) => {
         data2[doc.data().student_id] = doc.id;
+        data3.push(doc.data().aadhar_id);
+        // data3[doc.data().aadhar_id] = doc.data().student_id;
     });
-    console.log("running");
+    // console.log("running");
+    // const keys4 = Object.keys(data3);
+    for(let i=0;i<data3.length;i++){
+        if(data3[i]==aadhar_id){
+            res.send("User already exists");
+            return;
+        }
+    }
+
     const keys = Object.keys(data2);
     for (let i = 0; i < keys.length; i++) {
         if (student_id == keys[i]) {
@@ -1091,7 +1104,25 @@ const student_registration = async (req, res) => {
         }
 
     }
+
+
     if (student_id == null || student_id == undefined || student_id == "") {
+        const documents = await getDocs(collection(db, "student_registration"));
+        const data3 =[] ;
+        documents.forEach((doc) => {
+            data3.push(doc.data().aadhar_id);
+            // data3[doc.data().aadhar_id] = doc.data().student_id;
+        });
+
+        // const keys4 = Object.keys(data3);
+        for(let i=0;i<data3.length;i++){
+            if(data3[i]==aadhar_id){
+                res.send("User already exists");
+                return;
+            }
+        }
+
+        
         const ans1 = await studentIdFunction(null);
         let str = ans1;
         let num = parseInt(str);
@@ -1102,7 +1133,7 @@ const student_registration = async (req, res) => {
         // console.log(url);
 
         try {
-            await setDoc(doc(db, "student_registration", await randon_doc_id_function()), {
+            await setDoc(doc(db, "student_registration", await random_doc_id_function()), {
                 first_name,
                 last_name,
                 father_name,
@@ -1182,7 +1213,7 @@ const hostel_tower_reg = async (req, res) => {
     const ans2 = await tower_id_function(hostel_id);
 
     try {
-        await setDoc(doc(db, "hostel_tower", uuidv4()), {
+        await setDoc(doc(db, "hostel_tower",  await random_doc_id_function()), {
             hostel_id,
             tower_name,
             no_rooms,
@@ -1191,57 +1222,52 @@ const hostel_tower_reg = async (req, res) => {
             other_facilities,
             no_wings,
             type,
-            status,
-            tower_id: ans2,
-        });
+            status,  
+            tower_id:ans2, 
+        }); 
     }
     catch (e) {
-        res.send("Data not inserted");
+        res.send("Data not inserted " + e);
     }
-    res.send("Data Inserted id " + ans2);
+    res.send("Data Inserted id " +ans2);
 
 
 }
-
-
-
-const hostel_tower_wing_reg = async (req, res) => {
+const hostel_tower_wing = async (req, res) => {
     const {
         tower_id,
         wing_name,
         no_rooms,
         capacity,
         total_area,
-        other_facilities,
-        // no_wings,
+        other_facilities, 
         type,
-        // status,
+        status,
     } = (req.body);
 
     const ans3 = await wing_id_function(tower_id);
 
     try {
-        await setDoc(doc(db, "hostel_tower_wing", randon_doc_id_function()), {
+        await setDoc(doc(db, "hostel_tower_wing",  await random_doc_id_function()), {
             tower_id,
             wing_name,
             no_rooms,
             capacity,
             total_area,
             other_facilities,
-            // no_wings,
             type,
-            // status, 
-            wing_id: ans3,
+            status,
+            wing_id:ans3,
         });
-
+        
     }
     catch (e) {
-        res.send("Data not inserted");
+        res.send("Data not inserted " + e);
     }
-    res.send("Data Inserted with id " + ans3);
-}
+    res.send("Data Inserted with  id " +ans3);
 
 
+} 
 
 const hostel_room_reg = async (req, res) => {
     const {
@@ -1257,7 +1283,7 @@ const hostel_room_reg = async (req, res) => {
         length,
         no_of_doors,
         no_of_windows,
-        Facility_list,
+        facility_list,
         room_status,
         room_furniture,
     } = (req.body);
@@ -1265,7 +1291,7 @@ const hostel_room_reg = async (req, res) => {
     const ans4 = await room_id_function(hostel_id, room_no);
 
     try {
-        await setDoc(doc(db, "hostel_room", await randon_doc_id_function()), {
+        await setDoc(doc(db, "hostel_room", await random_doc_id_function()), {
             room_no,
             room_name,
             hostel_id,
@@ -1278,7 +1304,7 @@ const hostel_room_reg = async (req, res) => {
             length,
             no_of_doors,
             no_of_windows,
-            Facility_list,
+            facility_list,
             room_status,
             room_furniture,
             room_id: ans4,
@@ -1307,7 +1333,7 @@ const expense = async (req, res) => {
     str = String(num).padStart(str.length, "0");
 
     try {
-        await setDoc(doc(db, "expense", await randon_doc_id_function()), {
+        await setDoc(doc(db, "expense", await random_doc_id_function()), {
             expense_name,
             expense_type,
             // status,
@@ -1330,7 +1356,7 @@ const expense_type = async (req, res) => {
     } = (req.body);
 
     try {
-        await setDoc(doc(db, "expense_type", await randon_doc_id_function()), {
+        await setDoc(doc(db, "expense_type", await random_doc_id_function()), {
             expense_type,
             expense_type_description,
             expense_category,
@@ -1359,7 +1385,7 @@ const expense_header = async (req, res) => {
     const ans6 = await booking_expense_header_function(null);
 
     try {
-        await setDoc(doc(db, "expense_header", await randon_doc_id_function()), {
+        await setDoc(doc(db, "expense_header", await random_doc_id_function()), {
             expense_code,
             date_of_expense,
             date_of_booking,
@@ -1389,7 +1415,7 @@ const expense_item = async (req, res) => {
     } = (req.body);
 
     try {
-        await setDoc(doc(db, "expense_item", await randon_doc_id_function()), {
+        await setDoc(doc(db, "expense_item", await random_doc_id_function()), {
             booking_id,
             user_id,
             amount,
@@ -1409,7 +1435,7 @@ const role_reference = async (req, res) => {
     } = (req.body);
 
     try {
-        await setDoc(doc(db, "role_reference", await randon_doc_id_function()), {
+        await setDoc(doc(db, "role_reference", await random_doc_id_function()), {
             role_name,
             role_description,
         });
@@ -1428,7 +1454,7 @@ const user_role_management = async (req, res) => {
     } = (req.body);
 
     try {
-        await setDoc(doc(db, "user_role_management", await randon_doc_id_function()), {
+        await setDoc(doc(db, "user_role_management", await random_doc_id_function()), {
             user_id,
             role_name,
         });
@@ -1446,7 +1472,7 @@ const role_to_process_mapping = async (req, res) => {
     } = (req.body);
 
     try {
-        await setDoc(doc(db, "role_to_process_mapping", await randon_doc_id_function()), {
+        await setDoc(doc(db, "role_to_process_mapping", await random_doc_id_function()), {
             role_name,
             process_name,
         });
@@ -1468,7 +1494,7 @@ const process_id_to_process_description = async (req, res) => {
     num = num + 1;
     let ans = String(num).padStart(ans7.length, "0");
     try {
-        await setDoc(doc(db, "process_id_to_process_description", await randon_doc_id_function()), {
+        await setDoc(doc(db, "process_id_to_process_description", await random_doc_id_function()), {
             process_name,
             process_id: (ans)
         });
@@ -1491,7 +1517,7 @@ const flow_table_for_hostel = async (req, res) => {
     const ans8 = await hostel_flow_code_count();
 
     try {
-        await setDoc(doc(db, "flow_table_for_hostel", await randon_doc_id_function()), {
+        await setDoc(doc(db, "flow_table_for_hostel", await random_doc_id_function()), {
             state,
             region,
             district,
@@ -1519,7 +1545,7 @@ const flow_table_for_expense = async (req, res) => {
     const ans9 = await expense_flow_code_count();
 
     try {
-        await setDoc(doc(db, "flow_table_for_expense", await randon_doc_id_function()), {
+        await setDoc(doc(db, "flow_table_for_expense", await random_doc_id_function()), {
             district,
             hostel_id,
             expense_type,
@@ -1541,7 +1567,7 @@ const hostel_flow_code_to_user_id = async (req, res) => {
     } = (req.body);
 
     try {
-        await setDoc(doc(db, "hostel_flow_code_to_user_id", await randon_doc_id_function()), {
+        await setDoc(doc(db, "hostel_flow_code_to_user_id", await random_doc_id_function()), {
             hostel_flow_code,
             user_id,
         });
@@ -1559,7 +1585,7 @@ const expense_flow_code_to_user_id = async (req, res) => {
     } = (req.body);
 
     try {
-        await setDoc(doc(db, "expense_flow_code_to_user_id", await randon_doc_id_function()), {
+        await setDoc(doc(db, "expense_flow_code_to_user_id", await random_doc_id_function()), {
             expense_flow_code,
             user_id,
         });
@@ -1596,4 +1622,33 @@ const status_trasition = async (req, res) => {
 
 }
 
-export { status_trasition, saved_form_1, saved_form_2, saved_form_3, saved_form_4, saved_form_5, saved_form_6, expense_flow_code_to_user_id, hostel_flow_code_to_user_id, flow_table_for_expense, flow_table_for_hostel, user_role_management, role_to_process_mapping, process_id_to_process_description, expense_type, role_reference, users, expense_item, expense_header, allAddressDetails, hostel_registration, student_registration, hostel_tower_reg, hostel_tower_wing_reg, hostel_room_reg, expense };
+const student_to_room_allocation = async (req, res) => {
+    const {
+        user_id,
+        hostel_id,
+        room_id,
+        room_no,
+        start_date,
+        end_date,
+        status,
+    } = (req.body);
+
+    try {
+        await setDoc(doc(db, "student_to_room_allocation", await random_doc_id_function()), {
+            user_id,
+            hostel_id,
+            room_id,
+            room_no,
+            start_date,
+            end_date,
+            status,
+        });
+    }
+    catch (e) {
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+
+}
+
+export {hostel_tower_wing,student_to_room_allocation, status_trasition, saved_form_1, saved_form_2, saved_form_3, saved_form_4, saved_form_5, saved_form_6, expense_flow_code_to_user_id, hostel_flow_code_to_user_id, flow_table_for_expense, flow_table_for_hostel, user_role_management, role_to_process_mapping, process_id_to_process_description, expense_type, role_reference, users, expense_item, expense_header, allAddressDetails, hostel_registration, student_registration, hostel_tower_reg, hostel_room_reg, expense };

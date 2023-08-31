@@ -987,7 +987,7 @@ const MatchDaySingleScreen = (props) => {
                                       width: '100%',
                                       borderRadius: 12,
                                     }}
-                                    resizeMode="stretch"
+                                    resizeMode="contain"
                                   />
                                 </>
                               </>
@@ -1539,19 +1539,22 @@ const MatchDaySingleScreen = (props) => {
                                         </Text>
                                       </View>
                                       {/* Comment */}
-                                      <Text
-                                        style={StyleSheet.applyWidth(
-                                          {
-                                            color: theme.colors.communityTrueOption,
-                                            fontFamily: 'Rubik_400Regular',
-                                            fontSize: 11,
-                                            lineHeight: 17,
-                                          },
-                                          dimensions.width,
-                                        )}
-                                      >
-                                        {listData?.comment}
-                                      </Text>
+                                      <View style={{flex:1}}>
+                                        <Text
+                                          style={StyleSheet.applyWidth(
+                                            {
+                                              color: theme.colors.communityTrueOption,
+                                              fontFamily: 'Rubik_400Regular',
+                                              fontSize: 11,
+                                              lineHeight: 17,
+                                              width:"80%"
+                                            },
+                                            dimensions.width,
+                                          )}
+                                        >
+                                          {listData?.comment}
+                                        </Text>
+                                      </View>
                                     </View>
                                   </View>
                                 </View>
@@ -4895,11 +4898,11 @@ const MatchDaySingleScreen = (props) => {
                   if (error) {
                     return <Text style={{ textAlign: 'center' }}>{translate('MatchDaySingleScreen.Text.ProblemFetchData')}</Text>
                   }
-
                   return (
                     <FlatList
                       data={fetchData}
                       listKey={'o1Om4XPv'}
+                      style={{ marginTop : 5 }}
                       keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
                       renderItem={({ item }) => {
                         const listData = item
@@ -4916,6 +4919,7 @@ const MatchDaySingleScreen = (props) => {
                                   borderTopWidth: 1,
                                   flexDirection: 'row',
                                   height: 80,
+                                  marginHorizontal: 2,
                                   marginBottom: 4,
                                   marginTop: 4,
                                 },
@@ -4923,7 +4927,7 @@ const MatchDaySingleScreen = (props) => {
                               )}
                             >
                               {/* Image */}
-                              <View style={StyleSheet.applyWidth({ marginLeft: 2, marginRight: 4 }, dimensions.width)}>
+                              <View style={StyleSheet.applyWidth({ marginLeft: 5, marginRight: 4 }, dimensions.width)}>
                                 <Image
                                   style={StyleSheet.applyWidth(
                                     StyleSheet.compose(GlobalStyles.ImageStyles(theme)['Image'], {
@@ -4938,7 +4942,7 @@ const MatchDaySingleScreen = (props) => {
                                 />
                               </View>
                               {/* Moment */}
-                              <View style={StyleSheet.applyWidth({ flexWrap: 'wrap' }, dimensions.width)}>
+                              <View style={StyleSheet.applyWidth({ flexWrap: 'wrap', marginLeft:7 }, dimensions.width)}>
                                 {/* Time */}
                                 <Text
                                   style={StyleSheet.applyWidth(
@@ -4952,13 +4956,13 @@ const MatchDaySingleScreen = (props) => {
                                 >
                                   {convertUTCtoIST(listData?.created_at)}
                                 </Text>
-
                                 <Text
                                   style={StyleSheet.applyWidth(
                                     StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                       color: theme.colors['PF-Grey'],
                                       fontFamily: 'Rubik_400Regular',
                                       fontSize: 12,
+                                      width:"37%"
                                     }),
                                     dimensions.width,
                                   )}

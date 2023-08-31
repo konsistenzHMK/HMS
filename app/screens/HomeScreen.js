@@ -1060,7 +1060,7 @@ const HomeScreen = (props) => {
                                   borderBottomLeftRadius: 12,
                                   borderBottomRightRadius: 12,
                                 }}
-                                resizeMode="stretch"
+                                resizeMode="contain"
                               />
                             </>
                           )}

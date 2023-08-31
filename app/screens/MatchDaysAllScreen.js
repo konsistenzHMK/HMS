@@ -265,10 +265,15 @@ const MatchDaysAllScreen = (props) => {
                                 >
                                   {'['}
                                   {listData?.title}
-                                  {']: '}
-                                  {convertNullToTBD(listData?.team_1?.team_name)}
-                                  {' vs '}
-                                  {convertNullToTBD(listData?.team_2?.team_name)}
+                                  {']'}
+                                  {listData?.feed_available && (
+                                    <>
+                                      {' :'}
+                                      {convertNullToTBD(listData?.team_1?.team_name)}
+                                      {' vs '}
+                                      {convertNullToTBD(listData?.team_2?.team_name)}
+                                    </>
+                                  )}
                                 </Text>
                                 {/* Match City and Date */}
                                 <Text

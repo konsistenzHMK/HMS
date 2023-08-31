@@ -3,8 +3,10 @@ import  db from './config.js';
 import './config.js';
 import {  query, where, getDocs } from "firebase/firestore";
 import {collection, addDoc, doc, setDoc , getDoc ,updateDoc} from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import storage from './storage.js';
 
-const randon_doc_id_function = async ()=>{
+const random_doc_id_function = async ()=>{
     var randomNumber = '';
   for (var i = 0; i < 30; i++) {
     randomNumber += Math.floor(Math.random() * 10);
@@ -96,7 +98,6 @@ const tower_id_function= async (hostel_id)=>{
    const ht_id = hostel_id;
     const docRef = doc(db, "tower_no", ht_id);
     const docSnap = await getDoc(docRef);
-    // console.log(docSnap.data().value);
 
     let globalCount=0;
     if (docSnap.exists()) {
@@ -111,11 +112,11 @@ const tower_id_function= async (hostel_id)=>{
         }
         globalCount= value+1;
     } else {
-        try{
+        try{ 
             await setDoc(doc(db, "tower_no",ht_id), {
                 value:1
             })
-        }
+        } 
         catch(e){
             console.log("error",e);
         }
@@ -130,6 +131,7 @@ const tower_id_function= async (hostel_id)=>{
     
     globalCount = zeros + id_string;
     }
+    // console.log(ht_id+globalCount.toString());
 
     return ht_id+globalCount.toString();
 }
@@ -174,7 +176,7 @@ const wing_id_function= async (tower_id)=>{
 
             globalCount = zeros + id_string;
         }
-
+        console.log(wt_id+globalCount.toString());
         return wt_id+globalCount.toString();
 
     }
@@ -431,6 +433,28 @@ const gethostel_id_where_status_active = async(req,res)=>{
     res.send(data1);
 }
 
+const get_tower_id_where_status_active = async(req,res)=>{
+    const q = query(collection(db, "hostel_tower"), where("status", "==", "active"));
+    const querySnapshot = await getDocs(q);
+    const data1 = [];
+    querySnapshot.forEach((doc) => {
+        data1.push([doc.data().tower_id,doc.data().tower_name]);
+ });
+
+    res.send(data1);
+}
+
+const get_wing_id_where_status_active = async(req,res)=>{
+    const q = query(collection(db, "hostel_tower_wing"), where("status", "==", "active"));
+    const querySnapshot = await getDocs(q);
+    const data1 = [];
+    querySnapshot.forEach((doc) => {
+        data1.push([doc.data().wing_id,doc.data().wing_name]);
+ });
+
+    res.send(data1);
+}
+
 const status_of_hostel_active = async(req,res)=>{
     const { 
         hostel_name,
@@ -627,4 +651,69 @@ const get_student_form = async(req,res)=>{
     res.send(data1);
 }
 
-export  {get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , randon_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+const upload_file = async(photo_file) => {
+    const metadata = {
+        contentType: 'image/jpeg'
+    };
+    
+    const storageRef = ref(storage, 'Student/attachments/photos' + photo_file.name);
+    const uploadTask = await uploadBytes(storageRef, photo_file, metadata);
+    console.log('Uploaded the file!');
+
+    uploadTask.on('state_changed',
+    (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch(snapshot.state) {
+            case 'paused':
+            console.log('Upload is paused');
+            break;
+            case 'running':
+            console.log('Upload is running');
+            break;
+        }
+    },
+    (error) => {
+        switch (error.code) {
+            case 'storage/unauthorized':
+            console.log('User does not have permission to access the object');
+            break;
+            case 'storage/canceled':
+            console.log('User canceled the upload');
+            break;
+            case 'storage/unknown':
+            console.log('Unknown error occurred, inspect error.serverResponse');
+            break;
+
+        }
+    },
+    () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at' , downloadURL);
+        });
+    
+});
+    return uploadTask.snapshot.ref.getDownloadURL();
+}
+
+
+const get_students_for_room_allocation = async(req,res)=>{
+    const q = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", "INMACH00004" , "&&" , "status", "==", "active"));
+    const documents = await getDocs(q);
+    const data = {}; 
+    documents.forEach((doc) => {
+        data[doc.data().student_id] = doc.data().first_name + " " + doc.data().last_name;
+    });
+    res.send(data);
+}
+
+const get_room_no_for_room_allocation = async(req,res)=>{
+    //on hold first make some rooms then come here to write further code
+}
+
+
+
+
+
+
+export  {get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

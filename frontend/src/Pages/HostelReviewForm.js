@@ -73,11 +73,11 @@ const HostelReviewForm = () => {
     };
 
     return (
-        <div className="w-full bg-defaultBg top-0">
+        <div className="w-full bg-defaultBg top-0 rounded-lg">
           
         {!ShowForm && !edit2 && !display &&
             <div className='w-full flex justify-center'>
-            <div className='w-11/12 '> {allForms.map((item, index) => (<ReviewCard data={item} setShowForm={setShowForm} setFormDataOut={setFormData1} setEdit2={setEdit2} setDisplay={setDisplay}/>))}</div>
+            <div className='w-11/12 rounded-lg'> {allForms.map((item, index) => (<ReviewCard data={item} setShowForm={setShowForm} setFormDataOut={setFormData1} setEdit2={setEdit2} setDisplay={setDisplay}/>))}</div>
             </div>
         }
         {ShowForm && <HostelRegistration ExistingFormData={FormData1} op={1}/>}

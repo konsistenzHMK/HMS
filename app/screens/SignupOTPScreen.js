@@ -95,6 +95,7 @@ const SignupOTPScreen = (props) => {
             <Text
               style={StyleSheet.applyWidth(
                 {
+                  color: theme.colors['PF-Grey'],
                   fontFamily: 'Rubik_600SemiBold',
                   fontSize: 24,
                   marginLeft: 36,
@@ -125,7 +126,7 @@ const SignupOTPScreen = (props) => {
             )}
           >
             {translate('SignupOTPScreen.Text.SentText')}
-            {props.route?.params?.user_email ?? 'sg-ml1@yopmail.com'}
+            {" "}{props.route?.params?.user_email ?? 'sg-ml1@yopmail.com'}
           </Text>
           {/* Note 2 */}
           <Text
@@ -164,6 +165,7 @@ const SignupOTPScreen = (props) => {
                   console.error(err)
                 }
               }}
+              keyboardType = 'numeric'
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
                   borderColor: theme.colors['Secondary'],

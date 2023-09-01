@@ -81,6 +81,7 @@ const PostCommentModal = ({ visible, onDismiss, comments, onAuthorPress, onSendC
           <TextInput
             onChangeText={setTextInputValue}
             style={styles.input}
+            
             placeholder={'Type something...'}
             value={textInputValue}
             placeholderTextColor={theme.colors.communityLightBlack}
@@ -132,6 +133,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 12,
     flex: 1,
+    color: theme.colors['PF-Grey']
   },
   sendButton: {
     height: 48,

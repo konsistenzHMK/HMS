@@ -666,6 +666,7 @@ const PostDetailsScreen = (props) => {
                     paddingLeft: 12,
                     paddingRight: 12,
                     paddingTop: 15,
+                    color: theme.colors['PF-Grey']
                   },
                   dimensions.width,
                 )}

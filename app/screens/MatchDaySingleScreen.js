@@ -1367,9 +1367,10 @@ const MatchDaySingleScreen = (props) => {
                             marginLeft: 0,
                             marginRight: 4,
                             paddingBottom: 8,
-                            paddingLeft: 12,
+                            paddingLeft: 16,
                             paddingRight: 12,
                             paddingTop: 8,
+                            color: theme.colors['PF-Grey']
                           },
                           dimensions.width,
                         )}

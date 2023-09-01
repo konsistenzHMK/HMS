@@ -258,8 +258,8 @@ const changeHandicappStatus =(event) =>{
     console.log(errors);
   },[formData])
 
-  const maxDate=new Date();
-  maxDate.setDate(maxDate.getDate() - 1);
+  const maxDate=new Date().toLocaleDateString('fr-ca')
+  // maxDate.setDate(maxDate.getDate() - 1);
 
   return (
     <div className="flex bg-defaultBg" >
@@ -445,7 +445,7 @@ const changeHandicappStatus =(event) =>{
                       name="dob"
                       disabled={display}
                       value={formData.dob}
-                      maxDate={maxDate}
+                      max={maxDate}
                       onChange={handleChange}
                       className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />

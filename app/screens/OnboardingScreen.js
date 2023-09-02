@@ -377,7 +377,7 @@ const OnboardingScreen = (props) => {
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
               margin: 20,
-              color: theme.colors['PF-Grey']
+              color: theme.colors['PF-Grey'],
               alignSelf: 'center',
               textAlign: 'center',
               width: 140,

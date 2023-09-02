@@ -744,6 +744,16 @@ const MatchDaySingleScreen = (props) => {
     }
   }
 
+  const showProfileScreen = (userid) => {
+    if (userid === Constants['LOGGED_IN_USER']) {
+      navigation.navigate('MyProfileScreen')
+    } else {
+      navigation.navigate('OthersProfileScreen', {
+        userid,
+      })
+    }
+  }
+
   return (
     <ScreenContainer hasSafeArea={true} scrollable={false}>
       <KeyboardAwareScrollView
@@ -1435,6 +1445,7 @@ const MatchDaySingleScreen = (props) => {
 
                     return (
                       <FlatList
+                      nestedScrollEnabled
                         data={fetchCommentsData}
                         listKey={'Z2C3fhw6'}
                         keyExtractor={(listData) => listData?.id || listData?.uuid || JSON.stringify(listData)}
@@ -1459,7 +1470,7 @@ const MatchDaySingleScreen = (props) => {
                                   <View>
                                     {/* Flex Frame for Touchable */}
                                     <View>
-                                      <Touchable>
+                                      <Touchable onPress={()=>{listData?.user_id && showProfileScreen(listData?.user_id)}}>
                                         {/* Circle Image Frame */}
                                         <View
                                           style={StyleSheet.applyWidth(
@@ -1510,20 +1521,26 @@ const MatchDaySingleScreen = (props) => {
                                         )}
                                       >
                                         {/* Commenter Name */}
-                                        <Text
-                                          style={StyleSheet.applyWidth(
-                                            {
-                                              color: theme.colors.communityDarkUI,
-                                              fontFamily: 'Rubik_600SemiBold',
-                                              fontSize: 13,
-                                              lineHeight: 19,
-                                              marginRight: 10,
-                                            },
-                                            dimensions.width,
-                                          )}
+                                        <Touchable
+                                          onPress={() => {
+                                            listData?.user_id && showProfileScreen(listData?.user_id)
+                                          }}
                                         >
-                                          {listData?.user_profiles?.first_name}
-                                        </Text>
+                                          <Text
+                                            style={StyleSheet.applyWidth(
+                                              {
+                                                color: theme.colors.communityDarkUI,
+                                                fontFamily: 'Rubik_600SemiBold',
+                                                fontSize: 13,
+                                                lineHeight: 19,
+                                                marginRight: 10,
+                                              },
+                                              dimensions.width,
+                                            )}
+                                          >
+                                            {listData?.user_profiles?.first_name}
+                                          </Text>
+                                        </Touchable>
                                         {/* TimeAgo */}
                                         <Text
                                           style={StyleSheet.applyWidth(

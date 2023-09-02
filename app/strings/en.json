@@ -4,11 +4,11 @@
       "Text.new": "New Post",
       "Toast.NotEmpty": "Post can't be empty",
       "Toast.ErrorUpload": "Error uploading post",
-      "Alert.MediaSize": "Please select media not more than 30 seconds",
+      "Alert.MediaSize": "Please select media not more than 30 secs",
       "Text.InputPlaceholder": "What do you want to say?",
       "Text.AddHashtags": "Add hashtags at the end for sports, matches, fanclubs etc that you want to tag. e.g. Smashing innings #ViratKohli #Cricket #IPL2023 #RCB",
       "Text.Post": "Post Now",
-      "Text.VideoSize": "Video should not be more than 15s",
+      "Text.VideoSize": "Video should not be more than 30 secs",
       "Text.Uploading": "Uploading post...",
       "Error.NoMedia": "No Media Selected"
     },

@@ -58,7 +58,7 @@ const MatchDaySingleScreen = (props) => {
     var toss = name + ' Won The Toss and Elected to ' + elected + ' First'
 
     if (jsonfeed?.data?.play_status == 'pre_match') return toss
-    return 'Match Feed Not Available'
+    return 'Live feed starting soon...'
   }
 
   const checkMatchDates = (str1, str2) => {

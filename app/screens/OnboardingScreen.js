@@ -309,7 +309,7 @@ const OnboardingScreen = (props) => {
               }),
               dimensions.width,
             )}
-            placeholder={'first'}
+            placeholder={'First name'}
             value={firstName}
             autoCapitalize={'none'}
           />
@@ -330,7 +330,7 @@ const OnboardingScreen = (props) => {
               }),
               dimensions.width,
             )}
-            placeholder={'last'}
+            placeholder={'Last name'}
             value={lastName}
             autoCapitalize={'none'}
             returnKeyType="next"
@@ -377,13 +377,14 @@ const OnboardingScreen = (props) => {
           style={StyleSheet.applyWidth(
             StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
               margin: 20,
+              color: theme.colors['PF-Grey']
               alignSelf: 'center',
               textAlign: 'center',
               width: 140,
             }),
             dimensions.width,
           )}
-          placeholder={'age'}
+          placeholder={'Age'}
           value={age}
           autoCapitalize={'none'}
           returnKeyType="Done"

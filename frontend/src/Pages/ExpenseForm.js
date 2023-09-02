@@ -8,36 +8,7 @@ import ExpenseImage from './expenseImage.svg'
 
 
 const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage }) => {
-    const [currentDate, setCurrentDate] = useState('');
-    const [currentTime, setCurrentTime] = useState('');
-
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            const date = new Date();
-
-            const formattedDate = formatDate(date);
-            const formattedTime = formatTime(date);
-
-            setCurrentDate(formattedDate);
-            setCurrentTime(formattedTime);
-        }, 1000);
-
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, []);
-
-    // Helper function to format the date
-    const formatDate = (date) => {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        return date.toLocaleDateString(undefined, options);
-    };
-
-    // Helper function to format the time
-    const formatTime = (date) => {
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
-        return date.toLocaleTimeString(undefined, options);
-    };
+    
 
     const [errors, setErrors] = useState({});
 
@@ -95,72 +66,6 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
             {/* Main Content */}
             <div className="w-full h-full">
                 <form >
-                    <div className='w-full flex justify-center h-1/2 pt-10' >
-                        <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                            {/* content */}
-                            <div className='w-1/2 flex flex-col ml-5'>
-                                <div className='w-full mt-5'>
-                                    <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                                </div>
-                                <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
-                                </div>
-
-                                <div className='w-full mt-3'>
-                                    <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                                </div>
-                                <div className='w-full mt-0.5 mb-5'>
-                                    <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                                </div>
-                            </div>
-                            {/* Image */}
-                            <div className='w-1/2 flex justify-end mr-5 '>
-                                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4' />
-                            </div>
-                        </div>
-                    </div>
-                    {/* Header */}
-
-                    <div className="form-progress flex justify-center items-center mt-5">
-                        <div className='pl-2 pr-2 flex-col justify-center mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(1) }}>
-                                    <div
-                                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Student Details</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center  mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(2) }}>
-                                    <div
-                                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
-                                    </div>
-                                </button>
-                            </div>
-
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Send for approval</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(4) }}>
-                                    <div
-                                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic & Amount Details</p></div>
-                        </div>
-                    </div>
-
                     {/* Form Data */}
                     <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
                         <div className="bg-white w-11/12 h-auto mt-5 border-none rounded-lg flex justify-center font-popins mb-10">
@@ -444,72 +349,6 @@ const Page2 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
             {/* Main Content */}
             <div className="w-full h-full">
                 <form >
-                    <div className='w-full flex justify-center h-1/2 pt-10' >
-                        <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                            {/* content */}
-                            <div className='w-1/2 flex flex-col ml-5'>
-                                <div className='w-full mt-5'>
-                                    <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                                </div>
-                                <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
-                                </div>
-
-                                <div className='w-full mt-3'>
-                                    <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                                </div>
-                                <div className='w-full mt-0.5 mb-5'>
-                                    <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                                </div>
-                            </div>
-                            {/* Image */}
-                            <div className='w-1/2 flex justify-end mr-5 '>
-                                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4' />
-                            </div>
-                        </div>
-                    </div>
-                    {/* Header */}
-
-                    <div className="form-progress flex justify-center items-center mt-5">
-                        <div className='pl-2 pr-2 flex-col justify-center mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(1) }}>
-                                    <div
-                                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Student Details</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center  mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(2) }}>
-                                    <div
-                                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
-                                    </div>
-                                </button>
-                            </div>
-
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Send for approval</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(4) }}>
-                                    <div
-                                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic & Amount Details</p></div>
-                        </div>
-                    </div>
-
                     {/* Form Data */}
                     <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
                         <div className="bg-white w-11/12 h-auto mt-5 border-none rounded-lg flex justify-center font-popins mb-10">
@@ -679,72 +518,6 @@ const Page3 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage, p
             {/* Main Content */}
             <div className="w-full h-full">
                 <form >
-                    <div className='w-full flex justify-center h-1/2 pt-10' >
-                        <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                            {/* content */}
-                            <div className='w-1/2 flex flex-col ml-5'>
-                                <div className='w-full mt-5'>
-                                    <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                                </div>
-                                <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
-                                </div>
-
-                                <div className='w-full mt-3'>
-                                    <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                                </div>
-                                <div className='w-full mt-0.5 mb-5'>
-                                    <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                                </div>
-                            </div>
-                            {/* Image */}
-                            <div className='w-1/2 flex justify-end mr-5 '>
-                                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4' />
-                            </div>
-                        </div>
-                    </div>
-                    {/* Header */}
-
-                    <div className="form-progress flex justify-center items-center mt-5">
-                        <div className='pl-2 pr-2 flex-col justify-center mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(1) }}>
-                                    <div
-                                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Student Details</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center  mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(2) }}>
-                                    <div
-                                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
-                                    </div>
-                                </button>
-                            </div>
-
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Send for approval</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(4) }}>
-                                    <div
-                                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic & Amount Details</p></div>
-                        </div>
-                    </div>
-
                     {/* Form Data */}
                     <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
                         <div className="bg-white w-11/12 h-auto mt-5 border-none rounded-lg flex justify-center font-popins mb-12 flex-col">
@@ -965,70 +738,6 @@ const Page4 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
             {/* Main Content */}
             <div className="w-full h-full">
                 <form >
-                    <div className='w-full flex justify-center h-1/2 pt-10' >
-                        <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                            {/* content */}
-                            <div className='w-1/2 flex flex-col ml-5'>
-                                <div className='w-full mt-5'>
-                                    <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                                </div>
-                                <div className='w-full mt-1'>
-                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
-                                </div>
-                                <div className='w-full mt-3'>
-                                    <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                                </div>
-                                <div className='w-full mt-0.5 mb-5'>
-                                    <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                                </div>
-                            </div>
-                            {/* Image */}
-                            <div className='w-1/2 flex justify-end mr-5 '>
-                                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4' />
-                            </div>
-                        </div>
-                    </div>
-                    {/* Header */}
-
-                    <div className="form-progress flex justify-center items-center mt-5">
-                        <div className='pl-2 pr-2 flex-col justify-center mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(1) }}>
-                                    <div
-                                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Student Details</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center  mr-16'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(2) }}>
-                                    <div
-                                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
-                                    </div>
-                                </button>
-                            </div>
-
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Send for approval</p></div>
-                        </div>
-                        <div className='pl-2 pr-2 flex-col justify-center'>
-                            <div className='flex justify-center'>
-                                <button onClick={() => { setCurrentPage(4) }}>
-                                    <div
-                                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
-                                    >
-                                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
-                                    </div>
-                                </button>
-                            </div>
-                            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic & Amount Details</p></div>
-                        </div>
-                    </div>
 
                     {/* Form Data */}
                     <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
@@ -1183,9 +892,109 @@ const ExpenseForm = () => {
     const previousPage = () => {
         setCurrentPage(currentPage - 1);
     };
+    const [currentDate, setCurrentDate] = useState('');
+    const [currentTime, setCurrentTime] = useState('');
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const date = new Date();
+
+            const formattedDate = formatDate(date);
+            const formattedTime = formatTime(date);
+
+            setCurrentDate(formattedDate);
+            setCurrentTime(formattedTime);
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
+
+    // Helper function to format the date
+    const formatDate = (date) => {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+    };
+
+    // Helper function to format the time
+    const formatTime = (date) => {
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        return date.toLocaleTimeString(undefined, options);
+    };
 
     return (
         <>
+        <div className="flex bg-defaultBg" >
+            {/* Main Content */}
+            <div className="w-full h-full">
+                    <div className='w-full flex justify-center h-1/2 pt-10' >
+                        <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
+                            {/* content */}
+                            <div className='w-1/2 flex flex-col ml-5'>
+                                <div className='w-full mt-5'>
+                                    <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
+                                </div>
+                                <div className='w-full mt-1'>
+                                    <p className='font-popins text-lg font-medium text-orange-500 '>Expense Booking Form</p>
+                                </div>
+
+                                <div className='w-full mt-3'>
+                                    <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
+                                </div>
+                                <div className='w-full mt-0.5 mb-5'>
+                                    <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
+                                </div>
+                            </div>
+                            {/* Image */}
+                            <div className='w-1/2 flex justify-end mr-5 '>
+                                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4' />
+                            </div>
+                        </div>
+                    </div>
+                    {/* Header */}
+
+                    <div className="form-progress flex justify-center items-center mt-5">
+                        <div className='pl-2 pr-2 flex-col justify-center mr-16'>
+                            <div className='flex justify-center'>
+                                <button disabled={currentPage<1? true:false} onClick={() => { setCurrentPage(1) }}>
+                                    <div
+                                        className={`step ${currentPage >= 1 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                                    >
+                                        <p className='text-center font-extrabold text-2xl align-middle'>1</p>
+                                    </div>
+                                </button>
+                            </div>
+                            <div><p className='font-popins font-sm text-sm text-gray-500'>Student Details</p></div>
+                        </div>
+                        <div className='pl-2 pr-2 flex-col justify-center  mr-16'>
+                            <div className='flex justify-center'>
+                                <button disabled={currentPage<2 ? true:false} onClick={() => { setCurrentPage(2) }}>
+                                    <div
+                                        className={`step ${currentPage >= 2 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                                    >
+                                        <p className='text-center font-extrabold text-2xl align-middle'>2</p>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <div><p className='font-popins font-sm text-sm text-gray-500'>Send for approval</p></div>
+                        </div>
+                        <div className='pl-2 pr-2 flex-col justify-center'>
+                            <div className='flex justify-center'>
+                                <button disabled={currentPage<4? true:false} onClick={() => { setCurrentPage(4) }}>
+                                    <div
+                                        className={`step ${currentPage >= 4 ? 'align-middle rounded-full bg-green-500 w-9 h-9 flex-col justify-center' : 'rounded-full bg-gray-400 w-10 h-10 flex-col justify-center align-middle'}`}
+                                    >
+                                        <p className='text-center font-extrabold text-2xl align-middle'>3</p>
+                                    </div>
+                                </button>
+                            </div>
+                            <div><p className='font-popins font-sm text-sm text-gray-500'>Basic & Amount Details</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {currentPage === 1 && (
                 <Page1 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} setCurrentPage={setCurrentPage} />
             )}

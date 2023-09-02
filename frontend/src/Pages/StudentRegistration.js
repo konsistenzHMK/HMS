@@ -258,8 +258,8 @@ const changeHandicappStatus =(event) =>{
     console.log(errors);
   },[formData])
 
-  const maxDate=new Date();
-  maxDate.setDate(maxDate.getDate() - 1);
+  const maxDate=new Date().toLocaleDateString('fr-ca')
+  // maxDate.setDate(maxDate.getDate() - 1);
 
   return (
     <div className="flex bg-defaultBg" >
@@ -431,12 +431,22 @@ const changeHandicappStatus =(event) =>{
                 <div className='w-1/2 flex flex-col items-end'>
                   <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium w-full">Date of Birth <p className='inline text-xl text-red-600'>*</p></div>
-                    <DatePicker
+                    {/* <DatePicker
                       selected={formData.dob}
                       disabled={display}
                       onChange={changeDate}
                       dateFormat="yyyy-MM-dd"
                       maxDate={maxDate}
+                      className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
+                    /> */}
+                    <input 
+                      type="date"
+                      id="dob"
+                      name="dob"
+                      disabled={display}
+                      value={formData.dob}
+                      max={maxDate}
+                      onChange={handleChange}
                       className='w-80 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                     />
                     {errors.dob && <span className="error text-red-500">{errors.dob}</span>}
@@ -707,7 +717,8 @@ const changeHandicappStatus =(event) =>{
                 <div className='w-1/2 flex flex-col items-end'>
                     <div className='w-11/12'>
                     <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status <p className='inline text-xl text-red-600'></p></div>
-                      <select 
+                      <select
+                        disabled={display} 
                           className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
                           value={formData.status}
                           onChange={handleDropdownStatusType}
@@ -2072,10 +2083,10 @@ const StudentRegistartion = (props) =>{
   useEffect(()=>{
     if(props.ExistingFormData){
       setFormData(props.ExistingFormData)
-      setFormData((prevData) => ({
-        ...prevData,
-        dob: ''
-      }));
+      // setFormData((prevData) => ({
+      //   ...prevData,
+      //   dob: ''
+      // }));
     }
   },[])
 

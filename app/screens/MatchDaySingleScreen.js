@@ -1548,7 +1548,7 @@ const MatchDaySingleScreen = (props) => {
                                               fontFamily: 'Rubik_400Regular',
                                               fontSize: 11,
                                               lineHeight: 17,
-                                              width:"80%"
+                                              width: dimensions.width * 0.75
                                             },
                                             dimensions.width,
                                           )}
@@ -4921,7 +4921,7 @@ const MatchDaySingleScreen = (props) => {
                                   borderRadius: 20,
                                   borderTopWidth: 1,
                                   flexDirection: 'row',
-                                  height: 80,
+                                  minHeight : 80,
                                   marginHorizontal: 2,
                                   marginBottom: 4,
                                   marginTop: 4,
@@ -4945,14 +4945,15 @@ const MatchDaySingleScreen = (props) => {
                                 />
                               </View>
                               {/* Moment */}
-                              <View style={StyleSheet.applyWidth({ flexWrap: 'wrap', marginLeft:7 }, dimensions.width)}>
+                              <View style={StyleSheet.applyWidth({ flexWrap:"wrap",marginLeft:7 ,display:"flex", flexDirection:"column", marginVertical:4 }, dimensions.width)}>
                                 {/* Time */}
                                 <Text
                                   style={StyleSheet.applyWidth(
                                     StyleSheet.compose(GlobalStyles.TextStyles(theme)['Text'], {
                                       color: theme.colors['PF-Grey'],
                                       fontFamily: 'Rubik_400Regular',
-                                      fontSize: 10,
+                                      fontSize: 12,
+                                      paddingBottom:3,
                                     }),
                                     dimensions.width,
                                   )}
@@ -4965,7 +4966,7 @@ const MatchDaySingleScreen = (props) => {
                                       color: theme.colors['PF-Grey'],
                                       fontFamily: 'Rubik_400Regular',
                                       fontSize: 12,
-                                      width:"37%"
+                                      width: dimensions.width * 0.7
                                     }),
                                     dimensions.width,
                                   )}
@@ -4981,6 +4982,7 @@ const MatchDaySingleScreen = (props) => {
                       onEndReachedThreshold={0.5}
                       showsHorizontalScrollIndicator={true}
                       showsVerticalScrollIndicator={true}
+                      nestedScrollEnabled
                     />
                   )
                 }}

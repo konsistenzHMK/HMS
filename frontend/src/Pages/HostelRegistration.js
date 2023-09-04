@@ -875,9 +875,9 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ1} 
                         onChange={handleDropdownCat1}
-                        disabled={CheckDisplayForm()}
+                        // disabled={CheckDisplayForm()}
                         >
-                        <option value="null" disabled>Select an option</option>
+                        <option value="" disabled>Select an option</option>
                         <option value="girls">Girls</option>
                         <option value="boys">Boys</option>
                         <option value="coed">Co-Ed</option>
@@ -892,9 +892,9 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ2} 
                         onChange={handleDropdownCat2}
-                        disabled={CheckDisplayForm()}
+                        // disabled={CheckDisplayForm()}
                         >
-                        <option value="null" disabled>Select an option</option>
+                        <option value="" disabled>Select an option</option>
                         <option value="t-1">type-1</option>
                         <option value="t-2">type-2</option>
                         <option value="t-3">type-3</option>
@@ -914,9 +914,9 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ3} 
                         onChange={handleDropdownCat3}
-                        disabled={CheckDisplayForm()}
+                        // disabled={CheckDisplayForm()}
                         >
-                        <option value="null" disabled>Select an option</option>
+                        <option value="" disabled>Select an option</option>
                         <option value="rented">Rented</option>
                         <option value="government">Government</option>
                       </select>
@@ -1034,18 +1034,18 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.mess} 
                         onChange={handleDropdownMessType}
-                        disabled={CheckDisplayForm()}
+                        // disabled={CheckDisplayForm()}
                         >
-                        <option value="null" disabled>Select an option</option>
+                        <option value="" disabled>Select an option</option>
                         <option value="government">Government</option>
                         <option value="contract">Contract</option>
-                        <option value="other">Other</option>
-                        <option value="not">Not Applicable</option>
-                      </select>
-                      {errors.mess && <span className="error text-red-600">{errors.mess}</span>}
-                  </div>
-                  </div>
-              </div>
+                        <option value="other">Other</option> 
+                        <option value="not">Not Applicable</option>   
+                      </select>     
+                      {errors.mess && <span className="error text-red-600">{errors.mess}</span>} 
+                  </div>  
+                  </div>  
+              </div>   
 
               <div className='w-full h-auto flex justify-between mt-5'>
                 <div className='w-1/2'>

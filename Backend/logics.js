@@ -698,17 +698,26 @@ const upload_file = async(photo_file) => {
 
 
 const get_students_for_room_allocation = async(req,res)=>{
-    const q = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", "INMACH00004" , "&&" , "status", "==", "active"));
+    const hostel_id = req.query.hostel_id;
+    const q = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
+    const q1 = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
     const documents = await getDocs(q);
+    const documents1 = await getDocs(q1);
     const data = {}; 
     documents.forEach((doc) => {
         data[doc.data().student_id] = doc.data().first_name + " " + doc.data().last_name;
     });
+
     res.send(data);
 }
 
-const get_room_no_for_room_allocation = async(req,res)=>{
+const get_room_no_for_room_allocation = async(req,res,)=>{
     //on hold first make some rooms then come here to write further code
+    const data = {};  
+    documents.forEach((doc) => {
+        data[doc.data().room_id] = doc.data().room_no;
+    });
+    res.send(data);
 }
 
 
@@ -716,4 +725,4 @@ const get_room_no_for_room_allocation = async(req,res)=>{
 
 
 
-export  {get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+export  {get_room_no_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

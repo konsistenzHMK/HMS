@@ -5,7 +5,7 @@ import { BlurImage, Image } from '../components'
 import { theme } from '../themes'
 import { Icon } from '@draftbit/ui'
 
-export const FeedCard = ({ feed, onPress }) => {
+export const FeedCard = ({ feed, onPress, style }) => {
   const navigation = useNavigation()
 
   const { image_path: uri, video_url } = feed
@@ -22,7 +22,7 @@ export const FeedCard = ({ feed, onPress }) => {
   }
 
   return (
-    <Pressable onPress={handlePress} style={styles.main}>
+    <Pressable onPress={handlePress} style={[styles.main, style]}>
       {uri && (
         <BlurImage style={styles.blurContainer} resizeMode="cover" blurRadius={50} source={{ uri }}>
           <Image resizeMode="contain" style={styles.image} source={{ uri }} />

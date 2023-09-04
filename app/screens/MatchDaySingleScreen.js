@@ -1385,7 +1385,6 @@ const MatchDaySingleScreen = (props) => {
                           dimensions.width,
                         )}
                         placeholder={translate('MatchDaySingleScreen.Text.InputPlaceholder')}
-                        value={textInputValue}
                         placeholderTextColor={theme.colors.communityLightBlack}
                         multiline={false}
                         scrollEnabled={false}

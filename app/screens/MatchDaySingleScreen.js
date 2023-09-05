@@ -350,6 +350,10 @@ const MatchDaySingleScreen = (props) => {
     if (jsonfeed?.data?.play_status == 'scheduled') {
       ans = 'Match is yet to start'
     }
+
+    if(ans!=''){
+      ans=" - "+ans;
+    }
     return ans
   }
 
@@ -656,11 +660,14 @@ const MatchDaySingleScreen = (props) => {
     //if(jsonfeed?.data?.play_status=="in_play") return "Live";
 
     //play_status can even be "rain_delay" etc; hence checking for 'status' field instead
-    if (jsonfeed?.data?.status == 'started') return 'Live'
 
+    if (jsonfeed?.data?.play_status == 'abandoned') return 'No Result: Match Abandoned due to rain '
+
+    if (jsonfeed?.data?.play_status == 'rain_delay') return 'Match delayed due to Rain'
+    
+    if (jsonfeed?.data?.status == 'started') return 'Live'
     if (jsonfeed?.data?.play_status == 'scheduled') return 'Yet to start'
 
-    if (jsonfeed?.data?.play_status == 'rain_delay') return 'Rain delay'
   }
 
   const Team1RR = () => {
@@ -1765,7 +1772,7 @@ const MatchDaySingleScreen = (props) => {
                                         dimensions.width,
                                       )}
                                     >
-                                      {getGameStatus(jsonfeed?.data?.status)}: {StatusData()}
+                                      {getGameStatus(jsonfeed?.data?.status)}{StatusData()}
                                       {'\n'}
                                     </Text>
                                   </View>

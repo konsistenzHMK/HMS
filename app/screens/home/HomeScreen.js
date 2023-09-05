@@ -192,9 +192,9 @@ const HomeScreen = (props) => {
     <ScreenContainer hasTopSafeArea style={styles.container}>
       {/* Header */}
       <View style={styles.headerContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.subTitle}>{translate('HomeScreen.Text.Yo')}</Text>
-          <Text style={styles.title}>{translate('HomeScreen.Text.PagalFan')}</Text>
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.headerSubTitle}>{translate('HomeScreen.Text.Yo')}</Text>
+          <Text style={styles.headerTitle}>{translate('HomeScreen.Text.PagalFan')}</Text>
         </View>
         <View style={styles.headerRightContainer}>
           <Pressable onPress={handleNotificationIconClick} style={styles.headerNotifIconContainer}>
@@ -288,8 +288,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     color: theme.colors['PF-Grey'],
-    fontFamily: 'Inter_400Regular',
-    fontSize: 12,
+    fontFamily: 'Inter_700Bold',
+    fontSize: 24,
   },
   headerSubTitle: {
     color: theme.colors['PF-Grey'],

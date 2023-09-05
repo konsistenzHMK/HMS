@@ -25,6 +25,7 @@ const HomeScreen = (props) => {
   const setGlobalVariableValue = GlobalVariables.useSetValue()
   const [unread, setUnread] = useState(false)
   const [feedLoadTimestamp, setFeedLoadTimestamp] = useState(Date.now())
+  const [openBakarrPopup,setOpenBakarrPopup] = useState(false)
 
   const { t: translate } = useTranslation()
   const { theme } = props
@@ -109,6 +110,9 @@ const HomeScreen = (props) => {
         id: data.bakarr_post_id,
         timestamp: Date.now(),
       })
+    }
+    if(data.shouldOpenBakarrModal){
+      setOpenBakarrPopup(true)
     }
   }
 
@@ -222,7 +226,7 @@ const HomeScreen = (props) => {
           </Pressable>
         </View>
       </View>
-      <HomeBakarCard navigation={navigation} />
+      <HomeBakarCard navigation={navigation} openBakarrPopup={openBakarrPopup ? openBakarrPopup : false}/>
       <FlashList
         data={feedData}
         keyExtractor={keyExtractor}

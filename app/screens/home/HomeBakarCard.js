@@ -11,6 +11,8 @@ import { Button, Divider, Icon } from '@draftbit/ui'
 import Images from '../../config/Images'
 import convertUTCtoIST from '../../global-functions/convertUTCtoIST'
 import CountdownTimer from '../../components/countdown-timer/CountDownTimer'
+import branch from 'react-native-branch'
+import openShareUtil from '../../utils/openShare'
 
 export const HomeBakarCard = (props) => {
   const { t: translate } = useTranslation()
@@ -26,6 +28,25 @@ export const HomeBakarCard = (props) => {
   const [showBakarrPopup, setShowBakarrPopup] = useState(false)
 
   const dimensions = useWindowDimensions()
+  const shareToJoinBakarr = async () => {
+    try {
+      let buo = await branch.createBranchUniversalObject(`shareBakarr`, {
+        title: data && data[0]?.session_title + ' - ' + convertUTCtoIST(data && data[0]?.session_start),
+        contentImageUrl:
+          'https://static.wixstatic.com/media/e59b34_87b7cc2642ec49bda812c4d03c7e7e79~mv2.png/v1/fill/w_834,h_272,al_c,lg_1,q_85,enc_auto/image.png',
+        contentMetadata: {
+          customMetadata: {
+            shouldOpenBakarrModal: 'true',
+          },
+        },
+      })
+
+      const response = await buo.generateShortUrl()
+      openShareUtil(response.url)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   const fetchNextBakarSession = async () => {
     try {
@@ -46,6 +67,10 @@ export const HomeBakarCard = (props) => {
   useEffect(() => {
     fetchNextBakarSession()
   }, [])
+
+  useEffect(() => {
+    setShowBakarrPopup(props.openBakarrPopup && isSessionLive)
+  }, [props.openBakarrPopup])
 
   if (loading) {
     return <ShimmerPlaceHolder style={styles.bakarShimmer} />
@@ -129,6 +154,13 @@ export const HomeBakarCard = (props) => {
               )
             )}
           </View>
+          {isSessionLive && (
+            <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Pressable onPress={() => shareToJoinBakarr()}>
+                <Icon size={20} name={'AntDesign/sharealt'} color={theme.colors['PF-Grey']} />
+              </Pressable>
+            </View>
+          )}
         </View>
       </View>
       {!showBakarrPopup ? null : (
@@ -274,12 +306,23 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
+
   bakarModalSkipButton: {
     backgroundColor: '"rgba(0, 0, 0, 0)"',
     color: theme.colors['PF-Grey'],
     fontFamily: 'System',
     fontSize: 12,
     fontWeight: '400',
+  },
+
+  bakarModalShareButton: {
+    backgroundColor: theme.colors['White'],
+    color: theme.colors['PF-Grey'],
+    fontFamily: 'System',
+    fontSize: 12,
+    fontWeight: '400',
+    marginTop: 5,
+    width: '30%',
   },
 
   bakarShimmer: {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Pressable, StyleSheet, Text, View, Modal } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Modal, useWindowDimensions } from 'react-native'
 import { theme } from '../../themes'
 import * as PagalFanBEApi from '../../apis/PagalFanBEApi'
 import * as GlobalVariables from '../../config/GlobalVariableContext'
@@ -10,6 +10,7 @@ import { Image, ShimmerPlaceHolder } from '../../components'
 import { Button, Divider, Icon } from '@draftbit/ui'
 import Images from '../../config/Images'
 import convertUTCtoIST from '../../global-functions/convertUTCtoIST'
+import CountdownTimer from '../../components/countdown-timer/CountDownTimer'
 
 export const HomeBakarCard = (props) => {
   const { t: translate } = useTranslation()
@@ -20,14 +21,18 @@ export const HomeBakarCard = (props) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [data, setData] = useState(null)
+  const [nextSessionAirTime, setNextSessionAirTime] = useState(null)
 
   const [showBakarrPopup, setShowBakarrPopup] = useState(false)
+
+  const dimensions = useWindowDimensions()
 
   const fetchNextBakarSession = async () => {
     try {
       setLoading(true)
       const fetchData = await PagalFanBEApi.fetchNextBakarrSessionGET(Constants)
       const isLive = isDatetimeInRange(fetchData && fetchData[0]?.session_start, fetchData && fetchData[0]?.session_end)
+      setNextSessionAirTime(fetchData && fetchData[0]?.session_start)
       setIsSessionLive(isLive)
       setData(fetchData)
       setError(false)
@@ -61,6 +66,22 @@ export const HomeBakarCard = (props) => {
     }
   }
 
+  const secondsUntilUTCTime = (targetUTCTime) => {
+    // Get the current UTC time in milliseconds since the epoch
+    const currentTime = new Date().getTime()
+
+    // Convert the input UTC time to milliseconds since the epoch
+    const targetTime = new Date(targetUTCTime).getTime()
+
+    // Calculate the time difference in milliseconds
+    const timeDifference = targetTime - currentTime
+
+    // Calculate the time difference in seconds
+    const secondsRemaining = Math.floor(timeDifference / 1000)
+
+    return secondsRemaining
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -91,7 +112,22 @@ export const HomeBakarCard = (props) => {
               <Pressable style={styles.diveInButton} onPress={() => setShowBakarrPopup(true)}>
                 <Text style={styles.diveInText}>{translate('HomeScreen.Text.DiveIn')}</Text>
               </Pressable>
-            ) : null}
+            ) : (
+              nextSessionAirTime && (
+                <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 5 }}>
+                  <Text style={styles.timerText}>
+                    {translate('HomeScreen.Text.StartsIn')}
+                    {': '}
+                  </Text>
+                  <CountdownTimer
+                    initialSeconds={secondsUntilUTCTime(nextSessionAirTime)}
+                    onTimerEnd={() => {
+                      setIsSessionLive(true)
+                    }}
+                  />
+                </View>
+              )
+            )}
           </View>
         </View>
       </View>
@@ -251,5 +287,14 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 10,
     marginBottom: 10,
+  },
+  timerText: {
+    fontSize: 12,
+    color: theme.colors['White'],
+    backgroundColor: theme.colors['LightGrey'],
+    paddingLeft: 8,
+    paddingVertical: 2,
+    borderBottomLeftRadius: 20,
+    borderTopLeftRadius: 20,
   },
 })

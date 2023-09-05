@@ -74,8 +74,9 @@
       "Text.BakarrRecordings": "Trending Bakarrs",
       "Text.EnteringBakarrRoom": "Entering PagalFan's BAKARR room!",
       "Button.Proceed": "PROCEED 🎙",
-      "Text.Skip": "Skip for now"
-    },
+      "Text.Skip": "Skip for now",
+      "Text.StartsIn": "Starts in"
+      },
 
     "BakarRoomScreen": {
       "Toast.MicrophonePermission": "Microphone permission not granted. Please go to settings and allow mic permission",

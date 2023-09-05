@@ -1581,7 +1581,6 @@ const MatchDaySingleScreen = (props) => {
                         }}
                         numColumns={1}
                         showsVerticalScrollIndicator={false}
-                        nestedScrollEnabled
                       />
                     )
                   }}

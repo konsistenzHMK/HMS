@@ -154,13 +154,11 @@ export const HomeBakarCard = (props) => {
               )
             )}
           </View>
-          {isSessionLive && (
-            <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Pressable onPress={() => shareToJoinBakarr()}>
-                <Icon size={20} name={'AntDesign/sharealt'} color={theme.colors['PF-Grey']} />
-              </Pressable>
-            </View>
-          )}
+          <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Pressable onPress={() => shareToJoinBakarr()}>
+              <Icon size={20} name={'AntDesign/sharealt'} color={theme.colors['PF-Grey']} />
+            </Pressable>
+          </View>
         </View>
       </View>
       {!showBakarrPopup ? null : (

@@ -516,7 +516,7 @@ const MyProfileScreen = (props) => {
                                     {
                                       alignItems: 'flex-start',
                                       color: theme.colors.Studily_Dark_UI,
-                                      fontFamily: 'Rubik_500Bold',
+                                      fontFamily: 'Rubik_500Medium',
                                       fontSize: 14,
                                       paddingRight: 15,
                                     },
@@ -529,7 +529,7 @@ const MyProfileScreen = (props) => {
                                   <Text
                                     style={{
                                       color: theme.colors['Studily Medium Blue UI'],
-                                      fontFamily: 'Rubik_500Bold',
+                                      fontFamily: 'Rubik_500Medium',
                                       fontSize: 12,
                                     }}
                                   >
@@ -644,7 +644,7 @@ const MyProfileScreen = (props) => {
                                     {
                                       alignItems: 'flex-start',
                                       color: theme.colors.Studily_Dark_UI,
-                                      fontFamily: 'Rubik_500Bold',
+                                      fontFamily: 'Rubik_500Medium',
                                       fontSize: 14,
                                       paddingRight: 15,
                                     },
@@ -657,7 +657,7 @@ const MyProfileScreen = (props) => {
                                   <Text
                                     style={{
                                       color: theme.colors['Studily Medium Blue UI'],
-                                      fontFamily: 'Rubik_500Bold',
+                                      fontFamily: 'Rubik_500Medium',
                                       fontSize: 12,
                                     }}
                                   >

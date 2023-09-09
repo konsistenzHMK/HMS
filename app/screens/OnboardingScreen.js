@@ -22,6 +22,7 @@ import messaging from '@react-native-firebase/messaging'
 import { RemoteAvatars } from '../config/Images'
 import { useNavigationContext } from '../navigation/NavigationContext.js'
 import { useTranslation } from 'react-i18next'
+import { Logger } from '../utils/logger.js'
 
 const SWIPE_SCREENS = Array(4).fill()
 
@@ -106,12 +107,16 @@ const OnboardingScreen = (props) => {
         imgUrl: RemoteAvatars[selectedAvatarIndex],
       })
 
-      const token = await messaging().getToken()
-      // expoToken -> notification_token
-      await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
-        expoToken: token,
-        userId: Constants['LOGGED_IN_USER'],
-      })
+      try {
+        const token = await messaging().getToken()
+        // expoToken -> notification_token
+        await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
+          expoToken: token,
+          userId: Constants['LOGGED_IN_USER'],
+        })
+      } catch (e) {
+        Logger.error(e)
+      }
 
       // navigate to home screen
       setStack('app')

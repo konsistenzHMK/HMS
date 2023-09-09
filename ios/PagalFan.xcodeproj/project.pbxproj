@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AF3A58212AAC4DDF006BDC97 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF3A58202AAC4DDF006BDC97 /* GoogleService-Info.plist */; };
 		AFD4F71C2A4828F700EC48FE /* PagalFan.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = AFF07CB12A34740300F7445F /* PagalFan.entitlements */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		5709B34CF0A7D63546082F79 /* Pods-PagalFan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PagalFan.release.xcconfig"; path = "Target Support Files/Pods-PagalFan/Pods-PagalFan.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-PagalFan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PagalFan.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PagalFan/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AF3A58202AAC4DDF006BDC97 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AFF07CB12A34740300F7445F /* PagalFan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = PagalFan.entitlements; path = PagalFan/PagalFan.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EF0D5DDC2A29F4B572E670FC /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-PagalFan/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -47,6 +49,7 @@
 		13B07FAE1A68108700A75B9A /* PagalFan */ = {
 			isa = PBXGroup;
 			children = (
+				AF3A58202AAC4DDF006BDC97 /* GoogleService-Info.plist */,
 				AFF07CB12A34740300F7445F /* PagalFan.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -185,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFD4F71C2A4828F700EC48FE /* PagalFan.entitlements in Resources */,
+				AF3A58212AAC4DDF006BDC97 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -321,6 +325,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PagalFan/PagalFan.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 867WQMJGUK;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PagalFan/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -350,6 +355,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PagalFan/PagalFan.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 867WQMJGUK;
 				INFOPLIST_FILE = PagalFan/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

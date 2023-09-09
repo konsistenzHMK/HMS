@@ -11,6 +11,7 @@ import messaging from '@react-native-firebase/messaging'
 import { useSnackbar } from '../components/index.js'
 import { useNavigationContext } from '../navigation/NavigationContext.js'
 import { useTranslation } from 'react-i18next'
+import { Logger } from '../utils/logger.js'
 
 const SignupOTPScreen = (props) => {
   const dimensions = useWindowDimensions()
@@ -54,12 +55,17 @@ const SignupOTPScreen = (props) => {
       })
       const onboarded = await PagalFanBEApi.fetchUserOnboardingStatusGET(Constants, { id: userId })
       if (onboarded?.[0]?.onboarded === true) {
-        const token = await messaging().getToken()
-        // expoToken -> notification_token
-        await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
-          expoToken: token,
-          userId,
-        })
+        try {
+          const token = await messaging().getToken()
+          // expoToken -> notification_token
+          await pagalFanBEUpdateExpoTokenPATCH.mutateAsync({
+            expoToken: token,
+            userId,
+          })
+        } catch (e) {
+          Logger.error(e)
+        }
+
         // Navigate to Home Screen
         setStack('app')
       } else {
@@ -125,8 +131,7 @@ const SignupOTPScreen = (props) => {
               dimensions.width,
             )}
           >
-            {translate('SignupOTPScreen.Text.SentText')}
-            {" "}{props.route?.params?.user_email ?? 'sg-ml1@yopmail.com'}
+            {translate('SignupOTPScreen.Text.SentText')} {props.route?.params?.user_email ?? 'sg-ml1@yopmail.com'}
           </Text>
           {/* Note 2 */}
           <Text
@@ -165,7 +170,7 @@ const SignupOTPScreen = (props) => {
                   console.error(err)
                 }
               }}
-              keyboardType = 'numeric'
+              keyboardType="numeric"
               style={StyleSheet.applyWidth(
                 StyleSheet.compose(GlobalStyles.TextInputStyles(theme)['Text Input'], {
                   borderColor: theme.colors['Secondary'],

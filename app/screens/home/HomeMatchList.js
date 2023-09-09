@@ -40,6 +40,28 @@ export const HomeMatchList = ({ translate, navigation }) => {
     fetchData()
   }, [])
 
+
+
+  const checkLiveMatch =(item)=>{
+    var now = new Date();
+    var month   = now.getMonth()+1; 
+    var year    = now.getFullYear();
+    var day     = now.getDate();
+    if(item.match_date.split('-')[0]==year && item.match_date.split('-')[1]==month && item.match_date.split('-')[2]==day){
+      // console.log(now.getHours());
+      // console.log(item.end_time.split(":")[0]);
+      // return true;
+      var hr=now.getHours();
+      var min=now.getMinutes();
+      if(
+        (item.end_time.split(":")[0] >hr || (item.end_time.split(":")[0] ==hr && (item.end_time.split(":")[1] >=min))) 
+      && 
+        (item.start_time.split(":")[0] <hr || (item.start_time.split(":")[0] ==hr && (item.start_time.split(":")[1] <=min))) 
+      ) return true;
+    }
+    return false;
+  }
+
   const keyExtractor = (flashListData) => flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
 
   const renderItem = ({ item }) => {
@@ -53,12 +75,7 @@ export const HomeMatchList = ({ translate, navigation }) => {
         }
         style={styles.itemContainer}
       >
-        {/* LiveBadge */}
-        {flashListData?.match_is_live && (
-          <View style={styles.itemLiveContainer}>
-            <Text style={styles.itemLiveText}>{translate('HomeScreen.Text.Live')}</Text>
-          </View>
-        )}
+        
         <View style={styles.itemMatchTitleContainer}>
           {/* MatchName */}
           <Text style={styles.itemMatchTitle}>{flashListData?.title}</Text>
@@ -85,7 +102,7 @@ export const HomeMatchList = ({ translate, navigation }) => {
               {/* Team-2 */}
               <View style={styles.teamContainer}>
                 {/* Name */}
-                <Text style={styles.teamTitle}>{convertNullToTBD(flashListData?.team_2?.team_initials)}</Text>
+                <Text style={styles.teamTitle}>{convertNullToTBD(flashListData?.team_2?.team_initials)} </Text>
                 {/* Logo */}
                 <Image
                   style={styles.teamImage}
@@ -96,8 +113,17 @@ export const HomeMatchList = ({ translate, navigation }) => {
                 />
               </View>
             </View>
+            {/* LiveBadge */}
+            {checkLiveMatch(item) && (
+              <View style={styles.LiveTextContainer}>
+                <View style={styles.itemLiveContainer}>
+                  <Text style={styles.itemLiveText}>{translate('HomeScreen.Text.Live')}</Text>
+                </View>
+              </View>
+            )}
             {/* Details */}
-            <View style={styles.matchDetailsContainer}>
+            {checkLiveMatch(item) ? <Text style={styles.matchVenueText}>Feed</Text>: 
+            <><View style={styles.matchDetailsContainer}>
               {/* Date */}
               <Text style={styles.matchDetailsText}>
                 {checkMatchDates(flashListData?.match_date, flashListData?.end_date)
@@ -114,6 +140,8 @@ export const HomeMatchList = ({ translate, navigation }) => {
             </View>
             {/* venue */}
             <Text style={styles.matchVenueText}>{flashListData?.venue_city}</Text>
+            </>
+            }
           </>
         ) : (
           <>
@@ -194,11 +222,15 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     paddingLeft: 2,
     paddingRight: 2,
+    width:35,
+    flexDirection: 'row',
+    justifyContent:'space-around'
   },
   itemLiveText: {
     color: theme.colors['Background'],
     fontFamily: 'Inter_600SemiBold',
-    fontSize: 7,
+    fontSize: 8,
+    
   },
   itemMatchTitleContainer: {
     backgroundColor: theme.colors['Custom #eb3a4a'],
@@ -219,7 +251,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginVertical: 4,
+    marginTop: 2,
+    marginTop: 1,
   },
   teamTitleContainer: {
     alignItems: 'center',
@@ -241,6 +274,11 @@ const styles = StyleSheet.create({
     color: theme.colors['Custom #eb3a4a'],
     fontFamily: 'Inter_600SemiBold',
     fontSize: 12,
+  },
+  LiveTextContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 
   matchDetailsContainer: {

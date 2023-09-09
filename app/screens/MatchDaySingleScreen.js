@@ -351,7 +351,7 @@ const MatchDaySingleScreen = (props) => {
       ans = 'Match is yet to start'
     }
 
-    if(ans!=''){
+    if(ans!=null){
       ans=" - "+ans;
     }
     return ans

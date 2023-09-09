@@ -161,6 +161,7 @@ function BakarrRecordingsScreen({ navigation, route, theme }) {
         createdAt={created_at}
         handleSharePress={handleSharePress}
         item={item}
+        currentPlayingId={currentPlayingId}
       />
     )
   }

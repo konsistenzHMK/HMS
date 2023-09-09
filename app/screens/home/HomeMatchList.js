@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View,ActivityIndicator } from 'react-native'
 import { theme } from '../../themes'
 import { Logger } from '../../utils/logger'
 import * as PagalFanBEApi from '../../apis/PagalFanBEApi'
@@ -40,9 +40,11 @@ export const HomeMatchList = ({ translate, navigation }) => {
     fetchData()
   }, [])
 
+  const [jsonfeed, setJsonfeed] = React.useState("null")
 
 
   const checkLiveMatch =(item)=>{
+    // console.log(item);
     var now = new Date();
     var month   = now.getMonth()+1; 
     var year    = now.getFullYear();
@@ -62,9 +64,126 @@ export const HomeMatchList = ({ translate, navigation }) => {
     return false;
   }
 
+  const Team1Score = (jsonfeed) => {
+    var team1
+    var team2
+
+    team1 = jsonfeed?.data?.play?.first_batting
+    if (team1 == undefined) team1 = 'a'
+
+    if (team1 == 'a') team2 = 'b'
+    else team2 = 'a'
+
+    var st, st2
+    if (team1 == 'a') {
+      st = 'a_1'
+      st2 = 'a_2'
+    } else {
+      st = 'b_1'
+      st2 = 'b_2'
+    }
+
+    var ans1 = jsonfeed?.data?.play?.innings?.[st]?.score_str
+    return ans1
+  }
+
+  const giveTossStatement = (jsonfeed) => {
+    var winner = jsonfeed?.data?.toss?.winner
+    var name = jsonfeed?.data?.teams?.[winner]?.name
+    var elected = jsonfeed?.data?.toss?.elected
+
+    return name + ' elected to ' + elected + ' first'
+  }
+
+  const Team1Name = (jsonfeed) => {
+    var team1
+    var team2
+
+    team1 = jsonfeed?.data?.play?.first_batting
+    if (team1 == undefined) team1 = 'a'
+    if (team1 == 'a') team2 = 'b'
+    else team2 = 'a'
+
+    return jsonfeed?.data?.teams?.[team1]?.name
+  }
+
+  const Team2Name = (jsonfeed) => {
+    var team1
+    var team2
+
+    team1 = jsonfeed?.data?.play?.first_batting
+    if (team1 == undefined) team1 = 'a'
+
+    if (team1 == 'a') team2 = 'b'
+    else team2 = 'a'
+
+    return jsonfeed?.data?.teams?.[team2]?.name
+  }
+
+  const Team2Score = (jsonfeed) => {
+    var team1
+    var team2
+
+    team1 = jsonfeed?.data?.play?.first_batting
+    if (team1 == undefined) team1 = 'a'
+
+    if (team1 == 'a') team2 = 'b'
+    else team2 = 'a'
+
+    var st
+    console.log(team1, team2)
+    if (team2 == 'a') st = 'a_1'
+    else st = 'b_1'
+    return jsonfeed?.data?.play?.innings?.[st]?.score_str
+  }
+
+
+  const returnMatchData=(jsonfeed)=>{
+    let val1="";
+    let val2="";
+    console.log("Function Json: ",jsonfeed);
+    var team1
+    var team2
+
+    team1 = jsonfeed?.data?.play?.first_batting
+
+    if (team1 == 'a') team2 = 'b'
+    else team2 = 'a'
+
+    var ans = ''
+    ans = jsonfeed?.data?.play?.live?.required_score?.title
+    if(ans==null){
+      val1=Team1Name(jsonfeed)+ ": " +Team1Score(jsonfeed);
+      val2=giveTossStatement(jsonfeed);
+      // if (jsonfeed?.data?.play_status == 'rain_delay') val2='Match delayed due to Rain';
+    }
+    else{
+      val1=Team2Name(jsonfeed)+": " +Team2Score(jsonfeed)
+      val2=ans
+    }
+
+    return (
+      <>
+        <View style={styles.matchDetailsContainer1}>
+              {/* StartTime */}
+              <Text style={styles.matchTimeText1}>
+                {val1}
+              </Text>
+            </View>
+            {/* venue */}
+            <Text style={styles.matchVenueText1}> {val2}</Text>
+      </>
+    )
+  }
+
   const keyExtractor = (flashListData) => flashListData?.id || flashListData?.uuid || JSON.stringify(flashListData)
+  
+
 
   const renderItem = ({ item }) => {
+    
+    // const response = await PagalFanBEApi.FetchFetchFeedForSingleMatchGET(Constants)
+    
     const flashListData = item
     return (
       <Pressable
@@ -122,7 +241,37 @@ export const HomeMatchList = ({ translate, navigation }) => {
               </View>
             )}
             {/* Details */}
-            {checkLiveMatch(item) ? <Text style={styles.matchVenueText}>Feed</Text>: 
+            {checkLiveMatch(item) ?
+            <PagalFanBEApi.FetchFetchFeedForSingleMatchGET
+            refetchInterval={30000}
+            matchid={item?.id ?? 77}
+            onData={(fetchData) => {
+              try {
+                const valueqsF9k609 = JSON.parse(fetchData && fetchData[0].match_data);
+                setJsonfeed(valueqsF9k609);
+                // console.log("FeedData",valueqsF9k609);
+                
+              } catch (err) {
+                console.error(err)
+              }
+            }}
+          >{({ loading, error, data, refetchFetchFeedForSingleMatch }) => {
+            const fetchData=data
+          
+            if (!fetchData || loading) {
+              return <ActivityIndicator />
+            }
+
+            // console.log("Data",fetchData);
+            return (
+            <>
+            {returnMatchData(JSON.parse(fetchData && fetchData[0].match_data))}
+            </>
+            )
+          }}
+          
+          </PagalFanBEApi.FetchFetchFeedForSingleMatchGET>
+             : 
             <><View style={styles.matchDetailsContainer}>
               {/* Date */}
               <Text style={styles.matchDetailsText}>
@@ -288,6 +437,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     marginTop: 4,
   },
+  
+  matchDetailsContainer1: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 0,
+    marginTop: 1,
+  },
   matchDetailsText: {
     color: theme.colors['PF-Grey'],
     fontFamily: 'Inter_600SemiBold',
@@ -295,6 +452,17 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   matchTimeText: {
+    color: theme.colors['PF-Grey'],
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 8,
+  },
+  matchTimeText1: {
+    color: theme.colors['PF-Grey'],
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 10,
+  },
+  matchVenueText1: {
+    alignSelf: 'center',
     color: theme.colors['PF-Grey'],
     fontFamily: 'Inter_600SemiBold',
     fontSize: 8,

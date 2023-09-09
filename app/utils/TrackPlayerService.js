@@ -26,13 +26,14 @@ export async function setupPlayer() {
   return isSetup
 }
 
-export async function addTracks(trackUrl, id, heading, subheading) {
+export async function addTracks(trackUrl, id, heading, subheading, image) {
   await TrackPlayer.add([
     {
       id: id,
       url: trackUrl,
       title: heading,
       artist: subheading,
+      artwork: image || "https://images.pexels.com/photos/6953870/pexels-photo-6953870.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
   ])
   await TrackPlayer.setRepeatMode(RepeatMode.Off)

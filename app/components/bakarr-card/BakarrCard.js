@@ -166,7 +166,7 @@ const BakarrCard = ({
           <TouchableOpacity>
             <Pressable
               onPress={() => {
-                onTogglePlayPress(podcastUrl, id, heading, subheading)
+                onTogglePlayPress(podcastUrl, id, heading, subheading, imageSource)
               }}
             >
               <Icon

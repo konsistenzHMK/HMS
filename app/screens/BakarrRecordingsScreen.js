@@ -119,7 +119,7 @@ function BakarrRecordingsScreen({ navigation, route, theme }) {
     // timestamp will be updated on if screen lanched from home screen this will fix the issue of not showing highlight on 2nd time from home
   }, [route?.params?.id, route?.params?.timestamp])
 
-  const onTogglePlayPress = async (trackUrl, id, heading, subheading) => {
+  const onTogglePlayPress = async (trackUrl, id, heading, subheading, image) => {
     if (id === currentPlayingId) {
       // case of play/pause same track
       isPaused ? TrackPlayer.play() : TrackPlayer.pause()
@@ -134,7 +134,7 @@ function BakarrRecordingsScreen({ navigation, route, theme }) {
     }
 
     await TrackPlayer.pause()
-    await addTracks(trackUrl, id, heading, subheading)
+    await addTracks(trackUrl, id, heading, subheading, image)
     await TrackPlayer.skipToNext()
     TrackPlayer.play()
     setIsPaused(false)

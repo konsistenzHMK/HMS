@@ -171,7 +171,7 @@ export const HomeMatchList = ({ translate, navigation }) => {
               </Text>
             </View>
             {/* venue */}
-            <Text style={styles.matchVenueText1}> {val2}</Text>
+            <Text style={styles.matchVenueText1}> {val2.split('.')[0]}</Text>
       </>
     )
   }

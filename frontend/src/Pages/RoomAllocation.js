@@ -2,15 +2,21 @@ import React, { useEffect, useState} from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import DashboardImg from '../Components/DashboardImg.svg'
 import Modal from 'react-modal';
+import axios from 'axios';
 
 const RoomAllocation = () => {
     const [formData, setFormData] = useState({});
     const [currentDate, setCurrentDate] = useState('');
     const [currentTime, setCurrentTime] = useState('');
     const [showPopup, setShowPopup] = useState(false);
+    const [roomAlc, changeroomAlc] = useState([]);
 
 
     useEffect(() => {
+          axios.get("http://localhost:7000/gethostel_id/where/status_active")
+    .then((res)=> changeroomAlc(res.data)
+    // console.log("roomAllocatyionData", res.data)
+    );
         const intervalId = setInterval(() => {
             const date = new Date();
 
@@ -37,6 +43,10 @@ const RoomAllocation = () => {
         const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
         return date.toLocaleTimeString(undefined, options);
     };
+    //dropdown
+    const handleDropdownStatusType = (event) => {
+        changeroomAlc(event.target.value);
+      };
 
     const [errors, setErrors] = useState({});
 
@@ -160,75 +170,43 @@ const RoomAllocation = () => {
                     {/* Header */}
 
                     {/* Form Data */}
-                    <div className='w-full h-full bg-defaultBg flex justify-center font-popins'>
-                        <div className="bg-white w-11/12 h-auto mt-5 border-none rounded-lg flex justify-center font-popins mb-12 flex-col">
-
-                            {/* 1 */}
-                            <div className='w-full flex mb-10 '>
-                                {/* Header*/}
-                                <div className='flex-col pl-5  '>
-                                    <div className='w-full mt-3'>
-                                        <p className='font-popins text-2xl font-bold '>Student List</p>
-                                    </div>
-                                    <div className='w-full'>
-                                        <p className='font-popins text-lg font-medium text-orange-500 '>List of students those who needs to Room Allocation </p>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className='w-full flex justify-center mb-10'>
-                            <div className='w-11/12 bg-gray-200 mt-3'>
-                                <table className='w-full '>
-                                    <thead>
-                                        <tr className='w-full'>
-                                            <th className='w-1/4 h-14 align-middle text-orange-500 ml-5 font-popins text-lg '><p className=''>Select Student </p></th>
-                                            <th className='w-1/4 h-14 align-middle text-orange-500 font-popins text-lg' ><p className='mr-20'>Gender </p></th>
-                                            <th className='w-1/4 h-14 align-middle text-orange-500 font-popins text-lg'><p className=''>Select Rooms </p></th>
-                                            <th className='w-1/4 h-14 align-middle text-orange-500 font-popins text-lg'><p className='mr-20'>Selected Room </p></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className='w-full'>
-                                        {tableData.map((row) => (
-                                            <tr key={row.id} className={`step ${row.id%2 ? 'w-full bg-gray-200 justify-around' : 'w-full bg-gray-100'}`}>
-                                                <td
-                                                    className='w-1/4'
-                                                >
-                                                    <p className='ml-20 text-sm'>{row.name}</p>  </td>
-                                                <td
-                                                    className='w-1/4'
-                                                >
-                                                   <p className='ml-20 text-sm font-semibold'>{row.Gender}</p>  </td>
-                                                <td
-                                                    className='w-1/4 text-center align-middle h-16'
-                                                >
-                                                    <button className='bg-gray-300 h-8 w-44' onClick={togglePopup}>
-                                                        Select Room
-                                                    </button>
-                                                    {showPopup && <Popup onClose={togglePopup}/>}
-
-                                                </td>
-                                                <td> 
-                                                    <p className='bg-slate-50 h-8 w-40'>
-                                                        {row.Room}
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            </div>
-
-                            <div className='w-full flex justify-end' >
-                                <div className='w-96 flex flex-col justify-center mr-10'>
-                                    <button className='h-10 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
-                                        Save selected student and Continue
-                                    </button>
-                                 </div>
-                            </div>
-                        </div>
+                   <div className='flex flex-col w-full  bg-defaultBg'>
+                   <div className='w-full flex justify-center h-1/2 mt-10' >
+                   <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
+                   <div className='w-1/2 flex flex-col ml-5'>
+                    <div className='w-full mt-5'>
+                        <p className='font-popins text-2xl font-semibold '>Hostel Room Allocation</p>
                     </div>
+                    <div className='w-full mt-1'> 
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Select the hostel form dropdown</p>
+                    </div>
+
+                    <div className='w-full mt-3'>
+                        <p className='font-popins text-ms '>Name Of Hostel*</p>
+                        <div className='w-1/2 flex flex-col items-end'>
+                    {/* <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status<p className='inline text-xl text-red-600'></p></div> */}
+                      <select 
+                          className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
+                        //   value={roomAlc}
+                          onChange={handleDropdownStatusType}
+                          >
+                            <option value="">Select an option</option>
+                            {roomAlc.map((data)=>(
+                                <option value={data}>{data}</option>
+                            ))}
+                          {/* <option value="NA" disabled>Select an option</option>
+                          <option value="del">Deleted</option>
+                          <option value="pending">Pending for Approval</option>
+                          <option value="active">Active</option>
+                          <option value="block">Block</option> */}
+                      </select>
+                      {errors.status && <span className="error text-red-600">{errors.status}</span>}
+                  </div>
+                  </div>
+              </div>
+                   </div>
+                   </div>
+                   </div>
                 </form>
             </div>
         </div>

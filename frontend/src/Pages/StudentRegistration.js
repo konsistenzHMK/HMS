@@ -266,33 +266,7 @@ const changeHandicappStatus =(event) =>{
       {/* Main Content */}
       <div className="w-full h-full">
       <form >
-      <div className='w-full flex justify-center h-1/2 pt-10' >
-            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                {/* content */}
-                <div className='w-1/2 flex flex-col ml-5'>
-                    <div className='w-full mt-5'>
-                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                    </div>
-                    <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
-                    </div>
-
-                    <div className='w-full mt-3'>
-                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                    </div>
-                    <div className='w-full mt-0.5 mb-5'>
-                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                    </div>
-                </div>
-
-                {/* Image */}
-                <div className='w-1/2 flex justify-end mr-5 '>
-                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
-                </div>
-            </div>
-        </div>
         {/* Header */}
-
         <div className="form-progress flex justify-around items-center mt-8">
           <div className='pl-2 pr-2 flex-col justify-center'>
             <div className='flex justify-center'>
@@ -860,31 +834,6 @@ const Page2 = ({currentPage,formData,setFormData,nextPage,previousPage,display})
       {/* Main Content */}
       <div className="w-full h-full">
       <form>
-      <div className='w-full flex justify-center h-1/2 pt-10' >
-            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                {/* content */}
-                <div className='w-1/2 flex flex-col ml-5'>
-                    <div className='w-full mt-5'>
-                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                    </div>
-                    <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
-                    </div>
-
-                    <div className='w-full mt-3'>
-                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                    </div>
-                    <div className='w-full mt-0.5 mb-5'>
-                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                    </div>
-                </div>
-
-                {/* Image */}
-                <div className='w-1/2 flex justify-end mr-5 '>
-                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
-                </div>
-            </div>
-        </div>
         <div className="form-progress flex justify-around items-center mt-8">
           <div className='pl-2 pr-2 flex-col justify-center'>
             <div className='flex justify-center'>
@@ -1203,32 +1152,6 @@ const Page3 = ({currentPage,formData,setFormData,nextPage,previousPage,display})
       <div className="w-full h-full">
       <form>
         {/* Header */}
-        <div className='w-full flex justify-center h-1/2 pt-10' >
-            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                {/* content */}
-                <div className='w-1/2 flex flex-col ml-5'>
-                    <div className='w-full mt-5'>
-                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                    </div>
-                    <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
-                    </div>
-
-                    <div className='w-full mt-3'>
-                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                    </div>
-                    <div className='w-full mt-0.5 mb-5'>
-                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                    </div>
-                </div>
-
-                {/* Image */}
-                <div className='w-1/2 flex justify-end mr-5 '>
-                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
-                </div>
-            </div>
-        </div>
-
         <div className="form-progress flex justify-around items-center mt-8">
           <div className='pl-2 pr-2 flex-col justify-center'>
             <div className='flex justify-center'>
@@ -1711,32 +1634,6 @@ const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,revie
       {/* Main Content */}
       <div className="w-full h-full">
       <form>
-      <div className='w-full flex justify-center h-1/2 pt-10' >
-      <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                {/* content */}
-                <div className='w-1/2 flex flex-col ml-5'>
-                    <div className='w-full mt-5'>
-                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
-                    </div>
-                    <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
-                    </div>
-
-                    <div className='w-full mt-3'>
-                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
-                    </div>
-                    <div className='w-full mt-0.5 mb-5'>
-                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
-                    </div>
-                </div>
-
-                {/* Image */}
-                <div className='w-1/2 flex justify-end mr-5 '>
-                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
-                </div>
-            </div>
-        </div>
-
           <div className="form-progress flex justify-around items-center mt-8">
           <div className='pl-2 pr-2 flex-col justify-center'>
             <div className='flex justify-center'>
@@ -2100,9 +1997,69 @@ const StudentRegistartion = (props) =>{
     setCurrentPage(currentPage - 1);
   };
 
+  const [currentDate, setCurrentDate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const date = new Date();
+
+      const formattedDate = formatDate(date);
+      const formattedTime = formatTime(date);
+
+      setCurrentDate(formattedDate);
+      setCurrentTime(formattedTime);
+    }, 1000);
+
+    clearInterval(intervalId);
+    
+  }, []);
+
+  // Helper function to format the date
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString(undefined, options);
+  };
+
+  // Helper function to format the time
+  const formatTime = (date) => {
+    const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    return date.toLocaleTimeString(undefined, options);
+  };
+
 
   return (
     <>
+      <div className="flex bg-defaultBg" >
+      {/* Main Content */}
+      <div className="w-full h-full">
+      <div className='w-full flex justify-center h-1/2 pt-10' >
+      <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
+                {/* content */}
+                <div className='w-1/2 flex flex-col ml-5'>
+                    <div className='w-full mt-5'>
+                        <p className='font-popins text-2xl font-semibold '>Hostel Management Software</p>
+                    </div>
+                    <div className='w-full mt-1'> 
+                        <p className='font-popins text-lg font-medium text-orange-500 '>Student Registration Form</p>
+                    </div>
+
+                    <div className='w-full mt-3'>
+                        <p className='font-popins text-ms '>👋🏻 Hello <p className='inline font-bold'>Rajesh</p>, Welcome to your dashboard 🎉</p>
+                    </div>
+                    <div className='w-full mt-0.5 mb-5'>
+                        <p className='font-popins text-ms '>🗓️ {currentDate}  | 🕛 {currentTime}</p>
+                    </div>
+                </div>
+
+                {/* Image */}
+                <div className='w-1/2 flex justify-end mr-5 '>
+                <img src={DashboardImg} alt="Circular" className='w-25 h-22 pt-4 pb-4'/>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
       {currentPage === 1 && (
         <Page1 currentPage={currentPage} formData={formData} setFormData={setFormData} nextPage={nextPage} display={props.display}/>
       )}

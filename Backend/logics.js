@@ -699,20 +699,28 @@ const upload_file = async(photo_file) => {
 
 const get_students_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
-    const q = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
-    const q1 = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
+    const q = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
+    const q1 = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);
     const documents1 = await getDocs(q1);
-    const data = {}; 
-    documents.forEach((doc) => {
-        data[doc.data().student_id] = doc.data().first_name + " " + doc.data().last_name;
+    const data = [];
+    const data1 = [];
+    const data2 = {};
+    documents.forEach((doc) =>{
+        data1.push(doc.data().room_id,doc.data().room_no,doc.data().room_capacity);
+    }); 
+    documents1.forEach((doc) => {
+        data2[doc.data().student_id] = doc.data().first_name + " " + doc.data().last_name;
     });
-
+    data.push(data1,data2);
+    
+    
     res.send(data);
 }
 
 const get_room_no_for_room_allocation = async(req,res,)=>{
     //on hold first make some rooms then come here to write further code
+    const hostel_id = req.query.hostel_id;
     const data = {};  
     documents.forEach((doc) => {
         data[doc.data().room_id] = doc.data().room_no;

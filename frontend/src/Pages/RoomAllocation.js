@@ -9,7 +9,6 @@ const RoomAllocation = () => {
     const [currentTime, setCurrentTime] = useState('');
     const [showPopup, setShowPopup] = useState(false);
 
-
     useEffect(() => {
         const intervalId = setInterval(() => {
             const date = new Date();

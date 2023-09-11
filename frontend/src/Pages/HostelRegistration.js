@@ -1106,7 +1106,7 @@ const App = (props) => {
                           >
                           <option value="draft">Draft</option>
                           <option value="NA">Select an option</option>
-                          <option value="del">Deleted</option>
+                          <option value="delete">Deleted</option>
                           <option value="pending">Pending for Approval</option>
                           <option value="active">Active</option>
                           <option value="block">Block</option>

@@ -46,30 +46,7 @@ const ReviewCard = (props) => {
             </div>
 
             {/* Address */}
-            <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
-                <div className='text-base '>Address :</div>
-                <div><p className='text-blue-500  text-xl'>{formData.address1}{formData.address2 ?","+formData.address2:""} </p></div>
-                {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
-            </div>
 
-            <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
-                <div className='flex'>
-                <div className='flex-col'>
-                    <div className='text-base '>Country :</div>
-                    <div className='flex-wrap w-32'>
-                        <p className='text-blue-500  text-xl'>{formData.country}</p>
-                    </div>
-                </div>
-                <div  className='flex-col ml-10'>
-                    <div className='text-base '>State :</div>
-                    <div>
-                        <p className='text-blue-500  text-xl'>{formData.state}</p>
-                    </div>
-                </div>
-                </div>
-                
-                {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
-            </div>
 
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
                 <div className='flex'>
@@ -83,6 +60,44 @@ const ReviewCard = (props) => {
                     <div className='text-base '>District:</div>
                     <div>
                         <p className='text-blue-500  text-xl'>{formData.district}</p>
+                    </div>
+                </div>
+                </div>
+                
+                {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
+            </div>
+
+            <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
+                <div className='flex'>
+                <div  className='flex-col '>
+                    <div className='text-base'>Category-1:</div>
+                    <div className='flex-wrap w-32'>
+                        <p className='text-blue-500  text-xl'>{formData.categ1}</p>
+                    </div>
+                </div>
+                <div className='flex-col ml-10'>
+                    <div className='text-base '>Category-2:</div>
+                    <div>
+                        <p className='text-blue-500  text-xl'>{formData.categ2}</p>
+                    </div>
+                </div>
+                </div>
+                
+                {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
+            </div>
+
+            <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
+                <div className='flex'>
+                <div  className='flex-col '>
+                    <div className='text-base'>Category-3:</div>
+                    <div className='flex-wrap w-32'>
+                        <p className='text-blue-500  text-xl'>{formData.categ3}</p>
+                    </div>
+                </div>
+                <div className='flex-col ml-10'>
+                    <div className='text-base '>Sanctioned Capacity:</div>
+                    <div>
+                        <p className='text-blue-500  text-xl'>{formData.scapacity}</p>
                     </div>
                 </div>
                 </div>

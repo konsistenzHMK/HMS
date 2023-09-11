@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import DashboardImg from './DashboardImg.svg'
+import {
+    useNavigate,
+  } from 'react-router-dom';
 
 const DashboardPage = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -34,7 +38,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className='flex flex-col w-full  bg-defaultBg'>
+    <div className='flex flex-col w-full bg-defaultBg'>
         {/* Header */}
         <div className='w-full flex justify-center h-1/2 mt-10' >
             <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
@@ -76,50 +80,56 @@ const DashboardPage = () => {
             </div>
 
             <div className='w-full mt-3 ml-6 flex justify-start'>
-                <a href='http://localhost:3000/hostel-Registration'>
-                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'>
+            
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                onClick={()=>{navigate('/hostel-Registration')}}
+                >
                     <p className='font-popins text-normal'>+ Add Hostel</p>
                 </button>
-                </a>
+                
 
-                <a href='http://localhost:3000/student-Registration'>
-                <button className='bg-defaultBg w-36 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                <button className='bg-defaultBg w-36 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'
+                 onClick={()=>{navigate('/student-Registration')}}
+                >
                     <p className='font-popins text-normal'>+ Add Student</p>
                 </button>
-                </a>
 
-                <a href='http://localhost:3000/tower-Registration'>
-                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'
+                onClick={()=>{navigate('/tower-Registration')}}
+                >
                     <p className='font-popins text-normal'>+ Add Tower</p>
                 </button>
-                </a>
 
-                <a href='http://localhost:3000/wing-Registration'>
-                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'
+                onClick={()=>{navigate('/wing-Registration')}}
+                >
                     <p className='font-popins text-normal'>+ Add Wing</p>
                 </button>
-                </a>
+        
 
-                <a href='http://localhost:3000/room-Registration'>
-                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'>
+                <button className='bg-defaultBg w-32 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full ml-10'
+                onClick={()=>{navigate('/room-Registration')}}
+                >
                     <p className='font-popins text-normal'>+ Add Room</p>
                 </button>
-                </a>
-            </div>
-            <div className='w-full mt-3 ml-6 flex justify-start'>
-                <a href='http://localhost:3000/hostel-FormReview'>
-                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'>
-                    <p className='font-popins text-normal'>+ Review Hostel Registrations</p>
-                </button>
-                </a>
 
             </div>
             <div className='w-full mt-3 ml-6 flex justify-start'>
-                <a href='http://localhost:3000/student-FormReview'>
-                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'>
+
+                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                onClick={()=>{navigate('/hostel-FormReview')}}
+                >
+                    <p className='font-popins text-normal'>+ Review Hostel Registrations</p>
+                </button>
+
+            </div>
+            <div className='w-full mt-3 ml-6 flex justify-start'>
+                
+                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                onClick={()=>{navigate('/student-FormReview')}}
+                >
                     <p className='font-popins text-normal'>+ Review Student Registartions</p>
                 </button>
-                </a>
 
             </div>
 

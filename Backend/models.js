@@ -410,6 +410,48 @@ const saved_form_2 = async (req, res) => {
     documents.forEach((doc) => {
         data2[doc.data().uuid] = doc.id;
     });
+    if (uuid == null || uuid == undefined || uuid == "") {
+
+        try {
+            const ans = await UUIDFunction(country, state, district);
+            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
+                hostel_name,
+                description,
+                address1,
+                address2,
+                country,
+                state,
+                region,
+                district,
+                city,
+                pincode,
+                uuid: ans,
+                rector_name,
+                categ1,
+                categ2,
+                categ3,
+                tower,
+                floor,
+                room,
+                scapacity,
+                bcapacity,
+                area,
+                mess,
+                other_facility,
+                status: "pending",
+                email_id,
+                website,
+            });
+
+            const message = 'Saved with id ' + ans + '\n Status : Pending for Approval';
+            res.send(message);
+            return;
+        }
+        catch (e) {
+            console.log(e);
+            res.status(500).send("Data not inserted");
+        }
+    }
     const keys = Object.keys(data2);
     for (let i = 0; i <= keys.length; i++) {
         if (uuid == keys[i]) {
@@ -446,52 +488,11 @@ const saved_form_2 = async (req, res) => {
                 const message = 'Updated with id ' + uuid + '\n Status : Pending for Approval';
                 res.send(message);
             } catch (error) {
+                console.log(error);
                 res.status(500).send("Data not Updated");
             }
         }
-
     }
-    if (uuid == null || uuid == undefined || uuid == "") {
-
-        try {
-            const ans = await UUIDFunction(country, state, district);
-            await setDoc(doc(db, "hostel_registration", await random_doc_id_function()), {
-                hostel_name,
-                description,
-                address1,
-                address2,
-                country,
-                state,
-                region,
-                district,
-                city,
-                pincode,
-                uuid: ans,
-                rector_name,
-                categ1,
-                categ2,
-                categ3,
-                tower,
-                floor,
-                room,
-                scapacity,
-                bcapacity,
-                area,
-                mess,
-                other_facility,
-                status: "pending",
-                email_id,
-                website,
-            });
-
-            const message = 'Saved with id ' + ans + '\n Status : Pending for Approval';
-            res.send(message);
-        }
-        catch (e) {
-            res.status(500).send("Data not inserted");
-        }
-    }
-
 };
 const saved_form_3 = async (req, res) => {
     const {

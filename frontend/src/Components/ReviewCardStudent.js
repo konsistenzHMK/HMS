@@ -23,7 +23,13 @@ const ReviewCard = (props) => {
             {/* Hostel name */}
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-3 ml-4'>
                 <div className='text-base'>Name :</div>
-                <div><p className='text-blue-500  text-xl'>{formData.first_name} ({formData.last_name}) </p></div>
+                <div><p className='text-blue-500  text-xl'>{formData.first_name} {formData.last_name} | {formData.student_id} </p></div>
+                {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
+            </div>
+
+            <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-3 ml-4'>
+                <div className='text-base'>Hostel ID :</div>
+                <div><p className='text-blue-500  text-xl'>Name {formData.hostel_name_or_id} </p></div>
                 {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
             </div>
 
@@ -49,15 +55,15 @@ const ReviewCard = (props) => {
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
                 <div className='flex'>
                 <div  className='flex-col'>
-                    <div className='text-base '>Taluka:</div>
+                    <div className='text-base '>City:</div>
                     <div className='flex-wrap w-32'>
                         <p className='text-blue-500  text-xl'>{formData.city}</p>
                     </div>
                 </div>
                 <div className='flex-col ml-10'>
-                    <div className='text-base'>District:</div>
+                    <div className='text-base'>Category:</div>
                     <div >
-                        <p className='text-blue-500  text-xl'>{formData.state}</p>
+                        <p className='text-blue-500  text-xl'>{formData.category}</p>
                     </div>
                 </div>
                 

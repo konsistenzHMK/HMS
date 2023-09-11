@@ -11,7 +11,6 @@ const RoomAllocation = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [roomAlc, changeroomAlc] = useState([]);
 
-
     useEffect(() => {
           axios.get("http://localhost:7000/gethostel_id/where/status_active")
     .then((res)=> changeroomAlc(res.data)

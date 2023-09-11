@@ -689,9 +689,7 @@ const App = (props) => {
               {/* 1 --> Basic Details */}
               <div className='font-semibold underline flex justify-between underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
                 <p className='font-popins'>Basic Details</p>
-                <div className='w-1/2 flex justify-end align-middle'>
-                  <button className='w-2/5 h-10 bg-gray-200 rounded-xl  border-1 border-gray-400 text-xl' onClick={goBack}>Back</button>
-                </div>
+
               </div>
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>

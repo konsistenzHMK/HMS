@@ -414,9 +414,9 @@ const expense_flow_code_count = async(req,res)=>{
 }
 
 const saved_data_from_hostel_registration = async(req,res)=>{
-    const q = query(collection(db, "hostel_registration"),orderBy("created_on","desc"));
-    const querySnapshot = await getDocs(q);
-    // const querySnapshot = await getDocs(collection(db, "hostel_registration"),orderBy("hostel_name","desc"));
+    // const q = query(collection(db, "hostel_registration"),orderBy("created_on","desc"));
+    // const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(collection(db, "hostel_registration"),orderBy("hostel_name","desc"));
     // console.log(querySnapshot)
     const data1 = [];
     querySnapshot.forEach((doc) => {

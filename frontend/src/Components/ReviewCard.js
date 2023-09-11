@@ -24,6 +24,7 @@ const ReviewCard = (props) => {
         if(sta=='draft') return 'Draft';
         if(sta=='pending') return 'Pending for Approval';
         if(sta=='block') return 'Block';
+        if(sta=='del') return "Delete"
         return sta;
     }
 
@@ -108,21 +109,21 @@ const ReviewCard = (props) => {
             <div className='flex w-4/5 justify-between mt-5'>
             <div>   
                 <button className='bg-defaultBg w-36 h-10 border-1 border-slate-400 rounded-md'
-                    onClick={setAll}
+                    onClick={setAll} disabled={()=>{return formData.status=='del'}}
                 >
                     <p className='font-popins text-lg text-normal'>Edit</p>
                 </button>
             </div>
             <div>  
                 <button className='bg-defaultBg  w-36 h-10 border-1 border-slate-400 rounded-md'
-                    onClick={setEdi2}
+                    onClick={setEdi2} display={()=>{return formData.status=='del'}} 
                 >
                     <p className='font-popins text-normal'>Review</p>
                 </button>
             </div>
             <div>  
                 <button className='bg-defaultBg  w-36 h-10 border-1 border-slate-400 rounded-md'
-                    onClick={setDisplay}
+                    onClick={setDisplay} 
                 >
                     <p className='font-popins text-normal'>View</p>
                 </button>

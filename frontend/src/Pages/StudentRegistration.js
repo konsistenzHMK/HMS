@@ -2009,7 +2009,7 @@ const StudentRegistartion = (props) =>{
 
       setCurrentDate(formattedDate);
       setCurrentTime(formattedTime);
-    }, 1000);
+    }, 100000);
 
     clearInterval(intervalId);
     

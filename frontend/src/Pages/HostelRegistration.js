@@ -5,13 +5,16 @@ import DashboardImg from '../Components/DashboardImg.svg'
 import BgImg from './grid.svg'
 import Select from 'react-select';
 import { useHistory } from 'react-router-dom';
+import {
+  useNavigate,
+} from 'react-router-dom';
 
 const App = (props) => {
   const [category1, setCategory1] = useState('');
   const [category2, setCategory2] = useState('');
   const [category3, setCategory3] = useState('');
   const [messType, setMessType] = useState('');
-
+  const navigate = useNavigate();
   const [State,changeState]=useState('');
   const [allRegion,changeAllRegion]=useState([]);
   const [region,ChangeRegion]=useState('');
@@ -601,6 +604,19 @@ const App = (props) => {
     { value: 'Solar', label: 'Solar Energy' },
     { value: 'GuestRoom', label: 'Guest Room' },
   ];
+
+  const getarray=(data)=>{
+    const ans=[];
+    data.forEach((ele)=>{
+      options.forEach((ele2)=>{
+        if(ele==ele2.value){
+          ans.push(ele2);
+        }
+      })
+    })
+
+    return ans;
+  }
   
   const handleChange2 = (selectedOptions) => {
     console.log(selectedOptions);
@@ -630,6 +646,11 @@ const App = (props) => {
       handleChange(event)
     }
   };
+
+  const goBack = (e) => {
+    e.preventDefault();
+		navigate(-1);
+	} 
 
   return (
       <div className="w-full bg-defaultBg top-0">
@@ -666,10 +687,12 @@ const App = (props) => {
           <div className="bg-white  w-10/12 h-auto mt-10 border-none rounded-lg flex justify-center font-popins">
             <div className='w-5/6 h-auto mt-5 mb-5 ml-6 mr-6 flex flex-col font-popins'>
               {/* 1 --> Basic Details */}
-              <div className='font-semibold underline  underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
+              <div className='font-semibold underline flex justify-between underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
                 <p className='font-popins'>Basic Details</p>
+                <div className='w-1/2 flex justify-end align-middle'>
+                  <button className='w-2/5 h-10 bg-gray-200 rounded-xl  border-1 border-gray-400 text-xl' onClick={goBack}>Back</button>
+                </div>
               </div>
-              
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
                 <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
@@ -1086,6 +1109,7 @@ const App = (props) => {
                     <Select
                         isMulti
                         options={options}
+                        value={getarray(formData.other_facility)}
                         onChange={handleChange2}
                         disabled={CheckDisplayForm()}
                         className="basic-multi-select"

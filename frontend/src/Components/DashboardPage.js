@@ -38,7 +38,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className='flex flex-col w-full  bg-defaultBg'>
+    <div className='flex flex-col w-full bg-defaultBg'>
         {/* Header */}
         <div className='w-full flex justify-center h-1/2 mt-10' >
             <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>

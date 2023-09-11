@@ -22,7 +22,7 @@ const ReviewCard = (props) => {
         <div className='w-3/5 flex-col p-3 mb-5'>
             {/* Hostel name */}
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-3 ml-4'>
-                <div className='text-lg '>Name :</div>
+                <div className='text-base'>Name :</div>
                 <div><p className='text-blue-500  text-xl'>{formData.first_name} ({formData.last_name}) </p></div>
                 {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
             </div>
@@ -30,37 +30,37 @@ const ReviewCard = (props) => {
 
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
                 <div className='flex'>
-                <div className='flex-col'>
-                    <div className='text-lg '>Gender :</div>
-                    <div>
+                <div className='flex-col w-32'>
+                    <div className='text-base'>Gender :</div>
+                    <div className='flex-wrap w-32'>
                         <p className='text-blue-500  text-xl'>{formData.gender.toUpperCase()}</p>
                     </div>
                 </div>
                 <div  className='flex-col ml-10'>
-                    <div className='text-lg '>DOB :</div>
-                    <div>
-                        <p className='text-blue-500  text-xl'>{formData.dob}</p>
+                    <div className='text-base'>DOB :</div>
+                    <div >
+                        <p className='text-blue-500 text-xl flex-wrap'>{formData.dob}</p>
                     </div>
                 </div>
                 </div>
-                
                
             </div>
 
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
                 <div className='flex'>
-                <div className='flex-col'>
-                    <div className='text-lg '>District:</div>
-                    <div>
-                        <p className='text-blue-500  text-xl'>{formData.state}</p>
-                    </div>
-                </div>
-                <div  className='flex-col ml-10'>
-                    <div className='text-lg '>Taluka:</div>
-                    <div>
+                <div  className='flex-col'>
+                    <div className='text-base '>Taluka:</div>
+                    <div className='flex-wrap w-32'>
                         <p className='text-blue-500  text-xl'>{formData.city}</p>
                     </div>
                 </div>
+                <div className='flex-col ml-10'>
+                    <div className='text-base'>District:</div>
+                    <div >
+                        <p className='text-blue-500  text-xl'>{formData.state}</p>
+                    </div>
+                </div>
+                
                 </div>
             </div>
 

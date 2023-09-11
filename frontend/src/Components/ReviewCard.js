@@ -40,14 +40,14 @@ const ReviewCard = (props) => {
         <div className='w-3/5 flex-col p-3 mb-5'>
             {/* Hostel name */}
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-3 ml-4'>
-                <div className='text-lg '>Hostel Name :</div>
+                <div className='text-base '>Hostel Name :</div>
                 <div><p className='text-blue-500  text-xl'>{formData.hostel_name} ({formData.uuid}) </p></div>
                 {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
             </div>
 
             {/* Address */}
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
-                <div className='text-lg '>Address :</div>
+                <div className='text-base '>Address :</div>
                 <div><p className='text-blue-500  text-xl'>{formData.address1}{formData.address2 ?","+formData.address2:""} </p></div>
                 {/* <div className='ml-20'>Status :<p className='inline text-black'> {formData.status}</p></div> */}
             </div>
@@ -55,13 +55,13 @@ const ReviewCard = (props) => {
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
                 <div className='flex'>
                 <div className='flex-col'>
-                    <div className='text-lg '>Country :</div>
-                    <div>
+                    <div className='text-base '>Country :</div>
+                    <div className='flex-wrap w-32'>
                         <p className='text-blue-500  text-xl'>{formData.country}</p>
                     </div>
                 </div>
                 <div  className='flex-col ml-10'>
-                    <div className='text-lg '>State :</div>
+                    <div className='text-base '>State :</div>
                     <div>
                         <p className='text-blue-500  text-xl'>{formData.state}</p>
                     </div>
@@ -73,16 +73,16 @@ const ReviewCard = (props) => {
 
             <div className='mb-1 font-popins text-medium text-black font-medium flex-col justify-start mt-2 ml-4'>
                 <div className='flex'>
-                <div className='flex-col'>
-                    <div className='text-lg '>District:</div>
-                    <div>
-                        <p className='text-blue-500  text-xl'>{formData.district}</p>
+                <div  className='flex-col '>
+                    <div className='text-base'>Taluka:</div>
+                    <div className='flex-wrap w-32'>
+                        <p className='text-blue-500  text-xl'>{formData.city}</p>
                     </div>
                 </div>
-                <div  className='flex-col ml-10'>
-                    <div className='text-lg '>Taluka:</div>
+                <div className='flex-col ml-10'>
+                    <div className='text-base '>District:</div>
                     <div>
-                        <p className='text-blue-500  text-xl'>{formData.city}</p>
+                        <p className='text-blue-500  text-xl'>{formData.district}</p>
                     </div>
                 </div>
                 </div>

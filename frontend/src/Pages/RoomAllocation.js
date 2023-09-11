@@ -13,7 +13,30 @@ const RoomAllocation = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [allStudents, setAllStudent] = useState([]);
 
+    const { state } = useLocation();
+
+    const getStudents =async ()=>{
+        try {
+            const response = await fetch(`http://localhost:7000/get_students_for_room_allocation?hostel_id=${state.ans}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+            if (response.ok) {
+                const result = await response.json();
+                console.log("result1",result);
+                setAllStudent(result);
+            }
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+    useEffect(()=>{
+        getStudents();
+    },[])
+
     useEffect(() => {
+        
         const intervalId = setInterval(() => {
             const date = new Date();
 
@@ -97,7 +120,7 @@ const RoomAllocation = () => {
         { id: 3, name: 'Alex', Gender: 'F', Room: '' },
         { id: 4, name: 'Fin', Gender: 'M', Room: '' },
     ];
-    const { state } = useLocation();
+    
     // console.log("State",state);
     return (
         <div className="flex bg-defaultBg" >

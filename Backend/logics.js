@@ -705,6 +705,7 @@ const upload_file = async(photo_file) => {
 
 const get_students_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
+    console.log(hostel_id);
     const q = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
     const q1 = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);

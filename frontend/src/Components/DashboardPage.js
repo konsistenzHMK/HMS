@@ -76,8 +76,8 @@ const DashboardPage = () => {
         setAns(ele[0]);
         navigate('/room-Allocation')
     }
-
-
+    let color=true;
+    let lastColor=false;
     const Popup = () => {
         return (
             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 flex-col">
@@ -87,8 +87,13 @@ const DashboardPage = () => {
                 <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
                     <div className='w-full flex flex-row h-1/2 flex-wrap'>
                         {hostelID.map((ele, i) => {
+                            if(i%2==0){ 
+                                color=lastColor;
+                                lastColor=!lastColor;
+                            }
+                            else color=!color
                             return (
-                                <div className={`w-1/2 h-full ${i % 2 == 0 ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}>
+                                <div className={`w-1/2 h-full ${color==true ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}>
                                     <button className='font-popins text-2xl font-medium text-black ' onClick={() => {
                                         setShowPopup(false);
                                         navigate('/room-Allocation',{

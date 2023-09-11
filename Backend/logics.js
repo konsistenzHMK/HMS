@@ -648,7 +648,8 @@ const get_status = async(req,res)=>{
 }
 
 const get_student_form = async(req,res)=>{
-    const querySnapshot = await getDocs(collection(db, "student_registration"));
+    const q = query(collection(db, "student_registration"), orderBy("registered_on","desc"));
+    const querySnapshot = await getDocs(q)
     const data1 = [];
     querySnapshot.forEach((doc) => {
         data1.push(doc.data());  

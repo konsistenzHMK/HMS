@@ -1,5 +1,6 @@
 import db from './config.js';
 import './config.js';
+import { Timestamp } from 'firebase/firestore';
 import auth from './auth.js';
 import './auth.js'
 import storage from './storage.js';
@@ -285,7 +286,8 @@ const saved_form_1 = async (req, res) => {
         email_id,
         website,
     } = req.body
-
+   const timestamp = Timestamp.now();
+//    console.log(timestamp);
     const documents = await getDocs(collection(db, "hostel_registration"));
     const data2 = {};
     documents.forEach((doc) => {
@@ -322,7 +324,9 @@ const saved_form_1 = async (req, res) => {
                 status: "draft",
                 email_id,
                 website,
+                created_on: timestamp.valueOf(),
             });
+            // console.log(timestamp.valueOf());
             const message = 'Saved with id ' + ans + '\n Status : Draft';
             res.send(message);
         }
@@ -362,6 +366,7 @@ const saved_form_1 = async (req, res) => {
                     status: "draft",
                     email_id,
                     website,
+                    created_on: timestamp.valueOf(),
                 });
                 const message = 'Updated with id ' + uuid + '\n Status : Draft';
                 res.send(message);
@@ -1021,24 +1026,24 @@ const student_registration = async (req, res) => {
         student_id,
     } = (req.body);
 
-    
+    const timestamp = Timestamp.now();
 
     const documents = await getDocs(collection(db, "student_registration"));
     const data2 = {};
-    const data3 = [];
+    // const data3 = [];
     documents.forEach((doc) => {
         data2[doc.data().student_id] = doc.id;
-        data3.push(doc.data().aadhar_id);
+        // data3.push(doc.data().aadhar_id);
         // data3[doc.data().aadhar_id] = doc.data().student_id;
     });
     // console.log("running");
     // const keys4 = Object.keys(data3);
-    for(let i=0;i<data3.length;i++){
-        if(data3[i]==aadhar_id){
-            res.send("User already exists");
-            return;
-        }
-    }
+    // for(let i=0;i<data3.length;i++){
+    //     if(data3[i]==aadhar_id){
+    //         res.send("User already exists");
+    //         return;
+    //     }
+    // }
 
     const keys = Object.keys(data2);
     for (let i = 0; i < keys.length; i++) {
@@ -1095,6 +1100,7 @@ const student_registration = async (req, res) => {
                     hostel_name_or_id,
                     status,
                     student_id,
+                    registered_on: timestamp.valueOf(),
                 });
                 const message = 'Updated with id ' + student_id;
                 res.send(message);
@@ -1108,6 +1114,7 @@ const student_registration = async (req, res) => {
 
 
     if (student_id == null || student_id == undefined || student_id == "") {
+
         const documents = await getDocs(collection(db, "student_registration"));
         const data3 =[] ;
         documents.forEach((doc) => {
@@ -1184,6 +1191,7 @@ const student_registration = async (req, res) => {
                 hostel_name_or_id,
                 status,
                 student_id: str,
+                registered_on: timestamp.valueOf(),
             });
         }
 

@@ -5,6 +5,7 @@ import {  query, where, getDocs } from "firebase/firestore";
 import {collection, addDoc, doc, setDoc , getDoc ,updateDoc} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import storage from './storage.js';
+import {orderBy} from "firebase/firestore";
 
 const random_doc_id_function = async ()=>{
     var randomNumber = '';
@@ -413,12 +414,16 @@ const expense_flow_code_count = async(req,res)=>{
 }
 
 const saved_data_from_hostel_registration = async(req,res)=>{
-    const querySnapshot = await getDocs(collection(db, "hostel_registration"));
+    const q = query(collection(db, "hostel_registration"),orderBy("created_on","desc"));
+    const querySnapshot = await getDocs(q);
+    // const querySnapshot = await getDocs(collection(db, "hostel_registration"),orderBy("hostel_name","desc"));
+    // console.log(querySnapshot)
     const data1 = [];
     querySnapshot.forEach((doc) => {
+        // console.log(doc.data())
         data1.push(doc.data()); 
     });
-    res.send(data1);
+    res.send(data1); 
 }
     
 
@@ -643,7 +648,8 @@ const get_status = async(req,res)=>{
 }
 
 const get_student_form = async(req,res)=>{
-    const querySnapshot = await getDocs(collection(db, "student_registration"));
+    const q = query(collection(db, "student_registration"), orderBy("registered_on","desc"));
+    const querySnapshot = await getDocs(q)
     const data1 = [];
     querySnapshot.forEach((doc) => {
         data1.push(doc.data());  

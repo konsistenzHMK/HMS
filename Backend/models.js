@@ -366,6 +366,7 @@ const saved_form_1 = async (req, res) => {
                     status: "draft",
                     email_id,
                     website,
+                    created_on: timestamp.valueOf(),
                 });
                 const message = 'Updated with id ' + uuid + '\n Status : Draft';
                 res.send(message);
@@ -1025,7 +1026,7 @@ const student_registration = async (req, res) => {
         student_id,
     } = (req.body);
 
-    
+    const timestamp = Timestamp.now();
 
     const documents = await getDocs(collection(db, "student_registration"));
     const data2 = {};
@@ -1099,6 +1100,7 @@ const student_registration = async (req, res) => {
                     hostel_name_or_id,
                     status,
                     student_id,
+                    registered_on: timestamp.valueOf(),
                 });
                 const message = 'Updated with id ' + student_id;
                 res.send(message);
@@ -1189,6 +1191,7 @@ const student_registration = async (req, res) => {
                 hostel_name_or_id,
                 status,
                 student_id: str,
+                registered_on: timestamp.valueOf(),
             });
         }
 

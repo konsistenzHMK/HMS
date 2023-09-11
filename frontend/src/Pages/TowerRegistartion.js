@@ -153,7 +153,34 @@ const TowerRegistartion = () => {
       const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
       return date.toLocaleTimeString(undefined, options);
     };
-  
+    const [hostel_name_and_id, setHostel_name_and_id] = useState([]);
+    const hostel_name_and_id_fetch = async () => {
+      try{
+        const response = await fetch("http://localhost:7000/gethostel_id/where/status_active",{
+          method:"GET",
+          headers:{"Content-Type":"application/json"},
+        }); 
+        if(response.ok){
+          const result = await response.json();
+          console.log(result);
+          setHostel_name_and_id(result);
+        }
+      }
+      catch(err){
+        alert(err);
+      }
+    }
+
+    const handleChange1 = (event) => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        hostel_id: event.target.value,
+      }));
+    };
+
+    useEffect(() => {
+      hostel_name_and_id_fetch();
+    }, []);
 
   return (
     <div className="w-full bg-defaultBg top-0">
@@ -197,13 +224,18 @@ const TowerRegistartion = () => {
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-1'>
                 <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Name or ID <p className='inline text-xl text-red-600'>*</p></div>
-                <input
+                <select
                   id="hostel_id"
                   name="hostel_id"
                   value={formData.hostel_id}
-                  onChange={handleChange}
+                  onChange={handleChange1}
                   className='w-full  border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                ></input>
+                >
+                  <option value="" disabled>Select an option</option>
+                   {hostel_name_and_id.map((item) => (
+                    <option value = {item[0]}>{item[1] + "  |  " + item[0]}</option>
+                    ))}
+                </select>
                 {errors.hostel_id && <span className="error text-red-500">{errors.hostel_id}</span>}
               </div>
 

@@ -896,7 +896,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ1} 
                         onChange={handleDropdownCat1}
-                        // disabled={CheckDisplayForm()}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="girls">Girls</option>
@@ -913,7 +913,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ2} 
                         onChange={handleDropdownCat2}
-                        // disabled={CheckDisplayForm()}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="t-1">type-1</option>
@@ -935,7 +935,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ3} 
                         onChange={handleDropdownCat3}
-                        // disabled={CheckDisplayForm()}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="rented">Rented</option>
@@ -1055,7 +1055,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.mess} 
                         onChange={handleDropdownMessType}
-                        // disabled={CheckDisplayForm()}
+                        disabled={props.op==3}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="government">Government</option>
@@ -1109,7 +1109,7 @@ const App = (props) => {
                         options={options}
                         value={getarray(formData.other_facility)}
                         onChange={handleChange2}
-                        disabled={CheckDisplayForm()}
+                        isDisabled={props.op==3}
                         className="basic-multi-select"
                         classNamePrefix="select"
                       />

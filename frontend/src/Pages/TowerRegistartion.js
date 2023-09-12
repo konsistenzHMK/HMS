@@ -223,7 +223,7 @@ const TowerRegistartion = () => {
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-1'>
-                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Name or ID <p className='inline text-xl text-red-600'>*</p></div>
+                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
                 <select
                   id="hostel_id"
                   name="hostel_id"
@@ -243,7 +243,7 @@ const TowerRegistartion = () => {
               {/*  --> UUID */}
 
             <div className='w-full h-auto flex flex-col mb-2 mt-2'>
-            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Tower Name<p className='inline text-xl text-red-600'>*</p></div>
+            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Tower<p className='inline text-xl text-red-600'>*</p></div>
             <input
                 id="tower_name"
                 name="tower_name"
@@ -256,7 +256,7 @@ const TowerRegistartion = () => {
 
             <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No of Floors <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Floors <p className='inline text-xl text-red-600'>**</p></div>
                     <input
                       type="Number"
                       id="no_wings"
@@ -270,7 +270,7 @@ const TowerRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No of Rooms <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Rooms <p className='inline text-xl text-red-600'>*</p></div>
                     <input
                       type="number"
                       id="no_rooms"
@@ -286,7 +286,7 @@ const TowerRegistartion = () => {
 
               <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Capacity <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Capacity <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="number"
                       id="capacity"
@@ -300,7 +300,7 @@ const TowerRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Total Area (sq.ft) <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Total Area (sq.m) <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="number"
                       id="total_area"
@@ -315,7 +315,7 @@ const TowerRegistartion = () => {
               </div>
               <div className='w-full h-auto flex justify-between mb-2 mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Other Facilities <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Other Facilities <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="other_facilities"
@@ -329,7 +329,7 @@ const TowerRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Type <p className='inline text-xl text-red-600'>**</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Type <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="type"
@@ -373,7 +373,7 @@ const TowerRegistartion = () => {
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
                 <button className='h-1/2 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
-                  Submit 
+                  Save 
                 </button>
               </div>
             </div>

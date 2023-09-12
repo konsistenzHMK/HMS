@@ -270,7 +270,7 @@ const RoomRegistartion = () => {
               
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-1'>
-        <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">Select Hostel Name or ID  <p className='inline text-xl text-red-600'>*</p></div>
+        <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">Hostel Name <p className='inline text-xl text-red-600'>*</p></div>
         <select
           id="hostel_id"
           name="hostel_id"
@@ -290,7 +290,7 @@ const RoomRegistartion = () => {
             {/* 1.2 */}
               {/*  --> UUID */}
             <div className='w-full h-auto flex flex-col mb-2 mt-2'>
-            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Tower Name or ID*</div>
+            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Tower*</div>
             <select
                 id="tower_id"
                 name="tower_id"
@@ -308,7 +308,7 @@ const RoomRegistartion = () => {
 
             <div className='w-full h-auto flex flex-col mb-2 mt-2'>
 
-            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Wing Name or ID <p className='inline text-xl text-red-600'>*</p></div>
+            <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Wing  <p className='inline text-xl text-red-600'>*</p></div>
             <select
                 id="wing_id"
                 name="wing_id"
@@ -329,7 +329,7 @@ const RoomRegistartion = () => {
 
             <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Name of Room  <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Name of Room  <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="room_name"
@@ -376,7 +376,7 @@ const RoomRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room capacity  <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Room capacity  <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="room_capacity"
@@ -392,7 +392,7 @@ const RoomRegistartion = () => {
               <div className='w-full h-auto flex justify-between mt-3'>
                 <div className='w-1/3 flex flex-col items-start'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Height (unit)  <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Height (m)  <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="height"
@@ -406,7 +406,7 @@ const RoomRegistartion = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-center'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Width (unit) <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Width (m) <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="width"
@@ -420,7 +420,7 @@ const RoomRegistartion = () => {
                   </div>
                   <div className='w-1/3 flex flex-col items-end'>
                     <div className='w-11/12'>
-                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Length (unit) <p className='inline text-xl text-red-600'>*</p></div>
+                    <div className="mb-1 font-popins text-lg font-medium   " htmlFor="email_id">Length (m) <p className='inline text-xl text-red-600'>*</p></div>
                       <input
                         type="text"
                         id="length"
@@ -450,7 +450,7 @@ const RoomRegistartion = () => {
 
                 <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
                   <div className='w-11/12'>
-                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No of Windows  <p className='inline text-xl text-red-600'>*</p></div>
+                  <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">No of Windows  <p className='inline text-xl text-red-600'></p></div>
                     <input
                       type="text"
                       id="no_of_windows"
@@ -515,7 +515,7 @@ const RoomRegistartion = () => {
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
                 <button className='h-1/2 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
-                  Submit 
+                  Save 
                 </button>
               </div>
             </div>

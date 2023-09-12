@@ -19,7 +19,9 @@ import circularImage from './Components/Ellipse 93.png';
 import RoomAllocation from './Pages/RoomAllocation';
 import HostelReviewForm from './Pages/HostelReviewForm';
 import StudentReviewForm from './Pages/StudentReviewForm';
-
+import TowerReviewForm from './Pages/TowerReviewForm';
+import WingReviewForm from './Pages/WingReviewForm';
+import RoomReviewForm from './Pages/RoomReviewForm';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
@@ -39,6 +41,9 @@ root.render(
           <Route path="/room-Allocation" element={<RoomAllocation />} />
           <Route path="/hostel-FormReview" element={<HostelReviewForm />} />
           <Route path="/student-FormReview" element={<StudentReviewForm />} />
+          <Route path="Tower-FormReview" element={<TowerReviewForm/>}/>
+          <Route path="Wing-FormReview" element={<WingReviewForm/>}/>
+          <Route path='Room-FormReview' element={<RoomReviewForm/>}/>
         </Routes>
       </div>
     </div>

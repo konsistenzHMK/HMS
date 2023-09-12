@@ -132,6 +132,33 @@ const DashboardPage = () => {
                 </button>
 
             </div>
+            <div className='w-full mt-3 ml-6 flex justify-start'>
+                
+                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                onClick={()=>{navigate('/Tower-FormReview')}}
+                >
+                    <p className='font-popins text-normal'>+ Review Tower Registartions</p>
+                </button>
+
+            </div>
+            <div className='w-full mt-3 ml-6 flex justify-start'>
+                
+                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                onClick={()=>{navigate('/Wing-FormReview')}}
+                >
+                    <p className='font-popins text-normal'>+ Review Wing Registartions</p>
+                </button>
+
+            </div>
+            <div className='w-full mt-3 ml-6 flex justify-start'>
+                
+                <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                onClick={()=>{navigate('/Room-FormReview')}}
+                >
+                    <p className='font-popins text-normal'>+ Review Room Registartions</p>
+                </button>
+
+            </div>
 
             </div>
         </div>

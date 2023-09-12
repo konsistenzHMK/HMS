@@ -1,21 +1,42 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import DashboardImg from '../Components/DashboardImg.svg'
 import Modal from 'react-modal';
 import axios from 'axios';
+import { useLocation } from "react-router-dom";
+
 
 const RoomAllocation = () => {
     const [formData, setFormData] = useState({});
     const [currentDate, setCurrentDate] = useState('');
     const [currentTime, setCurrentTime] = useState('');
     const [showPopup, setShowPopup] = useState(false);
-    const [roomAlc, changeroomAlc] = useState([]);
+    const [allStudents, setAllStudent] = useState([]);
+
+    const { state } = useLocation();
+
+    const getStudents = async () => {
+        try {
+            const response = await fetch(`http://localhost:7000/get_students_for_room_allocation?hostel_id=${state.ans}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+            if (response.ok) {
+                const result = await response.json();
+                console.log("result1", result[1]);
+                setAllStudent(result[1]);
+            }
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+    useEffect(() => {
+        getStudents();
+    }, [])
 
     useEffect(() => {
-          axios.get("http://localhost:7000/gethostel_id/where/status_active")
-    .then((res)=> changeroomAlc(res.data)
-    // console.log("roomAllocatyionData", res.data)
-    );
+
         const intervalId = setInterval(() => {
             const date = new Date();
 
@@ -44,8 +65,8 @@ const RoomAllocation = () => {
     };
     //dropdown
     const handleDropdownStatusType = (event) => {
-        changeroomAlc(event.target.value);
-      };
+        // changeroomAlc(event.target.value);
+    };
 
     const [errors, setErrors] = useState({});
 
@@ -78,10 +99,10 @@ const RoomAllocation = () => {
     }
 
     const [selectedValues, setSelectedValues] = useState([
-        { id: 1, name: 'John', Gender: 'M' , Room:''},
-        { id: 2, name: 'Jane',  Gender: 'F' , Room:'' },
-        { id: 3, name: 'Alex',  Gender: 'F' , Room:'' },
-        { id: 4, name: 'Fin',  Gender: 'M' , Room:'' },
+        { id: 1, name: 'John', Gender: 'M', Room: '' },
+        { id: 2, name: 'Jane', Gender: 'F', Room: '' },
+        { id: 3, name: 'Alex', Gender: 'F', Room: '' },
+        { id: 4, name: 'Fin', Gender: 'M', Room: '' },
     ]);
 
     const handleRadioSelect = (id, name, hostel) => {
@@ -94,50 +115,13 @@ const RoomAllocation = () => {
     // console.log(selectedValues);
 
     const tableData = [
-        { id: 1, name: 'John', Gender: 'M' , Room:''},
-        { id: 2, name: 'Jane',  Gender: 'F' , Room:'' },
-        { id: 3, name: 'Alex',  Gender: 'F' , Room:'' },
-        { id: 4, name: 'Fin',  Gender: 'M' , Room:'' },
+        { id: 1, name: 'John', Gender: 'M', Room: '' },
+        { id: 2, name: 'Jane', Gender: 'F', Room: '' },
+        { id: 3, name: 'Alex', Gender: 'F', Room: '' },
+        { id: 4, name: 'Fin', Gender: 'M', Room: '' },
     ];
-    
-    const togglePopup  = (event) => {
-        event.preventDefault();
-        setShowPopup(!showPopup);
-    };
-    const Popup = ({ onClose }) => {
-        return (
-          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 flex-col">
-            <div className='bg-white w-1/3 h-16 flex flex-col justify-center'>
-                <p className='font-popins text-3xl font-medium text-orange-500 '>Hostel Name</p>
-            </div>
-            <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
-              <div className='w-full flex flex-row h-1/2'>
-                <div className='w-1/2 h-full bg-slate-100 flex flex-col justify-center'>
-                    <p className='font-popins text-2xl font-medium text-black '>Tagor House</p>
-                </div>
-                <div className='w-1/2 h-full bg-slate-400 flex flex-col justify-center'>
-                    <p className='font-popins text-2xl font-medium text-black '>Danbad House</p>
-                </div>
-              </div>
-              <div className='w-full flex flex-row h-1/2'>
-              <div className='w-1/2 h-full bg-slate-400 flex flex-col justify-center'>
-                    <p className='font-popins text-2xl font-medium text-black '>Vishvanathan Anand House</p>
-                </div>
-                <div className='w-1/2 h-full bg-slate-100 flex flex-col justify-center'>
-                    <p className='font-popins text-2xl font-medium text-black '>Miraj House</p>
-                </div>
-              </div>
-            </div>
-            <button
-                className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                onClick={onClose}
-                >
-                Close
-            </button>
-          </div>
-        );
-      };
 
+    // console.log("State",state);
     return (
         <div className="flex bg-defaultBg" >
             {/* Main Content */}
@@ -169,43 +153,47 @@ const RoomAllocation = () => {
                     {/* Header */}
 
                     {/* Form Data */}
-                   <div className='flex flex-col w-full  bg-defaultBg'>
-                   <div className='w-full flex justify-center h-1/2 mt-10' >
-                   <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                   <div className='w-1/2 flex flex-col ml-5'>
-                    <div className='w-full mt-5'>
-                        <p className='font-popins text-2xl font-semibold '>Hostel Room Allocation</p>
+                    <div className='flex flex-col w-full h-screen bg-defaultBg'>
+                        <div className='w-full flex justify-center  mt-10' >
+                            <div className='flex flex-row w-11/12 h-full bg-white rounded-lg drop-shadow-lg'>
+                                <div className='w-full flex flex-col ml-5'>
+                                    <div className='w-full flex mt-4'>
+                                        <div className='w-3/4 flex-col '>
+                                            <div><p className='text-black font-semibold text-2xl font-popins'>Student List</p></div>
+                                            <div><p className='text-base font-popins text-orange-500'>List of students those who needs to be allotted the room </p></div>
+                                        </div>
+                                        <div className='w-1/4'>
+                                            {/* Back */}
+                                        </div>
+                                    </div>
+                                    <div className='m-5'>
+                                        <table border="1" className='w-full font-popins'>
+                                            <thead className='bg-slate-100 rounded-r-lg rounded-l-lg h-14'>
+                                                <tr>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>ID</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Name</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Gender</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Select Room</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Room</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {allStudents.map((item,i) => (
+                                                    <tr className={`mt-1 h-12 ${i%2==0 ?'bg-slate-200' : 'bg-slate-100'}`} key={item[0]} >
+                                                        <td className='w-1/5 text-center'>{item[0]}</td>
+                                                        <td className='w-1/5 text-center'>{item[1] +" "+ item[2]}</td>
+                                                        <td className='w-1/5 text-center'>{item[3]}</td>
+                                                        <td className='w-1/5 text-cente'><button className='h-8 w-full bg-slate-300' onClick={(e)=>{e.preventDefault()}}>Select the Room</button></td>
+                                                        <td className='w-1/5 text-center'><input className='w-2/3' readonly></input></td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className='w-full mt-1'> 
-                        <p className='font-popins text-lg font-medium text-orange-500 '>Select the hostel form dropdown</p>
-                    </div>
-
-                    <div className='w-full mt-3'>
-                        <p className='font-popins text-ms '>Name Of Hostel*</p>
-                        <div className='w-1/2 flex flex-col items-end'>
-                    {/* <div className="mb-1 font-popins text-lg font-medium " htmlFor="email_id">Status<p className='inline text-xl text-red-600'></p></div> */}
-                      <select 
-                          className='bg-slate-200 w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1' 
-                        //   value={roomAlc}
-                          onChange={handleDropdownStatusType}
-                          >
-                            <option value="">Select an option</option>
-                            {roomAlc.map((data)=>(
-                                <option value={data}>{data}</option>
-                            ))}
-                          {/* <option value="NA" disabled>Select an option</option>
-                          <option value="del">Deleted</option>
-                          <option value="pending">Pending for Approval</option>
-                          <option value="active">Active</option>
-                          <option value="block">Block</option> */}
-                      </select>
-                      {errors.status && <span className="error text-red-600">{errors.status}</span>}
-                  </div>
-                  </div>
-              </div>
-                   </div>
-                   </div>
-                   </div>
                 </form>
             </div>
         </div>

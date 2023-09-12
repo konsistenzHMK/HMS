@@ -705,20 +705,24 @@ const upload_file = async(photo_file) => {
 
 const get_students_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
+    console.log(hostel_id);
     const q = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
     const q1 = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);
     const documents1 = await getDocs(q1);
     const data = [];
     const data1 = [];
-    const data2 = {};
+    
+    const data3=[];
     documents.forEach((doc) =>{
         data1.push(doc.data().room_id,doc.data().room_no,doc.data().room_capacity);
     }); 
     documents1.forEach((doc) => {
-        data2[doc.data().student_id] = doc.data().first_name + " " + doc.data().last_name;
+        const data2 = [];
+        data2.push(doc.data().student_id,doc.data().first_name,doc.data().last_name,doc.data().gender)
+        data3.push(data2);
     });
-    data.push(data1,data2);
+    data.push(data1,data3);
     
     
     res.send(data);

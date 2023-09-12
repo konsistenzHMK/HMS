@@ -734,20 +734,32 @@ const get_room_details_for_room_allocation = async(req,res)=>{
     const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);
     const documents1 = await getDocs(q1);
-    const data = [];
-    const data1 = {};
+    const data1 = [];
     documents.forEach((doc) =>{
-        data1["room_id"] = doc.data().room_id;
-        data1["room_no"] = doc.data().room_no;
-        data1["room_capacity"] = doc.data().room_capacity;
-    
+        let data2 = {}; 
+        data2["room_id"] = doc.data().room_id,
+        data2["room_no"] = doc.data().room_no,
+        data2["room_capacity"] = doc.data().room_capacity
+        documents1.forEach((doc1) => {
+            data2["pending_capacity"] = doc1.data().pending_capacity;
+        });
+        data1.push(data2);
     }); 
-    documents1.forEach((doc) => {
-        data1["pending_capacity"] = doc.data().pending_capacity;
-    });
-
-    data.push(data1);
-    res.send(data);
+    
+    res.send(data1);
 }
 
-export  {get_room_details_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+const get_allocated_students_for_room_allocation = async(req,res)=>{
+    const hostel_id = req.query.hostel_id;
+    const q = query(collection(db,"student_to_room_allocation"),where("hostel_id","==",hostel_id,"&&","status","==",""));
+    const documents = await getDocs(q);
+    const data = {};
+    const data1 = {};
+    documents.forEach((doc) => {
+        data[doc.data().user_id] = (data1["room_id"] = doc.data().room_id, data1["room_no"] = doc.data().room_no);
+    });
+    res.send(data);
+
+} 
+
+export  {get_allocated_students_for_room_allocation,get_room_details_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

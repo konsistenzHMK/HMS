@@ -753,10 +753,11 @@ const get_allocated_students_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
     const q = query(collection(db,"student_to_room_allocation"),where("hostel_id","==",hostel_id,"&&","status","==",""));
     const documents = await getDocs(q);
-    const data = {};
-    const data1 = {};
+    let data = {};
     documents.forEach((doc) => {
-        data[doc.data().user_id] = (data1["room_id"] = doc.data().room_id, data1["room_no"] = doc.data().room_no);
+        let data1 = {};
+        data[doc.data().user_id] = {"room_id":doc.data().room_id, 
+                                    "room_no": doc.data().room_no};
     });
     res.send(data);
 

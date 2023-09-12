@@ -12,8 +12,27 @@ const RoomAllocation = () => {
     const [currentTime, setCurrentTime] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [allStudents, setAllStudent] = useState([]);
-    
+    const [allRooms, setAllRooms] = useState(null);
+    const [allStudentRoomMap,setAllStudentRoomMap]=useState(null);
+
     const { state } = useLocation();
+
+    const getStudentsRoomMap = async () => {
+        try {
+            const response = await fetch(`http://localhost:7000/get_allocated_students_for_room_allocation?hostel_id=${state.ans}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+            if (response.ok) {
+                const result = await response.json();
+                console.log("Map", result);
+                setAllStudentRoomMap(result);
+            }
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
 
     const getStudents = async () => {
         try {
@@ -31,8 +50,28 @@ const RoomAllocation = () => {
             alert(err);
         }
     }
+
+    const getRooms = async () => {
+        try {
+            const response = await fetch(`http://localhost:7000/get_room_details_for_room_allocation?hostel_id=${state.ans}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+            if (response.ok) {
+                const result = await response.json();
+                console.log("Rooms", result);
+                setAllRooms(result);
+                // setAllStudent(result[1]);
+            }
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
     useEffect(() => {
         getStudents();
+        getRooms();
+        getStudentsRoomMap();
     }, [])
 
     useEffect(() => {
@@ -63,7 +102,7 @@ const RoomAllocation = () => {
         const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
         return date.toLocaleTimeString(undefined, options);
     };
-    
+
 
     const [errors, setErrors] = useState({});
 
@@ -76,45 +115,131 @@ const RoomAllocation = () => {
     };
 
 
+    let color = true;
+    let lastColor = false;
+    const togglePopup = () => {
+        setShowPopup(!showPopup);
+    };
 
-    // const Popup = () => {
-    //     return (
-    //         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 flex-col">
-    //             <div className='bg-white w-1/3 h-16 flex flex-col justify-center'>
-    //                 <p className='font-popins text-3xl font-medium text-orange-500 text-center'>Hostel Name</p>
-    //             </div>
-    //             <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
-    //                 <div className='w-full flex flex-row h-1/2 flex-wrap'>
-    //                     {hostelID.map((ele, i) => {
-    //                         if(i%2==0){ 
-    //                             color=lastColor;
-    //                             lastColor=!lastColor;
-    //                         }
-    //                         else color=!color
-    //                         return (
-    //                             <div className={`w-1/2 h-full ${color==true ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}>
-    //                                 <button className='font-popins text-2xl font-medium text-black ' onClick={async() => {
-    //                                     setShowPopup(false);
-    //                                     navigate('/room-Allocation',{
-    //                                         state:{
-    //                                             ans:ele[0]
-    //                                         }
-    //                                     })
-    //                                 }}>{ele[1]}</button>
-    //                             </div>
-    //                         )
-    //                     })}
-    //                 </div>
-    //             </div>
-    //             <button
-    //                 className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-    //                 onClick={togglePopup}
-    //             >
-    //                 Close
-    //             </button>
-    //         </div>
-    //     );
-    // };
+    const togglePopupButton = (event) => {
+        event.preventDefault();
+        setShowPopup(!showPopup);
+    };
+    // const handleRoomClickForStudent=()=>{
+
+    // }
+    const Popup = () => {
+        return (
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 flex-col">
+                <div className='bg-white w-1/3 h-16 flex flex-col justify-center'>
+                    <p className='font-popins text-3xl font-medium text-orange-500 text-center'>Rooms</p>
+                </div>
+                <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
+                    <div className='w-full flex flex-row h-1/2 flex-wrap'>
+                        {allRooms.map((ele, i) => {
+                            if (i % 2 == 0) {
+                                color = lastColor;
+                                lastColor = !lastColor;
+                            }
+                            else color = !color
+                            return (
+                                <button 
+                                    className={`w-1/2 h-full ${color == true ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}
+                                    onClick={(e)=>{
+                                        e.preventDefault();
+                                
+                                        const previous_room_id=allStudentRoomMap[currentStudent]?.room_id;
+                                        const current_room_id=ele.room_id;
+
+                                        console.log('previous_room_id',previous_room_id);
+
+                                        
+                                        setAllStudentRoomMap((prevData) => ({
+                                            ...prevData,
+                                            [currentStudent]: {
+                                                'room_id':ele.room_id,
+                                                'room_no':ele.room_no
+                                            }
+                                        }));
+                                        
+                                        if(previous_room_id){
+                                            console.log("worked0")
+                                            allRooms.forEach((ele,i)=>{
+                                                if(ele.room_id==previous_room_id){
+                                                    console.log("worked1")
+                                                    if(ele.pending_capacity){
+
+                                                        
+                                                        let outerCopy=[...allRooms];
+                                                        let innerCopy=ele;
+                                                        console.log("worked2")
+                                                        
+                                                        let num=Number(innerCopy.pending_capacity)
+                                                        // innerCopy.pending_capacity-=1;
+                                                        num-=1;
+                                                        num.toString();
+                                                        innerCopy.pending_capacity=num;
+                                                        outerCopy[i]=innerCopy;
+                                                        setAllRooms(outerCopy);
+                                                    }
+                                                }
+                                            })
+                                        }
+                                        if(current_room_id){
+                                            allRooms.forEach((ele)=>{
+                                                if(ele.room_id==current_room_id){
+                                                    if(ele.pending_capacity){
+                                                        let outerCopy=[...allRooms];
+                                                        let innerCopy=ele;
+    
+                                                        let num=Number(innerCopy.pending_capacity)
+                                                        // innerCopy.pending_capacity-=1;
+                                                        num+=1;
+                                                        num.toString();
+                                                        innerCopy.pending_capacity=num;
+                                                        outerCopy[i]=innerCopy;
+    
+                                                        setAllRooms(outerCopy);
+                                                    }
+                                                    else{
+                                                        let outerCopy=[...allRooms];
+                                                        let innerCopy=ele;
+    
+                                                        let num=0
+                                                        // innerCopy.pending_capacity-=1;
+                                                        num+=1;
+                                                        num.toString();
+                                                        innerCopy.pending_capacity=num;
+                                                        outerCopy[i]=innerCopy;
+    
+                                                        setAllRooms(outerCopy);
+                                                    }
+                                                }
+                                            })
+                                        }
+
+                                        console.log(allStudentRoomMap);
+                                        console.log(allRooms);
+                                        
+                                        togglePopup();
+                                    }}
+                                >
+                                   <div className='w-full flex justify-center'>Room No : {ele.room_no}</div>
+                                   <div className='w-full flex justify-center'>Occupied : {ele.pending_capacity==undefined ? 0 : ele.pending_capacity}/{ele.room_capacity}</div>
+                                </button>
+                            )
+                        })}
+                    </div>
+                </div>
+                <button
+                    className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                    onClick={togglePopupButton}
+                >
+                    Close
+                </button>
+            </div>
+        );
+    };
 
     const tableData = [
         { id: 1, name: 'John', Gender: 'M', Room: '' },
@@ -124,6 +249,12 @@ const RoomAllocation = () => {
     ];
 
     // console.log("State",state);
+
+    const [currentStudent,setCurrentStudent]=useState(null);
+
+    const inClickButton=(item)=>{
+
+    }
     return (
         <div className="flex bg-defaultBg" >
             {/* Main Content */}
@@ -168,6 +299,7 @@ const RoomAllocation = () => {
                                             {/* Back */}
                                         </div>
                                     </div>
+                                    {showPopup? <Popup />:null}
                                     <div className='m-5 '>
                                         <table border="1" className='w-full font-popins rounded-2xl'>
                                             <thead className='bg-slate-100 h-14'>
@@ -185,18 +317,32 @@ const RoomAllocation = () => {
                                                         <td className='w-1/5 text-center'>{item[0]}</td>
                                                         <td className='w-1/5 text-center'>{item[1] + " " + item[2]}</td>
                                                         <td className='w-1/5 text-center font-semibold'>{item[3] == 'male' ? 'M' : 'F'}</td>
-                                                        <td className='w-1/5 text-cente'><button className='h-8 w-full bg-zinc-300 border rounded-md' onClick={(e) => { e.preventDefault() }}>Select the Room</button></td>
-                                                        <td className='w-1/5 text-center'><input
-                                                            className='w-2/3 font-semibold'
+                                                        <td className='w-1/5 text-cente'><button className='h-8 w-full bg-zinc-300 border rounded-md' onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setCurrentStudent(item[0].toString());
+                                                            togglePopup(true);
+                                                        }}>Select the Room</button></td>
+                                                        <td className='w-1/5 text-center'>
+                                                        <input
+                                                            className={`w-2/3 font-semibold text-center ${i % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}
                                                             readonly
                                                             type="text"
-                                                            // value={}
+                                                            disabled={true}
+                                                            value={allStudentRoomMap[item[0].toString()]?.room_no}
                                                         />
+                                                        {/* {console.log(allStudentRoomMap[item[0].toString()])} */}
                                                         </td>
                                                     </tr>
                                                 ))}
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div className='w-full mt-4 flex justify-end mb-5'>
+                                        <div className='w-96 flex mr-5'>
+                                            <button className={`h-10 bg-accent2  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-full`}>
+                                                    Save selected student and Continue
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

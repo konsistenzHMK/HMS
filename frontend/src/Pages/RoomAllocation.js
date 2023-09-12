@@ -15,7 +15,7 @@ const RoomAllocation = () => {
 
     const { state } = useLocation();
 
-    const getStudents =async ()=>{
+    const getStudents = async () => {
         try {
             const response = await fetch(`http://localhost:7000/get_students_for_room_allocation?hostel_id=${state.ans}`, {
                 method: "GET",
@@ -23,20 +23,20 @@ const RoomAllocation = () => {
             });
             if (response.ok) {
                 const result = await response.json();
-                console.log("result1",result);
-                setAllStudent(result);
+                console.log("result1", result[1]);
+                setAllStudent(result[1]);
             }
         }
         catch (err) {
             alert(err);
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         getStudents();
-    },[])
+    }, [])
 
     useEffect(() => {
-        
+
         const intervalId = setInterval(() => {
             const date = new Date();
 
@@ -120,7 +120,7 @@ const RoomAllocation = () => {
         { id: 3, name: 'Alex', Gender: 'F', Room: '' },
         { id: 4, name: 'Fin', Gender: 'M', Room: '' },
     ];
-    
+
     // console.log("State",state);
     return (
         <div className="flex bg-defaultBg" >
@@ -153,34 +153,43 @@ const RoomAllocation = () => {
                     {/* Header */}
 
                     {/* Form Data */}
-                    <div className='flex flex-col w-full  bg-defaultBg'>
-                        <div className='w-full flex justify-center h-1/2 mt-10' >
-                            <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
-                                <div className='w-1/2 flex flex-col ml-5'>
-                                    <div className='w-full mt-5'>
-                                        <p className='font-popins text-2xl font-semibold '>Hostel Room Allocation</p>
+                    <div className='flex flex-col w-full h-screen bg-defaultBg'>
+                        <div className='w-full flex justify-center  mt-10' >
+                            <div className='flex flex-row w-11/12 h-full bg-white rounded-lg drop-shadow-lg'>
+                                <div className='w-full flex flex-col ml-5'>
+                                    <div className='w-full flex mt-4'>
+                                        <div className='w-3/4 flex-col '>
+                                            <div><p className='text-black font-semibold text-2xl font-popins'>Student List</p></div>
+                                            <div><p className='text-base font-popins text-orange-500'>List of students those who needs to be allotted the room </p></div>
+                                        </div>
+                                        <div className='w-1/4'>
+                                            {/* Back */}
+                                        </div>
                                     </div>
-
-                                    <table border="1">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Gender</th>
-                                                <th>Room</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {/* {data.map((item) => (
-                                                <tr key={item.id}>
-                                                    <td>{item.id}</td>
-                                                    <td>{item.name}</td>
-                                                    <td>{item.gender}</td>
-                                                    <td>{item.room}</td>
+                                    <div className='m-5'>
+                                        <table border="1" className='w-full font-popins'>
+                                            <thead className='bg-slate-100 rounded-r-lg rounded-l-lg h-16'>
+                                                <tr>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>ID</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Name</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Gender</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Select Room</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Room</th>
                                                 </tr>
-                                            ))} */}
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                {allStudents.map((item,i) => (
+                                                    <tr className={`mt-1 h-12 ${i%2==0 ?'bg-slate-200' : 'bg-slate-100'}`} key={item[0]} >
+                                                        <td className='w-1/5 text-center'>{item[0]}</td>
+                                                        <td className='w-1/5 text-center'>{item[1] + item[2]}</td>
+                                                        <td className='w-1/5 text-center'>{item[3]}</td>
+                                                        <td className='w-1/5 text-cente'><button className='h-8 w-full bg-slate-300' onClick={(e)=>{e.preventDefault()}}>Select the Room</button></td>
+                                                        <td className='w-1/5 text-center'><input className='w-2/3' readonly></input></td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -712,14 +712,17 @@ const get_students_for_room_allocation = async(req,res)=>{
     const documents1 = await getDocs(q1);
     const data = [];
     const data1 = [];
-    const data2 = [];
+    
+    const data3=[];
     documents.forEach((doc) =>{
         data1.push(doc.data().room_id,doc.data().room_no,doc.data().room_capacity);
     }); 
     documents1.forEach((doc) => {
+        const data2 = [];
         data2.push(doc.data().student_id,doc.data().first_name,doc.data().last_name,doc.data().gender)
+        data3.push(data2);
     });
-    data.push(data1,data2);
+    data.push(data1,data3);
     
     
     res.send(data);

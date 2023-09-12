@@ -94,7 +94,7 @@ const DashboardPage = () => {
                             else color=!color
                             return (
                                 <div className={`w-1/2 h-full ${color==true ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}>
-                                    <button className='font-popins text-2xl font-medium text-black ' onClick={() => {
+                                    <button className='font-popins text-2xl font-medium text-black ' onClick={async() => {
                                         setShowPopup(false);
                                         navigate('/room-Allocation',{
                                             state:{

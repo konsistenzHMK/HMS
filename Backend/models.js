@@ -1660,4 +1660,35 @@ const student_to_room_allocation = async (req, res) => {
 
 }
 
-export {hostel_tower_wing,student_to_room_allocation, status_trasition, saved_form_1, saved_form_2, saved_form_3, saved_form_4, saved_form_5, saved_form_6, expense_flow_code_to_user_id, hostel_flow_code_to_user_id, flow_table_for_expense, flow_table_for_hostel, user_role_management, role_to_process_mapping, process_id_to_process_description, expense_type, role_reference, users, expense_item, expense_header, allAddressDetails, hostel_registration, student_registration, hostel_tower_reg, hostel_room_reg, expense };
+
+const virtual_table_for_room_allocation = async (req, res) => {
+    const{
+        name,
+        user_id,
+        hostel_id,
+        room_no,
+        room_id,
+        room_capacity,
+        pending_capacity,
+        room_status
+    } = req.body;
+
+    try {
+        await setDoc(doc(db, "virtual_table_for_room_allocation", await random_doc_id_function()), {
+            name,
+            user_id,
+            hostel_id,
+            room_no,
+            room_id,
+            room_capacity,
+            pending_capacity,
+            room_status
+        });
+    }
+    catch (e) {
+        res.send("Data not inserted");
+    }
+    res.send("Data Inserted");
+}
+
+export {virtual_table_for_room_allocation,hostel_tower_wing,student_to_room_allocation, status_trasition, saved_form_1, saved_form_2, saved_form_3, saved_form_4, saved_form_5, saved_form_6, expense_flow_code_to_user_id, hostel_flow_code_to_user_id, flow_table_for_expense, flow_table_for_hostel, user_role_management, role_to_process_mapping, process_id_to_process_description, expense_type, role_reference, users, expense_item, expense_header, allAddressDetails, hostel_registration, student_registration, hostel_tower_reg, hostel_room_reg, expense };

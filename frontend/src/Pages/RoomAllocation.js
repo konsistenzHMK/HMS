@@ -324,9 +324,10 @@ const RoomAllocation = () => {
                                                         }}>Select the Room</button></td>
                                                         <td className='w-1/5 text-center'>
                                                         <input
-                                                            className='w-2/3 font-semibold text-center'
+                                                            className={`w-2/3 font-semibold text-center ${i % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}
                                                             readonly
                                                             type="text"
+                                                            disabled={true}
                                                             value={allStudentRoomMap[item[0].toString()]?.room_no}
                                                         />
                                                         {/* {console.log(allStudentRoomMap[item[0].toString()])} */}
@@ -335,6 +336,13 @@ const RoomAllocation = () => {
                                                 ))}
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div className='w-full mt-4 flex justify-end mb-5'>
+                                        <div className='w-96 flex mr-5'>
+                                            <button className={`h-10 bg-accent2  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-full`}>
+                                                    Save selected student and Continue
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

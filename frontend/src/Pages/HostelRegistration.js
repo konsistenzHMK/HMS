@@ -689,9 +689,7 @@ const App = (props) => {
               {/* 1 --> Basic Details */}
               <div className='font-semibold underline flex justify-between underline-offset-1 text-sky-950 text-2xl pt-3 mb-3 font-popins'>
                 <p className='font-popins'>Basic Details</p>
-                <div className='w-1/2 flex justify-end align-middle'>
-                  <button className='w-2/5 h-10 bg-gray-200 rounded-xl  border-1 border-gray-400 text-xl' onClick={goBack}>Back</button>
-                </div>
+
               </div>
               {/* 1.1 */}
               <div className='w-full h-auto flex flex-col mt-3 font-popins'>
@@ -898,7 +896,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ1} 
                         onChange={handleDropdownCat1}
-                        // disabled={CheckDisplayForm()}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="girls">Girls</option>
@@ -915,7 +913,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ2} 
                         onChange={handleDropdownCat2}
-                        // disabled={CheckDisplayForm()}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="t-1">type-1</option>
@@ -937,7 +935,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.categ3} 
                         onChange={handleDropdownCat3}
-                        // disabled={CheckDisplayForm()}
+                        disabled={CheckDisplayForm()}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="rented">Rented</option>
@@ -1057,7 +1055,7 @@ const App = (props) => {
                         className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5' 
                         value={formData.mess} 
                         onChange={handleDropdownMessType}
-                        // disabled={CheckDisplayForm()}
+                        disabled={props.op==3}
                         >
                         <option value="" disabled>Select an option</option>
                         <option value="government">Government</option>
@@ -1111,7 +1109,7 @@ const App = (props) => {
                         options={options}
                         value={getarray(formData.other_facility)}
                         onChange={handleChange2}
-                        disabled={CheckDisplayForm()}
+                        isDisabled={props.op==3}
                         className="basic-multi-select"
                         classNamePrefix="select"
                       />
@@ -1130,7 +1128,7 @@ const App = (props) => {
                           >
                           <option value="draft">Draft</option>
                           <option value="NA">Select an option</option>
-                          <option value="delete">Deleted</option>
+                          <option value="del">Deleted</option>
                           <option value="pending">Pending for Approval</option>
                           <option value="active">Active</option>
                           <option value="block">Block</option>

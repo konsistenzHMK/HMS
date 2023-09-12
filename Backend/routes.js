@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import {hostel_tower_wing,student_to_room_allocation,status_trasition,saved_form_1,saved_form_2,saved_form_3,saved_form_4,saved_form_5,saved_form_6,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management,role_to_process_mapping,process_id_to_process_description,expense_type,role_reference,users,expense_header, allAddressDetails ,hostel_registration , student_registration , hostel_tower_reg ,hostel_room_reg ,expense} from './models.js';
-import{get_room_no_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,get_expense_code_expense_name_expense_type,rector_id_to_hostel_id , hostel_id_to_studentname,saved_data_from_hostel_registration} from './logics.js';
+import {virtual_table_for_room_allocation,hostel_tower_wing,student_to_room_allocation,status_trasition,saved_form_1,saved_form_2,saved_form_3,saved_form_4,saved_form_5,saved_form_6,expense_flow_code_to_user_id,hostel_flow_code_to_user_id,flow_table_for_expense,flow_table_for_hostel,user_role_management,role_to_process_mapping,process_id_to_process_description,expense_type,role_reference,users,expense_header, allAddressDetails ,hostel_registration , student_registration , hostel_tower_reg ,hostel_room_reg ,expense} from './models.js';
+import{get_allocated_students_for_room_allocation,get_room_details_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,get_expense_code_expense_name_expense_type,rector_id_to_hostel_id , hostel_id_to_studentname,saved_data_from_hostel_registration} from './logics.js';
 router.post('/hostel/registration',hostel_registration)
 router.post('/student/registration',student_registration)
 router.post('/hostel/tower',hostel_tower_reg) 
@@ -41,5 +41,8 @@ router.post('/student/to/room/allocation',student_to_room_allocation)
 router.get('/get_tower_id_where_status_active',get_tower_id_where_status_active)
 router.get('/get_wing_id_where_status_active',get_wing_id_where_status_active)
 router.post('/hostel_tower_wing',hostel_tower_wing)
-router.get('/get_room_no_for_room_allocation',get_room_no_for_room_allocation)
+// router.get('/get_room_no_for_room_allocation',get_room_no_for_room_allocation)
+router.post('/virtual_table_for_room_allocation',virtual_table_for_room_allocation)
+router.get('/get_room_details_for_room_allocation',get_room_details_for_room_allocation)
+router.get('/get_allocated_students_for_room_allocation',get_allocated_students_for_room_allocation)
 export default router; 

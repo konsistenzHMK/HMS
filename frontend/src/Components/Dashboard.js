@@ -22,7 +22,7 @@ import {
 const Dashboard = () => {
     const navigate = useNavigate();
   return (
-    <div className="w-1/6 h-full bg-accent flex flex-col sticky top-0">
+    <div className="w-1/6 h-screen bg-accent flex flex-col sticky top-0">
     {/* Image & Name*/}
     <div className='flex flex-row justify-center w-full mt-10 mb-10'>
         <div className='w-5/6 flex flex-col justify-center'>

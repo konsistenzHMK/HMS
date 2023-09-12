@@ -414,9 +414,9 @@ const expense_flow_code_count = async(req,res)=>{
 }
 
 const saved_data_from_hostel_registration = async(req,res)=>{
-    const q = query(collection(db, "hostel_registration"),orderBy("created_on","desc"));
-    const querySnapshot = await getDocs(q);
-    // const querySnapshot = await getDocs(collection(db, "hostel_registration"),orderBy("hostel_name","desc"));
+    // const q = query(collection(db, "hostel_registration"),orderBy("created_on","desc"));
+    // const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(collection(db, "hostel_registration"),orderBy("hostel_name","desc"));
     // console.log(querySnapshot)
     const data1 = [];
     querySnapshot.forEach((doc) => {
@@ -705,38 +705,87 @@ const upload_file = async(photo_file) => {
 
 const get_students_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
+    console.log(hostel_id);
     const q = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
     const q1 = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);
     const documents1 = await getDocs(q1);
     const data = [];
     const data1 = [];
-    const data2 = {};
+    
+    const data3=[];
     documents.forEach((doc) =>{
         data1.push(doc.data().room_id,doc.data().room_no,doc.data().room_capacity);
     }); 
     documents1.forEach((doc) => {
-        data2[doc.data().student_id] = doc.data().first_name + " " + doc.data().last_name;
+        const data2 = [];
+        data2.push(doc.data().student_id,doc.data().first_name,doc.data().last_name,doc.data().gender)
+        data3.push(data2);
     });
-    data.push(data1,data2);
+    data.push(data1,data3);
     
     
     res.send(data);
 }
 
-const get_room_no_for_room_allocation = async(req,res,)=>{
-    //on hold first make some rooms then come here to write further code
+const get_room_details_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
-    const data = {};  
-    documents.forEach((doc) => {
-        data[doc.data().room_id] = doc.data().room_no;
+    const q = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
+    const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
+    const documents = await getDocs(q);
+    const documents1 = await getDocs(q1);
+    
+   
+    const data2 = [];
+    documents.forEach((doc) =>{
+        data2.push(doc.data().room_id);
     });
-    res.send(data);
+    const data3 = []; 
+    documents1.forEach((doc1) => {
+        data3.push(doc1.data().room_id);
+    });
+    
+
+    let myArr=[]
+    for(let i=0;i<data2.length;i++){
+        let count=0;
+        for(let j=0;j<data3.length;j++){
+            if(data2[i] == data3[j]){
+                count++;
+            }
+        }
+        console.log(count);
+        myArr.push(count);
+    }
+
+    console.log(myArr);
+    const data1 = [];
+    let c=0;
+    documents.forEach((doc) =>{
+        let data2 = {};
+        data2["room_id"] = doc.data().room_id,
+        data2["room_no"] = doc.data().room_no,
+        data2["room_capacity"] = doc.data().room_capacity
+        data2["pending_capacity"] = myArr[c];
+        // console.log(i);
+        data1.push(data2);
+        c++;
+    });
+    res.send(data1);
 }
 
+const get_allocated_students_for_room_allocation = async(req,res)=>{
+    const hostel_id = req.query.hostel_id;
+    const q = query(collection(db,"student_to_room_allocation"),where("hostel_id","==",hostel_id,"&&","status","==",""));
+    const documents = await getDocs(q);
+    let data = {};
+    documents.forEach((doc) => {
+        let data1 = {};
+        data[doc.data().user_id] = {"room_id":doc.data().room_id, 
+                                    "room_no": doc.data().room_no};
+    });
+    res.send(data);
 
+} 
 
-
-
-
-export  {get_room_no_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};
+export  {get_allocated_students_for_room_allocation,get_room_details_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

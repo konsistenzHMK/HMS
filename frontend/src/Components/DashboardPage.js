@@ -82,7 +82,7 @@ const DashboardPage = () => {
         return (
             <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 flex-col">
                 <div className='bg-white w-1/3 h-16 flex flex-col justify-center'>
-                    <p className='font-popins text-3xl font-medium text-orange-500 '>Hostel Name</p>
+                    <p className='font-popins text-3xl font-medium text-orange-500 text-center'>Hostel Name</p>
                 </div>
                 <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
                     <div className='w-full flex flex-row h-1/2 flex-wrap'>

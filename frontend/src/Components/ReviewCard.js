@@ -108,15 +108,15 @@ const ReviewCard = (props) => {
 
             <div className='flex w-4/5 justify-between mt-5'>
             <div>   
-                <button className='bg-defaultBg w-36 h-10 border-1 border-slate-400 rounded-md'
-                    onClick={setAll} disabled={()=>{return formData.status=='del'}}
+                <button className={`w-36 h-10 border-1 ${formData.status=='del'? 'bg-slate-400':'bg-defaultBg'}  border-slate-400 rounded-md`}
+                    onClick={setAll} disabled={formData.status=='del'}
                 >
                     <p className='font-popins text-lg text-normal'>Edit</p>
                 </button>
             </div>
             <div>  
-                <button className='bg-defaultBg  w-36 h-10 border-1 border-slate-400 rounded-md'
-                    onClick={setEdi2} display={()=>{return formData.status=='del'}} 
+                <button className={`w-36 h-10 border-1 ${formData.status=='del'? 'bg-slate-400':'bg-defaultBg'}  border-slate-400 rounded-md`}
+                    onClick={setEdi2} disabled={formData.status=='del'}
                 >
                     <p className='font-popins text-normal'>Review</p>
                 </button>

@@ -1648,7 +1648,7 @@ const student_to_room_allocation = async (req, res) => {
             hostel_id,
             room_id,
             room_no,
-            start_date,
+            start_date, 
             end_date,
             status,
         });

@@ -168,7 +168,7 @@ const RoomAllocation = () => {
                                     </div>
                                     <div className='m-5'>
                                         <table border="1" className='w-full font-popins'>
-                                            <thead className='bg-slate-100 rounded-r-lg rounded-l-lg h-16'>
+                                            <thead className='bg-slate-100 rounded-r-lg rounded-l-lg h-14'>
                                                 <tr>
                                                     <th className='w-1/5 text-center text-xl text-orange-400'>ID</th>
                                                     <th className='w-1/5 text-center text-xl text-orange-400'>Name</th>
@@ -181,7 +181,7 @@ const RoomAllocation = () => {
                                                 {allStudents.map((item,i) => (
                                                     <tr className={`mt-1 h-12 ${i%2==0 ?'bg-slate-200' : 'bg-slate-100'}`} key={item[0]} >
                                                         <td className='w-1/5 text-center'>{item[0]}</td>
-                                                        <td className='w-1/5 text-center'>{item[1] + item[2]}</td>
+                                                        <td className='w-1/5 text-center'>{item[1] +" "+ item[2]}</td>
                                                         <td className='w-1/5 text-center'>{item[3]}</td>
                                                         <td className='w-1/5 text-cente'><button className='h-8 w-full bg-slate-300' onClick={(e)=>{e.preventDefault()}}>Select the Room</button></td>
                                                         <td className='w-1/5 text-center'><input className='w-2/3' readonly></input></td>

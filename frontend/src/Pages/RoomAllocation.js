@@ -12,7 +12,7 @@ const RoomAllocation = () => {
     const [currentTime, setCurrentTime] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [allStudents, setAllStudent] = useState([]);
-
+    
     const { state } = useLocation();
 
     const getStudents = async () => {
@@ -23,7 +23,7 @@ const RoomAllocation = () => {
             });
             if (response.ok) {
                 const result = await response.json();
-                console.log("result1", result[1]);
+                console.log("result1", result);
                 setAllStudent(result[1]);
             }
         }
@@ -63,10 +63,7 @@ const RoomAllocation = () => {
         const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
         return date.toLocaleTimeString(undefined, options);
     };
-    //dropdown
-    const handleDropdownStatusType = (event) => {
-        // changeroomAlc(event.target.value);
-    };
+    
 
     const [errors, setErrors] = useState({});
 
@@ -78,41 +75,46 @@ const RoomAllocation = () => {
         }));
     };
 
-    const validateForm = () => {
-        const errors = {};
-        setErrors(errors);
-        return errors;
-    };
 
-    const [selectedOption, setSelectedOption] = useState('');
 
-    const handleOptionSelect = (option) => {
-        setSelectedOption(option);
-        setFormData((prevData) => ({
-            ...prevData,
-            selection_option: option
-        }));
-    };
-
-    const Prevent = (e) => {
-        e.preventDefault();
-    }
-
-    const [selectedValues, setSelectedValues] = useState([
-        { id: 1, name: 'John', Gender: 'M', Room: '' },
-        { id: 2, name: 'Jane', Gender: 'F', Room: '' },
-        { id: 3, name: 'Alex', Gender: 'F', Room: '' },
-        { id: 4, name: 'Fin', Gender: 'M', Room: '' },
-    ]);
-
-    const handleRadioSelect = (id, name, hostel) => {
-        if (selectedValues.some((value) => value.id == id)) {
-            setSelectedValues(selectedValues.filter((value) => value.id !== id));
-        } else {
-            setSelectedValues([...selectedValues, { id, name, hostel }]);
-        }
-    };
-    // console.log(selectedValues);
+    // const Popup = () => {
+    //     return (
+    //         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 flex-col">
+    //             <div className='bg-white w-1/3 h-16 flex flex-col justify-center'>
+    //                 <p className='font-popins text-3xl font-medium text-orange-500 text-center'>Hostel Name</p>
+    //             </div>
+    //             <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
+    //                 <div className='w-full flex flex-row h-1/2 flex-wrap'>
+    //                     {hostelID.map((ele, i) => {
+    //                         if(i%2==0){ 
+    //                             color=lastColor;
+    //                             lastColor=!lastColor;
+    //                         }
+    //                         else color=!color
+    //                         return (
+    //                             <div className={`w-1/2 h-full ${color==true ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}>
+    //                                 <button className='font-popins text-2xl font-medium text-black ' onClick={async() => {
+    //                                     setShowPopup(false);
+    //                                     navigate('/room-Allocation',{
+    //                                         state:{
+    //                                             ans:ele[0]
+    //                                         }
+    //                                     })
+    //                                 }}>{ele[1]}</button>
+    //                             </div>
+    //                         )
+    //                     })}
+    //                 </div>
+    //             </div>
+    //             <button
+    //                 className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+    //                 onClick={togglePopup}
+    //             >
+    //                 Close
+    //             </button>
+    //         </div>
+    //     );
+    // };
 
     const tableData = [
         { id: 1, name: 'John', Gender: 'M', Room: '' },
@@ -166,11 +168,11 @@ const RoomAllocation = () => {
                                             {/* Back */}
                                         </div>
                                     </div>
-                                    <div className='m-5'>
-                                        <table border="1" className='w-full font-popins'>
-                                            <thead className='bg-slate-100 rounded-r-lg rounded-l-lg h-14'>
+                                    <div className='m-5 '>
+                                        <table border="1" className='w-full font-popins rounded-2xl'>
+                                            <thead className='bg-slate-100 h-14'>
                                                 <tr>
-                                                    <th className='w-1/5 text-center text-xl text-orange-400'>ID</th>
+                                                    <th className='w-1/5 text-center text-xl text-orange-400 '>ID</th>
                                                     <th className='w-1/5 text-center text-xl text-orange-400'>Name</th>
                                                     <th className='w-1/5 text-center text-xl text-orange-400'>Gender</th>
                                                     <th className='w-1/5 text-center text-xl text-orange-400'>Select Room</th>
@@ -178,13 +180,19 @@ const RoomAllocation = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {allStudents.map((item,i) => (
-                                                    <tr className={`mt-1 h-12 ${i%2==0 ?'bg-slate-200' : 'bg-slate-100'}`} key={item[0]} >
+                                                {allStudents.map((item, i) => (
+                                                    <tr className={`mt-1 h-12 ${i % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'} `} key={item[0]} >
                                                         <td className='w-1/5 text-center'>{item[0]}</td>
-                                                        <td className='w-1/5 text-center'>{item[1] +" "+ item[2]}</td>
-                                                        <td className='w-1/5 text-center'>{item[3]}</td>
-                                                        <td className='w-1/5 text-cente'><button className='h-8 w-full bg-slate-300' onClick={(e)=>{e.preventDefault()}}>Select the Room</button></td>
-                                                        <td className='w-1/5 text-center'><input className='w-2/3' readonly></input></td>
+                                                        <td className='w-1/5 text-center'>{item[1] + " " + item[2]}</td>
+                                                        <td className='w-1/5 text-center font-semibold'>{item[3] == 'male' ? 'M' : 'F'}</td>
+                                                        <td className='w-1/5 text-cente'><button className='h-8 w-full bg-zinc-300 border rounded-md' onClick={(e) => { e.preventDefault() }}>Select the Room</button></td>
+                                                        <td className='w-1/5 text-center'><input
+                                                            className='w-2/3 font-semibold'
+                                                            readonly
+                                                            type="text"
+                                                            // value={}
+                                                        />
+                                                        </td>
                                                     </tr>
                                                 ))}
                                             </tbody>

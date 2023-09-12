@@ -734,18 +734,43 @@ const get_room_details_for_room_allocation = async(req,res)=>{
     const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);
     const documents1 = await getDocs(q1);
-    const data1 = [];
+    
+   
+    const data2 = [];
     documents.forEach((doc) =>{
-        let data2 = {}; 
+        data2.push(doc.data().room_id);
+    });
+    const data3 = []; 
+    documents1.forEach((doc1) => {
+        data3.push(doc1.data().room_id);
+    });
+    
+
+    let myArr=[]
+    for(let i=0;i<data2.length;i++){
+        let count=0;
+        for(let j=0;j<data3.length;j++){
+            if(data2[i] == data3[j]){
+                count++;
+            }
+        }
+        console.log(count);
+        myArr.push(count);
+    }
+
+    console.log(myArr);
+    const data1 = [];
+    let c=0;
+    documents.forEach((doc) =>{
+        let data2 = {};
         data2["room_id"] = doc.data().room_id,
         data2["room_no"] = doc.data().room_no,
         data2["room_capacity"] = doc.data().room_capacity
-        documents1.forEach((doc1) => {
-            data2["pending_capacity"] = doc1.data().pending_capacity;
-        });
+        data2["pending_capacity"] = myArr[c];
+        // console.log(i);
         data1.push(data2);
-    }); 
-    
+        c++;
+    });
     res.send(data1);
 }
 

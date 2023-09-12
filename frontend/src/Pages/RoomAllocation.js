@@ -152,6 +152,15 @@ const RoomAllocation = () => {
                                         const current_room_id=ele.room_id;
 
                                         console.log('previous_room_id',previous_room_id);
+
+                                        
+                                        setAllStudentRoomMap((prevData) => ({
+                                            ...prevData,
+                                            [currentStudent]: {
+                                                'room_id':ele.room_id,
+                                                'room_no':ele.room_no
+                                            }
+                                        }));
                                         
                                         if(previous_room_id){
                                             console.log("worked0")
@@ -160,11 +169,7 @@ const RoomAllocation = () => {
                                                     console.log("worked1")
                                                     if(ele.pending_capacity){
 
-                                                        if(ele.pending_capacity==ele.room_capacity) {
-                                                            alert('Room Full');
-                                                        }
-
-                                                        else{
+                                                        
                                                         let outerCopy=[...allRooms];
                                                         let innerCopy=ele;
                                                         console.log("worked2")
@@ -176,7 +181,6 @@ const RoomAllocation = () => {
                                                         innerCopy.pending_capacity=num;
                                                         outerCopy[i]=innerCopy;
                                                         setAllRooms(outerCopy);
-                                                        }
                                                     }
                                                 }
                                             })
@@ -185,11 +189,6 @@ const RoomAllocation = () => {
                                             allRooms.forEach((ele)=>{
                                                 if(ele.room_id==current_room_id){
                                                     if(ele.pending_capacity){
-                                                        if(ele.pending_capacity==ele.room_capacity) {
-                                                            alert('Room Full');
-                                                        }
-                                                        else{
-                                                        
                                                         let outerCopy=[...allRooms];
                                                         let innerCopy=ele;
     
@@ -201,19 +200,26 @@ const RoomAllocation = () => {
                                                         outerCopy[i]=innerCopy;
     
                                                         setAllRooms(outerCopy);
-                                                        }
+                                                    }
+                                                    else{
+                                                        let outerCopy=[...allRooms];
+                                                        let innerCopy=ele;
+    
+                                                        let num=0
+                                                        // innerCopy.pending_capacity-=1;
+                                                        num+=1;
+                                                        num.toString();
+                                                        innerCopy.pending_capacity=num;
+                                                        outerCopy[i]=innerCopy;
+    
+                                                        setAllRooms(outerCopy);
                                                     }
                                                 }
                                             })
                                         }
 
-                                        setAllStudentRoomMap((prevData) => ({
-                                            ...prevData,
-                                            [currentStudent]: {
-                                                'room_id':ele.room_id,
-                                                'room_no':ele.room_no
-                                            }
-                                        }));
+                                        console.log(allStudentRoomMap);
+                                        console.log(allRooms);
                                         
                                         togglePopup();
                                     }}

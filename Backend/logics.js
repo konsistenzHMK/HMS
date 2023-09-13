@@ -707,7 +707,7 @@ const upload_file = async(photo_file) => {
 
 const get_students_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
-    console.log(hostel_id);
+    // console.log(hos  tel_id);
     const q = query(collection(db, "hostel_room"), where("hostel_id","==", hostel_id , "&&" ,"status" ,"==", "active"));
     const q1 = query(collection(db, "student_registration"), where("hostel_name_or_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);
@@ -756,11 +756,11 @@ const get_room_details_for_room_allocation = async(req,res)=>{
                 count++;
             }
         }
-        console.log(count);
+        // console.log(count);
         myArr.push(count);
     }
 
-    console.log(myArr);
+    // console.log(myArr);
     const data1 = [];
     let c=0;
     documents.forEach((doc) =>{
@@ -782,7 +782,7 @@ const get_allocated_students_for_room_allocation = async(req,res)=>{
     const documents = await getDocs(q);
     let data = {};
     documents.forEach((doc) => {
-        let data1 = {};
+        // let data1 = {};
         data[doc.data().user_id] = {"room_id":doc.data().room_id, 
                                     "room_no": doc.data().room_no};
     });
@@ -793,7 +793,63 @@ const get_allocated_students_for_room_allocation = async(req,res)=>{
 const temporary_api_for_checking_data = async(req,res)=>{
     const data_coming_from_frontend = req.body;
     console.log(data_coming_from_frontend);
-    res.send('OK');
+
+    const array_of_object_keys  = (Object.keys(data_coming_from_frontend[0]));
+    try{
+        const documents = await getDocs(collection(db, "student_to_room_allocation"));
+        let data2 = {};
+        documents.forEach((doc) => {
+            data2[doc.data().user_id] = doc.id;
+        });
+        const array_of_object_keys1 = Object.keys(data2);
+        console.log(array_of_object_keys1);
+        for(let i = 0 ; i<array_of_object_keys.length ; i++){
+            if(array_of_object_keys1.includes(array_of_object_keys[i])){
+                
+                if(data_coming_from_frontend[0][array_of_object_keys[i]].room_id == ""){
+                    await updateDoc(doc(db,"student_to_room_allocation",data2[array_of_object_keys[i]]),{
+                        hostel_id:"",
+                        room_id:"",
+                        room_no:"",
+                        status:"x",
+                        end_date:"",
+                        start_date:"",
+                        user_id:array_of_object_keys[i],
+                    });
+                }
+                await updateDoc(doc(db,"student_to_room_allocation",data2[array_of_object_keys[i]]),{
+                    user_id:array_of_object_keys[i],
+                    room_id:data_coming_from_frontend[0][array_of_object_keys[i]].room_id,
+                    room_no:data_coming_from_frontend[0][array_of_object_keys[i]].room_no,
+                    status:"",
+                    hostel_id:"",
+                    end_date:"",
+                    start_date:""
+        
+                });
+            }
+            else{
+                await setDoc(doc(db,"student_to_room_allocation",random_doc_id_function()),{
+                    user_id:array_of_object_keys[i],
+                    room_id:data_coming_from_frontend[0][array_of_object_keys[i]].room_id,
+                    room_no:data_coming_from_frontend[0][array_of_object_keys[i]].room_no,
+                    hostel_id:"",
+                    status:"",
+                    end_date:"",
+                    start_date:""
+                });
+        // const q1 = query(collection(db, "student_to_room_allocation"), where("user_id", "==" ,array_of_object_keys[i],"&&","status","==",""));
+            }
+        }
+    }
+    
+    catch(e){
+        res.send("Data not inserted");
+    }
+
+
+
+    // res.send('OK');
 }
 
 

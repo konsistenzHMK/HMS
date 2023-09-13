@@ -330,6 +330,7 @@ const RoomAllocation = () => {
                                                             disabled={true}
                                                             value={allStudentRoomMap[item[0].toString()]?.room_no}
                                                         />
+                                                        <button className='text-red-500 font-semibold mb-1' onClick={(e)=>{e.preventDefault()}}>x</button>
                                                         {/* {console.log(allStudentRoomMap[item[0].toString()])} */}
                                                         </td>
                                                     </tr>

@@ -791,6 +791,7 @@ const get_allocated_students_for_room_allocation = async(req,res)=>{
 const temporary_api_for_checking_data = async(req,res)=>{
     const data_coming_from_frontend = req.body;
     console.log(data_coming_from_frontend);
+    res.send('OK');
 }
 
 

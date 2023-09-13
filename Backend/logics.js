@@ -439,10 +439,11 @@ const gethostel_id_where_status_active = async(req,res)=>{
 }
 
 const get_tower_id_where_status_active = async(req,res)=>{
-    const q = query(collection(db, "hostel_tower"), where("status", "==", "active"));
-    const querySnapshot = await getDocs(q);
+    const hostel_id = req.query.hostel_id;
+    const q = query(collection(db, "hostel_tower"), where("hostel_id" ,"==", hostel_id, "&&","status", "==", "active"  ));
+    const documents = await getDocs(q);
     const data1 = [];
-    querySnapshot.forEach((doc) => {
+    documents.forEach((doc) => {  
         data1.push([doc.data().tower_id,doc.data().tower_name]);
  });
 
@@ -450,16 +451,17 @@ const get_tower_id_where_status_active = async(req,res)=>{
 }
 
 const get_wing_id_where_status_active = async(req,res)=>{
-    const q = query(collection(db, "hostel_tower_wing"), where("status", "==", "active"));
+    const tower_id = req.query.tower_id;
+    const q = query(collection(db, "hostel_tower_wing"), where("tower_id" , "==" ,tower_id ,"&&","status", "==", "active"));
     const querySnapshot = await getDocs(q);
     const data1 = [];
     querySnapshot.forEach((doc) => {
         data1.push([doc.data().wing_id,doc.data().wing_name]);
- });
+ }); 
 
     res.send(data1);
 }
-
+   
 const status_of_hostel_active = async(req,res)=>{
     const { 
         hostel_name,

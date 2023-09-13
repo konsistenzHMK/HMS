@@ -20,6 +20,7 @@ const RoomAllocation = () => {
     const navigate = useNavigate();
 
     const { state } = useLocation();
+    // console.log("State",state);
 
     const getStudentsRoomMap = async () => {
         try {
@@ -81,7 +82,7 @@ const RoomAllocation = () => {
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try {
-            axios.post('http://localhost:7000/temporary_api_for_checking_data', [allStudentRoomMap,allRooms])
+            axios.post('http://localhost:7000/temporary_api_for_checking_data', [allStudentRoomMap,allRooms,state])
             .then((response) => {
                 console.log('API response:', response.data);
                 navigate(-1);
@@ -312,8 +313,12 @@ const RoomAllocation = () => {
                             <div className='flex flex-row w-11/12 h-full bg-white rounded-lg drop-shadow-lg'>
                                 <div className='w-full flex flex-col ml-5'>
                                     <div className='w-full flex mt-4'>
-                                        <div className='w-3/4 flex-col '>
-                                            <div><p className='text-black font-semibold text-2xl font-popins'>Student List</p></div>
+                                        <div className='w-full flex-col '>
+                                        {/* state */}
+                                            <div className='flex'>
+                                                <p className='text-black font-semibold text-2xl font-popins'>Student List</p>
+                                                <p className='text-xl ml-5 text-orange-500 '>[ {state.ans} | {state.name} ]</p>
+                                            </div>
                                             <div><p className='text-base font-popins text-orange-500'>List of students those who needs to be allotted the room </p></div>
                                         </div>
                                         <div className='w-1/4'>
@@ -340,7 +345,7 @@ const RoomAllocation = () => {
                                                         <td className='w-1/5 text-center font-semibold'>{item[3] == 'male' ? 'M' : 'F'}</td>
                                                         <td className='w-1/5 text-cente'><button className='h-8 w-full bg-zinc-300 border rounded-md' onClick={(e) => {
                                                             e.preventDefault();
-                                                            setCurrentStudent(item[0].toString());
+                                                            setCurrentStudent(item[0]?.toString());
                                                             togglePopup(true);
                                                         }}>Select the Room</button></td>
                                                         <td className='w-1/5 text-center'>
@@ -351,8 +356,29 @@ const RoomAllocation = () => {
                                                             disabled={true}
                                                             value={allStudentRoomMap[item[0].toString()]?.room_no}
                                                         />
-                                                        <button className='text-red-500 font-semibold mb-1' onClick={(e)=>{e.preventDefault()}}>x</button>
-                                                        {/* {console.log(allStudentRoomMap[item[0].toString()])} */}
+                                                        <button className='text-red-500 font-semibold mb-1' onClick={(e)=>
+                                                            {
+                                                                e.preventDefault();
+                                                                const studentID=item[0].toString();
+                                                                const prevRoom=allStudentRoomMap[studentID].room_no;
+                                                                allStudentRoomMap[studentID].room_no='';
+                                                                allRooms.forEach((ele)=>{
+                                                                    if(ele.room_no==prevRoom){
+                                                                            let outerCopy=[...allRooms];
+                                                                            let innerCopy=ele;
+                        
+                                                                            let num=Number(innerCopy.pending_capacity)
+                                                                            // innerCopy.pending_capacity-=1;
+                                                                            num-=1;
+                                                                            num.toString();
+                                                                            innerCopy.pending_capacity=num;
+                                                                            outerCopy[i]=innerCopy;
+                        
+                                                                            setAllRooms(outerCopy);
+                                                                    }
+                                                                })
+                                                            }
+                                                        }>x</button>
                                                         </td>
                                                     </tr>
                                                 ))}

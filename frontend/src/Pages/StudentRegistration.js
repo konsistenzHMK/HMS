@@ -1519,19 +1519,19 @@ const Page4 = ({currentPage,previousPage,formData,setFormData,display,edit,revie
   const validateForm = () => {
     const errors = [];
     // Validate photo_file
-  if (!formData.photo_file) {
-    errors.push(1);
-  }
+  // if (!formData.photo_file) {
+  //   errors.push(1);
+  // }
 
-  // Validate aadhar_file
-  if (!formData.aadhar_file) {
-    errors.push(1);
-  }
+  // // Validate aadhar_file
+  // if (!formData.aadhar_file) {
+  //   errors.push(1);
+  // }
 
-  // Validate caste_file
-  if (!formData.caste_file) {
-    errors.push(1);
-  }
+  // // Validate caste_file
+  // if (!formData.caste_file) {
+  //   errors.push(1);
+  // }
 
   // Validate medical_file
   // if (!formData.medical_file) {

@@ -119,7 +119,7 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className='flex flex-col w-full bg-defaultBg'>
+        <div className='flex flex-col w-full bg-defaultBg h-screen'>
             {/* Header */}
             <div className='w-full flex justify-center h-1/2 mt-10' >
                 <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
@@ -219,8 +219,15 @@ const DashboardPage = () => {
                         >
                             <p className='font-popins text-normal'>+ Review Student Registartions</p>
                         </button>
+                    </div>
+                    <div className='w-full mt-3 ml-6 flex justify-start'>
+                        <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                            onClick={() => { navigate('/expense-Allocation') }}
+                        >
+                            <p className='font-popins text-normal'>+ Expense Booking</p>
+                        </button>
 
-            </div>
+                    </div>
 
                 </div>
             </div>

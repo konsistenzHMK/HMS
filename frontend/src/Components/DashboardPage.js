@@ -219,8 +219,15 @@ const DashboardPage = () => {
                         >
                             <p className='font-popins text-normal'>+ Review Student Registartions</p>
                         </button>
+                    </div>
+                    <div className='w-full mt-3 ml-6 flex justify-start'>
+                        <button className='bg-defaultBg w-96 h-8 border-2 border-slate-950 rounded-l-full rounded-r-full'
+                            onClick={() => { navigate('/expense-Allocation') }}
+                        >
+                            <p className='font-popins text-normal'>+ Expense Booking</p>
+                        </button>
 
-            </div>
+                    </div>
 
                 </div>
             </div>

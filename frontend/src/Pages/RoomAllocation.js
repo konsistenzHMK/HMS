@@ -317,7 +317,7 @@ const RoomAllocation = () => {
                                         {/* state */}
                                             <div className='flex'>
                                                 <p className='text-black font-semibold text-2xl font-popins'>Student List</p>
-                                                <p className='text-xl ml-5 text-orange-500 '>[ {state.ans} | {state.name} ]</p>
+                                                <p className='text-xl ml-5 text-black '>[ {state.ans} | {state.name} ]</p>
                                             </div>
                                             <div><p className='text-base font-popins text-orange-500'>List of students those who needs to be allotted the room </p></div>
                                         </div>

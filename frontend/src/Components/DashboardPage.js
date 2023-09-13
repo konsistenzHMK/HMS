@@ -86,7 +86,7 @@ const DashboardPage = () => {
                 </div>
                 <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
                     <div className='w-full flex flex-row h-1/2 flex-wrap'>
-                        {hostelID.map((ele, i) => {
+                        {hostelID?.map((ele, i) => {
                             if(i%2==0){ 
                                 color=lastColor;
                                 lastColor=!lastColor;
@@ -98,7 +98,8 @@ const DashboardPage = () => {
                                         setShowPopup(false);
                                         navigate('/room-Allocation',{
                                             state:{
-                                                ans:ele[0]
+                                                ans:ele[0],
+                                                name:ele[1]
                                             }
                                         })
                                     }}>{ele[1]}</button>

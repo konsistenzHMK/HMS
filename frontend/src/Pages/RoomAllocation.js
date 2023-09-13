@@ -4,6 +4,9 @@ import DashboardImg from '../Components/DashboardImg.svg'
 import Modal from 'react-modal';
 import axios from 'axios';
 import { useLocation } from "react-router-dom";
+import {
+    useNavigate,
+  } from 'react-router-dom';
 
 
 const RoomAllocation = () => {
@@ -14,6 +17,7 @@ const RoomAllocation = () => {
     const [allStudents, setAllStudent] = useState([]);
     const [allRooms, setAllRooms] = useState(null);
     const [allStudentRoomMap,setAllStudentRoomMap]=useState(null);
+    const navigate = useNavigate();
 
     const { state } = useLocation();
 
@@ -73,6 +77,23 @@ const RoomAllocation = () => {
         getRooms();
         getStudentsRoomMap();
     }, [])
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        try {
+            axios.post('http://localhost:7000/temporary_api_for_checking_data', [allStudentRoomMap,allRooms])
+            .then((response) => {
+                console.log('API response:', response.data);
+                navigate(-1);
+            })
+            .catch((error) => {
+                console.error('API request error:', error);
+            });
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
 
     useEffect(() => {
 
@@ -340,7 +361,7 @@ const RoomAllocation = () => {
                                     </div>
                                     <div className='w-full mt-4 flex justify-end mb-5'>
                                         <div className='w-96 flex mr-5'>
-                                            <button className={`h-10 bg-accent2  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-full`}>
+                                            <button className={`h-10 bg-accent2  text-lg font-semibold text-white border-none rounded-2xl mt-5 p-1 w-full`} onClick={handleSubmit}>
                                                     Save selected student and Continue
                                             </button>
                                         </div>

@@ -282,7 +282,7 @@ const RoomAllocation = () => {
             {/* Main Content */}
             <div className="w-full h-full">
                 <form >
-                    <div className='w-full flex justify-center h-1/2 pt-10' >
+                    <div className='w-full flex justify-center pt-10' >
                         <div className='flex flex-row w-11/12 h-40 bg-white rounded-lg drop-shadow-lg'>
                             {/* content */}
                             <div className='w-1/2 flex flex-col ml-5'>
@@ -308,7 +308,7 @@ const RoomAllocation = () => {
                     {/* Header */}
 
                     {/* Form Data */}
-                    <div className='flex flex-col w-full h-screen bg-defaultBg'>
+                    <div className='flex flex-col w-full h-full bg-defaultBg mb-10'>
                         <div className='w-full flex justify-center  mt-10' >
                             <div className='flex flex-row w-11/12 h-full bg-white rounded-lg drop-shadow-lg'>
                                 <div className='w-full flex flex-col ml-5'>

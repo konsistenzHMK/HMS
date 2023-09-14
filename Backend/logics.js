@@ -742,25 +742,31 @@ const get_room_details_for_room_allocation = async(req,res)=>{
     documents.forEach((doc) =>{
         data2.push(doc.data().room_id);
     });
-    const data3 = []; 
-    documents1.forEach((doc1) => {
-        data3.push(doc1.data().room_id);
-    });
+    // const data3 = []; 
+    // documents1.forEach((doc1) => {
+    //     if(doc1.data().pending_capacity>0) data3.push(doc1.data().room_id);
+    //     console.log(doc1.data());
+    // });
+    // console.log(data3);
     
 
     let myArr=[]
     for(let i=0;i<data2.length;i++){
-        let count=0;
-        for(let j=0;j<data3.length;j++){
-            if(data2[i] == data3[j]){
-                count++;
+        let count=false;
+        documents1.forEach((doc1) => {
+            if(data2[i]==doc1.data().room_id) {
+                myArr.push(doc1.data().pending_capacity);
+                count=true;
             }
+        });
+        if(count==false){
+            myArr.push(0);
         }
         // console.log(count);
-        myArr.push(count);
+        // myArr.push(count);
     }
 
-    // console.log(myArr);
+    console.log(myArr);
     const data1 = [];
     let c=0;
     documents.forEach((doc) =>{

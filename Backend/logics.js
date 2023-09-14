@@ -450,7 +450,7 @@ const get_tower_id_where_status_active = async(req,res)=>{
     res.send(data1);
 }
 const get_tower_id_where_status_active1 = async(req,res)=>{
-    const q = query(collection(db, "hostel_tower"), where("hostel_id" ,"==", hostel_id, "&&","status", "==", "active"  ));
+    const q = query(collection(db, "hostel_tower"), where("status", "==", "active"  ));
     const documents = await getDocs(q);
     const data1 = [];
     documents.forEach((doc) => {  

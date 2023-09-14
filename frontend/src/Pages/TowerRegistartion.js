@@ -176,13 +176,43 @@ const TowerRegistartion = () => {
         ...prevFormData,
         hostel_id: event.target.value,
       }));
+        tower_name_and_id_fetch( event.target.value);
     };
 
     useEffect(() => {
       hostel_name_and_id_fetch();
     }, []);
 
-  return (
+
+    const [tower_name_and_id, setTower_name_and_id] = useState([]);
+    const tower_name_and_id_fetch = async (hostelId) => {
+        try{
+            console.log('hostelId',hostelId)
+            const url = `http://localhost:7000/get_tower_id_where_status_active?hostel_id=${hostelId}`;
+            const response = await fetch(url,{
+                method:"GET",
+                headers:{"Content-Type":"application/json"},
+            },{});
+            if(response.ok){
+                const result = await response.json();
+                console.log(result);
+                setTower_name_and_id(result);
+            }
+        }
+        catch(err){
+            alert(err);
+        }
+    }
+
+    const handleChange3 = (event) => {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            tower_id: event.target.value,
+        }));
+    };
+
+
+    return (
     <div className="w-full bg-defaultBg top-0">
       <form onSubmit={handleSubmit}>
         {/* Header */}
@@ -242,7 +272,7 @@ const TowerRegistartion = () => {
             {/* 1.2 */}
               {/*  --> UUID */}
 
-            <div className='w-full h-auto flex flex-col mb-2 mt-2'>
+          {/*  <div className='w-full h-auto flex flex-col mb-2 mt-2'>
             <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Tower<p className='inline text-xl text-red-600'>*</p></div>
             <input
                 id="tower_name"
@@ -252,7 +282,23 @@ const TowerRegistartion = () => {
                 className='w-full  border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
             ></input>
             {errors.tower_name && <span className="error text-red-500">{errors.tower_name}</span>}
-            </div>
+            </div>*/}
+                <div className='w-full h-auto flex flex-col mb-2 mt-2'>
+                    <div className="mb-1 font-popins text-lg font-medium " htmlFor="description">Tower*</div>
+                    <select
+                        id="tower_id"
+                        name="tower_id"
+                        value={formData.tower_id}
+                        onChange={handleChange3}
+                        className='w-full  border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    >
+                        <option value="" disabled>-- Select an option --</option>\
+                        {tower_name_and_id.map((item) => (
+                            <option value={item[0]}>{item[1] + "  |  " + item[0]}</option>
+                        ))}
+                    </select>
+                    {errors.tower_id && <span className="error">{errors.tower_id}</span>}
+                </div>
 
             <div className='w-full h-auto flex justify-between mt-1'>
                 <div className='w-1/2'>

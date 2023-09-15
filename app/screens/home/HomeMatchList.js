@@ -137,11 +137,40 @@ export const HomeMatchList = ({ translate, navigation }) => {
     return jsonfeed?.data?.play?.innings?.[st]?.score_str
   }
 
+  //  red ->'PF-Primary'
+  //  grey -> 'LightGrey'
+  //  green -> 'communityTertiaryGreen'
+
+  const DynamicLiveText=(jsonfeed)=>{
+    // console.log("Function Json: ",jsonfeed);
+    if (jsonfeed?.data?.status == 'not_started'){
+       styles.itemLiveContainer.backgroundColor=theme.colors['LightGrey'];
+       return 'Deplayed';
+    }
+    if (jsonfeed?.data?.play_status == 'in_play'){
+      // RED
+      styles.itemLiveContainer.backgroundColor=theme.colors['PF-Primary'];
+      return 'Live';
+    }
+    if (jsonfeed?.data?.play_status == 'rain_delay'){
+      styles.itemLiveContainer.backgroundColor=theme.colors['LightGrey'];
+      return 'Rain';
+    } 
+    if (jsonfeed?.data?.play_status == 'abandoned'){
+      styles.itemLiveContainer.backgroundColor=theme.colors['LightGrey'];
+      return 'Abandoned'
+    } 
+    if (jsonfeed?.data?.play_status == 'result'){
+       styles.itemLiveContainer.backgroundColor=theme.colors['communityTertiaryGreen'];
+       return 'RESULT'
+    }
+
+  }
 
   const returnMatchData=(jsonfeed)=>{
     let val1="";
     let val2="";
-    console.log("Function Json: ",jsonfeed);
+    // console.log("Function Json: ",jsonfeed);
     var team1
     var team2
 
@@ -150,18 +179,33 @@ export const HomeMatchList = ({ translate, navigation }) => {
     if (team1 == 'a') team2 = 'b'
     else team2 = 'a'
 
-    var ans = ''
-    ans = jsonfeed?.data?.play?.live?.required_score?.title
-    if(ans==null){
-      val1=Team1Name(jsonfeed)+ ": " +Team1Score(jsonfeed);
-      val2=giveTossStatement(jsonfeed);
-      // if (jsonfeed?.data?.play_status == 'rain_delay') val2='Match delayed due to Rain';
-    }
-    else{
-      val1=Team2Name(jsonfeed)+": " +Team2Score(jsonfeed)
-      val2=ans.split('.')[0]
-    }
+    
 
+    if (jsonfeed?.data?.status == 'not_started') {
+      val1='Match Yet to Start'
+      val2=''
+    }
+    else if (jsonfeed?.data?.play_status == 'in_play' || jsonfeed?.data?.play_status == 'rain_delay') {
+      var ans = ''
+      ans = jsonfeed?.data?.play?.live?.required_score?.title
+      if(ans==null){
+        val1=Team1Name(jsonfeed)+ ": " +Team1Score(jsonfeed);
+        val2=giveTossStatement(jsonfeed);
+      }
+      else{
+        val1=Team2Name(jsonfeed)+": " +Team2Score(jsonfeed)
+        val2=ans.split('.')[0]
+      }
+    }
+    else if (jsonfeed?.data?.play_status == 'result') {
+        val1="Result"
+        val2=ans = jsonfeed?.data?.play?.result?.msg;
+    }
+    else if (jsonfeed?.data?.play_status == 'abandoned'){
+      val1="No Result"
+      val2=''
+    }
+    
     return (
       <>
         <View style={styles.matchDetailsContainer1}>
@@ -233,13 +277,6 @@ export const HomeMatchList = ({ translate, navigation }) => {
               </View>
             </View>
             {/* LiveBadge */}
-            {checkLiveMatch(item) && (
-              <View style={styles.LiveTextContainer}>
-                <View style={styles.itemLiveContainer}>
-                  <Text style={styles.itemLiveText}>{translate('HomeScreen.Text.Live')}</Text>
-                </View>
-              </View>
-            )}
             {/* Details */}
             {checkLiveMatch(item) ?
             <PagalFanBEApi.FetchFetchFeedForSingleMatchGET
@@ -263,8 +300,16 @@ export const HomeMatchList = ({ translate, navigation }) => {
             }
 
             // console.log("Data",fetchData);
+            setJsonfeed(JSON.parse(fetchData && fetchData[0].match_data));
             return (
             <>
+            {checkLiveMatch(item) && (
+              <View style={styles.LiveTextContainer}>
+                <View style={styles.itemLiveContainer}>
+                  <Text style={styles.itemLiveText}>{DynamicLiveText(JSON.parse(fetchData && fetchData[0].match_data))}</Text>
+                </View>
+              </View>
+            )}
             {returnMatchData(JSON.parse(fetchData && fetchData[0].match_data))}
             </>
             )
@@ -366,20 +411,22 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     width: 160,
   },
+  //  red ->'PF-Primary'
+  //  grey -> 'LightGrey'
+  //  green -> 'communityTertiaryGreen'
   itemLiveContainer: {
-    backgroundColor: theme.colors['PF-Primary'],
+    backgroundColor: theme.colors['LightGrey'],
     marginBottom: 2,
-    paddingLeft: 2,
-    paddingRight: 2,
-    width:35,
+    paddingLeft: 3,
+    paddingRight: 3,
     flexDirection: 'row',
     justifyContent:'space-around'
   },
+  
   itemLiveText: {
     color: theme.colors['Background'],
     fontFamily: 'Inter_600SemiBold',
     fontSize: 8,
-    
   },
   itemMatchTitleContainer: {
     backgroundColor: theme.colors['Custom #eb3a4a'],
@@ -391,7 +438,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: theme.colors['Community_White'],
     fontFamily: 'Inter_600SemiBold',
-    fontSize: 11,
+    fontSize: 10,
     marginBottom: 2,
     textDecorationLine: 'none',
   },
@@ -448,7 +495,7 @@ const styles = StyleSheet.create({
   matchDetailsText: {
     color: theme.colors['PF-Grey'],
     fontFamily: 'Inter_600SemiBold',
-    fontSize: 8,
+    fontSize: 9,
     marginRight: 4,
   },
   matchTimeText: {
@@ -459,13 +506,13 @@ const styles = StyleSheet.create({
   matchTimeText1: {
     color: theme.colors['PF-Grey'],
     fontFamily: 'Inter_600SemiBold',
-    fontSize: 10,
+    fontSize: 10.5,
   },
   matchVenueText1: {
     alignSelf: 'center',
     color: theme.colors['PF-Grey'],
     fontFamily: 'Inter_600SemiBold',
-    fontSize: 8,
+    fontSize: 7.5,
   },
   matchVenueText: {
     alignSelf: 'center',

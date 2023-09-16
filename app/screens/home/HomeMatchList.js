@@ -162,7 +162,7 @@ export const HomeMatchList = ({ translate, navigation }) => {
     } 
     if (jsonfeed?.data?.play_status == 'result'){
        styles.itemLiveContainer.backgroundColor=theme.colors['communityTertiaryGreen'];
-       return 'RESULT'
+       return 'Result'
     }
 
   }

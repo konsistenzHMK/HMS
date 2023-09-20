@@ -745,7 +745,7 @@ const get_room_details_for_room_allocation = async(req,res)=>{
     const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id" ,"==", hostel_id , "&&" , "status", "==", "active"));
     const documents = await getDocs(q);
     const documents1 = await getDocs(q1);
-    
+    // room type , code pending 
    
     const data2 = [];
     documents.forEach((doc) =>{
@@ -811,7 +811,7 @@ const temporary_api_for_checking_data = async(req,res)=>{
         const q = query(collection(db, "student_to_room_allocation"), where("hostel_id", "==", data_coming_from_frontend[2].ans),where("status","==",""));
         const documents = await getDocs(q)
         let data2 = {};
-        documents.forEach((doc) => {
+        documents.forEach((doc) => { 
             data2[doc.data().user_id] = doc.id;
         });
         console.log(data2);

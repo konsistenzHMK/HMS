@@ -1220,7 +1220,7 @@ const hostel_tower_reg = async (req, res) => {
     } = (req.body);
 
     const ans2 = await tower_id_function(hostel_id);
-
+    const timestamp = Timestamp.now();
     try {
         await setDoc(doc(db, "hostel_tower",  await random_doc_id_function()), {
             hostel_id,
@@ -1233,6 +1233,7 @@ const hostel_tower_reg = async (req, res) => {
             type,
             status,  
             tower_id:ans2, 
+            registered_on: timestamp.valueOf(),
         }); 
     }
     catch (e) {
@@ -1255,7 +1256,7 @@ const hostel_tower_wing = async (req, res) => {
     } = (req.body);
 
     const ans3 = await wing_id_function(tower_id);
-
+    const timestamp = Timestamp.now();
     try {
         await setDoc(doc(db, "hostel_tower_wing",  await random_doc_id_function()), {
             tower_id,
@@ -1267,6 +1268,7 @@ const hostel_tower_wing = async (req, res) => {
             type,
             status,
             wing_id:ans3,
+            registered_on: timestamp.valueOf(),
         });
         
     }
@@ -1298,7 +1300,7 @@ const hostel_room_reg = async (req, res) => {
     } = (req.body);
 
     const ans4 = await room_id_function(hostel_id, room_no);
-
+    const timestamp = Timestamp.now();
     try {
         await setDoc(doc(db, "hostel_room", await random_doc_id_function()), {
             room_no,
@@ -1317,6 +1319,7 @@ const hostel_room_reg = async (req, res) => {
             room_status,
             room_furniture,
             room_id: ans4,
+            registered_on: timestamp.valueOf(),
         });
     }
 

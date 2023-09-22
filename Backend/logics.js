@@ -1,11 +1,12 @@
 // All the logics are written over here
 import  db from './config.js';
 import './config.js';
-import {  query, where, getDocs } from "firebase/firestore";
+import {  query, where, getDocs, Timestamp } from "firebase/firestore";
 import {collection, addDoc, doc, setDoc , getDoc ,updateDoc} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import storage from './storage.js';
 import {orderBy} from "firebase/firestore";
+import e from 'express';
 
 const random_doc_id_function = async ()=>{
     var randomNumber = '';
@@ -824,7 +825,7 @@ const get_room_details_for_room_allocation = async(req,res)=>{
 
 const get_allocated_students_for_room_allocation = async(req,res)=>{
     const hostel_id = req.query.hostel_id;
-    const q = query(collection(db,"student_to_room_allocation"),where("hostel_id","==",hostel_id,"&&","status","==",""));
+    const q = query(collection(db,"student_to_room_allocation"),where("hostel_id","==",hostel_id),where("status","==",""));
     const documents = await getDocs(q);
     let data = {};
     documents.forEach((doc) => {
@@ -839,190 +840,207 @@ const get_allocated_students_for_room_allocation = async(req,res)=>{
 const temporary_api_for_checking_data = async(req,res)=>{
     const data_coming_from_frontend = req.body;
     console.log(data_coming_from_frontend);
-
-    const array_of_object_keys  = (Object.keys(data_coming_from_frontend[0]));
-    // console.log(array_of_object_keys);
-
-
     try{
-        const q = query(collection(db, "student_to_room_allocation"), where("hostel_id", "==", data_coming_from_frontend[2].ans),where("status","==",""));
-        const documents = await getDocs(q)
-        let data2 = {};
-        documents.forEach((doc) => { 
-            data2[doc.data().user_id] = doc.id;
+        const hostel_id = data_coming_from_frontend[2].ans;
+        const zeroIndexObjectKeys = Object.keys(data_coming_from_frontend[0]);
+
+        //  query firestore for all the students who are allocated to the hostel
+        const q = query(collection(db,"student_to_room_allocation"),where("hostel_id","==",hostel_id),where("status","==",""));
+        const documents = await getDocs(q);
+        let data = {};
+        documents.forEach((doc) => {
+            data[doc.data().user_id] = doc.id;
         });
-        console.log(data2);
-        const array_of_object_keys1 = Object.keys(data2);
-        // console.log(array_of_object_keys1);
-        for(let i = 0 ; i<array_of_object_keys.length ; i++){
-            if(array_of_object_keys1.includes(array_of_object_keys[i])){
-                
-                if(data_coming_from_frontend[0][array_of_object_keys[i]].room_no == '' || data_coming_from_frontend[0][array_of_object_keys[i]].room_no == null || data_coming_from_frontend[0][array_of_object_keys[i]].room_no == undefined){
-                    await updateDoc(doc(db,"student_to_room_allocation",data2[array_of_object_keys[i]]),{
-                        hostel_id:data_coming_from_frontend[2].ans,
-                        room_id:"",
-                        room_no:"",
+
+
+
+        //loop thorugh the data coming from frontend
+
+        for(let i = 0 ; i < zeroIndexObjectKeys.length ; i++){
+            const user_id = zeroIndexObjectKeys[i];
+            const roomInfo = data_coming_from_frontend[0][user_id];
+
+            if(data[user_id]){
+                //user is already has an allocation
+                if(!roomInfo.room_no){
+                    // If room_no is missing , update the allocation status
+                    const timestamp = Timestamp.now();
+                    await updateDoc(doc(db,"student_to_room_allocation",data[user_id]),{
                         status:"x",
-                        end_date:"end",
-                        start_date:"",
-                        user_id:array_of_object_keys[i],
+                        end_date:timestamp,
                     });
-
-                    const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", data_coming_from_frontend[2].ans),where("status","==","active"));
-                    const documents1 = await getDocs(q1)
-                    let data3 = {};
+                    // after allcation status is updated , update the pending capacity of the room
+                    // 1. query the virtual table for room allocation
+                    const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", hostel_id), where("status", "==", "active"));
+                    const documents1 = await getDocs(q1);
+                    let data1 = {};
                     documents1.forEach((doc) => {
-                        data3[doc.data().room_id] = doc.id;
+                        data1[doc.data().room_id] = doc.id;
                     });
-                    const keys1 = Object.keys(data3);
-                    const secondarrayofobjects = data_coming_from_frontend[1];
-                    for(let j = 0 ; j<secondarrayofobjects.length ; j++){
-                        if(keys1.includes(secondarrayofobjects[j].room_id)){
-                            // console.log(secondarrayofobjects[j].room_id);
-                            await updateDoc(doc(db,"virtual_table_for_room_allocation",data3[secondarrayofobjects[j].room_id]),{
-                                hostel_id:data_coming_from_frontend[2].ans,
-                                room_id:secondarrayofobjects[j].room_id,
-                                room_no:secondarrayofobjects[j].room_no,
+                    const keys1 = Object.keys(data1);
+                    const sencondArrayOfObjects  = data_coming_from_frontend[1];
+                    // 2. loop through the second array of objects
+                    for(let j = 0 ; j < sencondArrayOfObjects.length ; j++){
+                        if(keys1.includes(sencondArrayOfObjects[j].room_id)){
+                            // 3. update the pending capacity of the room
+                            await updateDoc(doc(db,"virtual_table_for_room_allocation",data1[sencondArrayOfObjects[j].room_id]),{
+                                hostel_id:hostel_id,
+                                room_id:sencondArrayOfObjects[j].room_id,
+                                room_no:sencondArrayOfObjects[j].room_no,
+                                room_capacity:sencondArrayOfObjects[j].room_capacity,
+                                pending_capacity:sencondArrayOfObjects[j].pending_capacity,
                                 status:"active",
-                                // name:"",
-                                pending_capacity:secondarrayofobjects[j].pending_capacity,
-                                room_capacity:secondarrayofobjects[j].room_capacity,
-                                // user_id:array_of_object_keys[i],
-
                             });
-
                         }
+                        // 4. if the room_id is not present in the virtual table for room allocation
                         else{
+                            // 5. create a new entry in the virtual table for room allocation
                             await setDoc(doc(db,"virtual_table_for_room_allocation",await random_doc_id_function()),{
-                                hostel_id:data_coming_from_frontend[2].ans,
-                                room_id:secondarrayofobjects[j].room_id,
-                                room_no:secondarrayofobjects[j].room_no,
+                                hostel_id:hostel_id,
+                                room_id:sencondArrayOfObjects[j].room_id,
+                                room_no:sencondArrayOfObjects[j].room_no,
+                                room_capacity:sencondArrayOfObjects[j].room_capacity,
+                                pending_capacity:sencondArrayOfObjects[j].pending_capacity,
                                 status:"active",
-                                pending_capacity:secondarrayofobjects[j].pending_capacity,
-                                room_capacity:secondarrayofobjects[j].room_capacity,
-                                
-        
                             });
                         }
-
                     }
-
 
                 }
                 else{
-                    await updateDoc(doc(db,"student_to_room_allocation",data2[array_of_object_keys[i]]),{
-                    user_id:array_of_object_keys[i],
-                    room_id:data_coming_from_frontend[0][array_of_object_keys[i]].room_id,
-                    room_no:data_coming_from_frontend[0][array_of_object_keys[i]].room_no,
-                    status:"",
-                    hostel_id:data_coming_from_frontend[2].ans,
-                    end_date:"",
-                    start_date:""
-        
-                            });
-
-                    const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", data_coming_from_frontend[2].ans),where("status","==","active"));
-                    const documents1 = await getDocs(q1)
-                    let data3 = {};
-                    documents1.forEach((doc) => {
-                    data3[doc.data().room_id] = doc.id;
-                    });
-                    const keys1 = Object.keys(data3);
-                    const secondarrayofobjects = data_coming_from_frontend[1];
-                    for(let j = 0 ; j<secondarrayofobjects.length ; j++){
-                    if(keys1.includes(secondarrayofobjects[j].room_id)){
-                        await updateDoc(doc(db,"virtual_table_for_room_allocation",data3[secondarrayofobjects[j].room_id]),{
-                        hostel_id:data_coming_from_frontend[2].ans,
-                        room_id:secondarrayofobjects[j].room_id,
-                        room_no:secondarrayofobjects[j].room_no,
-                        status:"active",
-                        // name:"",
-                        pending_capacity:secondarrayofobjects[j].pending_capacity,
-                        room_capacity:secondarrayofobjects[j].room_capacity,
-                        // user_id:array_of_object_keys[i],
-        
+                    // first will check if the room_no is same as the existing allocation
+                    const existingRoomNo = (await getDoc(doc(db,"student_to_room_allocation",data[user_id]))).data().room_no;
+                    // update an allocation with new room info
+                    if(existingRoomNo != roomInfo.room_no){
+                        
+                        //  1. update the existing allocation with status x and end_date
+                        const timestamp = Timestamp.now(); 
+                        await updateDoc(doc(db,"student_to_room_allocation",data[user_id]),{
+                            // room_id:roomInfo.room_id,
+                            // room_no:roomInfo.room_no,
+                            status:"x",
+                            end_date:timestamp,
+                            // start_data:"start",
+                            // user_id:user_id,
                         });
-        
-                        }
-                        else{
-                            await setDoc(doc(db,"virtual_table_for_room_allocation",await random_doc_id_function()),{
-                                hostel_id:data_coming_from_frontend[2].ans,
-                                room_id:secondarrayofobjects[j].room_id,
-                                room_no:secondarrayofobjects[j].room_no,
-                                status:"active",
-                                // name:"",
-                                pending_capacity:secondarrayofobjects[j].pending_capacity,
-                                room_capacity:secondarrayofobjects[j].room_capacity,
-                                // user_id:array_of_object_keys[i],
-                
-                                    });
-                                }
-        
-                            }
-                 }
-            }
-            else if(array_of_object_keys1.includes(array_of_object_keys[i]) == false){
-                await setDoc(doc(db,"student_to_room_allocation", await random_doc_id_function()),{
-                    user_id:array_of_object_keys[i],
-                    room_id:data_coming_from_frontend[0][array_of_object_keys[i]].room_id,
-                    room_no:data_coming_from_frontend[0][array_of_object_keys[i]].room_no,
-                    hostel_id:data_coming_from_frontend[2].ans,
-                    status:"", 
-                    end_date:"",
-                    start_date:""
-                });
-
-                const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", data_coming_from_frontend[2].ans),where("status","==","active"));
-                const documents1 = await getDocs(q1)
-                let data3 = {};
-                documents1.forEach((doc) => {
-                    data3[doc.data().room_id] = doc.id;
-                });
-                const keys1 = Object.keys(data3);
-                const secondarrayofobjects = data_coming_from_frontend[1];
-                for(let j = 0 ; j<secondarrayofobjects.length ; j++){
-                    if(keys1.includes(secondarrayofobjects[j].room_id)){
-                        await updateDoc(doc(db,"virtual_table_for_room_allocation",data3[secondarrayofobjects[j].room_id]),{
-                            hostel_id:data_coming_from_frontend[2].ans,
-                            room_id:secondarrayofobjects[j].room_id,
-                            room_no:secondarrayofobjects[j].room_no,
-                            status:"active",
-                            // name:"",
-                            pending_capacity:secondarrayofobjects[j].pending_capacity,
-                            room_capacity:secondarrayofobjects[j].room_capacity,
-                            // user_id:array_of_object_keys[i],
-
-                        });
-
-                    }
-                    else{
-                        await setDoc(doc(db,"virtual_table_for_room_allocation",await random_doc_id_function()),{
-                            hostel_id:data_coming_from_frontend[2].ans,
-                            room_id:secondarrayofobjects[j].room_id,
-                            room_no:secondarrayofobjects[j].room_no,
-                            status:"active",
-                            // name:"",
-                            pending_capacity:secondarrayofobjects[j].pending_capacity,
-                            room_capacity:secondarrayofobjects[j].room_capacity,
-                            // user_id:array_of_object_keys[i],
+                        
+                        //  2. create a new allocation with the new room info
     
+                        await setDoc(doc(db,"student_to_room_allocation",await random_doc_id_function()),{
+                            hostel_id:hostel_id,
+                            room_id:roomInfo.room_id,
+                            room_no:roomInfo.room_no,
+                            status:"",
+                            end_date:"",
+                            start_date:timestamp,
+                            user_id:user_id,
                         });
-                    }
+
+                        // 3. update the pending capacity of the room
+                        // 1. query the virtual table for room allocation
+                        const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", hostel_id), where("status", "==", "active"));
+                        const documents1 = await getDocs(q1);
+                        let data1 = {};
+                        documents1.forEach((doc) => {
+                            data1[doc.data().room_id] = doc.id;
+                        });
+                        const keys1 = Object.keys(data1);
+                        const sencondArrayOfObjects  = data_coming_from_frontend[1];
+                        // 2. loop through the second array of objects
+                        for(let j = 0 ; j < sencondArrayOfObjects.length ; j++){
+                            if(keys1.includes(sencondArrayOfObjects[j].room_id)){
+                                // 3. update the pending capacity of the room
+                                await updateDoc(doc(db,"virtual_table_for_room_allocation",data1[sencondArrayOfObjects[j].room_id]),{
+                                    hostel_id:hostel_id,
+                                    room_id:sencondArrayOfObjects[j].room_id,
+                                    room_no:sencondArrayOfObjects[j].room_no,
+                                    room_capacity:sencondArrayOfObjects[j].room_capacity,
+                                    pending_capacity:sencondArrayOfObjects[j].pending_capacity,
+                                    status:"active",
+                                });
+                            }
+                            // 4. if the room_id is not present in the virtual table for room allocation
+                            else{
+                                // 5. create a new entry in the virtual table for room allocation
+                                await setDoc(doc(db,"virtual_table_for_room_allocation",await random_doc_id_function()),{
+                                    hostel_id:hostel_id,
+                                    room_id:sencondArrayOfObjects[j].room_id,
+                                    room_no:sencondArrayOfObjects[j].room_no,
+                                    room_capacity:sencondArrayOfObjects[j].room_capacity,
+                                    pending_capacity:sencondArrayOfObjects[j].pending_capacity,
+                                    status:"active",
+                                });
+                            }
+                        }
+                        
+                    } 
 
                 }
-        
             }
-        }
+            else{
+                // User doesn't have an existing allocation, create a new one
+                const timestamp = Timestamp.now();
+                await setDoc(doc(db,"student_to_room_allocation", await random_doc_id_function()),{
+                    hostel_id:hostel_id,
+                    room_id:roomInfo.room_id,
+                    room_no:roomInfo.room_no,
+                    status:"",
+                    end_date:"",
+                    start_date:timestamp,
+                    user_id:user_id,
+                });
+
+                // 3. update the pending capacity of the room
+                // 1. query the virtual table for room allocation
+                const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", hostel_id), where("status", "==", "active"));
+                const documents1 = await getDocs(q1);
+                let data1 = {};
+                documents1.forEach((doc) => {
+                    data1[doc.data().room_id] = doc.id;
+                });
+                
+                const keys1 = Object.keys(data1);
+                const sencondArrayOfObjects  = data_coming_from_frontend[1];
+                // 2. loop through the second array of objects
+                for(let j = 0 ; j < sencondArrayOfObjects.length ; j++){
+                    if(keys1.includes(sencondArrayOfObjects[j].room_id)){
+                        // 3. update the pending capacity of the room
+                        await updateDoc(doc(db,"virtual_table_for_room_allocation",data1[sencondArrayOfObjects[j].room_id]),{
+                            hostel_id:hostel_id,
+                            room_id:sencondArrayOfObjects[j].room_id,
+                            room_no:sencondArrayOfObjects[j].room_no,
+                            room_capacity:sencondArrayOfObjects[j].room_capacity,
+                            pending_capacity:sencondArrayOfObjects[j].pending_capacity,
+                            status:"active",
+                        });
+                    }
+                    // 4. if the room_id is not present in the virtual table for room allocation
+                    else{
+                        // 5. create a new entry in the virtual table for room allocation
+                        await setDoc(doc(db,"virtual_table_for_room_allocation",await random_doc_id_function()),{
+                            hostel_id:hostel_id,
+                            room_id:sencondArrayOfObjects[j].room_id,
+                            room_no:sencondArrayOfObjects[j].room_no,
+                            room_capacity:sencondArrayOfObjects[j].room_capacity,
+                            pending_capacity:sencondArrayOfObjects[j].pending_capacity,
+                            status:"active",
+                        });
+                    }
+                }
+
+            }
+        } 
+
+
+
+    }
+    catch(e){
+        console.log(e);
     }
     
-    catch(e){
-        res.send("Data not inserted");
-    }
-
-    res.send("Room Management Done for this transaction");
-
-    // res.send('OK');
+    
 }
+
 
 
 

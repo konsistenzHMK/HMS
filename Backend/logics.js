@@ -839,7 +839,7 @@ const get_allocated_students_for_room_allocation = async(req,res)=>{
 
 const temporary_api_for_checking_data = async(req,res)=>{
     const data_coming_from_frontend = req.body;
-    console.log(data_coming_from_frontend);
+    // console.log(data_coming_from_frontend);
     try{
         const hostel_id = data_coming_from_frontend[2].ans;
         const zeroIndexObjectKeys = Object.keys(data_coming_from_frontend[0]);
@@ -891,6 +891,7 @@ const temporary_api_for_checking_data = async(req,res)=>{
                                 pending_capacity:sencondArrayOfObjects[j].pending_capacity,
                                 status:"active",
                             });
+                            
                         }
                         // 4. if the room_id is not present in the virtual table for room allocation
                         else{
@@ -905,7 +906,7 @@ const temporary_api_for_checking_data = async(req,res)=>{
                             });
                         }
                     }
-
+                    
                 }
                 else{
                     // first will check if the room_no is same as the existing allocation
@@ -925,7 +926,7 @@ const temporary_api_for_checking_data = async(req,res)=>{
                         });
                         
                         //  2. create a new allocation with the new room info
-    
+                        
                         await setDoc(doc(db,"student_to_room_allocation",await random_doc_id_function()),{
                             hostel_id:hostel_id,
                             room_id:roomInfo.room_id,
@@ -935,7 +936,7 @@ const temporary_api_for_checking_data = async(req,res)=>{
                             start_date:timestamp,
                             user_id:user_id,
                         });
-
+                        
                         // 3. update the pending capacity of the room
                         // 1. query the virtual table for room allocation
                         const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", hostel_id), where("status", "==", "active"));
@@ -974,7 +975,9 @@ const temporary_api_for_checking_data = async(req,res)=>{
                         }
                         
                     } 
-
+                    // res.send("Room Allcation Done for this Transaction")
+                    
+                    
                 }
             }
             else{
@@ -989,7 +992,7 @@ const temporary_api_for_checking_data = async(req,res)=>{
                     start_date:timestamp,
                     user_id:user_id,
                 });
-
+                
                 // 3. update the pending capacity of the room
                 // 1. query the virtual table for room allocation
                 const q1 = query(collection(db, "virtual_table_for_room_allocation"), where("hostel_id", "==", hostel_id), where("status", "==", "active"));
@@ -1029,15 +1032,17 @@ const temporary_api_for_checking_data = async(req,res)=>{
                 }
 
             }
+            // res.send("Room Allcation Done for this Transaction")
         } 
-
-
-
+        
+        
+        
     }
     catch(e){
         console.log(e);
     }
     
+    res.send("Room Allcation Done for this Transaction")
     
 }
 

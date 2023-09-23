@@ -4,9 +4,13 @@ import DashboardImg from '../Components/DashboardImg.svg'
 import Modal from 'react-modal';
 import axios from 'axios';
 import { useLocation } from "react-router-dom";
-import {
-    useNavigate,
-  } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import yes from '../utils/yes.svg'
+import no from '../utils/no.svg'
+import Allocate from '../utils/Allocate.svg';
+import Transfer from '../utils/Transfer.svg';
+import Remove from '../utils/Remove.svg';
+
 
 
 const RoomAllocation = () => {
@@ -47,7 +51,7 @@ const RoomAllocation = () => {
             });
             if (response.ok) {
                 const result = await response.json();
-                console.log("result1", result);
+                console.log("Students", result);
                 setAllStudent(result[1]);
             }
         }
@@ -330,24 +334,53 @@ const RoomAllocation = () => {
                                         <table border="1" className='w-full font-popins rounded-2xl'>
                                             <thead className='bg-slate-100 h-14'>
                                                 <tr>
-                                                    <th className='w-1/5 text-center text-xl text-orange-400 '>ID</th>
-                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Name</th>
-                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Gender</th>
-                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Select Room</th>
-                                                    <th className='w-1/5 text-center text-xl text-orange-400'>Room</th>
+                                                    <th className='w-1/6 text-center text-xl text-orange-400 '>ID</th>
+                                                    <th className='w-1/6 text-center text-xl text-orange-400'>Name</th>
+                                                    <th className='w-1/6 text-center text-xl text-orange-400'>Category</th>
+                                                    <th className='w-1/6 text-center text-xl text-orange-400'>PH Candidate</th>
+                                                    <th className='w-1/6 text-center text-xl text-orange-400'>Select Room</th>
+                                                    <th className='w-1/6 text-center text-xl text-orange-400'>Room</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {allStudents.map((item, i) => (
                                                     <tr className={`mt-1 h-12 ${i % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'} `} key={item[0]} >
-                                                        <td className='w-1/5 text-center'>{item[0]}</td>
-                                                        <td className='w-1/5 text-center'>{item[1] + " " + item[2]}</td>
-                                                        <td className='w-1/5 text-center font-semibold'>{item[3] == 'male' ? 'M' : 'F'}</td>
-                                                        <td className='w-1/5 text-cente'><button className='h-8 w-full bg-zinc-300 border rounded-md' onClick={(e) => {
+                                                        <td className='w-1/6 text-center'>{item[0]}</td>
+                                                        <td className='w-1/6 text-center'>{item[1] + " " + item[2]}</td>
+                                                        <td className='w-1/6 text-center font-semibold'>{item[6] }</td>
+                                                        <td className='w-1/6 text-center font-semibold pl-12' align="center" >{item[5]==true ? <img src={yes}/> :<img src={no} className=''/>}</td>
+                                                        <td className='w-1/6 text-center'>
+                                                        <button className='bg-zinc-300 border rounded-md mr-1' onClick={(e) => {
                                                             e.preventDefault();
                                                             setCurrentStudent(item[0]?.toString());
                                                             togglePopup(true);
-                                                        }}>Select the Room</button></td>
+                                                        }}><img src={Allocate} className=''/></button>
+                                                        <button className='bg-zinc-300 border rounded-md mr-1' onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setCurrentStudent(item[0]?.toString());
+                                                            togglePopup(true);
+                                                        }}><img src={Transfer} className=''/></button>
+                                                        <button className='bg-zinc-300 border rounded-md mr-1' onClick={(e) => {
+                                                            e.preventDefault();
+                                                            const studentID=item[0].toString();
+                                                            const prevRoom=allStudentRoomMap[studentID].room_no;
+                                                            allStudentRoomMap[studentID].room_no='';
+                                                            allRooms.forEach((ele,i)=>{
+                                                                if(ele.room_no==prevRoom){
+                                                                        console.log('ele',ele);
+                                                                        let outerCopy=[...allRooms];
+                                                                        let innerCopy=ele;
+                                                                        let num=Number(innerCopy.pending_capacity)
+                                                                        // innerCopy.pending_capacity-=1;
+                                                                        num-=1;
+                                                                        num.toString();
+                                                                        innerCopy.pending_capacity=num;
+                                                                        outerCopy[i]=innerCopy;                    
+                                                                        setAllRooms(outerCopy);
+                                                                }
+                                                            })
+                                                        }}><img src={Remove} className=''/></button>
+                                                        </td>
                                                         <td className='w-1/5 text-center'>
                                                         <input
                                                             className={`w-2/3 font-semibold text-center ${i % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}
@@ -356,29 +389,6 @@ const RoomAllocation = () => {
                                                             disabled={true}
                                                             value={allStudentRoomMap[item[0].toString()]?.room_no}
                                                         />
-                                                        <button className='text-red-500 font-semibold mb-1' onClick={(e)=>
-                                                            {
-                                                                e.preventDefault();
-                                                                const studentID=item[0].toString();
-                                                                const prevRoom=allStudentRoomMap[studentID].room_no;
-                                                                allStudentRoomMap[studentID].room_no='';
-                                                                allRooms.forEach((ele)=>{
-                                                                    if(ele.room_no==prevRoom){
-                                                                            let outerCopy=[...allRooms];
-                                                                            let innerCopy=ele;
-                        
-                                                                            let num=Number(innerCopy.pending_capacity)
-                                                                            // innerCopy.pending_capacity-=1;
-                                                                            num-=1;
-                                                                            num.toString();
-                                                                            innerCopy.pending_capacity=num;
-                                                                            outerCopy[i]=innerCopy;
-                        
-                                                                            setAllRooms(outerCopy);
-                                                                    }
-                                                                })
-                                                            }
-                                                        }>x</button>
                                                         </td>
                                                     </tr>
                                                 ))}

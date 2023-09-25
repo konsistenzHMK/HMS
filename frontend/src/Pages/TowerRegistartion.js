@@ -42,7 +42,7 @@ const TowerRegistartion = () => {
         const formErrors = validateForm();
         if (Object.keys(formErrors).length === 0) {
         console.log('Form submitted successfully!');
-        axios.post('https://deploy-pushkal1.onrender.com/hostel/tower', formData)
+        axios.post('http://localhost:7000/hostel/tower', formData)
         .then((response) => {
           console.log('API response:', response.data);
           alert(response.data);
@@ -156,7 +156,7 @@ const TowerRegistartion = () => {
     const [hostel_name_and_id, setHostel_name_and_id] = useState([]);
     const hostel_name_and_id_fetch = async () => {
       try{
-        const response = await fetch("https://deploy-pushkal1.onrender.com/gethostel_id/where/status_active",{
+        const response = await fetch("http://localhost:7000/gethostel_id/where/status_active",{
           method:"GET",
           headers:{"Content-Type":"application/json"},
         }); 
@@ -188,7 +188,7 @@ const TowerRegistartion = () => {
     const tower_name_and_id_fetch = async (hostelId) => {
         try{
             console.log('hostelId',hostelId)
-            const url = `https://deploy-pushkal1.onrender.com/get_tower_id_where_status_active?hostel_id=${hostelId}`;
+            const url = `http://localhost:7000/get_tower_id_where_status_active?hostel_id=${hostelId}`;
             const response = await fetch(url,{
                 method:"GET",
                 headers:{"Content-Type":"application/json"},

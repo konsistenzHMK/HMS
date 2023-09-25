@@ -25,7 +25,7 @@ const StudentReviewForm = () => {
 
     const getAllSavedForms =async()=>{
         try{
-            const response = await fetch('https://deploy-pushkal1.onrender.com/get_student_form', {
+            const response = await fetch('http://localhost:7000/get_student_form', {
                 method: 'GET',
                 headers: {
                 'Content-Type': 'application/json',

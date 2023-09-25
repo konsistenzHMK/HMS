@@ -20,7 +20,7 @@ const Page4 = () =>{
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/registration', formData)
+      axios.post('http://localhost:7000/hostel/registration', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);

@@ -314,7 +314,7 @@ const RoomAllocation = () => {
                     {/* Form Data */}
                     <div className='flex flex-col w-full h-full bg-defaultBg mb-10'>
                         <div className='w-full flex justify-center  mt-10' >
-                            <div className='flex flex-row w-11/12 h-full bg-white rounded-lg drop-shadow-lg'>
+                            <div className='flex flex-row w-11/12 h-full bg-white rounded-lg drop-shadow-lg '>
                                 <div className='w-full flex flex-col ml-5'>
                                     <div className='w-full flex mt-4'>
                                         <div className='w-full flex-col '>
@@ -331,8 +331,8 @@ const RoomAllocation = () => {
                                     </div>
                                     {showPopup? <Popup />:null}
                                     <div className='m-5 '>
-                                        <table border="1" className='w-full font-popins rounded-2xl'>
-                                            <thead className='bg-slate-100 h-14'>
+                                        <table border="1" className='w-full font-popins'>
+                                            <thead className='bg-tablebg h-14 rounded-xl '>
                                                 <tr>
                                                     <th className='w-1/6 text-center text-xl text-orange-400 '>ID</th>
                                                     <th className='w-1/6 text-center text-xl text-orange-400'>Name</th>
@@ -344,11 +344,11 @@ const RoomAllocation = () => {
                                             </thead>
                                             <tbody>
                                                 {allStudents.map((item, i) => (
-                                                    <tr className={`mt-1 h-12 ${i % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'} `} key={item[0]} >
-                                                        <td className='w-1/6 text-center'>{item[0]}</td>
-                                                        <td className='w-1/6 text-center'>{item[1] + " " + item[2]}</td>
+                                                    <tr className={`mt-1 h-12 ${i % 2 == 0 ? 'bg-color1' : 'bg-color2'} `} key={item[0]} >
+                                                        <td className='w-1/6 text-center font-semibold'>{item[0]}</td>
+                                                        <td className='w-1/6 text-center font-semibold'>{item[1] + " " + item[2]}</td>
                                                         <td className='w-1/6 text-center font-semibold'>{item[6] }</td>
-                                                        <td className='w-1/6 text-center font-semibold pl-12' align="center" >{item[5]==true ? <img src={yes}/> :<img src={no} className=''/>}</td>
+                                                        <td className='w-1/6 text-center font-semibold pl-14' align="center" >{item[5]==true ? <img src={yes}/> :<img src={no} className=''/>}</td>
                                                         <td className='w-1/6 text-center'>
                                                         <button className='bg-zinc-300 border rounded-md mr-1' onClick={(e) => {
                                                             e.preventDefault();
@@ -383,7 +383,7 @@ const RoomAllocation = () => {
                                                         </td>
                                                         <td className='w-1/5 text-center'>
                                                         <input
-                                                            className={`w-2/3 font-semibold text-center ${i % 2 == 0 ? 'bg-slate-200' : 'bg-slate-100'}`}
+                                                            className={`w-4/5 h-7 font-semibold text-center bg-white rounded-md text-sm`}
                                                             readonly
                                                             type="text"
                                                             disabled={true}

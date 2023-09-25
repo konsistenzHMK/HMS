@@ -43,7 +43,7 @@ const WingRegistartion = () => {
         const formErrors = validateForm();
         if (Object.keys(formErrors).length === 0) {
         console.log('Form submitted successfully!');
-        axios.post('http://localhost:7000/hostel_tower_wing', formData)
+        axios.post('https://deploy-pushkal1.onrender.com/hostel_tower_wing', formData)
         .then((response) => {
             console.log('API response:', response.data);
             alert(response.data);
@@ -159,7 +159,7 @@ const WingRegistartion = () => {
     const [tower_name_and_id, setTower_name_and_id] = useState([]);
     const tower_name_and_id_fetch = async () => {
       try{
-        const response = await fetch("http://localhost:7000/get_tower_id_where_status_active1",{
+        const response = await fetch("https://deploy-pushkal1.onrender.com/get_tower_id_where_status_active1",{
           method:"GET",
           headers:{"Content-Type":"application/json"},
         }); 
@@ -176,7 +176,7 @@ const WingRegistartion = () => {
     const [wing_name_and_id, setWing_name_and_id] = useState([]);
     const wing_name_and_id_fetch = async (towerId) => {
         try{
-            const response = await fetch(`http://localhost:7000/get_wing_id_where_status_active?tower_id=${towerId}`,{
+            const response = await fetch(`https://deploy-pushkal1.onrender.com/get_wing_id_where_status_active?tower_id=${towerId}`,{
                 method:"GET",
                 headers:{"Content-Type":"application/json"},
             });

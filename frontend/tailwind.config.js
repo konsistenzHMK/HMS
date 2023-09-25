@@ -10,6 +10,9 @@ module.exports = {
         montserrat: ['"montserrat"', 'sans-serif'],
       },
       colors: {
+        color1:'#EAEAEA',
+        color2:'#DDDDDD',
+        tablebg: '#d3d3d3',
         defaultBg: '#F2F2F2', // Add your custom color here
         borderColor: '#1136BA',
         accent : '#94ABBF',

@@ -60,7 +60,7 @@ const App = (props) => {
       region: tempRegion
     }));
     try{
-      const response = await fetch('https://deploy-pushkal1.onrender.com/allAddressDetails', {
+      const response = await fetch('http://localhost:7000/allAddressDetails', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const App = (props) => {
     }));
     console.log("Changed State",tempState);
     try{
-      const response = await fetch('https://deploy-pushkal1.onrender.com/allAddressDetails', {
+      const response = await fetch('http://localhost:7000/allAddressDetails', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form submitted successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/registration', formData)
+      axios.post('http://localhost:7000/hostel/registration', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -216,7 +216,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/saveform1', formData)
+      axios.post('http://localhost:7000/hostel/saveform1', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -239,7 +239,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/saveform2', formData)
+      axios.post('http://localhost:7000/hostel/saveform2', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -266,7 +266,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/saveform3', formData)
+      axios.post('http://localhost:7000/hostel/saveform3', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -293,7 +293,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/saveform4', formData)
+      axios.post('http://localhost:7000/hostel/saveform4', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -320,7 +320,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/saveform5', formData)
+      axios.post('http://localhost:7000/hostel/saveform5', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -347,7 +347,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/hostel/saveform6', formData)
+      axios.post('http://localhost:7000/hostel/saveform6', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -371,7 +371,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/status_of_hostel_active', formData)
+      axios.post('http://localhost:7000/status_of_hostel_active', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);
@@ -395,7 +395,7 @@ const App = (props) => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       console.log('Form Saved successfully!');
-      axios.post('https://deploy-pushkal1.onrender.com/status_of_hostel_block', formData)
+      axios.post('http://localhost:7000/status_of_hostel_block', formData)
       .then((response) => {
         // alert
         console.log('API response:', response.data);

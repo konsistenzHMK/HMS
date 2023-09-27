@@ -310,7 +310,7 @@ const WingRegistartion = () => {
               )}
 
 
-             {/* we are change wing_id to wing_name we are not sure wye we use wing_id instent wing_name  */}
+             {/* we are change wing_id to wing_name we are not sure wye we use wing_id insted wing_name  */}
 
 
 

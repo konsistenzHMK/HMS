@@ -70,10 +70,13 @@ const WingRegistartion = () => {
   };
 
   const validateForm = () => {
-    const errors = {};
+    // const errors = {};
+    let errors = [];
+    
     // Validate hostel_id
     if (!formData.tower_id) {
-      errors.tower_id = "Tower ID is required";
+      // errors.tower_id = "Tower ID is required";
+      errors.push(1);
     }
 
     // Validate uuid
@@ -83,27 +86,32 @@ const WingRegistartion = () => {
 
     // Validate tower_name
     if (!formData.wing_name) {
-      errors.wing_name = "Wing name is required";
+      // errors.wing_name = "Wing name is required";
+      errors.push(1);
     }
 
     // Validate no_rooms
     if (!formData.no_rooms) {
-      errors.no_rooms = "Number of rooms is required";
+      // errors.no_rooms = "Number of rooms is required";
+      errors.push(1);
     }
 
     // Validate capacity
     if (!formData.capacity) {
-      errors.capacity = "Capacity is required";
+      // errors.capacity = "Capacity is required";
+      errors.push(1);
     }
 
     // Validate total_area
     if (!formData.total_area) {
-      errors.total_area = "Total area is required";
+      // errors.total_area = "Total area is required";
+      errors.push(1);
     }
 
     // Validate other_facilities
     if (!formData.other_facilities) {
-      errors.other_facilities = "Other facilities are required";
+      // errors.other_facilities = "Other facilities are required";
+      errors.push(1);
     }
 
     // Validate no_wings
@@ -113,18 +121,30 @@ const WingRegistartion = () => {
 
     // Validate type
     if (!formData.type) {
-      errors.type = "Type is required";
+      // errors.type = "Type is required";
+      errors.push(1);
     }
 
     // Validate status
     if (!formData.status) {
-      errors.status = "Status is required";
+      // errors.status = "Status is required";
+      errors.push(1);
     }
 
     // Set the errors using setErrors
     setErrors(errors);
     return errors
   };
+  
+  const [sendForm,setSendForm]=useState(false);
+  
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length===0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors);
+  },[formData])
+  
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
@@ -270,29 +290,7 @@ const WingRegistartion = () => {
 
               {/* 1.2 */}
               {/*  --> UUID */}
-
-              {wing_name_and_id.length > 0 ? (
-                <div className='w-full h-auto flex flex-col mb-2 mt-2'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">
-                    Wing <p className='inline text-xl text-red-600'>*</p>
-                  </div>
-                  <select
-                    id="wing_name"
-                    name="wing_name"
-                    value={formData.wing_name}
-                    onChange={handleChange2}
-                    className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                  >
-                    <option value="" disabled>-- Select an option --</option>
-                    {wing_name_and_id.map((item) => (
-                      <option key={item[0]} value={item[0]}>
-                        {item[1] + "  |  " + item[0]}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.wing_id && <span className="error">{errors.wing_id}</span>}
-                </div>
-              ) : (
+               
                 <div className='w-full h-auto flex flex-col mb-2 mt-2'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">
                     Wing <p className='inline text-xl text-red-600'>*</p>
@@ -307,8 +305,6 @@ const WingRegistartion = () => {
                   />
                   {errors.wing_name && <span className="error text-red-500">{errors.wing_name}</span>}
                 </div>
-              )}
-
 
              {/* we are change wing_id to wing_name we are not sure wye we use wing_id insted wing_name  */}
 
@@ -386,12 +382,11 @@ const WingRegistartion = () => {
                   />
                   {errors.type && <span className="error text-red-500">{errors.type}</span>}
                 </div>
-              </div>
-              <div className='w-full h-auto flex justify-between mt-1'>
-                <div className='w-1/2'>
+                <div className='w-1/2 flex flex-col items-end mb-2 mt-1'>
+                  <div className='w-11/12'>
                   <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Status <p className='inline text-xl text-red-600'>*</p></div>
                   <select
-                    className='w-11/12 border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                    className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                     value={status}
                     onChange={handleDropdownStatus}
                   >
@@ -402,7 +397,8 @@ const WingRegistartion = () => {
                   {errors.status && <span className="error text-red-500">{errors.status}</span>}
                 </div>
               </div>
-
+              </div>
+              
             </div>
           </div>
         </div>
@@ -420,7 +416,8 @@ const WingRegistartion = () => {
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
-                <button className='h-1/2  bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
+                <button disabled={sendForm}
+                  className={`h-1/2  ${sendForm ? ' bg-gray-500 ' : ' bg-accent2 ' } text-lg font-semibold text-white border-none rounded-2xl mt-5`}>
                   Save
                 </button>
               </div>

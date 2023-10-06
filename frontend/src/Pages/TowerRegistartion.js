@@ -70,58 +70,75 @@ const TowerRegistartion = () => {
   };
 
   const validateForm = () => {
-    let errors = {};
+    let errors = [];
 
     // Validate hostel_id
     if (!formData.hostel_id) {
-      errors.hostel_id = "Hostel ID is required";
+      // errors.hostel_id = "Hostel ID is required";
+      errors.push(1);
     }
 
 
     // Validate tower_name
     if (!formData.tower_name) {
-      errors.tower_name = "Tower name is required";
+      // errors.tower_name = "Tower name is required";
+      errors.push(1);
     }
 
     // Validate no_rooms
     if (!formData.no_rooms) {
-      errors.no_rooms = "Number of rooms is required";
+      // errors.no_rooms = "Number of rooms is required";
+      errors.push(1);
     }
 
     // Validate capacity
     if (!formData.capacity) {
-      errors.capacity = "Capacity is required";
+      // errors.capacity = "Capacity is required";
+      errors.push(1);
     }
 
     // Validate total_area
     if (!formData.total_area) {
-      errors.total_area = "Total area is required";
+      // errors.total_area = "Total area is required";
+      errors.push(1);
     }
 
     // Validate other_facilities
     if (!formData.other_facilities) {
-      errors.other_facilities = "Other facilities are required";
+      // errors.other_facilities = "Other facilities are required";
+      errors.push(1);
     }
 
     // Validate no_wings
     if (!formData.no_wings) {
-      errors.no_wings = "Number of wings is required";
+      // errors.no_wings = "Number of wings is required";
+      errors.push(1);
     }
 
     // Validate type
     if (!formData.type) {
-      errors.type = "Type is required";
+      // errors.type = "Type is required";
+      errors.push(1);
     }
 
     // Validate status
     if (!formData.status) {
-      errors.status = "Status is required";
+      // errors.status = "Status is required";
+      errors.push(1);
     }
 
     // Set the errors using setErrors
     setErrors(errors);
     return errors;
   };
+  const [sendForm,setSendForm]=useState(false);
+  
+  useEffect(()=>{
+    const errors=validateForm();
+    if(errors.length===0) setSendForm(false);
+    else setSendForm(true)
+    console.log(errors);
+  },[formData])
 
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
@@ -276,22 +293,6 @@ const TowerRegistartion = () => {
                 <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">
                   Tower  <p className='inline text-xl text-red-600'>*</p>  
                 </div>
-                {tower_name_and_id.length > 0 ? (
-                  <select
-                    id="tower_name"
-                    name="tower_name"
-                    value={formData.tower_name}
-                    onChange={handleChange3}
-                    className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                  >
-                    <option value="" disabled>-- Select an option --</option>
-                    {tower_name_and_id.map((item) => (
-                      <option key={item[0]} value={item[0]}>
-                        {item[1] + " | " + item[0]}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
                   <input
                     id="tower_name"
                     name="tower_name"
@@ -299,12 +300,12 @@ const TowerRegistartion = () => {
                     onChange={handleChange}
                     className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                   />
-                )}
-                {(  formData.tower_name ==='') && (
+                {  formData.tower_name &&
                   <span className="error text-red-500">
-                    This field is required.
+                    {/*This field is required.*/}
+                    {errors.tower_name}
                   </span>
-                )}
+                }
               </div>
 
              {/* we are change tower_id to tower_name we are not sure wye we use tower_id instent tower_name  */}
@@ -427,7 +428,9 @@ const TowerRegistartion = () => {
                 <img src={BgImg} className='absolute h-36 w-36 ml-[-40px]' />
               </div>
               <div className='w-1/4 flex flex-col justify-center'>
-                <button className='h-1/2 bg-accent2 text-lg font-semibold text-white border-none rounded-2xl mt-5'>
+                <button
+                  disabled={sendForm}
+                  className={`h-1/2 ${sendForm ? ' bg-gray-500 ' : ' bg-accent2 ' } text-lg font-semibold text-white border-none rounded-2xl mt-5`}>
                   Save
                 </button>
               </div>

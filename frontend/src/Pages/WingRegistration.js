@@ -153,13 +153,27 @@ const WingRegistartion = () => {
     const options = {hour: 'numeric', minute: 'numeric', second: 'numeric'};
     return date.toLocaleTimeString(undefined, options);
   };
-  
-  const [tower_name_and_id, setTower_name_and_id] = useState([]);
-  const tower_name_and_id_fetch = async () => {
+  const [hostel_name_and_id, setHostel_name_and_id] = useState([]);
+  const hostel_name_and_id_fetch = async () => {
     try {
-      const response = await fetch(`${SecretKeys.API_URL}/get_tower_id_where_status_active1`, {
-        method: "GET",
-        headers: {"Content-Type": "application/json"},
+      const response = await fetch(`${SecretKeys.API_URL}/gethostel_id/where/status_active`, {
+        method: "GET", headers: {"Content-Type": "application/json"},
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        setHostel_name_and_id(result);
+        
+      }
+    } catch (err) {
+      alert(err);
+    }
+  }
+  const [tower_name_and_id, setTower_name_and_id] = useState([]);
+  const tower_name_and_id_fetch = async (hostelId) => {
+    try {
+      const response = await fetch(`${SecretKeys.API_URL}/get_tower_id_where_status_active?hostel_id=${hostelId}`, {
+        method: "GET", headers: {"Content-Type": "application/json"},
       });
       if (response.ok) {
         const result = await response.json();
@@ -192,6 +206,8 @@ const WingRegistartion = () => {
       ...prevFormData,
       wing_id: event.target.value,
     }));
+    wing_name_and_id_fetch(event.target.value)
+    
   };
   
   const handleChange1 = (event) => {
@@ -199,13 +215,14 @@ const WingRegistartion = () => {
       ...prevFormData,
       tower_id: event.target.value,
     }));
-    wing_name_and_id_fetch(event.target.value)
+    tower_name_and_id_fetch(event.target.value)
     
   };
   
   useEffect(() => {
-    tower_name_and_id_fetch();
+    hostel_name_and_id_fetch();
   }, []);
+  
   
   return (
     <div className="w-full bg-defaultBg top-0">
@@ -222,6 +239,23 @@ const WingRegistartion = () => {
               </div>
               
               {/* 1.1 */}
+              
+              <div className='w-full h-auto flex flex-col mt-1'>
+                <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Hostel Name <p
+                  className='inline text-xl text-red-600'>*</p></div>
+                <select
+                  id="hostel_id"
+                  name="hostel_id"
+                  value={formData.hostel_id}
+                  onChange={handleChange1}
+                  className='w-full  border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
+                >
+                  <option value="" disabled>Select an option</option>
+                  {hostel_name_and_id.map((item) => (<option value={item[0]}>{item[1] + "  |  " + item[0]}</option>))}
+                </select>
+                {errors.hostel_id && <span className="error text-red-500">{errors.hostel_id}</span>}
+              </div>
+              
               <div className='w-full h-auto flex flex-col mt-1'>
                 <div className="mb-1 font-popins text-lg font-medium  " htmlFor="description">Tower Name <p
                   className='inline text-xl text-red-600'>*</p></div>
@@ -229,7 +263,7 @@ const WingRegistartion = () => {
                   id="tower_id"
                   name="tower_id"
                   value={formData.tower_id}
-                  onChange={handleChange1}
+                  onChange={handleChange2}
                   className='w-full  border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                 >
                   <option value="" disabled>--Select an option--</option>
@@ -243,28 +277,7 @@ const WingRegistartion = () => {
               {/* 1.2 */}
               {/*  --> UUID */}
               
-              {wing_name_and_id.length > 0 ? (
-                <div className='w-full h-auto flex flex-col mb-2 mt-2'>
-                  <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">
-                    Wing <p className='inline text-xl text-red-600'>*</p>
-                  </div>
-                  <select
-                    id="wing_name"
-                    name="wing_name"
-                    value={formData.wing_name}
-                    onChange={handleChange2}
-                    className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                  >
-                    <option value="" disabled>-- Select an option --</option>
-                    {wing_name_and_id.map((item) => (
-                      <option key={item[0]} value={item[0]}>
-                        {item[1] + "  |  " + item[0]}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.wing_id && <span className="error">{errors.wing_id}</span>}
-                </div>
-              ) : (
+              
                 <div className='w-full h-auto flex flex-col mb-2 mt-2'>
                   <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">
                     Wing <p className='inline text-xl text-red-600'>*</p>
@@ -279,8 +292,7 @@ const WingRegistartion = () => {
                   />
                   {errors.wing_name && <span className="error text-red-500">{errors.wing_name}</span>}
                 </div>
-              )}
-              
+           
               
               {/* we are change wing_id to wing_name we are not sure wye we use wing_id insted wing_name  */}
               

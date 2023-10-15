@@ -96,7 +96,7 @@ const ReviewCard = (props) => {
            </button>
            </div> */}
           <div className='flex justify-end'>
-            <img src={HostelImage} className='w-3/5 h-auto mr-3'/>
+            <img src={HostelImage} className='w-3/5 h-auto mr-3' alt='Hostel Images'/>
           </div>
         </div>
       </div>

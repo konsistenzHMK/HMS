@@ -90,24 +90,24 @@ const TowerRegistartion = () => {
     }
     
     // Validate total_area
-    if (!formData.total_area) {
+/*    if (!formData.total_area) {
       errors.total_area = "Total area is required";
-    }
+    }*/
     
     // Validate other_facilities
-    if (!formData.other_facilities) {
+ /*   if (!formData.other_facilities) {
       errors.other_facilities = "Other facilities are required";
     }
-    
+    */
     // Validate no_wings
     if (!formData.no_wings) {
       errors.no_wings = "Number of wings is required";
     }
     
     // Validate type
-    if (!formData.type) {
+/*    if (!formData.type) {
       errors.type = "Type is required";
-    }
+    }*/
     
     // Validate status
     if (!formData.status) {
@@ -180,7 +180,6 @@ const TowerRegistartion = () => {
   const [tower_name_and_id, setTower_name_and_id] = useState([]);
   const tower_name_and_id_fetch = async (hostelId) => {
     try {
-      console.log('hostelId', hostelId)
       const url = `${SecretKeys.API_URL}/get_tower_id_where_status_active?hostel_id=${hostelId}`;
       const response = await fetch(url, {
         method: "GET", headers: {"Content-Type": "application/json"},
@@ -239,27 +238,16 @@ const TowerRegistartion = () => {
               <div className="mb-1 font-popins text-lg font-medium" htmlFor="description">
                 Tower <p className='inline text-xl text-red-600'>*</p>
               </div>
-              {tower_name_and_id.length > 0 ? (<select
-                id="tower_name"
-                name="tower_name"
-                value={formData.tower_name}
-                onChange={handleChange3}
-                className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-              >
-                <option value="" disabled>-- Select an option --</option>
-                {tower_name_and_id.map((item) => (<option key={item[0]} value={item[0]}>
-                  {item[1] + " | " + item[0]}
-                </option>))}
-              </select>) : (<input
+             <input
                 id="tower_name"
                 name="tower_name"
                 value={formData.tower_name}
                 onChange={handleChange}
                 className='w-full border-gray-400 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-              />)}
-              {(formData.tower_name === '') && (<span className="error text-red-500">
+              />
+              {formData.tower_name === '' && <span className="error text-red-500">
                     This field is required.
-                  </span>)}
+                  </span>}
             </div>
             
             {/* we are change tower_id to tower_name we are not sure wye we use tower_id instent tower_name  */}
@@ -299,7 +287,7 @@ const TowerRegistartion = () => {
             <div className='w-full h-auto flex justify-between mt-1'>
               <div className='w-1/2'>
                 <div className="mb-1 font-popins text-lg font-medium  " htmlFor="email_id">Capacity <p
-                  className='inline text-xl text-red-600'></p></div>
+                  className='inline text-xl text-red-600'>*</p></div>
                 <input
                   type="number"
                   id="capacity"

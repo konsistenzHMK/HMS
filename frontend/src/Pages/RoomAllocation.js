@@ -158,13 +158,13 @@ const RoomAllocation = () => {
         <div className="bg-white rounded-lg  w-1/3 h-1/2 flex flex-col">
           <div className='w-full flex flex-row h-1/2 flex-wrap'>
             {allRooms.map((ele, i) => {
-              if (i % 2 == 0) {
+              if (i % 2 === 0) {
                 color = lastColor;
                 lastColor = !lastColor;
               } else color = !color
               return (
                 <button
-                  className={`w-1/2 h-full ${color == true ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}
+                  className={`w-1/2 h-full ${color === true ? 'bg-slate-100' : 'bg-slate-400'}  flex flex-col justify-center`}
                   onClick={(e) => {
                     e.preventDefault();
                     
@@ -185,7 +185,7 @@ const RoomAllocation = () => {
                     if (previous_room_id) {
                       console.log("worked0")
                       allRooms.forEach((ele, i) => {
-                        if (ele.room_id == previous_room_id) {
+                        if (ele.room_id === previous_room_id) {
                           console.log("worked1")
                           if (ele.pending_capacity) {
                             
@@ -207,7 +207,7 @@ const RoomAllocation = () => {
                     }
                     if (current_room_id) {
                       allRooms.forEach((ele) => {
-                        if (ele.room_id == current_room_id) {
+                        if (ele.room_id === current_room_id) {
                           if (ele.pending_capacity) {
                             let outerCopy = [...allRooms];
                             let innerCopy = ele;
@@ -245,7 +245,7 @@ const RoomAllocation = () => {
                 >
                   <div className='w-full flex justify-center'>Room No : {ele.room_no}</div>
                   <div className='w-full flex justify-center'>Occupied
-                    : {ele.pending_capacity == undefined ? 0 : ele.pending_capacity}/{ele.room_capacity}</div>
+                    : {ele.pending_capacity === undefined ? 0 : ele.pending_capacity}/{ele.room_capacity}</div>
                 </button>
               )
             })}
@@ -316,30 +316,30 @@ const RoomAllocation = () => {
                       </thead>
                       <tbody>
                       {allStudents.map((item, i) => (
-                        <tr className={`mt-1 h-12 ${i % 2 == 0 ? 'bg-color1' : 'bg-color2'} `} key={item[0]}>
+                        <tr className={`mt-1 h-12 ${i % 2 === 0 ? 'bg-color1' : 'bg-color2'} `} key={item[0]}>
                           <td className='w-1/6 text-center font-semibold'>{item[0]}</td>
                           <td className='w-1/6 text-center font-semibold'>{item[1] + " " + item[2]}</td>
                           <td className='w-1/6 text-center font-semibold'>{item[6]}</td>
-                          <td className='w-1/6 text-center font-semibold pl-14' align="center">{item[5] == true ?
-                            <img src={yes}/> : <img src={no} className=''/>}</td>
+                          <td className='w-1/6 text-center font-semibold pl-14' align="center">{item[5] === true ?
+                            <img alt='' src={yes}/> : <img src={no} className='' alt=''/>}</td>
                           <td className='w-1/6 text-center'>
                             <button className='bg-zinc-300 border rounded-md mr-1' onClick={(e) => {
                               e.preventDefault();
                               setCurrentStudent(item[0]?.toString());
                               togglePopup(true);
-                            }}><img src={Allocate} className=''/></button>
+                            }}><img alt='' src={Allocate} className=''/></button>
                             <button className='bg-zinc-300 border rounded-md mr-1' onClick={(e) => {
                               e.preventDefault();
                               setCurrentStudent(item[0]?.toString());
                               togglePopup(true);
-                            }}><img src={Transfer} className=''/></button>
+                            }}><img src={Transfer} className='' alt=''/></button>
                             <button className='bg-zinc-300 border rounded-md mr-1' onClick={(e) => {
                               e.preventDefault();
                               const studentID = item[0].toString();
                               const prevRoom = allStudentRoomMap[studentID].room_no;
                               allStudentRoomMap[studentID].room_no = '';
                               allRooms.forEach((ele, i) => {
-                                if (ele.room_no == prevRoom) {
+                                if (ele.room_no === prevRoom) {
                                   console.log('ele', ele);
                                   let outerCopy = [...allRooms];
                                   let innerCopy = ele;
@@ -352,7 +352,7 @@ const RoomAllocation = () => {
                                   setAllRooms(outerCopy);
                                 }
                               })
-                            }}><img src={Remove} className=''/></button>
+                            }}><img alt='' src={Remove} className=''/></button>
                           </td>
                           <td className='w-1/5 text-center'>
                             <input

@@ -313,10 +313,11 @@ const rector_id_to_hostel_id = async(req,res)=>{
 
 
 const get_expense_code_expense_name_expense_type = async(req,res)=>{
-    const querySnapshot = await getDocs(collection(db, "expense"));
+    const querySnapshot = await getDocs(collection(db, "expense_master"));
     const data1 = [];
     querySnapshot.forEach((doc) => {
-        data1.push(doc.data()); 
+        data1.push([doc.data().expense_code,doc.data().expense_name,doc.data().expense_type,doc.data().expense_type_description]);
+        
     });
     res.send(data1);
 
@@ -1045,8 +1046,6 @@ const temporary_api_for_checking_data = async(req,res)=>{
     res.send("Room Allcation Done for this Transaction")
     
 }
-
-
 
 
 export  {get_all_towers,get_all_wings,get_all_rooms,get_tower_id_where_status_active1,temporary_api_for_checking_data,get_allocated_students_for_room_allocation,get_room_details_for_room_allocation,get_wing_id_where_status_active,get_tower_id_where_status_active,get_students_for_room_allocation,upload_file,get_student_form,get_status,status_of_hostel_block,status_of_hostel_active,gethostel_id_where_status_active,saved_data_from_hostel_registration,expense_flow_code_count,hostel_flow_code_count,process_id_to_process_description_count, get_expense_code_expense_name_expense_type, rector_id_to_hostel_id, hostel_id_to_studentname , random_doc_id_function, booking_expense_header_function,UUIDFunction , studentIdFunction, tower_id_function, wing_id_function, room_id_function , expense_id_function};

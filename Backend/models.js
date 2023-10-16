@@ -1330,11 +1330,12 @@ const hostel_room_reg = async (req, res) => {
 
 }
 
-const expense = async (req, res) => {
+const expense_master = async (req, res) => {
     const {
         expense_name,
         expense_type,
-        // status
+        expense_type_description,
+        status
     } = (req.body);
 
     const ans5 = await expense_id_function(null);
@@ -1345,13 +1346,14 @@ const expense = async (req, res) => {
     str = String(num).padStart(str.length, "0");
 
     try {
-        await setDoc(doc(db, "expense", await random_doc_id_function()), {
+        await setDoc(doc(db, "expense_master", await random_doc_id_function()), {
             expense_name,
             expense_type,
-            // status,
-            expense_code: str,
+            expense_type_description,
+            status,
+            expense_code: str, 
 
-        });
+        }); 
     }
     catch (e) {
         res.send("Data not inserted" + e);
@@ -1694,4 +1696,4 @@ const virtual_table_for_room_allocation = async (req, res) => {
     res.send("Data Inserted");
 }
 
-export {virtual_table_for_room_allocation,hostel_tower_wing,student_to_room_allocation, status_trasition, saved_form_1, saved_form_2, saved_form_3, saved_form_4, saved_form_5, saved_form_6, expense_flow_code_to_user_id, hostel_flow_code_to_user_id, flow_table_for_expense, flow_table_for_hostel, user_role_management, role_to_process_mapping, process_id_to_process_description, expense_type, role_reference, users, expense_item, expense_header, allAddressDetails, hostel_registration, student_registration, hostel_tower_reg, hostel_room_reg, expense };
+export {virtual_table_for_room_allocation,hostel_tower_wing,student_to_room_allocation, status_trasition, saved_form_1, saved_form_2, saved_form_3, saved_form_4, saved_form_5, saved_form_6, expense_flow_code_to_user_id, hostel_flow_code_to_user_id, flow_table_for_expense, flow_table_for_hostel, user_role_management, role_to_process_mapping, process_id_to_process_description, expense_type, role_reference, users, expense_item, expense_header, allAddressDetails, hostel_registration, student_registration, hostel_tower_reg, hostel_room_reg, expense_master };

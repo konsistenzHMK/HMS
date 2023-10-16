@@ -8,7 +8,26 @@ import ExpenseImage from './expenseImage.svg'
 
 
 const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage }) => {
-    
+    const [expense_code_and_name_type_description, setExpense_code_and_name_type_description_fetch] = useState([]);
+    const expense_code_and_name_type_description_fetch = async() => {
+        try{
+            const response = await fetch("http://localhost:7000/get/expense_code/expense_name/expense_type",{
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+            if(response.ok){
+                const result = await response.json();
+                console.log(result);
+                setExpense_code_and_name_type_description_fetch(result);
+            }
+        }
+        catch(err){
+            alert(err);
+        }
+    }
+useEffect(() => {
+    expense_code_and_name_type_description_fetch();
+},[]);
 
     const [errors, setErrors] = useState({});
 
@@ -18,6 +37,7 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
             ...prevData,
             [name]: value
         }));
+
     };
 
     const validateForm = () => {
@@ -61,6 +81,14 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
         return "Please Enter Total Expense and No of Students"
     }
 
+    const handleChange1 = (event) =>{
+        setFormData((prevData) => ({
+            ...prevData,
+            exp_code: event.target.value
+        }));
+
+    }
+
     return (
         <div className="flex bg-defaultBg" >
             {/* Main Content */}
@@ -81,22 +109,27 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                 <form>
                                     <div className='w-full h-auto flex-col mt-4'>
                                         <div className=''>
-                                            <p className='mb-1 font-popins text-medium '>Expense Code <p className='inline text-xl text-red-600'>**</p></p>
+                                            <p className='mb-1 font-popins text-medium '>Expense Code and Name <p className='inline text-xl text-red-600'>**</p></p>
                                         </div>
                                         <div className='mt-1 '>
-                                            <input
+                                            <select
                                                 type="text"
                                                 id="exp_code"
                                                 name="exp_code"
                                                 value={formData.exp_code}
-                                                onChange={handleChange}
+                                                onChange={handleChange1}
                                                 placeholder='Select expense code'
                                                 className='text-sm h-9 pl-3 text-gray-500 w-11/12 border-blue-300 bg-defaultBg rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
-                                            />
+                                            >
+                                                <option value="" disabled>Select Expense Code</option>
+                                                {expense_code_and_name_type_description.map((item) => (
+                                                    <option value={item[0]}>{item[0] + " | " + item[1]}</option>
+                                                ))}
+                                            </select>
                                             {errors.exp_code && <span className="error text-red-500">{errors.exp_code}</span>}
                                         </div>
                                     </div>
-                                    <div className='w-full h-auto flex-col mt-4'>
+                                    {/* <div className='w-full h-auto flex-col mt-4'>
                                         <div className=''>
                                             <p className='mb-1 font-popins text-medium '>Expense Name <p className='inline text-xl text-red-600'></p></p>
                                         </div>
@@ -112,10 +145,10 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                             />
                                             {errors.exp_name && <span className="error text-red-500">{errors.exp_name}</span>}
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className='w-full h-auto flex-col mt-4'>
                                         <div className=''>
-                                            <p className='mb-1 font-popins text-medium '>Expense Type <p className='inline text-xl text-red-600'></p></p>
+                                            <p className='mb-1 font-popins text-medium '>Expense Description and Type  <p className='inline text-xl text-red-600'></p></p>
                                         </div>
                                         <div className='mt-1 '>
                                             <input
@@ -123,7 +156,7 @@ const Page1 = ({ currentPage, formData, setFormData, nextPage, setCurrentPage })
                                                 id="exp_type"
                                                 name="exp_type"
                                                 value={formData.exp_type}
-                                                onChange={handleChange}
+                                                onChange={handleChange} 
                                                 placeholder='Select Expense code to see Expense Type'
                                                 className='text-sm h-9 pl-3 text-gray-600 w-11/12 border-blue-300 bg-gray-300 rounded-md font-montserrat px-1 py-1 focus:outline-none border-1 focus:border-orange-600 focus:border-1.5'
                                             />
